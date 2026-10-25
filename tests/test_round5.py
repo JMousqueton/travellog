@@ -115,12 +115,13 @@ def test_year_badges_only_count_that_year(app, user):
     assert {r["badge"].id: r for r in compute_badges(user.trips.all())}["trips_10"]["earned"] == date(2025, 5, 1)
 
 
-def test_stats_page_has_overall_and_year_badges(auth_client, user):
+def test_overall_badges_on_overview_and_year_badges_on_year_page(auth_client, user):
     make_trip(user, depart_date=date(2025, 3, 1))
-    html = auth_client.get("/stats").text
-    assert "Badges · tous vos voyages" in html and "Badges de l'année 2025" in html
-    assert html.index("Badges · tous vos voyages") < html.index("Badges de l'année 2025")
-    assert "Un voyage par mois" in html and "Voyageur légendaire" in html
+    overview = auth_client.get("/stats").text
+    assert "Badges · tous vos voyages" in overview and "Voyageur légendaire" in overview
+    assert "Badges de l'année" not in overview
+    year = auth_client.get("/stats/2025").text
+    assert "Badges de l'année 2025" in year and "Un voyage par mois" in year
 
 
 def test_dashboard_stats_for_current_year(auth_client, user):
@@ -131,7 +132,8 @@ def test_dashboard_stats_for_current_year(auth_client, user):
     year = auth_client.get("/api/stats?year=2025").get_json()
     assert year["count"] == 2 and year["next_trip"] is not None
     assert auth_client.get("/api/stats?year=2024").get_json()["next_trip"] is not None  # prochain départ global
-    assert 'data-year="2025"' in auth_client.get("/").text and "Tableau de bord 2025" in auth_client.get("/").text
+    html = auth_client.get("/").text
+    assert 'data-year="2025"' in html and 'Tableau de bord <span id="dashboardYear">2025</span>' in html
 
 
 # --- Lieux visités --------------------------------------------------------------------------

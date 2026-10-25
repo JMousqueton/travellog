@@ -12,7 +12,8 @@ from .conftest import make_user
 def legal(app):
     app.config.update(LEGAL_PUBLISHER_NAME="Julien Mousqueton", LEGAL_HOST_NAME="OVH SAS (OVHcloud VPS)",
                       LEGAL_HOST_ADDRESS="2 rue Kellermann, 59100 Roubaix, France", LEGAL_HOST_PHONE="+33 9 72 10 10 07",
-                      LEGAL_DATA_CITY="Gravelines", LEGAL_DATA_COUNTRY="FR", APP_BASE_URL="https://travellog.example")
+                      LEGAL_DATA_CITY="Gravelines", LEGAL_DATA_COUNTRY="FR", APP_BASE_URL="https://travellog.example",
+                      LEGAL_CONTACT_EMAIL="")  # indépendant du .env local
     return app
 
 

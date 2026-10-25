@@ -67,7 +67,7 @@ def test_stats_page_excludes_upcoming(auth_client, user):
     html = auth_client.get("/stats").text
     assert "Tokyo, Japon" in html and "Dans 264 jours" in html  # section « À venir »
     assert "Japon" not in html.split('id="countriesTitle"')[1]  # pas compté comme visité
-    assert "2026" not in html.split('id="yearsTitle"')[1].split("</table>")[0]
+    assert "2026" not in html.split('id="previousTitle"')[1].split("</section>")[0]  # pas de carte 2026
 
 
 def test_badges_on_list_and_detail(auth_client, user):

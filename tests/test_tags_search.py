@@ -86,9 +86,10 @@ def test_tag_stats(auth_client, db, user, monkeypatch):
     auth_client.post("/trips/new", data=_form(tags="Travail", origin_country="FR", dest_country="FR"))
     auth_client.post("/trips/new", data=_form(depart_date="2024-05-01", tags="Travail"))
     auth_client.post("/trips/new", data=_form(depart_date="2025-06-01"))
-    html = auth_client.get("/stats").text
-    section = html.split('id="tagsTitle"')[1].split("</table>")[0]
-    assert "Travail" in section and "Sans étiquette" in section and "CO₂ en 2025" in section
+    html = auth_client.get("/stats/2025").text  # étiquettes : sur la page de chaque année
+    section = html.split('id="tags2025"')[1].split("</table>")[0]
+    assert "Travail" in section and "Sans étiquette" in section
+    assert "Travail" in auth_client.get("/stats/2024").text.split('id="tags2024"')[1]
 
 
 def test_tags_survive_export_import(auth_client, db, user):

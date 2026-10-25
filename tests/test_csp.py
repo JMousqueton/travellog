@@ -76,10 +76,10 @@ def test_error_page_respects_csp(client):
 
 def test_private_pages_respect_csp(auth_client, user, db):
     trip = make_trip(user)
-    link = ShareLink(user_id=user.id)
+    link = ShareLink(user_id=user.id, show_trips=True)
     db.session.add(link)
     db.session.commit()
-    for path in ("/", "/trips", f"/trips/{trip.id}", "/trips/new", f"/trips/{trip.id}/edit", "/stats", "/stats/plane",
-                 "/review/2025", "/auth/profile", "/share", "/import-export", f"/s/{link.token}",
-                 f"/s/{link.token}/review/2025"):
+    for path in ("/", "/trips", "/trips?year=2025", f"/trips/{trip.id}", "/trips/new", f"/trips/{trip.id}/edit",
+                 "/stats", "/stats/2025", "/stats/plane", "/review/2025", "/auth/profile", "/share", "/import-export",
+                 f"/s/{link.token}", f"/s/{link.token}/stats", f"/s/{link.token}/trips"):
         check_page(auth_client, path)
