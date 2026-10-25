@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Carte partagée") if shared else _("Carte") }}{% endblock %}
+{% block body_class %}app-layout{% endblock %}
+{% block main_class %}app-shell{% endblock %}
+{% block head %}
+{% if shared %}<meta name="robots" content="noindex, nofollow">{% endif %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"
+        integrity="sha384-pmjIAcz2bAn0xukfxADbZIb3t8oRT9Sv0rvO+BR5Csr6Dhqq+nZs59P0pPKQJkEV" crossorigin="anonymous">
+{% endblock %}
+{% block footer %}{% endblock %}
+{% block content %}
+<aside class="sidebar offcanvas-lg offcanvas-start" tabindex="-1" id="sidebar" aria-labelledby="sidebarTitle">
+  <div class="offcanvas-header border-bottom">
+    <h2 class="offcanvas-title h5 mb-0" id="sidebarTitle">{{ _("Voyages et filtres") }}</h2>
+    <button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#sidebar" aria-label="{{ _('Fermer') }}"></button>
+  </div>
+  <div class="offcanvas-body sidebar-body">
+    {% if shared %}
+    <div class="alert alert-info d-flex align-items-start gap-2 small mb-4" role="note">
+      <i class="fa-solid fa-eye mt-1" aria-hidden="true"></i>
+      <div>
+        <div class="fw-semibold">{{ shared.label or _("Carte partagée") }}</div>
+        {{ _("Vous consultez ces voyages en lecture seule.") }}
+        <a href="{{ url_for('share.review_latest', token=shared.token) }}">{{ _("Voir le bilan de l'année") }}</a>
+      </div>
+    </div>
+    {% endif %}
+
+    <section class="mb-4" aria-labelledby="statsTitle">
+      <h2 class="section-title" id="statsTitle">{{ _("Tableau de bord") }}</h2>
+      <div class="stats-grid" id="stats" aria-live="polite" aria-busy="true">
+        <div class="stat-card">
+          <span class="stat-icon" aria-hidden="true"><i class="fa-solid fa-suitcase"></i></span>
+          <div><div class="stat-value" data-stat="count"><span class="skeleton skeleton-text w-50"></span></div>
+          <div class="stat-label">{{ _("Voyages") }}</div></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon" aria-hidden="true"><i class="fa-solid fa-route"></i></span>
+          <div><div class="stat-value" data-stat="distance"><span class="skeleton skeleton-text w-75"></span></div>
+          <div class="stat-label">{{ _("Distance estimée") }}</div></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon" aria-hidden="true"><i class="fa-solid fa-earth-europe"></i></span>
+          <div><div class="stat-value" data-stat="countries"><span class="skeleton skeleton-text w-50"></span></div>
+          <div class="stat-label">{{ _("Pays et territoires") }}</div></div>
+        </div>
+        <div class="stat-card">
+          <span class="stat-icon" aria-hidden="true"><i class="fa-solid fa-smog"></i></span>
+          <div><div class="stat-value" data-stat="co2"><span class="skeleton skeleton-text w-75"></span></div>
+          <div class="stat-label">{{ _("CO₂ estimé") }}</div></div>
+        </div>
+      </div>
+      <a class="next-trip mt-3" id="nextTrip" hidden {% if shared %}data-shared{% endif %}>
+        <i class="fa-regular fa-clock" aria-hidden="true"></i>
+        <span><span class="next-trip-label">{{ _("Prochain départ") }}</span>
+        <span class="next-trip-route" data-next-route></span></span>
+        <span class="badge rounded-pill status-badge status-upcoming ms-auto" data-next-countdown></span>
+      </a>
+      <ul class="mode-breakdown list-unstyled mt-3 mb-0" id="modeBreakdown" aria-label="{{ _('Répartition par mode de transport') }}"></ul>
+    </section>
+
+    <section class="mb-4" aria-labelledby="filtersTitle">
+      <div class="d-flex align-items-center justify-content-between mb-2">
+        <h2 class="section-title mb-0" id="filtersTitle">{{ _("Filtres") }}
+          <span class="badge rounded-pill text-bg-primary ms-1" id="activeFilters" hidden></span></h2>
+        <button type="button" class="btn btn-link btn-sm p-0 text-decoration-none" id="resetFilters" hidden>
+          <i class="fa-solid fa-rotate-left me-1" aria-hidden="true"></i>{{ _("Réinitialiser") }}</button>
+      </div>
+      <form id="filters" class="filters card card-body p-3" novalidate>
+        <fieldset class="mb-3">
+          <legend class="form-label small fw-semibold mb-2">{{ _("Période de départ") }}</legend>
+          <div class="row g-2">
+            <div class="col-6">
+              <label class="form-label small text-body-secondary mb-1" for="filterFrom">{{ _("Du") }}</label>
+              <input type="date" class="form-control form-control-sm" id="filterFrom" name="from">
+            </div>
+            <div class="col-6">
+              <label class="form-label small text-body-secondary mb-1" for="filterTo">{{ _("Au") }}</label>
+              <input type="date" class="form-control form-control-sm" id="filterTo" name="to">
+            </div>
+          </div>
+          <div class="invalid-feedback" id="filterDateError" role="alert"></div>
+        </fieldset>
+        <fieldset class="mb-3">
+          <legend class="form-label small fw-semibold mb-2">{{ _("Modes de transport") }}</legend>
+          <div class="mode-filter">
+            {% for key, m in TRANSPORT_MODES.items() %}
+            <input type="checkbox" class="btn-check" id="filterMode-{{ key }}" name="modes" value="{{ key }}" autocomplete="off">
+            <label class="mode-toggle" for="filterMode-{{ key }}" style="--mode-color: {{ m.color }}; --mode-color-dark: {{ m.color_dark }}"
+                   title="{{ m.label }}">
+              <i class="fa-solid {{ m.icon }}" aria-hidden="true"></i><span class="visually-hidden">{{ m.label }}</span>
+            </label>
+            {% endfor %}
+          </div>
+        </fieldset>
+        {% if user_tags %}
+        <fieldset class="mb-3">
+          <legend class="form-label small fw-semibold mb-2">{{ _("Étiquettes") }}</legend>
+          <div class="tag-filter">
+            {% for tag in user_tags %}
+            <input type="checkbox" class="btn-check" id="filterTag-{{ tag.id }}" name="tags" value="{{ tag.id }}" autocomplete="off">
+            <label class="tag-toggle" for="filterTag-{{ tag.id }}">{{ tag.name }}</label>
+            {% endfor %}
+          </div>
+        </fieldset>
+        {% endif %}
+        <fieldset class="mb-3" {% if shared and not shared.include_upcoming %}hidden{% endif %}>
+          <legend class="form-label small fw-semibold mb-2">{{ _("Voyages passés ou à venir") }}</legend>
+          <div class="btn-group w-100 segmented" role="group">
+            {% for value, label in [('all', _("Tous")), ('past', _("Passés")), ('upcoming', _("À venir"))] %}
+            <input type="radio" class="btn-check" name="when" id="when-{{ value }}" value="{{ value }}" {% if loop.first %}checked{% endif %}>
+            <label class="btn btn-sm" for="when-{{ value }}">{{ label }}</label>
+            {% endfor %}
+          </div>
+        </fieldset>
+        <fieldset>
+          <legend class="form-label small fw-semibold mb-2">{{ _("Type de voyage") }}</legend>
+          <div class="btn-group w-100 segmented" role="group">
+            {% for value, label in [('all', _("Tous")), ('oneway', _("Aller simple")), ('round', _("Aller-retour"))] %}
+            <input type="radio" class="btn-check" name="kind" id="kind-{{ value }}" value="{{ value }}" {% if loop.first %}checked{% endif %}>
+            <label class="btn btn-sm" for="kind-{{ value }}">{{ label }}</label>
+            {% endfor %}
+          </div>
+        </fieldset>
+      </form>
+    </section>
+
+    <section aria-labelledby="listTitle">
+      <div class="d-flex align-items-center justify-content-between gap-2 mb-2">
+        <h2 class="section-title mb-0" id="listTitle">{{ _("Voyages") }}
+          <span class="text-body-secondary fw-normal small count" id="listCount"></span></h2>
+        <div class="d-flex align-items-center gap-1">
+          <label class="visually-hidden" for="sortSelect">{{ _("Trier par") }}</label>
+          <i class="fa-solid fa-arrow-down-wide-short text-body-secondary small" aria-hidden="true"></i>
+          <select class="form-select form-select-sm sort-select" id="sortSelect">
+            <option value="date_desc">{{ _("Plus récents") }}</option>
+            <option value="date_asc">{{ _("Plus anciens") }}</option>
+            <option value="distance_desc">{{ _("Plus longs") }}</option>
+            <option value="distance_asc">{{ _("Plus courts") }}</option>
+            <option value="origin_asc">{{ _("Origine (A → Z)") }}</option>
+            <option value="dest_asc">{{ _("Destination (A → Z)") }}</option>
+          </select>
+        </div>
+      </div>
+      <ul class="trip-list list-unstyled mb-0" id="tripList" aria-busy="true" aria-labelledby="listTitle">
+        {% for _i in range(4) %}
+        <li class="trip-item skeleton-item" aria-hidden="true">
+          <span class="skeleton skeleton-circle"></span>
+          <div class="flex-grow-1"><span class="skeleton skeleton-text w-75"></span><span class="skeleton skeleton-text w-50"></span></div>
+        </li>
+        {% endfor %}
+      </ul>
+      <div class="visually-hidden" role="status" aria-live="polite" id="listStatus"></div>
+    </section>
+    {# La carte occupe tout l'écran : le pied de page se place en bas du panneau latéral. #}
+    {% with footer_class = "sidebar-footer" %}{% include "partials/footer.html" %}{% endwith %}
+  </div>
+</aside>
+
+<div class="map-wrapper">
+  <div id="map" role="region" aria-label="{{ _('Carte des voyages') }}"
+       data-trips-url="{{ trips_url or url_for('api.trips') }}" data-stats-url="{{ stats_url or url_for('api.stats') }}"
+       data-countries-url="{{ countries_url or url_for('api.countries') }}"
+       data-places-url="{{ places_url or url_for('api.places') }}"
+       {% if not shared %}data-create-url="{{ url_for('trips.create') }}"{% endif %} data-tiles='{{ tiles|tojson }}' {% if focus %}data-focus="{{ focus }}"{% endif %}></div>
+  <div class="map-loading" id="mapLoading" role="status">
+    <div class="spinner-border text-primary" aria-hidden="true"></div>
+    <span class="visually-hidden">{{ _("Chargement…") }}</span>
+  </div>
+  <button class="btn btn-primary rounded-pill shadow sidebar-fab d-lg-none" type="button"
+          data-bs-toggle="offcanvas" data-bs-target="#sidebar" aria-controls="sidebar">
+    <i class="fa-solid fa-sliders me-1" aria-hidden="true"></i>{{ _("Voyages et filtres") }}
+    <span class="badge rounded-pill text-bg-light ms-1" id="fabCount"></span>
+  </button>
+  {% if not shared %}
+  <a class="btn btn-primary rounded-circle shadow add-fab d-lg-none" href="{{ url_for('trips.create') }}"
+     aria-label="{{ _('Ajouter un voyage') }}"><i class="fa-solid fa-plus" aria-hidden="true"></i></a>
+  {% endif %}
+</div>
+{% endblock %}
+{% block scripts %}
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"
+        integrity="sha384-eXVCORTRlv4FUUgS/xmOyr66XBVraen8ATNLMESp92FKXLAMiKkerixTiBvXriZr" crossorigin="anonymous"></script>
+<script type="module" src="{{ url_for('static', filename='js/map-page.js') }}"></script>
+{% endblock %}

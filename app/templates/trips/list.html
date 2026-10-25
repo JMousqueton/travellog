@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import mode_badge, status_badge, tag_chips with context %}
+{% block title %}{{ _("Mes voyages") }}{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+  <h1 class="h3 fw-bold mb-0">{{ _("Mes voyages") }}</h1>
+  <div class="d-flex flex-wrap gap-2">
+    <a class="btn btn-outline-secondary rounded-pill px-3" href="{{ url_for('transfer.index') }}">
+      <i class="fa-solid fa-file-import me-1" aria-hidden="true"></i>{{ _("Importer / exporter") }}</a>
+    <a class="btn btn-primary rounded-pill px-3" href="{{ url_for('trips.create') }}">
+      <i class="fa-solid fa-plus me-1" aria-hidden="true"></i>{{ _("Ajouter un voyage") }}</a>
+  </div>
+</div>
+{% if has_trips %}
+<form method="get" action="{{ url_for('trips.list_view') }}" class="search-form mb-3" role="search">
+  {% if sort != 'date_desc' %}<input type="hidden" name="sort" value="{{ sort }}">{% endif %}
+  <label class="visually-hidden" for="tripSearch">{{ _("Rechercher") }}</label>
+  <div class="input-icon flex-grow-1">
+    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+    <input type="search" class="form-control" id="tripSearch" name="q" value="{{ q }}" maxlength="200"
+           placeholder="{{ _('Lieu, pays, note, étiquette, nom de voyage…') }}" autocomplete="off">
+  </div>
+  <button type="submit" class="btn btn-outline-primary rounded-pill px-3">{{ _("Rechercher") }}</button>
+</form>
+{% if q %}
+<p class="small text-body-secondary" role="status">
+  {{ ngettext("%(num)s trajet trouvé pour « %(query)s ».", "%(num)s trajets trouvés pour « %(query)s ».", match_count, query=q) }}
+  <a href="{{ url_for('trips.list_view', sort=sort if sort != 'date_desc' else None) }}">{{ _("Effacer la recherche") }}</a>
+</p>
+{% endif %}
+{% endif %}
+{% if rows %}
+{% macro trip_cells(trip, in_journey=False) %}
+  {% set route = trip.origin_name ~ ' → ' ~ trip.dest_name %}
+  <td class="select-cell">
+    <input class="form-check-input" type="checkbox" name="trip_ids" value="{{ trip.id }}" form="groupForm"
+           aria-label="{{ _('Sélectionner le trajet %(route)s', route=route) }}">
+  </td>
+  <td class="text-nowrap">
+    {{ trip.depart_date|day }}
+    {% if trip.is_round_trip %}<div class="small text-body-secondary">
+      <i class="fa-solid fa-rotate-left me-1" aria-hidden="true"></i>{{ trip.return_date|day }}</div>{% endif %}
+  </td>
+  <td {% if in_journey %}class="journey-leg-cell"{% endif %}>
+    <a class="fw-medium text-decoration-none" href="{{ url_for('trips.index', focus=trip.id) }}">
+      {{ trip.origin_name }} <i class="fa-solid fa-arrow-right-long mx-1 text-body-tertiary" aria-hidden="true"></i>
+      <span class="visually-hidden">→</span> {{ trip.dest_name }}</a>
+    {% if not in_journey %}{{ status_badge(trip.status, trip.depart_date, trip.end_date) }}{% endif %}
+    <div class="small text-body-secondary">
+      {{ _("Aller-retour") if trip.is_round_trip else _("Aller simple") }}
+      {% if trip.countries %}· <span title="{{ trip.countries|map('country_name')|join(', ') }}">{{ trip.countries|map('flag')|join(' ') }}</span>{% endif %}
+      {% if trip.photos %}· <i class="fa-regular fa-image" aria-hidden="true"></i> {{ trip.photos|length }}{% endif %}
+      {% if trip.notes %}· <i class="fa-regular fa-note-sticky" aria-hidden="true" title="{{ _('Notes') }}"></i>{% endif %}
+    </div>
+    {{ tag_chips(trip.tags) }}
+  </td>
+  <td>{{ mode_badge(trip.transport_mode) }}</td>
+  <td class="text-nowrap">{{ trip.total_distance_km|distance }}</td>
+  <td class="text-end text-nowrap">
+    {% if in_journey %}
+    <form method="post" action="{{ url_for('trips.detach', trip_id=trip.id) }}" class="d-inline">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="btn btn-icon btn-sm" title="{{ _('Retirer du voyage') }}"
+              aria-label="{{ _('Retirer le trajet %(route)s du voyage', route=route) }}">
+        <i class="fa-solid fa-link-slash" aria-hidden="true"></i></button>
+    </form>
+    {% endif %}
+    <a class="btn btn-icon btn-sm" href="{{ url_for('trips.detail', trip_id=trip.id) }}" title="{{ _('Fiche, notes et photos') }}"
+       aria-label="{{ _('Fiche du trajet %(route)s', route=route) }}">
+      <i class="fa-solid fa-circle-info" aria-hidden="true"></i></a>
+    <a class="btn btn-icon btn-sm" href="{{ url_for('trips.edit', trip_id=trip.id) }}"
+       aria-label="{{ _('Modifier le voyage %(route)s', route=route) }}">
+      <i class="fa-solid fa-pen" aria-hidden="true"></i></a>
+    <button type="button" class="btn btn-icon btn-sm text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+            data-delete-url="{{ url_for('trips.delete', trip_id=trip.id) }}"
+            data-delete-label="{{ route }}"
+            aria-label="{{ _('Supprimer le voyage %(route)s', route=route) }}">
+      <i class="fa-solid fa-trash-can" aria-hidden="true"></i></button>
+  </td>
+{% endmacro %}
+<form method="post" action="{{ url_for('trips.group') }}" id="groupForm"
+      class="d-flex flex-wrap align-items-center gap-2 mb-3">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <button type="submit" class="btn btn-outline-primary btn-sm rounded-pill px-3">
+    <i class="fa-solid fa-object-group me-1" aria-hidden="true"></i>{{ _("Regrouper en un voyage") }}</button>
+  <span class="small text-body-secondary">{{ _("Cochez au moins deux trajets d'un même voyage, par exemple l'aller, les étapes et le retour.") }}</span>
+</form>
+<div class="card shadow-soft">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0 trips-table">
+      <caption class="visually-hidden">{{ _("Liste de vos voyages") }}</caption>
+      <thead>
+        <tr>
+          {% macro sort_header(key, label) %}
+          {% set active = sort == key or (key == 'date_desc' and sort == 'date_asc') %}
+          {% set next_sort = 'date_asc' if sort == 'date_desc' and key == 'date_desc' else key %}
+          <th scope="col" {% if active %}aria-sort="{{ 'ascending' if sort in ('date_asc', 'origin') else 'descending' }}"{% endif %}>
+            <a class="sort-link" href="{{ url_for('trips.list_view', sort=next_sort, q=q or None) }}">{{ label }}
+              {% if active %}<i class="fa-solid {{ 'fa-arrow-up' if sort in ('date_asc', 'origin') else 'fa-arrow-down' }} ms-1" aria-hidden="true"></i>{% endif %}
+            </a>
+          </th>
+          {% endmacro %}
+          <th scope="col" class="select-cell"><span class="visually-hidden">{{ _("Sélection") }}</span></th>
+          {{ sort_header('date_desc', _("Date")) }}
+          {{ sort_header('origin', _("Itinéraire")) }}
+          <th scope="col">{{ _("Mode") }}</th>
+          {{ sort_header('distance', _("Distance")) }}
+          <th scope="col"><span class="visually-hidden">{{ _("Actions") }}</span></th>
+        </tr>
+      </thead>
+      {% for row in rows %}
+      {% if row.journey %}
+      {% set journey = row.journey %}
+      <tbody class="journey-group">
+        <tr class="journey-head">
+          <td class="select-cell"><i class="fa-solid fa-route text-primary" aria-hidden="true"></i></td>
+          <td class="text-nowrap">
+            {{ journey.start_date|day }}
+            {% if journey.end_date != journey.start_date %}<div class="small text-body-secondary">
+              <i class="fa-solid fa-flag-checkered me-1" aria-hidden="true"></i>{{ journey.end_date|day }}</div>{% endif %}
+          </td>
+          <td colspan="2">
+            <a class="fw-semibold text-decoration-none" href="{{ url_for('trips.journey_detail', journey_id=journey.id) }}">{{ journey.display_name }}</a>
+            {{ status_badge(journey.status, journey.start_date, journey.end_date) }}
+            <div class="small text-body-secondary">
+              {{ ngettext("%(num)s trajet", "%(num)s trajets", journey.legs|length) }}
+              {% if journey.name %} · {{ journey.route_label }}{% endif %}
+            </div>
+          </td>
+          <td class="text-nowrap fw-semibold">{{ journey.total_distance_km|distance }}</td>
+          <td class="text-end text-nowrap">
+            <a class="btn btn-icon btn-sm" href="{{ url_for('trips.journey_detail', journey_id=journey.id) }}"
+               title="{{ _('Fiche, notes et photos') }}" aria-label="{{ _('Fiche du voyage %(name)s', name=journey.display_name) }}">
+              <i class="fa-solid fa-circle-info" aria-hidden="true"></i></a>
+            <a class="btn btn-icon btn-sm" href="{{ url_for('trips.edit_journey', journey_id=journey.id) }}"
+               title="{{ _('Modifier') }}" aria-label="{{ _('Modifier le voyage %(name)s', name=journey.display_name) }}">
+              <i class="fa-solid fa-pen" aria-hidden="true"></i></a>
+            <form method="post" action="{{ url_for('trips.ungroup', journey_id=journey.id) }}" class="d-inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-icon btn-sm" title="{{ _('Dégrouper') }}"
+                      aria-label="{{ _('Dégrouper le voyage %(name)s', name=journey.display_name) }}">
+                <i class="fa-solid fa-object-ungroup" aria-hidden="true"></i></button>
+            </form>
+          </td>
+        </tr>
+        {% for trip in journey.legs %}
+        <tr class="journey-leg">{{ trip_cells(trip, in_journey=True) }}</tr>
+        {% endfor %}
+      </tbody>
+      {% else %}
+      <tbody>
+        <tr>{{ trip_cells(row.trip) }}</tr>
+      </tbody>
+      {% endif %}
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% elif q %}
+<div class="empty-state card shadow-soft py-5">
+  <div class="empty-illustration" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></div>
+  <h2 class="h5">{{ _("Aucun résultat") }}</h2>
+  <p class="text-body-secondary">{{ _("Essayez un autre mot, ou une partie du nom d'un lieu.") }}</p>
+</div>
+{% else %}
+<div class="empty-state card shadow-soft py-5">
+  <div class="empty-illustration" aria-hidden="true"><i class="fa-solid fa-suitcase-rolling"></i></div>
+  <h2 class="h5">{{ _("Aucun voyage pour l'instant") }}</h2>
+  <p class="text-body-secondary">{{ _("Ajoutez votre premier voyage pour le voir apparaître sur la carte.") }}</p>
+  <a class="btn btn-primary rounded-pill px-4" href="{{ url_for('trips.create') }}">
+    <i class="fa-solid fa-plus me-1" aria-hidden="true"></i>{{ _("Ajouter un voyage") }}</a>
+</div>
+{% endif %}
+{% endblock %}

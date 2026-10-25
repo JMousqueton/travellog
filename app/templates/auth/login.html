@@ -1,0 +1,28 @@
+{% extends "auth/_layout.html" %}
+{% from "partials/macros.html" import field %}
+{% block title %}{{ _("Connexion") }}{% endblock %}
+{% block heading %}{{ _("Connexion") }}{% endblock %}
+{% block subheading %}{{ _("Retrouvez tous vos voyages sur la carte.") }}{% endblock %}
+{% block form %}
+<form method="post" novalidate class="needs-validation">
+  {{ form.hidden_tag() }}
+  {{ field(form.email, icon='fa-envelope', attrs={'autocomplete': 'email', 'required': True, 'autofocus': True}) }}
+  {{ field(form.password, icon='fa-lock', attrs={'autocomplete': 'current-password', 'required': True}) }}
+  <div class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-4">
+    <div class="form-check mb-0">
+      {{ form.remember(class_='form-check-input') }}
+      {{ form.remember.label(class_='form-check-label') }}
+    </div>
+    {% if password_reset_enabled() %}
+    <a class="small" href="{{ url_for('auth.forgot_password') }}">{{ _("Mot de passe oublié ?") }}</a>
+    {% endif %}
+  </div>
+  <button type="submit" class="btn btn-primary w-100 rounded-pill py-2" data-loading-text="{{ _('Connexion…') }}">
+    {{ form.submit.label.text }}</button>
+</form>
+{% if registration_open() %}
+<p class="text-center mt-4 mb-0 text-body-secondary">
+  {{ _("Pas encore de compte ?") }} <a href="{{ url_for('auth.register') }}">{{ _("Créer un compte") }}</a>
+</p>
+{% endif %}
+{% endblock %}

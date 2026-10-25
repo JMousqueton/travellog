@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Partager mes voyages") }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-9">
+    <h1 class="h3 fw-bold mb-2">{{ _("Partager mes voyages") }}</h1>
+    <p class="text-body-secondary mb-4">
+      {{ _("Un lien de partage affiche votre carte, vos statistiques et la liste de vos voyages en lecture seule, sans connexion. Votre adresse e-mail n'est jamais affichée. Révoquez un lien pour couper l'accès.") }}
+    </p>
+    <div class="card shadow-soft mb-4">
+      <div class="card-body p-4">
+        <form method="post" class="row g-2 align-items-end" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="col-sm">
+            {{ form.label.label(class_='form-label') }}
+            {{ form.label(class_='form-control' ~ (' is-invalid' if form.label.errors else ''), maxlength=120,
+                          placeholder=_("Par exemple : Famille")) }}
+            {% for error in form.label.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+          </div>
+          <div class="col-sm-auto">
+            {{ form.expires_in.label(class_='form-label') }}
+            {{ form.expires_in(class_='form-select') }}
+          </div>
+          <div class="col-12 order-sm-last">
+            <div class="form-check mb-0">
+              {{ form.include_upcoming(class_='form-check-input', **{'aria-describedby': 'upcoming-help'}) }}
+              {{ form.include_upcoming.label(class_='form-check-label') }}
+              <div class="form-text mt-0" id="upcoming-help">{{ _("Désactivé par défaut : vos dates de départ à venir indiquent quand vous serez absent.") }}</div>
+            </div>
+          </div>
+          <div class="col-sm-auto">
+            <button type="submit" class="btn btn-primary rounded-pill px-4">
+              <i class="fa-solid fa-link me-1" aria-hidden="true"></i>{{ form.submit.label.text }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    {% if links %}
+    <h2 class="h5 fw-semibold mb-3">{{ _("Mes liens") }}</h2>
+    <ul class="list-unstyled d-grid gap-3 mb-0">
+      {% for link in links %}
+      {% set url = url_for('share.view', token=link.token, _external=True) %}
+      <li class="card shadow-soft">
+        <div class="card-body p-3 d-flex flex-wrap align-items-center gap-2">
+          <div class="flex-grow-1" style="min-width: 0">
+            <div class="fw-semibold">
+              {{ link.label or _("Lien sans libellé") }}
+              {% if link.is_expired %}<span class="badge text-bg-secondary ms-1">{{ _("Expiré") }}</span>{% endif %}
+            </div>
+            <div class="small text-body-secondary">
+              {{ _("Créé le %(date)s", date=link.created_at|day) }}
+              ·
+              {% if link.expires_at and link.is_expired %}{{ _("expiré le %(date)s", date=link.expires_at|day) }}
+              {% elif link.expires_at %}{{ _("expire le %(date)s", date=link.expires_at|day) }}
+              {% else %}{{ _("sans expiration") }}{% endif %}
+              ·
+              {% if link.last_used_at %}{{ _("dernière consultation le %(date)s", date=link.last_used_at|day) }}
+              {% else %}{{ _("jamais consulté") }}{% endif %}
+              ·
+              {% if link.include_upcoming %}<span class="text-warning-emphasis"><i class="fa-regular fa-clock me-1" aria-hidden="true"></i>{{ _("voyages à venir visibles") }}</span>
+              {% else %}{{ _("voyages à venir masqués") }}{% endif %}
+            </div>
+            <input type="text" class="form-control form-control-sm mt-2 font-monospace" value="{{ url }}" readonly
+                   aria-label="{{ _('Adresse du lien %(label)s', label=link.label or _('Lien sans libellé')) }}">
+          </div>
+          <div class="d-flex flex-wrap gap-1">
+            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3" data-copy="{{ url }}">
+              <i class="fa-regular fa-copy me-1" aria-hidden="true"></i>{{ _("Copier") }}</button>
+            <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" href="{{ url }}" target="_blank" rel="noopener">
+              <i class="fa-solid fa-arrow-up-right-from-square me-1" aria-hidden="true"></i>{{ _("Ouvrir") }}</a>
+            <form method="post" action="{{ url_for('share.toggle_upcoming', link_id=link.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                <i class="fa-regular {{ 'fa-eye-slash' if link.include_upcoming else 'fa-eye' }} me-1" aria-hidden="true"></i>
+                {{ _("Masquer les voyages à venir") if link.include_upcoming else _("Montrer les voyages à venir") }}</button>
+            </form>
+            <form method="post" action="{{ url_for('share.revoke', link_id=link.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                <i class="fa-solid fa-ban me-1" aria-hidden="true"></i>{{ _("Révoquer") }}</button>
+            </form>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-body-secondary">{{ _("Aucun lien de partage pour l'instant.") }}</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Paramètres") }} · {{ _("Administration") }}{% endblock %}
+{% block content %}
+{% include "admin/_nav.html" %}
+<div class="row">
+  <div class="col-lg-8">
+    <div class="card shadow-soft">
+      <div class="card-body p-4">
+        <h2 class="h5 fw-semibold mb-3">{{ _("Inscriptions") }}</h2>
+        <form method="post">
+          {{ form.hidden_tag() }}
+          <div class="form-check form-switch mb-2">
+            {{ form.registration_open(class_='form-check-input', role='switch', **{'aria-describedby': 'registration-help'}) }}
+            {{ form.registration_open.label(class_='form-check-label') }}
+          </div>
+          <p class="form-text mb-4" id="registration-help">
+            {{ _("Désactivé : la page d'inscription est fermée et les liens « Créer un compte » sont masqués. Les comptes existants peuvent toujours se connecter.") }}
+          </p>
+          <button type="submit" class="btn btn-primary rounded-pill px-4">{{ form.submit.label.text }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

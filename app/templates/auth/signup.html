@@ -1,0 +1,16 @@
+{% extends "auth/_layout.html" %}
+{% from "partials/macros.html" import field %}
+{% block title %}{{ _("Terminer l'inscription") }}{% endblock %}
+{% block head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block heading %}{{ _("Terminer l'inscription") }}{% endblock %}
+{% block subheading %}{{ _("Adresse vérifiée : %(email)s", email=email) }}{% endblock %}
+{% block form %}
+<form method="post" novalidate class="needs-validation">
+  {{ form.hidden_tag() }}
+  {{ field(form.password, icon='fa-lock', help=_("Au moins 8 caractères."),
+           attrs={'autocomplete': 'new-password', 'required': True, 'minlength': 8, 'autofocus': True}) }}
+  {{ field(form.confirm, icon='fa-lock', attrs={'autocomplete': 'new-password', 'required': True}) }}
+  <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 mt-2" data-loading-text="{{ _('Création…') }}">
+    {{ form.submit.label.text }}</button>
+</form>
+{% endblock %}

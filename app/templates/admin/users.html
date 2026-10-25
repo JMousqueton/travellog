@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Administration") }}{% endblock %}
+{% block content %}
+{% include "admin/_nav.html" %}
+<h2 class="visually-hidden">{{ _("Utilisateurs") }}</h2>
+<div class="card shadow-soft">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <caption class="visually-hidden">{{ _("Liste des utilisateurs") }}</caption>
+      <thead>
+        <tr>
+          <th scope="col">{{ _("Adresse e-mail") }}</th>
+          <th scope="col">{{ _("Inscription") }}</th>
+          <th scope="col">{{ _("Langue") }}</th>
+          <th scope="col" class="text-end">{{ _("Voyages") }}</th>
+          <th scope="col"><span class="visually-hidden">{{ _("Actions") }}</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for user, trip_count in rows %}
+        <tr>
+          <td>
+            {{ user.email }}
+            {% if user.is_admin %}<span class="badge text-bg-primary ms-1">{{ _("Admin") }}</span>{% endif %}
+          </td>
+          <td class="text-nowrap">{{ user.created_at|day }}</td>
+          <td>{{ user.locale }}</td>
+          <td class="text-end">{{ trip_count }}</td>
+          <td class="text-end">
+            {% if user.id != current_user.id %}
+            <button type="button" class="btn btn-icon btn-sm text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                    data-delete-url="{{ url_for('admin.delete_user', user_id=user.id) }}"
+                    data-delete-title="{{ _('Supprimer ce compte ?') }}"
+                    data-delete-label="{{ user.email }} · {{ ngettext('%(num)s trajet', '%(num)s trajets', trip_count) }}"
+                    aria-label="{{ _('Supprimer le compte %(email)s', email=user.email) }}">
+              <i class="fa-solid fa-trash-can" aria-hidden="true"></i></button>
+            {% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

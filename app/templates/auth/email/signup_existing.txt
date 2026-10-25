@@ -1,0 +1,11 @@
+{{ _("Bonjour,") }}
+
+{{ _("Une inscription au Carnet de voyages a été demandée avec cette adresse, mais vous avez déjà un compte. Connectez-vous ici :") }}
+
+{{ login_url }}
+
+{{ _("Mot de passe oublié ? Choisissez-en un nouveau ici :") }}
+
+{{ forgot_url }}
+
+{{ _("Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail.") }}

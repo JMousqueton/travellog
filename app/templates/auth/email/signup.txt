@@ -1,0 +1,9 @@
+{{ _("Bonjour,") }}
+
+{{ _("Pour terminer votre inscription au Carnet de voyages, ouvrez ce lien et choisissez votre mot de passe :") }}
+
+{{ url }}
+
+{{ _("Ce lien est valable %(minutes)s minutes et ne peut servir qu'une fois.", minutes=minutes) }}
+
+{{ _("Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail : aucun compte ne sera créé.") }}

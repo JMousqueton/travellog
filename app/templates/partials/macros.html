@@ -1,0 +1,75 @@
+{% macro field(f, icon=None, help=None, attrs={}) %}
+{% set describedby = [] %}
+{% if help %}{% do describedby.append(f.id ~ '-help') %}{% endif %}
+{% if f.errors %}{% do describedby.append(f.id ~ '-error') %}{% endif %}
+<div class="mb-3 field-{{ f.id }}">
+  <label class="form-label" for="{{ f.id }}">{{ f.label.text }}{% if f.flags.required %} <span class="text-danger" aria-hidden="true">*</span>{% endif %}</label>
+  <div class="{% if icon %}input-icon{% endif %}">
+    {% if icon %}<i class="fa-solid {{ icon }}" aria-hidden="true"></i>{% endif %}
+    {% set kw = dict(attrs) %}
+    {% if describedby %}{% do kw.update({'aria-describedby': describedby|join(' ')}) %}{% endif %}
+    {% if f.errors %}{% do kw.update({'aria-invalid': 'true'}) %}{% endif %}
+    {{ f(class_='form-control' ~ (' is-invalid' if f.errors else ''), **kw) }}
+  </div>
+  {% if help %}<div class="form-text" id="{{ f.id }}-help">{{ help }}</div>{% endif %}
+  {% if f.errors %}<div class="invalid-feedback d-block" id="{{ f.id }}-error">{{ f.errors|join(' ') }}</div>{% endif %}
+</div>
+{% endmacro %}
+
+{% macro mode_badge(mode_key) %}
+{% set m = TRANSPORT_MODES[mode_key] %}
+<span class="mode-chip" style="--mode-color: {{ m.color }}; --mode-color-dark: {{ m.color_dark }}">
+  <i class="fa-solid {{ m.icon }}" aria-hidden="true"></i>{{ m.label }}
+</span>
+{% endmacro %}
+
+{% macro country_chips(codes) %}
+{% if codes %}
+<ul class="country-chips list-unstyled mb-0">
+  {% for code in codes %}<li class="country-chip"><span aria-hidden="true">{{ code|flag }}</span> {{ code|country_name }}</li>{% endfor %}
+</ul>
+{% else %}<span class="text-body-secondary">{{ _("Inconnus") }}</span>{% endif %}
+{% endmacro %}
+
+{% macro status_badge(status, start, end) %}
+{% if status == 'upcoming' %}
+<span class="badge rounded-pill status-badge status-upcoming"><i class="fa-regular fa-clock me-1" aria-hidden="true"></i>{{ countdown(start, end) }}</span>
+{% elif status == 'ongoing' %}
+<span class="badge rounded-pill status-badge status-ongoing"><i class="fa-solid fa-person-walking-luggage me-1" aria-hidden="true"></i>{{ _("En cours") }}</span>
+{% endif %}
+{% endmacro %}
+
+{% macro tag_chips(tags, link=True) %}
+{% if tags %}<span class="tag-chips">{% for tag in tags %}{% if link %}<a class="tag-chip" href="{{ url_for('trips.list_view', q=tag.name) }}">{{ tag.name }}</a>{% else %}<span class="tag-chip">{{ tag.name }}</span>{% endif %}{% endfor %}</span>{% endif %}
+{% endmacro %}
+
+{% macro tags_input(f, user_tags) %}
+<div class="mb-3">
+  <label class="form-label" for="{{ f.id }}">{{ f.label.text }}</label>
+  <div class="input-icon">
+    <i class="fa-solid fa-tags" aria-hidden="true"></i>
+    {{ f(class_='form-control' ~ (' is-invalid' if f.errors else ''), list='tagSuggestions', autocomplete='off',
+         placeholder=_("Par exemple : vacances, famille"), **{'aria-describedby': f.id ~ '-help'}) }}
+  </div>
+  <datalist id="tagSuggestions">{% for tag in user_tags %}<option value="{{ tag.name }}">{% endfor %}</datalist>
+  <div class="form-text" id="{{ f.id }}-help">{{ _("Séparez les étiquettes par des virgules.") }}
+    {% if user_tags %}{{ _("Déjà utilisées : %(tags)s", tags=user_tags|map(attribute='name')|join(', ')) }}{% endif %}</div>
+  {% for error in f.errors %}<div class="invalid-feedback d-block">{{ error }}</div>{% endfor %}
+</div>
+{% endmacro %}
+
+{% macro badge_tile(row, show_progress=True) %}
+{% set b = row.badge %}
+<li class="badge-tile {{ 'is-earned' if row.earned else 'is-locked' }}">
+  <span class="badge-medal" aria-hidden="true"><i class="fa-solid {{ b.icon }}"></i></span>
+  <span class="badge-body">
+    <span class="badge-title">{{ b.title }}</span>
+    <span class="badge-text">{{ b.text }}</span>
+    {% if row.earned %}<span class="badge-date">{{ _("Obtenu le %(date)s", date=row.earned|day) }}</span>
+    {% elif show_progress %}
+    <span class="badge-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="{{ (row.progress * 100)|round|int }}"
+          aria-label="{{ _('Progression : %(percent)s', percent=row.progress|percent) }}"><span style="width: {{ row.progress * 100 }}%"></span></span>
+    {% endif %}
+  </span>
+</li>
+{% endmacro %}

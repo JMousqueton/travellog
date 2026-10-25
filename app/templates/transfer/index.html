@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Importer / exporter") }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-9 col-xl-8">
+    <h1 class="h3 fw-bold mb-2">{{ _("Importer / exporter") }}</h1>
+    <p class="text-body-secondary mb-4">
+      {{ _("Téléchargez vos voyages pour les ouvrir dans un autre outil, ou faites une sauvegarde complète avec vos photos, puis réimportez-les ici.") }}
+    </p>
+
+    <h2 class="h5 fw-semibold mb-3">{{ _("Exporter") }}</h2>
+    <div class="row g-3 mb-5">
+      {% for fmt, icon, title, text in [
+        ('csv', 'fa-file-csv', 'CSV', _("Tableur (Excel, LibreOffice, Numbers). Le format le plus simple pour une sauvegarde.")),
+        ('geojson', 'fa-map', 'GeoJSON', _("Lignes origine → destination pour les logiciels de cartographie (QGIS, geojson.io…).")),
+        ('gpx', 'fa-route', 'GPX', _("Itinéraires pour les applications de navigation et de randonnée.")),
+      ] %}
+      <div class="col-md-4">
+        <div class="card shadow-soft h-100">
+          <div class="card-body p-4 d-flex flex-column">
+            <div class="feature-icon mb-3" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></div>
+            <h3 class="h6 fw-semibold">{{ title }}</h3>
+            <p class="small text-body-secondary flex-grow-1">{{ text }}</p>
+            <a class="btn btn-outline-primary btn-sm rounded-pill px-3 align-self-start {% if not trip_total %}disabled{% endif %}"
+               href="{{ url_for('transfer.export', fmt=fmt) }}" download {% if not trip_total %}aria-disabled="true"{% endif %}>
+              <i class="fa-solid fa-download me-1" aria-hidden="true"></i>{{ _("Télécharger") }}</a>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+
+    <div class="card shadow-soft mb-5">
+      <div class="card-body p-4 d-flex flex-wrap align-items-center gap-3">
+        <div class="feature-icon" aria-hidden="true"><i class="fa-solid fa-box-archive"></i></div>
+        <div class="flex-grow-1" style="min-width: 0">
+          <h3 class="h6 fw-semibold mb-1">{{ _("Sauvegarde complète") }}</h3>
+          <p class="small text-body-secondary mb-0">{{ _("Tous vos trajets, voyages, notes, étiquettes et photos dans un seul fichier .zip, à réimporter ici en cas de besoin.") }}</p>
+        </div>
+        <a class="btn btn-primary btn-sm rounded-pill px-3 {% if not trip_total %}disabled{% endif %}" href="{{ url_for('transfer.export_archive') }}" download>
+          <i class="fa-solid fa-download me-1" aria-hidden="true"></i>{{ _("Télécharger la sauvegarde") }}</a>
+      </div>
+    </div>
+
+    <h2 class="h5 fw-semibold mb-3">{{ _("Importer") }}</h2>
+    {% if errors %}
+    <div class="alert alert-danger" role="alert">
+      <p class="fw-semibold mb-2">{{ _("Aucun trajet n'a été importé. Corrigez le fichier puis réessayez :") }}</p>
+      <ul class="mb-0 small">
+        {% for error in errors %}<li>{{ error }}</li>{% endfor %}
+        {% if hidden_errors %}<li>{{ ngettext("… et %(num)s autre erreur.", "… et %(num)s autres erreurs.", hidden_errors) }}</li>{% endif %}
+      </ul>
+    </div>
+    {% endif %}
+    <div class="card shadow-soft">
+      <div class="card-body p-4">
+        <form method="post" action="{{ url_for('transfer.import_file') }}" enctype="multipart/form-data" novalidate>
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            {{ form.file.label(class_='form-label') }}
+            {{ form.file(class_='form-control' ~ (' is-invalid' if form.file.errors else ''),
+                         accept='.csv,.geojson,.json,.gpx,.zip,text/csv,application/geo+json,application/gpx+xml,application/zip',
+                         **{'aria-describedby': 'import-help'}) }}
+            {% for error in form.file.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+            <div class="form-text" id="import-help">
+              {{ _("Colonnes attendues : celles d'un export (depart_date au format AAAA-MM-JJ, transport_mode parmi %(modes)s, noms et coordonnées des lieux). Les trajets déjà présents sont ignorés, et le pays est déduit des coordonnées s'il manque.",
+                   modes=TRANSPORT_MODES|join(', ')) }}
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Import…') }}">
+            <i class="fa-solid fa-file-import me-1" aria-hidden="true"></i>{{ form.submit.label.text }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

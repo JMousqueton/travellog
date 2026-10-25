@@ -1,0 +1,16 @@
+{% extends "auth/_layout.html" %}
+{% from "partials/macros.html" import field %}
+{% block title %}{{ _("Mot de passe oublié") }}{% endblock %}
+{% block heading %}{{ _("Mot de passe oublié") }}{% endblock %}
+{% block subheading %}{{ _("Indiquez votre adresse e-mail pour recevoir un lien de réinitialisation.") }}{% endblock %}
+{% block form %}
+<form method="post" novalidate class="needs-validation">
+  {{ form.hidden_tag() }}
+  {{ field(form.email, icon='fa-envelope', attrs={'autocomplete': 'email', 'required': True, 'autofocus': True}) }}
+  <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 mt-2" data-loading-text="{{ _('Envoi…') }}">
+    {{ form.submit.label.text }}</button>
+</form>
+<p class="text-center mt-4 mb-0 text-body-secondary">
+  <a href="{{ url_for('auth.login') }}">{{ _("Retour à la connexion") }}</a>
+</p>
+{% endblock %}

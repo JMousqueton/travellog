@@ -1,0 +1,26 @@
+{% extends "auth/_layout.html" %}
+{% from "partials/macros.html" import field %}
+{% block title %}{{ _("Créer un compte") }}{% endblock %}
+{% block heading %}{{ _("Créer un compte") }}{% endblock %}
+{% block subheading %}{{ _("Gratuit, et vos voyages restent privés.") }}{% endblock %}
+{% block form %}
+<form method="post" novalidate class="needs-validation">
+  {{ form.hidden_tag() }}
+  {% if magic %}
+  {{ field(form.email, icon='fa-envelope', help=_("Vous recevrez un lien pour terminer l'inscription."),
+           attrs={'autocomplete': 'email', 'required': True, 'autofocus': True}) }}
+  <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 mt-2" data-loading-text="{{ _('Envoi…') }}">
+    <i class="fa-solid fa-wand-magic-sparkles me-1" aria-hidden="true"></i>{{ form.submit.label.text }}</button>
+  {% else %}
+  {{ field(form.email, icon='fa-envelope', attrs={'autocomplete': 'email', 'required': True, 'autofocus': True}) }}
+  {{ field(form.password, icon='fa-lock', help=_("Au moins 8 caractères."),
+           attrs={'autocomplete': 'new-password', 'required': True, 'minlength': 8}) }}
+  {{ field(form.confirm, icon='fa-lock', attrs={'autocomplete': 'new-password', 'required': True}) }}
+  <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 mt-2" data-loading-text="{{ _('Création…') }}">
+    {{ form.submit.label.text }}</button>
+  {% endif %}
+</form>
+<p class="text-center mt-4 mb-0 text-body-secondary">
+  {{ _("Déjà inscrit ?") }} <a href="{{ url_for('auth.login') }}">{{ _("Se connecter") }}</a>
+</p>
+{% endblock %}

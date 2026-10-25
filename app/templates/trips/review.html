@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import mode_badge, badge_tile with context %}
+{% block title %}{{ _("Bilan %(year)s", year=review.year) if review else _("Bilan de l'année") }}{% endblock %}
+{% block head %}{% if shared %}<meta name="robots" content="noindex, nofollow">{% endif %}{% endblock %}
+{% block content %}
+<div class="review-page">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+    <div>
+      <h1 class="h3 fw-bold mb-1">{{ _("Bilan %(year)s", year=review.year) if review else _("Bilan de l'année") }}</h1>
+      {% if shared %}<p class="text-body-secondary mb-0">{{ shared.label or _("Carte partagée") }}</p>{% endif %}
+    </div>
+    {% if years|length > 1 %}
+    <nav aria-label="{{ _('Choisir l’année') }}">
+      <ul class="nav nav-pills year-pills">
+        {% for y in years %}
+        <li class="nav-item"><a class="nav-link {% if review and y == review.year %}active{% endif %}" href="{{ year_url(y) }}"
+            {% if review and y == review.year %}aria-current="page"{% endif %}>{{ y }}</a></li>
+        {% endfor %}
+      </ul>
+    </nav>
+    {% endif %}
+  </div>
+
+  {% if not review %}
+  <div class="empty-state card shadow-soft py-5">
+    <div class="empty-illustration" aria-hidden="true"><i class="fa-solid fa-calendar-check"></i></div>
+    <h2 class="h5">{{ _("Pas encore de bilan") }}</h2>
+    <p class="text-body-secondary">{{ _("Le bilan apparaît dès qu'un premier voyage a eu lieu.") }}</p>
+  </div>
+  {% else %}
+  <div class="row g-4">
+    <div class="col-lg-7">
+      <div class="stats-grid review-grid mb-4">
+        {% for icon, value, label in [
+          ('fa-suitcase', review.count|number, ngettext("voyage", "voyages", review.count)),
+          ('fa-route', review.distance_km|distance, _("parcourus")),
+          ('fa-earth-europe', review.countries|length|number, ngettext("pays", "pays", review.countries|length)),
+          ('fa-smog', review.co2_kg|co2, _("de CO₂ estimé")),
+          ('fa-location-dot', review.places|number, ngettext("lieu visité", "lieux visités", review.places)),
+        ] %}
+        <div class="stat-card">
+          <span class="stat-icon" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></span>
+          <div><div class="stat-value">{{ value }}</div><div class="stat-label">{{ label }}</div></div>
+        </div>
+        {% endfor %}
+      </div>
+      {% if review.days_away %}
+      <p class="lead mb-2"><i class="fa-solid fa-calendar-days me-2 text-primary" aria-hidden="true"></i>
+        {{ ngettext("%(num)s jour loin de chez moi", "%(num)s jours loin de chez moi", review.days_away) }}
+        {% if review.nights_abroad %}<span class="text-body-secondary fs-6">· {{ ngettext("%(num)s nuit à l'étranger", "%(num)s nuits à l'étranger", review.nights_abroad) }}</span>{% endif %}</p>
+      {% endif %}
+      {% if review.earth_laps >= 0.1 %}
+      <p class="lead mb-4"><i class="fa-solid fa-earth-americas me-2 text-primary" aria-hidden="true"></i>
+        {{ _("Soit %(laps)s fois le tour de la Terre", laps=(review.earth_laps|round(1))|number) }}</p>
+      {% endif %}
+
+      <div class="card shadow-soft mb-4">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item bg-transparent py-3">
+            <div class="review-label">{{ _("Le plus long trajet") }}</div>
+            <div class="fw-semibold">{% if shared %}{{ review.longest.origin_name }} → {{ review.longest.dest_name }}{% else %}
+              <a class="text-decoration-none" href="{{ url_for('trips.detail', trip_id=review.longest.id) }}">{{ review.longest.origin_name }} → {{ review.longest.dest_name }}</a>{% endif %}</div>
+            <div class="small text-body-secondary">{{ review.longest.total_distance_km|distance }} · {{ review.longest.depart_date|day }}</div>
+          </li>
+          <li class="list-group-item bg-transparent py-3">
+            <div class="review-label">{{ _("Nouveaux pays") }}</div>
+            {% if review.new_countries %}
+            <ul class="country-chips list-unstyled mb-0 mt-1">
+              {% for c in review.new_countries %}<li class="country-chip"><span aria-hidden="true">{{ c.flag }}</span> {{ c.name }}</li>{% endfor %}
+            </ul>
+            {% else %}<div class="text-body-secondary">{{ _("Aucun cette année : que des pays déjà visités.") }}</div>{% endif %}
+          </li>
+          {% if review.countries|length > review.new_countries|length %}
+          <li class="list-group-item bg-transparent py-3">
+            <div class="review-label">{{ _("Tous les pays de l'année") }}</div>
+            <div>{% for c in review.countries %}<span title="{{ c.name }}">{{ c.flag }}</span> {% endfor %}
+              <span class="visually-hidden">{{ review.countries|map(attribute='name')|join(', ') }}</span></div>
+          </li>
+          {% endif %}
+          {% if review.badges %}
+          <li class="list-group-item bg-transparent py-3">
+            <div class="review-label mb-2">{{ _("Badges obtenus cette année") }}</div>
+            <ul class="badge-grid list-unstyled mb-0">{% for row in review.badges %}{{ badge_tile(row, show_progress=False) }}{% endfor %}</ul>
+          </li>
+          {% endif %}
+          <li class="list-group-item bg-transparent py-3">
+            <div class="review-label">{{ _("Destinations favorites") }}</div>
+            <ol class="mb-0 ps-3">
+              {% for name, n in review.top_destinations %}<li>{{ name }} <span class="small text-body-secondary">· {{ ngettext("%(num)s fois", "%(num)s fois", n) }}</span></li>{% endfor %}
+            </ol>
+          </li>
+          <li class="list-group-item bg-transparent py-3">
+            <div class="review-label mb-2">{{ _("Distance par mode") }}</div>
+            <div class="d-flex flex-wrap gap-2">
+              {% for mode, km in review.mode_km.items() %}{{ mode_badge(mode) }}<span class="small text-body-secondary me-2 align-self-center">{{ km|distance }}</span>{% endfor %}
+            </div>
+          </li>
+          <li class="list-group-item bg-transparent py-3">
+            <div class="review-label mb-2">{{ _("Départs par mois") }}</div>
+            <div class="month-chart" role="img"
+                 aria-label="{% for n in review.months %}{{ month_names[loop.index] }} : {{ n }}{% if not loop.last %}, {% endif %}{% endfor %}">
+              {% set peak = review.months|max or 1 %}
+              {% for n in review.months %}
+              <div class="month-col" title="{{ month_names[loop.index] }} : {{ n }}">
+                <span class="month-bar {% if not n %}is-empty{% endif %}" style="height: {{ (100 * n / peak) if n else 6 }}%"></span>
+                <span class="month-letter" aria-hidden="true">{{ month_letters[loop.index] }}</span>
+              </div>
+              {% endfor %}
+            </div>
+          </li>
+          <li class="list-group-item bg-transparent py-3 small text-body-secondary">
+            {{ _("Premier départ : %(route)s, le %(date)s", route=review.first.origin_name ~ ' → ' ~ review.first.dest_name, date=review.first.depart_date|day) }}<br>
+            {{ _("Dernier départ : %(route)s, le %(date)s", route=review.last.origin_name ~ ' → ' ~ review.last.dest_name, date=review.last.depart_date|day) }}
+            {% if review.photos and not shared %}<br>{{ ngettext("%(num)s photo ajoutée cette année-là.", "%(num)s photos ajoutées cette année-là.", review.photos) }}{% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="col-lg-5">
+      <div class="review-preview card shadow-soft p-3">
+        <img src="{{ image_url }}" width="1080" height="1350" class="img-fluid rounded-3"
+             alt="{{ _('Image du bilan %(year)s', year=review.year) }}">
+        <div class="d-flex flex-wrap gap-2 mt-3">
+          <a class="btn btn-primary rounded-pill px-3" href="{{ image_url }}" download="bilan-{{ review.year }}.png">
+            <i class="fa-solid fa-download me-1" aria-hidden="true"></i>{{ _("Télécharger l'image") }}</a>
+          <button type="button" class="btn btn-outline-primary rounded-pill px-3" data-share-image="{{ image_url }}"
+                  data-share-title="{{ _('Bilan %(year)s', year=review.year) }}" hidden>
+            <i class="fa-solid fa-share-nodes me-1" aria-hidden="true"></i>{{ _("Partager") }}</button>
+        </div>
+        {% if not shared %}
+        <p class="small text-body-secondary mt-3 mb-0">
+          {{ _("Les personnes qui ont un de vos liens de partage peuvent aussi voir ce bilan.") }}
+          <a href="{{ url_for('share.links') }}">{{ _("Gérer les liens") }}</a></p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/review.js') }}"></script>
+{% endblock %}

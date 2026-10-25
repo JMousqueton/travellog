@@ -1,0 +1,32 @@
+# Travel Log (Carnet de voyages) — https://travellog.julien.io
+# Code : /opt/travel — journal : journalctl -u travellog
+
+[Unit]
+Description=Travel Log - Flask travel map (travellog.julien.io)
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/opt/travel
+# Le reste de la configuration est lu dans /opt/travel/.env ; ces valeurs propres à la production la remplacent.
+Environment=PYTHONUNBUFFERED=1
+Environment=FLASK_CONFIG=production
+Environment=APP_BASE_URL=https://travellog.julien.io
+Environment=PROXY_FIX_COUNT=1
+# Un seul worker (limitation de débit en mémoire, verrou Nominatim), 8 fils d'exécution.
+ExecStart=/opt/travel/.venv/bin/gunicorn -w 1 -k gthread --threads 8 --timeout 120 -b 127.0.0.1:5012 --access-logfile - "app:create_app()"
+
+Restart=always
+RestartSec=5
+
+NoNewPrivileges=true
+PrivateTmp=true
+
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=travellog
+
+[Install]
+WantedBy=multi-user.target

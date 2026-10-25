@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Bienvenue") }}{% endblock %}
+{% block main_class %}landing{% endblock %}
+{% block content %}
+<section class="hero container py-5">
+  <div class="row align-items-center g-5 py-lg-5">
+    <div class="col-lg-6">
+      <span class="badge rounded-pill text-bg-primary-subtle mb-3 px-3 py-2">
+        <i class="fa-solid fa-route me-1" aria-hidden="true"></i>{{ _("Votre carnet de route personnel") }}</span>
+      <h1 class="display-5 fw-bold lh-sm mb-3">{{ _("Tous vos voyages, sur une seule carte.") }}</h1>
+      <p class="lead text-body-secondary mb-4">
+        {{ _("Notez vos trajets en avion, train, voiture ou à vélo, visualisez-les sur la carte et suivez les kilomètres parcourus.") }}
+      </p>
+      <div class="d-flex flex-wrap gap-2">
+        {% if registration_open() %}
+        <a class="btn btn-primary btn-lg rounded-pill px-4" href="{{ url_for('auth.register') }}">{{ _("Commencer gratuitement") }}</a>
+        <a class="btn btn-outline-secondary btn-lg rounded-pill px-4" href="{{ url_for('auth.login') }}">{{ _("J'ai déjà un compte") }}</a>
+        {% else %}
+        <a class="btn btn-primary btn-lg rounded-pill px-4" href="{{ url_for('auth.login') }}">{{ _("Se connecter") }}</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="hero-visual card shadow-soft p-4" aria-hidden="true">
+        <div class="d-flex flex-wrap gap-2">
+          {% for key, m in TRANSPORT_MODES.items() %}
+          <span class="mode-chip mode-chip-lg" style="--mode-color: {{ m.color }}; --mode-color-dark: {{ m.color_dark }}">
+            <i class="fa-solid {{ m.icon }}"></i>{{ m.label }}</span>
+          {% endfor %}
+        </div>
+        <svg viewBox="0 0 400 180" class="hero-routes mt-4" role="presentation">
+          <path d="M30 140 Q 200 -20 370 120" fill="none" stroke="var(--brand)" stroke-width="3"/>
+          <path d="M30 140 Q 200 60 370 120" fill="none" stroke="var(--brand)" stroke-width="3" stroke-dasharray="8 8" opacity=".6"/>
+          <circle cx="30" cy="140" r="8" fill="var(--brand)"/><circle cx="370" cy="120" r="8" fill="var(--brand)"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="container pb-5">
+  <div class="row g-4">
+    {% for icon, title, text in [
+      ('fa-map-location-dot', _("Carte interactive"), _("Trajets colorés par mode, arcs géodésiques pour l'avion et retours en pointillés.")),
+      ('fa-chart-simple', _("Statistiques"), _("Nombre de voyages, distance totale et répartition par mode de transport.")),
+      ('fa-language', _("Multilingue"), _("Disponible en français, anglais, espagnol, allemand et italien.")),
+    ] %}
+    <div class="col-md-4">
+      <div class="feature card h-100 shadow-soft p-4">
+        <span class="feature-icon mb-3" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></span>
+        <h2 class="h5 fw-semibold">{{ title }}</h2>
+        <p class="text-body-secondary mb-0">{{ text }}</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

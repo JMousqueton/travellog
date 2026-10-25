@@ -1,0 +1,2589 @@
+# Spanish translations for travel.
+# Copyright (C) 2026 ORGANIZATION
+# This file is distributed under the same license as the travel project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: travel VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2026-10-25 09:14+0000\n"
+"PO-Revision-Date: 2026-10-24 19:57+0000\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: es\n"
+"Language-Team: es <LL@li.org>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.18.0\n"
+
+#: app/__init__.py:43 app/__init__.py:50
+msgid "Connectez-vous pour accéder à cette page."
+msgstr "Inicia sesión para acceder a esta página."
+
+#: app/__init__.py:49
+msgid "Authentification requise."
+msgstr "Autenticación requerida."
+
+#: app/__init__.py:100
+msgid "Requête invalide"
+msgstr "Solicitud no válida"
+
+#: app/__init__.py:100
+msgid "La requête envoyée n'a pas pu être traitée."
+msgstr "No se ha podido procesar la solicitud."
+
+#: app/__init__.py:101
+msgid "Accès refusé"
+msgstr "Acceso denegado"
+
+#: app/__init__.py:101
+msgid "Vous n'avez pas l'autorisation d'accéder à cette page."
+msgstr "No tienes permiso para acceder a esta página."
+
+#: app/__init__.py:102
+msgid "Page introuvable"
+msgstr "Página no encontrada"
+
+#: app/__init__.py:102
+msgid "La page demandée n'existe pas ou a été déplacée."
+msgstr "La página solicitada no existe o se ha movido."
+
+#: app/__init__.py:103
+msgid "Fichier trop volumineux"
+msgstr "Archivo demasiado grande"
+
+#: app/__init__.py:103
+msgid "Le fichier envoyé dépasse la taille autorisée."
+msgstr "El archivo enviado supera el tamaño permitido."
+
+#: app/__init__.py:104
+msgid "Trop de tentatives"
+msgstr "Demasiados intentos"
+
+#: app/__init__.py:104
+msgid ""
+"Vous avez effectué trop de demandes. Patientez quelques minutes puis "
+"réessayez."
+msgstr ""
+"Has hecho demasiadas solicitudes. Espera unos minutos y vuelve a "
+"intentarlo."
+
+#: app/__init__.py:105
+msgid "Erreur interne"
+msgstr "Error interno"
+
+#: app/__init__.py:105
+msgid "Une erreur inattendue s'est produite. Réessayez plus tard."
+msgstr "Se ha producido un error inesperado. Inténtalo más tarde."
+
+#: app/admin/forms.py:7
+msgid "Autoriser les inscriptions"
+msgstr "Permitir registros"
+
+#: app/admin/forms.py:8 app/auth/forms.py:59 app/trips/forms.py:62
+#: app/trips/forms.py:91
+msgid "Enregistrer"
+msgstr "Guardar"
+
+#: app/admin/routes.py:29
+msgid "Vous ne pouvez pas supprimer votre propre compte."
+msgstr "No puedes eliminar tu propia cuenta."
+
+#: app/admin/routes.py:34
+#, python-format
+msgid "Le compte %(email)s a été supprimé."
+msgstr "La cuenta %(email)s se ha eliminado."
+
+#: app/admin/routes.py:47
+msgid "Paramètres enregistrés."
+msgstr "Ajustes guardados."
+
+#: app/api/routes.py:111 app/api/routes.py:123
+#: app/templates/admin/users.html:34 app/templates/trips/list.html:126
+#: app/templates/trips/stats.html:94 app/templates/trips/stats.html:208
+#: app/templates/trips/stats.html:318
+#, python-format
+msgid "%(num)s trajet"
+msgid_plural "%(num)s trajets"
+msgstr[0] "%(num)s trayecto"
+msgstr[1] "%(num)s trayectos"
+
+#: app/api/routes.py:165
+msgid "Recherche trop longue."
+msgstr "La búsqueda es demasiado larga."
+
+#: app/api/routes.py:170 app/i18n.py:112 app/trips/routes.py:111
+msgid "La recherche de lieux est momentanément indisponible."
+msgstr "La búsqueda de lugares no está disponible temporalmente."
+
+#: app/auth/forms.py:16 app/auth/forms.py:28 app/auth/forms.py:91
+#: app/auth/forms.py:119 app/templates/admin/users.html:12
+msgid "Adresse e-mail"
+msgstr "Correo electrónico"
+
+#: app/auth/forms.py:17 app/auth/forms.py:29 app/auth/forms.py:92
+#: app/auth/forms.py:120
+msgid "L'adresse e-mail est obligatoire."
+msgstr "El correo electrónico es obligatorio."
+
+#: app/auth/forms.py:18 app/auth/forms.py:30 app/auth/forms.py:93
+#: app/auth/forms.py:121
+msgid "Adresse e-mail invalide."
+msgstr "Correo electrónico no válido."
+
+#: app/auth/forms.py:20 app/auth/forms.py:33 app/auth/forms.py:84
+#: app/templates/auth/profile.html:69
+msgid "Mot de passe"
+msgstr "Contraseña"
+
+#: app/auth/forms.py:21 app/auth/forms.py:34 app/auth/forms.py:64
+#: app/auth/forms.py:77 app/auth/forms.py:85
+msgid "Le mot de passe est obligatoire."
+msgstr "La contraseña es obligatoria."
+
+#: app/auth/forms.py:23
+msgid "Rester connecté"
+msgstr "Mantener la sesión iniciada"
+
+#: app/auth/forms.py:24 app/templates/auth/register.html:24
+#: app/templates/landing.html:19
+msgid "Se connecter"
+msgstr "Iniciar sesión"
+
+#: app/auth/forms.py:31 app/auth/forms.py:122
+msgid "L'adresse e-mail est trop longue."
+msgstr "El correo electrónico es demasiado largo."
+
+#: app/auth/forms.py:36 app/auth/forms.py:66
+#, python-format
+msgid "Le mot de passe doit contenir au moins %(min)d caractères."
+msgstr "La contraseña debe tener al menos %(min)d caracteres."
+
+#: app/auth/forms.py:38 app/auth/forms.py:68
+msgid "Confirmer le mot de passe"
+msgstr "Confirmar contraseña"
+
+#: app/auth/forms.py:39 app/auth/forms.py:69
+msgid "Veuillez confirmer le mot de passe."
+msgstr "Confirma la contraseña."
+
+#: app/auth/forms.py:40 app/auth/forms.py:70
+msgid "Les mots de passe ne correspondent pas."
+msgstr "Las contraseñas no coinciden."
+
+#: app/auth/forms.py:42 app/auth/forms.py:131
+msgid "Créer mon compte"
+msgstr "Crear mi cuenta"
+
+#: app/auth/forms.py:49
+msgid "Un compte existe déjà avec cette adresse e-mail."
+msgstr "Ya existe una cuenta con este correo electrónico."
+
+#: app/auth/forms.py:53 app/templates/admin/users.html:14
+msgid "Langue"
+msgstr "Idioma"
+
+#: app/auth/forms.py:54
+msgid "Thème"
+msgstr "Tema"
+
+#: app/auth/forms.py:55
+msgid "Automatique (selon le système)"
+msgstr "Automático (según el sistema)"
+
+#: app/auth/forms.py:56
+msgid "Clair"
+msgstr "Claro"
+
+#: app/auth/forms.py:57
+msgid "Sombre"
+msgstr "Oscuro"
+
+#: app/auth/forms.py:63 app/templates/auth/reset.html:3
+#: app/templates/auth/reset.html:4
+msgid "Nouveau mot de passe"
+msgstr "Nueva contraseña"
+
+#: app/auth/forms.py:76
+msgid "Mot de passe actuel"
+msgstr "Contraseña actual"
+
+#: app/auth/forms.py:80
+msgid "Changer le mot de passe"
+msgstr "Cambiar la contraseña"
+
+#: app/auth/forms.py:87 app/templates/auth/profile.html:132
+msgid "Supprimer mon compte"
+msgstr "Eliminar mi cuenta"
+
+#: app/auth/forms.py:95
+msgid "Envoyer le lien"
+msgstr "Enviar el enlace"
+
+#: app/auth/forms.py:100
+msgid "Enregistrer le mot de passe"
+msgstr "Guardar la contraseña"
+
+#: app/auth/forms.py:106
+msgid "Ville de domicile"
+msgstr "Ciudad de residencia"
+
+#: app/auth/forms.py:107
+msgid "Indiquez votre ville."
+msgstr "Indica tu ciudad."
+
+#: app/auth/forms.py:108 app/trips/forms.py:40 app/trips/forms.py:46
+msgid "Ce nom de lieu est trop long."
+msgstr "Este nombre de lugar es demasiado largo."
+
+#: app/auth/forms.py:113
+msgid "Enregistrer le domicile"
+msgstr "Guardar domicilio"
+
+#: app/auth/forms.py:124
+msgid "Recevoir le lien d'inscription"
+msgstr "Recibir el enlace de registro"
+
+#: app/auth/routes.py:51
+msgid ""
+"Les inscriptions sont fermées. Contactez un administrateur pour obtenir "
+"un compte."
+msgstr ""
+"Los registros están cerrados. Contacta con un administrador para obtener "
+"una cuenta."
+
+#: app/auth/routes.py:73 app/auth/routes.py:127
+msgid "Bienvenue ! Votre compte a été créé."
+msgstr "¡Bienvenido! Tu cuenta ha sido creada."
+
+#: app/auth/routes.py:94
+msgid "Votre inscription au Carnet de voyages"
+msgstr "Tu registro en el Cuaderno de viajes"
+
+#: app/auth/routes.py:110
+#, python-format
+msgid ""
+"Ce lien d'inscription est invalide ou a expiré (il est valable "
+"%(minutes)s minutes). Demandez-en un nouveau."
+msgstr ""
+"Este enlace de registro no es válido o ha caducado (es válido durante "
+"%(minutes)s minutos). Solicita uno nuevo."
+
+#: app/auth/routes.py:115
+msgid "Ce lien a déjà servi : le compte existe. Connectez-vous."
+msgstr "Este enlace ya se ha usado: la cuenta existe. Inicia sesión."
+
+#: app/auth/routes.py:144
+msgid "Adresse e-mail ou mot de passe incorrect."
+msgstr "Correo electrónico o contraseña incorrectos."
+
+#: app/auth/routes.py:150
+msgid "Bon retour parmi nous !"
+msgstr "¡Bienvenido de nuevo!"
+
+#: app/auth/routes.py:160
+msgid "Vous êtes déconnecté."
+msgstr "Has cerrado sesión."
+
+#: app/auth/routes.py:187
+msgid "Préférences enregistrées."
+msgstr "Preferencias guardadas."
+
+#: app/auth/routes.py:205
+#, python-format
+msgid ""
+"Domicile enregistré : les jours d'absence sont calculés à partir de "
+"%(place)s."
+msgstr "Domicilio guardado: los días fuera se calculan desde %(place)s."
+
+#: app/auth/routes.py:216
+msgid "Domicile supprimé."
+msgstr "Domicilio eliminado."
+
+#: app/auth/routes.py:227
+msgid "Mot de passe actuel incorrect."
+msgstr "La contraseña actual es incorrecta."
+
+#: app/auth/routes.py:235
+msgid "Mot de passe modifié. Vos autres sessions ont été déconnectées."
+msgstr "Contraseña cambiada. Se han cerrado tus otras sesiones."
+
+#: app/auth/routes.py:248
+msgid "Mot de passe incorrect."
+msgstr "Contraseña incorrecta."
+
+#: app/auth/routes.py:252
+msgid ""
+"Vous êtes le seul administrateur : désignez-en un autre avant de "
+"supprimer votre compte."
+msgstr "Eres el único administrador: designa a otro antes de eliminar tu cuenta."
+
+#: app/auth/routes.py:259
+msgid "Votre compte et tous vos voyages ont été supprimés."
+msgstr "Tu cuenta y todos tus viajes se han eliminado."
+
+#: app/auth/routes.py:270
+msgid ""
+"Nouvelle adresse d'abonnement créée. L'ancienne adresse ne fonctionne "
+"plus."
+msgstr ""
+"Se ha creado una nueva dirección de suscripción. La anterior ya no "
+"funciona."
+
+#: app/auth/routes.py:279
+msgid "Abonnement agenda désactivé."
+msgstr "Suscripción al calendario desactivada."
+
+#: app/auth/routes.py:306
+msgid "Réinitialisation de votre mot de passe"
+msgstr "Restablecimiento de tu contraseña"
+
+#: app/auth/routes.py:309
+msgid ""
+"Si un compte correspond à cette adresse, un e-mail contenant un lien de "
+"réinitialisation vient d'être envoyé."
+msgstr ""
+"Si existe una cuenta con esta dirección, se acaba de enviar un correo con"
+" un enlace de restablecimiento."
+
+#: app/auth/routes.py:319
+msgid ""
+"Ce lien de réinitialisation est invalide ou a expiré. Demandez-en un "
+"nouveau."
+msgstr ""
+"Este enlace de restablecimiento no es válido o ha caducado. Solicita uno "
+"nuevo."
+
+#: app/auth/routes.py:327
+msgid "Mot de passe modifié. Vous pouvez vous connecter."
+msgstr "Contraseña cambiada. Ya puedes iniciar sesión."
+
+#: app/i18n.py:64 app/i18n.py:133 app/templates/partials/macros.html:38
+msgid "En cours"
+msgstr "En curso"
+
+#: app/i18n.py:69
+msgid "Demain"
+msgstr "Mañana"
+
+#: app/i18n.py:70
+#, python-format
+msgid "Dans %(num)s jour"
+msgid_plural "Dans %(num)s jours"
+msgstr[0] "En %(num)s día"
+msgstr[1] "En %(num)s días"
+
+#: app/i18n.py:84 app/templates/map.html:170
+msgid "Chargement…"
+msgstr "Cargando…"
+
+#: app/i18n.py:85
+msgid "Impossible de charger les voyages. Réessayez."
+msgstr "No se han podido cargar los viajes. Inténtalo de nuevo."
+
+#: app/i18n.py:86
+msgid "Réessayer"
+msgstr "Reintentar"
+
+#: app/i18n.py:87 app/templates/trips/list.html:168
+#: app/templates/trips/stats.html:39
+msgid "Aucun voyage pour l'instant"
+msgstr "Todavía no hay viajes"
+
+#: app/i18n.py:88 app/templates/trips/list.html:169
+#: app/templates/trips/stats.html:40
+msgid "Ajoutez votre premier voyage pour le voir apparaître sur la carte."
+msgstr "Añade tu primer viaje para verlo en el mapa."
+
+#: app/i18n.py:89
+msgid "Aucun voyage ne correspond aux filtres"
+msgstr "Ningún viaje coincide con los filtros"
+
+#: app/i18n.py:90
+msgid "Modifiez ou réinitialisez les filtres pour afficher vos voyages."
+msgstr "Modifica o restablece los filtros para ver tus viajes."
+
+#: app/i18n.py:91
+msgid "Réinitialiser les filtres"
+msgstr "Restablecer filtros"
+
+#: app/i18n.py:92 app/templates/base.html:93 app/templates/map.html:179
+#: app/templates/trips/list.html:11 app/templates/trips/list.html:171
+msgid "Ajouter un voyage"
+msgstr "Añadir un viaje"
+
+#: app/i18n.py:93 app/templates/trips/detail.html:31
+#: app/templates/trips/list.html:136
+msgid "Modifier"
+msgstr "Editar"
+
+#: app/i18n.py:94 app/templates/base.html:170
+#: app/templates/trips/detail.html:107 app/templates/trips/form.html:112
+msgid "Supprimer"
+msgstr "Eliminar"
+
+#: app/i18n.py:95
+#, python-format
+msgid "Afficher %(route)s sur la carte"
+msgstr "Mostrar %(route)s en el mapa"
+
+#: app/i18n.py:96 app/templates/trips/list.html:72
+#, python-format
+msgid "Modifier le voyage %(route)s"
+msgstr "Editar el viaje %(route)s"
+
+#: app/i18n.py:97 app/templates/trips/list.html:77
+#, python-format
+msgid "Supprimer le voyage %(route)s"
+msgstr "Eliminar el viaje %(route)s"
+
+#: app/i18n.py:98 app/templates/trips/detail.html:40
+msgid "Départ"
+msgstr "Salida"
+
+#: app/i18n.py:99 app/templates/trips/detail.html:41
+msgid "Retour"
+msgstr "Regreso"
+
+#: app/i18n.py:100 app/templates/trips/detail.html:46
+#: app/templates/trips/list.html:107 app/templates/trips/stats.html:196
+#: app/templates/trips/stats.html:250
+msgid "Distance"
+msgstr "Distancia"
+
+#: app/i18n.py:101 app/templates/map.html:121 app/templates/trips/list.html:50
+#: app/trips/forms.py:58
+msgid "Aller-retour"
+msgstr "Ida y vuelta"
+
+#: app/i18n.py:102 app/templates/map.html:121 app/templates/trips/list.html:50
+msgid "Aller simple"
+msgstr "Solo ida"
+
+#: app/i18n.py:103
+msgid "Trajet aller"
+msgstr "Trayecto de ida"
+
+#: app/i18n.py:104
+msgid "Trajet retour"
+msgstr "Trayecto de vuelta"
+
+#: app/i18n.py:105
+msgid "Légende"
+msgstr "Leyenda"
+
+#: app/i18n.py:106
+msgid "Aller"
+msgstr "Ida"
+
+#: app/i18n.py:107
+msgid "Retour (pointillés)"
+msgstr "Vuelta (punteado)"
+
+#: app/i18n.py:108
+msgid "Voyages passant par ce lieu"
+msgstr "Viajes por este lugar"
+
+#: app/i18n.py:109 app/templates/map.html:163
+msgid "Carte des voyages"
+msgstr "Mapa de viajes"
+
+#: app/i18n.py:110
+msgid "contributeurs OpenStreetMap"
+msgstr "colaboradores de OpenStreetMap"
+
+#: app/i18n.py:111
+msgid "Aucun lieu trouvé"
+msgstr "No se ha encontrado ningún lugar"
+
+#: app/i18n.py:113
+msgid "Recherche…"
+msgstr "Buscando…"
+
+#: app/i18n.py:114
+msgid "Saisissez au moins 3 caractères"
+msgstr "Escribe al menos 3 caracteres"
+
+#: app/i18n.py:115
+#, python-format
+msgid "%(count)s suggestions disponibles, utilisez les flèches haut et bas"
+msgstr "%(count)s sugerencias disponibles, usa las flechas arriba y abajo"
+
+#: app/i18n.py:116 app/trips/forms.py:78
+msgid "La date de retour doit être postérieure ou égale à la date de départ."
+msgstr "La fecha de regreso debe ser igual o posterior a la de salida."
+
+#: app/i18n.py:117 app/trips/forms.py:74
+msgid "La date de retour est obligatoire pour un aller-retour."
+msgstr "La fecha de regreso es obligatoria para un viaje de ida y vuelta."
+
+#: app/i18n.py:118
+msgid "Passer en mode clair"
+msgstr "Cambiar a modo claro"
+
+#: app/i18n.py:119
+msgid "Passer en mode sombre"
+msgstr "Cambiar a modo oscuro"
+
+#: app/i18n.py:120
+msgid "Impossible d'enregistrer la préférence de thème."
+msgstr "No se ha podido guardar la preferencia de tema."
+
+#: app/i18n.py:121
+#, python-format
+msgid "Voyage sélectionné : %(route)s"
+msgstr "Viaje seleccionado: %(route)s"
+
+#: app/i18n.py:122
+#, python-format
+msgid "Voyage : %(name)s"
+msgstr "Viaje: %(name)s"
+
+#: app/i18n.py:123
+msgid "Aucun voyage à afficher"
+msgstr "No hay viajes que mostrar"
+
+#: app/i18n.py:124
+msgid "Lien copié dans le presse-papiers."
+msgstr "Enlace copiado al portapapeles."
+
+#: app/i18n.py:125
+msgid "Impossible de copier le lien : sélectionnez-le et copiez-le manuellement."
+msgstr "No se ha podido copiar el enlace: selecciónalo y cópialo manualmente."
+
+#: app/i18n.py:126
+msgid "Liste mise à jour"
+msgstr "Lista actualizada"
+
+#: app/i18n.py:127
+msgid "Ce champ est obligatoire."
+msgstr "Este campo es obligatorio."
+
+#: app/i18n.py:128 app/trips/queries.py:35
+msgid "La date de début doit précéder la date de fin."
+msgstr "La fecha de inicio debe ser anterior a la de fin."
+
+#: app/i18n.py:129 app/templates/trips/stats.html:309
+msgid "Pays visités"
+msgstr "Países visitados"
+
+#: app/i18n.py:130
+msgid "Fiche"
+msgstr "Ficha"
+
+#: app/i18n.py:131 app/templates/trips/list.html:69
+#, python-format
+msgid "Fiche du trajet %(route)s"
+msgstr "Ficha del trayecto %(route)s"
+
+#: app/i18n.py:132 app/templates/map.html:112 app/templates/trips/stats.html:18
+msgid "À venir"
+msgstr "Próximos"
+
+#: app/i18n.py:134
+msgid "À venir (estompé)"
+msgstr "Próximos (atenuados)"
+
+#: app/i18n.py:135 app/templates/trips/stats.html:50
+#: app/templates/trips/stats.html:86
+msgid "Lieux visités"
+msgstr "Lugares visitados"
+
+#: app/i18n.py:136
+msgid "Rejouer"
+msgstr "Reproducir"
+
+#: app/i18n.py:137
+msgid "Rejouer mes voyages dans l'ordre chronologique"
+msgstr "Reproducir mis viajes en orden cronológico"
+
+#: app/i18n.py:138
+msgid "Lecture"
+msgstr "Reproducir"
+
+#: app/i18n.py:139
+msgid "Pause"
+msgstr "Pausa"
+
+#: app/i18n.py:140
+msgid "Fermer la relecture"
+msgstr "Cerrar la reproducción"
+
+#: app/i18n.py:141
+msgid "Date de la relecture"
+msgstr "Fecha de la reproducción"
+
+#: app/i18n.py:142
+msgid "Impossible de partager l'image : téléchargez-la puis partagez-la."
+msgstr "No se ha podido compartir la imagen: descárgala y luego compártela."
+
+#: app/photos.py:50
+#, python-format
+msgid "Nombre maximal de photos atteint (%(max)s)."
+msgstr "Se ha alcanzado el número máximo de fotos (%(max)s)."
+
+#: app/photos.py:53
+#, python-format
+msgid "Photo trop volumineuse (%(max)s Mo au maximum)."
+msgstr "Foto demasiado grande (%(max)s MB como máximo)."
+
+#: app/photos.py:58 app/trips/forms.py:98
+msgid "Format non pris en charge : utilisez JPEG, PNG, WebP ou GIF."
+msgstr "Formato no admitido: usa JPEG, PNG, WebP o GIF."
+
+#: app/photos.py:60
+msgid "Image trop grande."
+msgstr "Imagen demasiado grande."
+
+#: app/photos.py:67
+msgid "Ce fichier n'est pas une image valide."
+msgstr "Este archivo no es una imagen válida."
+
+#: app/review_image.py:57
+msgid "Mon année en voyages"
+msgstr "Mi año de viajes"
+
+#: app/review_image.py:61 app/templates/trips/review.html:35
+msgid "voyage"
+msgid_plural "voyages"
+msgstr[0] "viaje"
+msgstr[1] "viajes"
+
+#: app/review_image.py:62 app/templates/trips/review.html:36
+msgid "parcourus"
+msgstr "recorridos"
+
+#: app/review_image.py:63 app/templates/trips/review.html:37
+msgid "pays"
+msgid_plural "pays"
+msgstr[0] "país"
+msgstr[1] "países"
+
+#: app/review_image.py:64 app/templates/trips/review.html:38
+msgid "de CO₂ estimé"
+msgstr "de CO₂ estimado"
+
+#: app/review_image.py:79 app/templates/trips/review.html:49
+#, python-format
+msgid "%(num)s jour loin de chez moi"
+msgid_plural "%(num)s jours loin de chez moi"
+msgstr[0] "%(num)s día fuera de casa"
+msgstr[1] "%(num)s días fuera de casa"
+
+#: app/review_image.py:81 app/templates/trips/review.html:54
+#, python-format
+msgid "Soit %(laps)s fois le tour de la Terre"
+msgstr "Es decir, %(laps)s veces la vuelta al mundo"
+
+#: app/review_image.py:88 app/templates/trips/review.html:60
+msgid "Le plus long trajet"
+msgstr "El trayecto más largo"
+
+#: app/review_image.py:95 app/templates/trips/review.html:66
+msgid "Nouveaux pays"
+msgstr "Nuevos países"
+
+#: app/share/forms.py:10
+msgid "Jamais"
+msgstr "Nunca"
+
+#: app/share/forms.py:11
+msgid "Dans 7 jours"
+msgstr "En 7 días"
+
+#: app/share/forms.py:12
+msgid "Dans 30 jours"
+msgstr "En 30 días"
+
+#: app/share/forms.py:13
+msgid "Dans 3 mois"
+msgstr "En 3 meses"
+
+#: app/share/forms.py:14
+msgid "Dans 1 an"
+msgstr "En 1 año"
+
+#: app/share/forms.py:19
+msgid "Libellé (facultatif)"
+msgstr "Etiqueta (opcional)"
+
+#: app/share/forms.py:21 app/trips/forms.py:87
+msgid "Ce nom est trop long."
+msgstr "Este nombre es demasiado largo."
+
+#: app/share/forms.py:23
+msgid "Expiration"
+msgstr "Caducidad"
+
+#: app/share/forms.py:24
+msgid "Montrer aussi les voyages à venir"
+msgstr "Mostrar también los próximos viajes"
+
+#: app/share/forms.py:25
+msgid "Générer un lien"
+msgstr "Generar un enlace"
+
+#: app/share/routes.py:27
+msgid "Lien de partage créé. Toute personne qui le possède peut voir vos voyages."
+msgstr ""
+"Enlace para compartir creado. Cualquiera que lo tenga puede ver tus "
+"viajes."
+
+#: app/share/routes.py:40
+msgid "Lien révoqué : il ne donne plus accès à vos voyages."
+msgstr "Enlace revocado: ya no da acceso a tus viajes."
+
+#: app/share/routes.py:52
+msgid "Ce lien montre désormais vos voyages à venir."
+msgstr "Este enlace muestra ahora tus próximos viajes."
+
+#: app/share/routes.py:53
+msgid "Ce lien ne montre plus vos voyages à venir."
+msgstr "Este enlace ya no muestra tus próximos viajes."
+
+#: app/templates/admin/_nav.html:1 app/templates/admin/settings.html:2
+#: app/templates/admin/users.html:2 app/templates/base.html:108
+msgid "Administration"
+msgstr "Administración"
+
+#: app/templates/admin/_nav.html:3 app/templates/admin/settings.html:2
+msgid "Paramètres"
+msgstr "Ajustes"
+
+#: app/templates/admin/_nav.html:3 app/templates/admin/users.html:5
+msgid "Utilisateurs"
+msgstr "Usuarios"
+
+#: app/templates/admin/settings.html:9
+msgid "Inscriptions"
+msgstr "Registros"
+
+#: app/templates/admin/settings.html:17
+msgid ""
+"Désactivé : la page d'inscription est fermée et les liens « Créer un "
+"compte » sont masqués. Les comptes existants peuvent toujours se "
+"connecter."
+msgstr ""
+"Desactivado: la página de registro está cerrada y los enlaces «Crear una "
+"cuenta» están ocultos. Las cuentas existentes pueden seguir iniciando "
+"sesión."
+
+#: app/templates/admin/users.html:9
+msgid "Liste des utilisateurs"
+msgstr "Lista de usuarios"
+
+#: app/templates/admin/users.html:13
+msgid "Inscription"
+msgstr "Registro"
+
+#: app/templates/admin/users.html:15 app/templates/map.html:37
+#: app/templates/map.html:132 app/templates/trips/stats.html:47
+#: app/templates/trips/stats.html:195 app/templates/trips/stats.html:249
+msgid "Voyages"
+msgstr "Viajes"
+
+#: app/templates/admin/users.html:16 app/templates/trips/list.html:108
+msgid "Actions"
+msgstr "Acciones"
+
+#: app/templates/admin/users.html:24
+msgid "Admin"
+msgstr "Admin"
+
+#: app/templates/admin/users.html:33
+msgid "Supprimer ce compte ?"
+msgstr "¿Eliminar esta cuenta?"
+
+#: app/templates/admin/users.html:35
+#, python-format
+msgid "Supprimer le compte %(email)s"
+msgstr "Eliminar la cuenta %(email)s"
+
+#: app/templates/auth/email/reset_password.txt:1
+#: app/templates/auth/email/signup.txt:1
+#: app/templates/auth/email/signup_existing.txt:1
+msgid "Bonjour,"
+msgstr "Hola:"
+
+#: app/templates/auth/email/reset_password.txt:3
+msgid ""
+"Une réinitialisation du mot de passe de votre compte Carnet de voyages a "
+"été demandée. Pour choisir un nouveau mot de passe, ouvrez ce lien :"
+msgstr ""
+"Se ha solicitado restablecer la contraseña de tu cuenta de Cuaderno de "
+"viajes. Para elegir una nueva contraseña, abre este enlace:"
+
+#: app/templates/auth/email/reset_password.txt:7
+#: app/templates/auth/email/signup.txt:7
+#, python-format
+msgid "Ce lien est valable %(minutes)s minutes et ne peut servir qu'une fois."
+msgstr ""
+"Este enlace es válido durante %(minutes)s minutos y solo puede usarse una"
+" vez."
+
+#: app/templates/auth/email/reset_password.txt:9
+msgid ""
+"Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail : "
+"votre mot de passe reste inchangé."
+msgstr ""
+"Si no has hecho esta solicitud, ignora este correo: tu contraseña no "
+"cambia."
+
+#: app/templates/auth/email/signup.txt:3
+msgid ""
+"Pour terminer votre inscription au Carnet de voyages, ouvrez ce lien et "
+"choisissez votre mot de passe :"
+msgstr ""
+"Para terminar tu registro en el Cuaderno de viajes, abre este enlace y "
+"elige tu contraseña:"
+
+#: app/templates/auth/email/signup.txt:9
+msgid ""
+"Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail : "
+"aucun compte ne sera créé."
+msgstr ""
+"Si no has hecho esta solicitud, ignora este correo: no se creará ninguna "
+"cuenta."
+
+#: app/templates/auth/email/signup_existing.txt:3
+msgid ""
+"Une inscription au Carnet de voyages a été demandée avec cette adresse, "
+"mais vous avez déjà un compte. Connectez-vous ici :"
+msgstr ""
+"Se ha solicitado un registro en el Cuaderno de viajes con esta dirección,"
+" pero ya tienes una cuenta. Inicia sesión aquí:"
+
+#: app/templates/auth/email/signup_existing.txt:7
+msgid "Mot de passe oublié ? Choisissez-en un nouveau ici :"
+msgstr "¿Has olvidado tu contraseña? Elige una nueva aquí:"
+
+#: app/templates/auth/email/signup_existing.txt:11
+msgid "Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail."
+msgstr "Si no has hecho esta solicitud, ignora este correo."
+
+#: app/templates/auth/forgot.html:3 app/templates/auth/forgot.html:4
+msgid "Mot de passe oublié"
+msgstr "Contraseña olvidada"
+
+#: app/templates/auth/forgot.html:5
+msgid "Indiquez votre adresse e-mail pour recevoir un lien de réinitialisation."
+msgstr "Indica tu dirección de correo para recibir un enlace de restablecimiento."
+
+#: app/templates/auth/forgot.html:10 app/templates/auth/register.html:12
+#: app/templates/trips/detail.html:125
+msgid "Envoi…"
+msgstr "Enviando…"
+
+#: app/templates/auth/forgot.html:14
+msgid "Retour à la connexion"
+msgstr "Volver al inicio de sesión"
+
+#: app/templates/auth/login.html:3 app/templates/auth/login.html:4
+#: app/templates/base.html:123
+msgid "Connexion"
+msgstr "Iniciar sesión"
+
+#: app/templates/auth/login.html:5
+msgid "Retrouvez tous vos voyages sur la carte."
+msgstr "Encuentra todos tus viajes en el mapa."
+
+#: app/templates/auth/login.html:17
+msgid "Mot de passe oublié ?"
+msgstr "¿Has olvidado tu contraseña?"
+
+#: app/templates/auth/login.html:20
+msgid "Connexion…"
+msgstr "Iniciando sesión…"
+
+#: app/templates/auth/login.html:25
+msgid "Pas encore de compte ?"
+msgstr "¿Aún no tienes cuenta?"
+
+#: app/templates/auth/login.html:25 app/templates/auth/register.html:3
+#: app/templates/auth/register.html:4 app/templates/base.html:125
+msgid "Créer un compte"
+msgstr "Crear una cuenta"
+
+#: app/templates/auth/profile.html:3 app/templates/auth/profile.html:7
+#: app/templates/base.html:101
+msgid "Préférences"
+msgstr "Preferencias"
+
+#: app/templates/auth/profile.html:22
+msgid "Le mode automatique suit le réglage de votre appareil."
+msgstr "El modo automático sigue la configuración de tu dispositivo."
+
+#: app/templates/auth/profile.html:24 app/templates/auth/profile.html:56
+#: app/templates/auth/profile.html:79 app/templates/auth/reset.html:12
+#: app/templates/trips/form.html:117
+msgid "Enregistrement…"
+msgstr "Guardando…"
+
+#: app/templates/auth/profile.html:30
+msgid "Domicile"
+msgstr "Domicilio"
+
+#: app/templates/auth/profile.html:33
+msgid ""
+"Votre ville de domicile sert à calculer vos jours d'absence et vos nuits "
+"à l'étranger. Elle n'est jamais affichée sur les liens de partage."
+msgstr ""
+"Tu ciudad de residencia sirve para calcular tus días fuera y tus noches "
+"en el extranjero. Nunca se muestra en los enlaces para compartir."
+
+#: app/templates/auth/profile.html:43 app/templates/trips/form.html:31
+msgid "Ville, gare, aéroport…"
+msgstr "Ciudad, estación, aeropuerto…"
+
+#: app/templates/auth/profile.html:50 app/templates/trips/form.html:40
+msgid "Suggestions de lieux"
+msgstr "Sugerencias de lugares"
+
+#: app/templates/auth/profile.html:63
+msgid "Supprimer le domicile"
+msgstr "Eliminar el domicilio"
+
+#: app/templates/auth/profile.html:75 app/templates/auth/register.html:16
+#: app/templates/auth/reset.html:9 app/templates/auth/signup.html:10
+msgid "Au moins 8 caractères."
+msgstr "Al menos 8 caracteres."
+
+#: app/templates/auth/profile.html:78
+msgid "Vos autres sessions seront déconnectées."
+msgstr "Se cerrarán tus otras sesiones."
+
+#: app/templates/auth/profile.html:85
+msgid "Agenda"
+msgstr "Calendario"
+
+#: app/templates/auth/profile.html:89
+msgid ""
+"Abonnez votre agenda (Google Agenda, Apple Calendrier, Outlook…) à vos "
+"voyages : ils y apparaissent du départ au retour, et les nouveaux "
+"s'ajoutent automatiquement. Les notes ne sont pas transmises."
+msgstr ""
+"Suscribe tu calendario (Google Calendar, Calendario de Apple, Outlook…) a"
+" tus viajes: aparecen de la salida al regreso y los nuevos se añaden "
+"automáticamente. Las notas no se incluyen."
+
+#: app/templates/auth/profile.html:95
+msgid "Adresse d'abonnement"
+msgstr "Dirección de suscripción"
+
+#: app/templates/auth/profile.html:97 app/templates/share/links.html:69
+msgid "Copier"
+msgstr "Copiar"
+
+#: app/templates/auth/profile.html:99
+msgid ""
+"Gardez cette adresse pour vous : toute personne qui la possède voit vos "
+"dates de voyage."
+msgstr ""
+"Guarda esta dirección para ti: cualquiera que la tenga puede ver tus "
+"fechas de viaje."
+
+#: app/templates/auth/profile.html:102
+msgid "Ouvrir dans l'agenda"
+msgstr "Abrir en el calendario"
+
+#: app/templates/auth/profile.html:106
+msgid "Changer d'adresse"
+msgstr "Cambiar de dirección"
+
+#: app/templates/auth/profile.html:110
+msgid "Désactiver"
+msgstr "Desactivar"
+
+#: app/templates/auth/profile.html:117
+msgid "Activer l'abonnement"
+msgstr "Activar la suscripción"
+
+#: app/templates/auth/profile.html:123
+msgid "Sauvegarde"
+msgstr "Copia de seguridad"
+
+#: app/templates/auth/profile.html:126
+msgid ""
+"Téléchargez tous vos trajets, notes, étiquettes et photos dans un fichier"
+" .zip. Il se réimporte depuis la page Importer / exporter."
+msgstr ""
+"Descarga todos tus trayectos, notas, etiquetas y fotos en un archivo "
+".zip. Se puede volver a importar desde la página Importar / exportar."
+
+#: app/templates/auth/profile.html:128
+msgid "Télécharger ma sauvegarde"
+msgstr "Descargar mi copia"
+
+#: app/templates/auth/profile.html:136
+msgid ""
+"Votre compte, vos voyages et vos liens de partage seront définitivement "
+"supprimés. Cette action est irréversible."
+msgstr ""
+"Tu cuenta, tus viajes y tus enlaces para compartir se eliminarán "
+"definitivamente. Esta acción es irreversible."
+
+#: app/templates/auth/profile.html:140
+msgid "Confirmez avec votre mot de passe."
+msgstr "Confirma con tu contraseña."
+
+#: app/templates/auth/register.html:5
+msgid "Gratuit, et vos voyages restent privés."
+msgstr "Gratis, y tus viajes siguen siendo privados."
+
+#: app/templates/auth/register.html:10
+msgid "Vous recevrez un lien pour terminer l'inscription."
+msgstr "Recibirás un enlace para terminar el registro."
+
+#: app/templates/auth/register.html:19 app/templates/auth/signup.html:13
+msgid "Création…"
+msgstr "Creando…"
+
+#: app/templates/auth/register.html:24
+msgid "Déjà inscrit ?"
+msgstr "¿Ya tienes cuenta?"
+
+#: app/templates/auth/register_sent.html:2
+#: app/templates/auth/register_sent.html:3
+msgid "Vérifiez votre messagerie"
+msgstr "Revisa tu correo"
+
+#: app/templates/auth/register_sent.html:4
+#, python-format
+msgid "Un e-mail vient d'être envoyé à %(email)s."
+msgstr "Se acaba de enviar un correo a %(email)s."
+
+#: app/templates/auth/register_sent.html:8
+#, python-format
+msgid ""
+"Ouvrez-le dans les %(minutes)s minutes pour choisir votre mot de passe et"
+" créer votre compte."
+msgstr ""
+"Ábrelo en los próximos %(minutes)s minutos para elegir tu contraseña y "
+"crear tu cuenta."
+
+#: app/templates/auth/register_sent.html:9
+msgid ""
+"Rien reçu ? Vérifiez les courriers indésirables, ou recommencez avec la "
+"bonne adresse."
+msgstr ""
+"¿No has recibido nada? Revisa el correo no deseado o vuelve a empezar con"
+" la dirección correcta."
+
+#: app/templates/auth/register_sent.html:10
+msgid "Recommencer"
+msgstr "Volver a empezar"
+
+#: app/templates/auth/reset.html:5
+msgid "Choisissez un nouveau mot de passe pour votre compte."
+msgstr "Elige una nueva contraseña para tu cuenta."
+
+#: app/templates/auth/signup.html:3 app/templates/auth/signup.html:5
+msgid "Terminer l'inscription"
+msgstr "Terminar el registro"
+
+#: app/templates/auth/signup.html:6
+#, python-format
+msgid "Adresse vérifiée : %(email)s"
+msgstr "Dirección verificada: %(email)s"
+
+#: app/templates/base.html:9 app/templates/base.html:38
+#: app/transfer/routes.py:53 app/trips/routes.py:414 app/trips/routes.py:430
+#: app/trips/routes.py:474
+msgid "Carnet de voyages"
+msgstr "Cuaderno de viajes"
+
+#: app/templates/base.html:32
+msgid "Aller au contenu principal"
+msgstr "Ir al contenido principal"
+
+#: app/templates/base.html:34
+msgid "Navigation principale"
+msgstr "Navegación principal"
+
+#: app/templates/base.html:44
+#, python-format
+msgid "Langue : %(lang)s"
+msgstr "Idioma: %(lang)s"
+
+#: app/templates/base.html:48
+msgid "Choisir la langue"
+msgstr "Elegir idioma"
+
+#: app/templates/base.html:62
+msgid "Basculer le thème clair ou sombre"
+msgstr "Alternar tema claro u oscuro"
+
+#: app/templates/base.html:67
+msgid "Ouvrir le menu"
+msgstr "Abrir menú"
+
+#: app/templates/base.html:78 app/templates/map.html:2
+msgid "Carte"
+msgstr "Mapa"
+
+#: app/templates/base.html:83 app/templates/trips/detail.html:11
+#: app/templates/trips/list.html:3 app/templates/trips/list.html:6
+msgid "Mes voyages"
+msgstr "Mis viajes"
+
+#: app/templates/base.html:88 app/templates/landing.html:44
+#: app/templates/trips/stats.html:3 app/templates/trips/stats.html:7
+msgid "Statistiques"
+msgstr "Estadísticas"
+
+#: app/templates/base.html:103 app/templates/share/links.html:2
+#: app/templates/share/links.html:6
+msgid "Partager mes voyages"
+msgstr "Compartir mis viajes"
+
+#: app/templates/base.html:105 app/templates/transfer/index.html:2
+#: app/templates/transfer/index.html:6 app/templates/trips/list.html:9
+#: app/templates/trips/stats.html:12
+msgid "Importer / exporter"
+msgstr "Importar / exportar"
+
+#: app/templates/base.html:115
+msgid "Déconnexion"
+msgstr "Cerrar sesión"
+
+#: app/templates/base.html:146 app/templates/map.html:17
+msgid "Fermer"
+msgstr "Cerrar"
+
+#: app/templates/base.html:161
+msgid "Supprimer ce voyage ?"
+msgstr "¿Eliminar este viaje?"
+
+#: app/templates/base.html:164
+msgid "Cette action est définitive."
+msgstr "Esta acción es definitiva."
+
+#: app/templates/base.html:168 app/templates/trips/form.html:116
+#: app/templates/trips/journey.html:29
+msgid "Annuler"
+msgstr "Cancelar"
+
+#: app/templates/errors/error.html:10
+msgid "Retour à l'accueil"
+msgstr "Volver al inicio"
+
+#: app/templates/landing.html:2
+msgid "Bienvenue"
+msgstr "Bienvenido"
+
+#: app/templates/landing.html:9
+msgid "Votre carnet de route personnel"
+msgstr "Tu cuaderno de viaje personal"
+
+#: app/templates/landing.html:10
+msgid "Tous vos voyages, sur une seule carte."
+msgstr "Todos tus viajes, en un solo mapa."
+
+#: app/templates/landing.html:12
+msgid ""
+"Notez vos trajets en avion, train, voiture ou à vélo, visualisez-les sur "
+"la carte et suivez les kilomètres parcourus."
+msgstr ""
+"Anota tus trayectos en avión, tren, coche o bicicleta, visualízalos en el"
+" mapa y sigue los kilómetros recorridos."
+
+#: app/templates/landing.html:16
+msgid "Commencer gratuitement"
+msgstr "Empezar gratis"
+
+#: app/templates/landing.html:17
+msgid "J'ai déjà un compte"
+msgstr "Ya tengo una cuenta"
+
+#: app/templates/landing.html:43
+msgid "Carte interactive"
+msgstr "Mapa interactivo"
+
+#: app/templates/landing.html:43
+msgid ""
+"Trajets colorés par mode, arcs géodésiques pour l'avion et retours en "
+"pointillés."
+msgstr ""
+"Trayectos coloreados por modo, arcos geodésicos para los vuelos y "
+"regresos punteados."
+
+#: app/templates/landing.html:44
+msgid "Nombre de voyages, distance totale et répartition par mode de transport."
+msgstr "Número de viajes, distancia total y reparto por medio de transporte."
+
+#: app/templates/landing.html:45
+msgid "Multilingue"
+msgstr "Multilingüe"
+
+#: app/templates/landing.html:45
+msgid "Disponible en français, anglais, espagnol, allemand et italien."
+msgstr "Disponible en francés, inglés, español, alemán e italiano."
+
+#: app/templates/map.html:2 app/templates/map.html:24
+#: app/templates/trips/review.html:10
+msgid "Carte partagée"
+msgstr "Mapa compartido"
+
+#: app/templates/map.html:16 app/templates/map.html:174
+msgid "Voyages et filtres"
+msgstr "Viajes y filtros"
+
+#: app/templates/map.html:25
+msgid "Vous consultez ces voyages en lecture seule."
+msgstr "Estás viendo estos viajes en modo de solo lectura."
+
+#: app/templates/map.html:26
+msgid "Voir le bilan de l'année"
+msgstr "Ver el resumen del año"
+
+#: app/templates/map.html:32
+msgid "Tableau de bord"
+msgstr "Panel"
+
+#: app/templates/map.html:42 app/templates/trips/stats.html:48
+msgid "Distance estimée"
+msgstr "Distancia estimada"
+
+#: app/templates/map.html:47 app/templates/trips/stats.html:49
+msgid "Pays et territoires"
+msgstr "Países y territorios"
+
+#: app/templates/map.html:52 app/templates/trips/detail.html:52
+#: app/templates/trips/stats.html:52 app/templates/trips/stats.html:199
+#: app/templates/trips/stats.html:251
+msgid "CO₂ estimé"
+msgstr "CO₂ estimado"
+
+#: app/templates/map.html:57
+msgid "Prochain départ"
+msgstr "Próxima salida"
+
+#: app/templates/map.html:61
+msgid "Répartition par mode de transport"
+msgstr "Reparto por medio de transporte"
+
+#: app/templates/map.html:66
+msgid "Filtres"
+msgstr "Filtros"
+
+#: app/templates/map.html:69
+msgid "Réinitialiser"
+msgstr "Restablecer"
+
+#: app/templates/map.html:73
+msgid "Période de départ"
+msgstr "Periodo de salida"
+
+#: app/templates/map.html:76
+msgid "Du"
+msgstr "Desde"
+
+#: app/templates/map.html:80
+msgid "Au"
+msgstr "Hasta"
+
+#: app/templates/map.html:87
+msgid "Modes de transport"
+msgstr "Medios de transporte"
+
+#: app/templates/map.html:100 app/templates/trips/detail.html:55
+#: app/trips/forms.py:30
+msgid "Étiquettes"
+msgstr "Etiquetas"
+
+#: app/templates/map.html:110
+msgid "Voyages passés ou à venir"
+msgstr "Viajes pasados o próximos"
+
+#: app/templates/map.html:112
+msgid "Passés"
+msgstr "Pasados"
+
+#: app/templates/map.html:112 app/templates/map.html:121
+msgid "Tous"
+msgstr "Todos"
+
+#: app/templates/map.html:119
+msgid "Type de voyage"
+msgstr "Tipo de viaje"
+
+#: app/templates/map.html:135
+msgid "Trier par"
+msgstr "Ordenar por"
+
+#: app/templates/map.html:138
+msgid "Plus récents"
+msgstr "Más recientes"
+
+#: app/templates/map.html:139
+msgid "Plus anciens"
+msgstr "Más antiguos"
+
+#: app/templates/map.html:140
+msgid "Plus longs"
+msgstr "Más largos"
+
+#: app/templates/map.html:141
+msgid "Plus courts"
+msgstr "Más cortos"
+
+#: app/templates/map.html:142
+msgid "Origine (A → Z)"
+msgstr "Origen (A → Z)"
+
+#: app/templates/map.html:143
+msgid "Destination (A → Z)"
+msgstr "Destino (A → Z)"
+
+#: app/templates/partials/footer.html:5
+msgid "Open source"
+msgstr "Código abierto"
+
+#: app/templates/partials/macros.html:31
+msgid "Inconnus"
+msgstr "Desconocidos"
+
+#: app/templates/partials/macros.html:52
+msgid "Par exemple : vacances, famille"
+msgstr "Por ejemplo: vacaciones, familia"
+
+#: app/templates/partials/macros.html:55
+msgid "Séparez les étiquettes par des virgules."
+msgstr "Separa las etiquetas con comas."
+
+#: app/templates/partials/macros.html:56
+#, python-format
+msgid "Déjà utilisées : %(tags)s"
+msgstr "Ya usadas: %(tags)s"
+
+#: app/templates/partials/macros.html:68
+#, python-format
+msgid "Obtenu le %(date)s"
+msgstr "Obtenido el %(date)s"
+
+#: app/templates/partials/macros.html:71
+#, python-format
+msgid "Progression : %(percent)s"
+msgstr "Progreso: %(percent)s"
+
+#: app/templates/share/links.html:8
+msgid ""
+"Un lien de partage affiche votre carte, vos statistiques et la liste de "
+"vos voyages en lecture seule, sans connexion. Votre adresse e-mail n'est "
+"jamais affichée. Révoquez un lien pour couper l'accès."
+msgstr ""
+"Un enlace para compartir muestra tu mapa, tus estadísticas y la lista de "
+"tus viajes en solo lectura, sin iniciar sesión. Tu dirección de correo "
+"nunca se muestra. Revoca un enlace para cortar el acceso."
+
+#: app/templates/share/links.html:17
+msgid "Par exemple : Famille"
+msgstr "Por ejemplo: Familia"
+
+#: app/templates/share/links.html:28
+msgid ""
+"Désactivé par défaut : vos dates de départ à venir indiquent quand vous "
+"serez absent."
+msgstr ""
+"Desactivado por defecto: tus próximas fechas de salida indican cuándo "
+"estarás fuera."
+
+#: app/templates/share/links.html:40
+msgid "Mes liens"
+msgstr "Mis enlaces"
+
+#: app/templates/share/links.html:48 app/templates/share/links.html:65
+msgid "Lien sans libellé"
+msgstr "Enlace sin etiqueta"
+
+#: app/templates/share/links.html:49
+msgid "Expiré"
+msgstr "Caducado"
+
+#: app/templates/share/links.html:52
+#, python-format
+msgid "Créé le %(date)s"
+msgstr "Creado el %(date)s"
+
+#: app/templates/share/links.html:54
+#, python-format
+msgid "expiré le %(date)s"
+msgstr "caducó el %(date)s"
+
+#: app/templates/share/links.html:55
+#, python-format
+msgid "expire le %(date)s"
+msgstr "caduca el %(date)s"
+
+#: app/templates/share/links.html:56
+msgid "sans expiration"
+msgstr "sin caducidad"
+
+#: app/templates/share/links.html:58
+#, python-format
+msgid "dernière consultation le %(date)s"
+msgstr "última consulta el %(date)s"
+
+#: app/templates/share/links.html:59
+msgid "jamais consulté"
+msgstr "nunca consultado"
+
+#: app/templates/share/links.html:61
+msgid "voyages à venir visibles"
+msgstr "próximos viajes visibles"
+
+#: app/templates/share/links.html:62
+msgid "voyages à venir masqués"
+msgstr "próximos viajes ocultos"
+
+#: app/templates/share/links.html:65
+#, python-format
+msgid "Adresse du lien %(label)s"
+msgstr "Dirección del enlace %(label)s"
+
+#: app/templates/share/links.html:71
+msgid "Ouvrir"
+msgstr "Abrir"
+
+#: app/templates/share/links.html:76
+msgid "Masquer les voyages à venir"
+msgstr "Ocultar los próximos viajes"
+
+#: app/templates/share/links.html:76
+msgid "Montrer les voyages à venir"
+msgstr "Mostrar los próximos viajes"
+
+#: app/templates/share/links.html:81
+msgid "Révoquer"
+msgstr "Revocar"
+
+#: app/templates/share/links.html:89
+msgid "Aucun lien de partage pour l'instant."
+msgstr "Todavía no hay enlaces para compartir."
+
+#: app/templates/transfer/index.html:8
+msgid ""
+"Téléchargez vos voyages pour les ouvrir dans un autre outil, ou faites "
+"une sauvegarde complète avec vos photos, puis réimportez-les ici."
+msgstr ""
+"Descarga tus viajes para abrirlos en otra herramienta o haz una copia "
+"completa con tus fotos, y vuelve a importarlos aquí."
+
+#: app/templates/transfer/index.html:11
+msgid "Exporter"
+msgstr "Exportar"
+
+#: app/templates/transfer/index.html:14
+msgid ""
+"Tableur (Excel, LibreOffice, Numbers). Le format le plus simple pour une "
+"sauvegarde."
+msgstr ""
+"Hoja de cálculo (Excel, LibreOffice, Numbers). El formato más sencillo "
+"para una copia de seguridad."
+
+#: app/templates/transfer/index.html:15
+msgid ""
+"Lignes origine → destination pour les logiciels de cartographie (QGIS, "
+"geojson.io…)."
+msgstr "Líneas origen → destino para programas de cartografía (QGIS, geojson.io…)."
+
+#: app/templates/transfer/index.html:16
+msgid "Itinéraires pour les applications de navigation et de randonnée."
+msgstr "Rutas para aplicaciones de navegación y senderismo."
+
+#: app/templates/transfer/index.html:26
+msgid "Télécharger"
+msgstr "Descargar"
+
+#: app/templates/transfer/index.html:37
+msgid "Sauvegarde complète"
+msgstr "Copia completa"
+
+#: app/templates/transfer/index.html:38
+msgid ""
+"Tous vos trajets, voyages, notes, étiquettes et photos dans un seul "
+"fichier .zip, à réimporter ici en cas de besoin."
+msgstr ""
+"Todos tus trayectos, viajes, notas, etiquetas y fotos en un solo archivo "
+".zip, para volver a importarlo aquí si hace falta."
+
+#: app/templates/transfer/index.html:41
+msgid "Télécharger la sauvegarde"
+msgstr "Descargar la copia"
+
+#: app/templates/transfer/index.html:45 app/transfer/routes.py:33
+msgid "Importer"
+msgstr "Importar"
+
+#: app/templates/transfer/index.html:48
+msgid "Aucun trajet n'a été importé. Corrigez le fichier puis réessayez :"
+msgstr ""
+"No se ha importado ningún trayecto. Corrige el archivo y vuelve a "
+"intentarlo:"
+
+#: app/templates/transfer/index.html:51
+#, python-format
+msgid "… et %(num)s autre erreur."
+msgid_plural "… et %(num)s autres erreurs."
+msgstr[0] "… y %(num)s error más."
+msgstr[1] "… y %(num)s errores más."
+
+#: app/templates/transfer/index.html:66
+#, python-format
+msgid ""
+"Colonnes attendues : celles d'un export (depart_date au format AAAA-MM-"
+"JJ, transport_mode parmi %(modes)s, noms et coordonnées des lieux). Les "
+"trajets déjà présents sont ignorés, et le pays est déduit des coordonnées"
+" s'il manque."
+msgstr ""
+"Columnas esperadas: las de una exportación (depart_date con formato AAAA-"
+"MM-DD, transport_mode entre %(modes)s, nombres y coordenadas de los "
+"lugares). Los trayectos ya existentes se ignoran y, si falta el país, se "
+"deduce de las coordenadas."
+
+#: app/templates/transfer/index.html:70
+msgid "Import…"
+msgstr "Importando…"
+
+#: app/templates/trips/detail.html:9 app/templates/trips/form.html:8
+msgid "Fil d’Ariane"
+msgstr "Ruta de navegación"
+
+#: app/templates/trips/detail.html:25
+msgid "Voir sur la carte"
+msgstr "Ver en el mapa"
+
+#: app/templates/trips/detail.html:28
+msgid "Ajouter à l'agenda"
+msgstr "Añadir al calendario"
+
+#: app/templates/trips/detail.html:39 app/templates/trips/list.html:106
+msgid "Mode"
+msgstr "Medio"
+
+#: app/templates/trips/detail.html:43 app/templates/trips/form.html:71
+msgid "Dates"
+msgstr "Fechas"
+
+#: app/templates/trips/detail.html:44
+msgid "Trajets"
+msgstr "Trayectos"
+
+#: app/templates/trips/detail.html:48
+msgid "par la route"
+msgstr "por carretera"
+
+#: app/templates/trips/detail.html:49
+#, python-format
+msgid "estimée (%(km)s à vol d'oiseau)"
+msgstr "estimada (%(km)s en línea recta)"
+
+#: app/templates/trips/detail.html:50
+msgid "à vol d'oiseau"
+msgstr "en línea recta"
+
+#: app/templates/trips/detail.html:53 app/templates/trips/stats.html:198
+msgid "Pays"
+msgstr "Países"
+
+#: app/templates/trips/detail.html:61
+msgid "Étapes"
+msgstr "Etapas"
+
+#: app/templates/trips/detail.html:69 app/templates/trips/detail.html:94
+msgid "Photos"
+msgstr "Fotos"
+
+#: app/templates/trips/detail.html:77
+msgid "Fait partie du voyage"
+msgstr "Forma parte del viaje"
+
+#: app/templates/trips/detail.html:82 app/templates/trips/list.html:53
+#: app/trips/forms.py:14
+msgid "Notes"
+msgstr "Notas"
+
+#: app/templates/trips/detail.html:88
+msgid "Aucune note."
+msgstr "Sin notas."
+
+#: app/templates/trips/detail.html:89
+msgid "Ajouter une note"
+msgstr "Añadir una nota"
+
+#: app/templates/trips/detail.html:102
+msgid "Photo"
+msgstr "Foto"
+
+#: app/templates/trips/detail.html:106
+#, python-format
+msgid "Supprimer la photo %(name)s"
+msgstr "Eliminar la foto %(name)s"
+
+#: app/templates/trips/detail.html:122
+msgid ""
+"JPEG, PNG, WebP ou GIF. Les métadonnées (dont la position GPS) sont "
+"retirées. Photos privées : elles n'apparaissent pas sur les liens de "
+"partage."
+msgstr ""
+"JPEG, PNG, WebP o GIF. Se eliminan los metadatos (incluida la ubicación "
+"GPS). Las fotos son privadas: no aparecen en los enlaces para compartir."
+
+#: app/templates/trips/form.html:3
+msgid "Nouveau voyage"
+msgstr "Nuevo viaje"
+
+#: app/templates/trips/form.html:3 app/templates/trips/journey.html:3
+#: app/templates/trips/journey.html:7
+msgid "Modifier le voyage"
+msgstr "Editar viaje"
+
+#: app/templates/trips/form.html:10
+msgid "Retour à la carte"
+msgstr "Volver al mapa"
+
+#: app/templates/trips/form.html:20 app/templates/trips/list.html:105
+msgid "Itinéraire"
+msgstr "Itinerario"
+
+#: app/templates/trips/form.html:47
+msgid "Inverser origine et destination"
+msgstr "Intercambiar origen y destino"
+
+#: app/templates/trips/form.html:89
+msgid "Le retour reprend le même itinéraire et le même mode, en sens inverse."
+msgstr "La vuelta sigue el mismo itinerario y medio, en sentido inverso."
+
+#: app/templates/trips/form.html:96
+msgid "Étiquettes et notes"
+msgstr "Etiquetas y notas"
+
+#: app/templates/trips/form.html:100 app/templates/trips/journey.html:24
+msgid "Souvenirs, adresses, conseils…"
+msgstr "Recuerdos, direcciones, consejos…"
+
+#: app/templates/trips/form.html:102
+msgid "Pour ajouter des photos, ouvrez la fiche du trajet."
+msgstr "Para añadir fotos, abre la ficha del trayecto."
+
+#: app/templates/trips/form.html:103
+msgid "Ouvrir la fiche"
+msgstr "Abrir la ficha"
+
+#: app/templates/trips/journey.html:17
+#, python-format
+msgid "Laissez vide pour afficher l'itinéraire : %(route)s"
+msgstr "Déjalo vacío para mostrar el itinerario: %(route)s"
+
+#: app/templates/trips/journey.html:20
+msgid "Les étiquettes s'appliquent à tous les trajets du voyage."
+msgstr "Las etiquetas se aplican a todos los trayectos del viaje."
+
+#: app/templates/trips/list.html:17 app/templates/trips/list.html:23
+msgid "Rechercher"
+msgstr "Buscar"
+
+#: app/templates/trips/list.html:21
+msgid "Lieu, pays, note, étiquette, nom de voyage…"
+msgstr "Lugar, país, nota, etiqueta, nombre del viaje…"
+
+#: app/templates/trips/list.html:27
+#, python-format
+msgid "%(num)s trajet trouvé pour « %(query)s »."
+msgid_plural "%(num)s trajets trouvés pour « %(query)s »."
+msgstr[0] "%(num)s trayecto encontrado para «%(query)s»."
+msgstr[1] "%(num)s trayectos encontrados para «%(query)s»."
+
+#: app/templates/trips/list.html:28
+msgid "Effacer la recherche"
+msgstr "Borrar la búsqueda"
+
+#: app/templates/trips/list.html:37
+#, python-format
+msgid "Sélectionner le trajet %(route)s"
+msgstr "Seleccionar el trayecto %(route)s"
+
+#: app/templates/trips/list.html:63
+msgid "Retirer du voyage"
+msgstr "Quitar del viaje"
+
+#: app/templates/trips/list.html:64
+#, python-format
+msgid "Retirer le trajet %(route)s du voyage"
+msgstr "Quitar el trayecto %(route)s del viaje"
+
+#: app/templates/trips/list.html:68 app/templates/trips/list.html:133
+msgid "Fiche, notes et photos"
+msgstr "Ficha, notas y fotos"
+
+#: app/templates/trips/list.html:85
+msgid "Regrouper en un voyage"
+msgstr "Agrupar en un viaje"
+
+#: app/templates/trips/list.html:86
+msgid ""
+"Cochez au moins deux trajets d'un même voyage, par exemple l'aller, les "
+"étapes et le retour."
+msgstr ""
+"Marca al menos dos trayectos de un mismo viaje, por ejemplo la ida, las "
+"etapas y la vuelta."
+
+#: app/templates/trips/list.html:91
+msgid "Liste de vos voyages"
+msgstr "Lista de tus viajes"
+
+#: app/templates/trips/list.html:103
+msgid "Sélection"
+msgstr "Selección"
+
+#: app/templates/trips/list.html:104
+msgid "Date"
+msgstr "Fecha"
+
+#: app/templates/trips/list.html:133
+#, python-format
+msgid "Fiche du voyage %(name)s"
+msgstr "Ficha del viaje %(name)s"
+
+#: app/templates/trips/list.html:136
+#, python-format
+msgid "Modifier le voyage %(name)s"
+msgstr "Editar el viaje %(name)s"
+
+#: app/templates/trips/list.html:140
+msgid "Dégrouper"
+msgstr "Desagrupar"
+
+#: app/templates/trips/list.html:141
+#, python-format
+msgid "Dégrouper le voyage %(name)s"
+msgstr "Desagrupar el viaje %(name)s"
+
+#: app/templates/trips/list.html:162
+msgid "Aucun résultat"
+msgstr "Sin resultados"
+
+#: app/templates/trips/list.html:163
+msgid "Essayez un autre mot, ou une partie du nom d'un lieu."
+msgstr "Prueba otra palabra o parte del nombre de un lugar."
+
+#: app/templates/trips/review.html:3 app/templates/trips/review.html:9
+#: app/templates/trips/review.html:128 app/templates/trips/stats.html:206
+#, python-format
+msgid "Bilan %(year)s"
+msgstr "Resumen de %(year)s"
+
+#: app/templates/trips/review.html:3 app/templates/trips/review.html:9
+#: app/templates/trips/stats.html:10
+msgid "Bilan de l'année"
+msgstr "Resumen del año"
+
+#: app/templates/trips/review.html:13
+msgid "Choisir l’année"
+msgstr "Elegir el año"
+
+#: app/templates/trips/review.html:27
+msgid "Pas encore de bilan"
+msgstr "Todavía no hay resumen"
+
+#: app/templates/trips/review.html:28
+msgid "Le bilan apparaît dès qu'un premier voyage a eu lieu."
+msgstr "El resumen aparece en cuanto se ha realizado un primer viaje."
+
+#: app/templates/trips/review.html:39
+msgid "lieu visité"
+msgid_plural "lieux visités"
+msgstr[0] "lugar visitado"
+msgstr[1] "lugares visitados"
+
+#: app/templates/trips/review.html:50
+#, python-format
+msgid "%(num)s nuit à l'étranger"
+msgid_plural "%(num)s nuits à l'étranger"
+msgstr[0] "%(num)s noche en el extranjero"
+msgstr[1] "%(num)s noches en el extranjero"
+
+#: app/templates/trips/review.html:71
+msgid "Aucun cette année : que des pays déjà visités."
+msgstr "Ninguno este año: solo países ya visitados."
+
+#: app/templates/trips/review.html:75
+msgid "Tous les pays de l'année"
+msgstr "Todos los países del año"
+
+#: app/templates/trips/review.html:82
+msgid "Badges obtenus cette année"
+msgstr "Insignias obtenidas este año"
+
+#: app/templates/trips/review.html:87
+msgid "Destinations favorites"
+msgstr "Destinos favoritos"
+
+#: app/templates/trips/review.html:89
+#, python-format
+msgid "%(num)s fois"
+msgid_plural "%(num)s fois"
+msgstr[0] "%(num)s vez"
+msgstr[1] "%(num)s veces"
+
+#: app/templates/trips/review.html:93
+msgid "Distance par mode"
+msgstr "Distancia por modo"
+
+#: app/templates/trips/review.html:99
+msgid "Départs par mois"
+msgstr "Salidas por mes"
+
+#: app/templates/trips/review.html:112
+#, python-format
+msgid "Premier départ : %(route)s, le %(date)s"
+msgstr "Primera salida: %(route)s, el %(date)s"
+
+#: app/templates/trips/review.html:113
+#, python-format
+msgid "Dernier départ : %(route)s, le %(date)s"
+msgstr "Última salida: %(route)s, el %(date)s"
+
+#: app/templates/trips/review.html:114
+#, python-format
+msgid "%(num)s photo ajoutée cette année-là."
+msgid_plural "%(num)s photos ajoutées cette année-là."
+msgstr[0] "%(num)s foto añadida ese año."
+msgstr[1] "%(num)s fotos añadidas ese año."
+
+#: app/templates/trips/review.html:123
+#, python-format
+msgid "Image du bilan %(year)s"
+msgstr "Imagen del resumen de %(year)s"
+
+#: app/templates/trips/review.html:126
+msgid "Télécharger l'image"
+msgstr "Descargar la imagen"
+
+#: app/templates/trips/review.html:129
+msgid "Partager"
+msgstr "Compartir"
+
+#: app/templates/trips/review.html:133
+msgid ""
+"Les personnes qui ont un de vos liens de partage peuvent aussi voir ce "
+"bilan."
+msgstr ""
+"Las personas que tienen uno de tus enlaces para compartir también pueden "
+"ver este resumen."
+
+#: app/templates/trips/review.html:134
+msgid "Gérer les liens"
+msgstr "Gestionar los enlaces"
+
+#: app/templates/trips/stats.html:32
+msgid "Les voyages à venir ne sont pas comptés dans les statistiques ci-dessous."
+msgstr "Los próximos viajes no se cuentan en las estadísticas siguientes."
+
+#: app/templates/trips/stats.html:44
+msgid "Totaux"
+msgstr "Totales"
+
+#: app/templates/trips/stats.html:51
+msgid "des terres émergées"
+msgstr "de las tierras emergidas"
+
+#: app/templates/trips/stats.html:63
+#, python-format
+msgid ""
+"%(num)s trajet n'a pas de pays identifié (point en mer ou hors des "
+"contours connus)."
+msgid_plural ""
+"%(num)s trajets n'ont pas de pays identifié (point en mer ou hors des "
+"contours connus)."
+msgstr[0] ""
+"%(num)s trayecto no tiene país identificado (punto en el mar o fuera de "
+"las fronteras conocidas)."
+msgstr[1] ""
+"%(num)s trayectos no tienen país identificado (punto en el mar o fuera de"
+" las fronteras conocidas)."
+
+#: app/templates/trips/stats.html:71
+msgid "Badges"
+msgstr "Insignias"
+
+#: app/templates/trips/stats.html:79
+#, python-format
+msgid "%(num)s badge à obtenir"
+msgid_plural "%(num)s badges à obtenir"
+msgstr[0] "%(num)s insignia por conseguir"
+msgstr[1] "%(num)s insignias por conseguir"
+
+#: app/templates/trips/stats.html:101
+#, python-format
+msgid "Voir %(num)s autre lieu"
+msgid_plural "Voir les %(num)s autres lieux"
+msgstr[0] "Ver %(num)s lugar más"
+msgstr[1] "Ver los %(num)s lugares restantes"
+
+#: app/templates/trips/stats.html:106
+msgid ""
+"Les lieux distants de moins de 15 km comptent pour un seul (par exemple "
+"une ville et son aéroport)."
+msgstr ""
+"Los lugares a menos de 15 km cuentan como uno solo (por ejemplo, una "
+"ciudad y su aeropuerto)."
+
+#: app/templates/trips/stats.html:107
+msgid "Votre domicile n'est pas compté."
+msgstr "Tu domicilio no se cuenta."
+
+#: app/templates/trips/stats.html:108
+msgid "Aucun lieu visité pour l'instant."
+msgstr "Ningún lugar visitado por ahora."
+
+#: app/templates/trips/stats.html:112
+msgid "Continents"
+msgstr "Continentes"
+
+#: app/templates/trips/stats.html:119
+#, python-format
+msgid "%(num)s pays"
+msgid_plural "%(num)s pays"
+msgstr[0] "%(num)s país"
+msgstr[1] "%(num)s países"
+
+#: app/templates/trips/stats.html:122
+msgid "Pas encore visité"
+msgstr "Aún no visitado"
+
+#: app/templates/trips/stats.html:129 app/templates/trips/stats.html:163
+msgid "Jours d'absence"
+msgstr "Días fuera"
+
+#: app/templates/trips/stats.html:133
+msgid ""
+"Indiquez votre ville de domicile pour voir le nombre de jours passés en "
+"voyage, vos nuits à l'étranger et votre plus longue absence."
+msgstr ""
+"Indica tu ciudad de residencia para ver los días que has pasado viajando,"
+" tus noches en el extranjero y tu ausencia más larga."
+
+#: app/templates/trips/stats.html:134
+msgid "Définir mon domicile"
+msgstr "Definir mi domicilio"
+
+#: app/templates/trips/stats.html:137
+#, python-format
+msgid "Aucune absence : aucun trajet ne part encore de %(home)s."
+msgstr "Ninguna ausencia: todavía ningún trayecto sale de %(home)s."
+
+#: app/templates/trips/stats.html:141
+msgid "jour loin de chez moi"
+msgid_plural "jours loin de chez moi"
+msgstr[0] "día fuera de casa"
+msgstr[1] "días fuera de casa"
+
+#: app/templates/trips/stats.html:142
+msgid "nuit à l'étranger"
+msgid_plural "nuits à l'étranger"
+msgstr[0] "noche en el extranjero"
+msgstr[1] "noches en el extranjero"
+
+#: app/templates/trips/stats.html:143
+msgid "jours : plus longue absence"
+msgstr "días: ausencia más larga"
+
+#: app/templates/trips/stats.html:152
+#, python-format
+msgid "Plus longue absence : du %(start)s au %(end)s (%(places)s)."
+msgstr "Ausencia más larga: del %(start)s al %(end)s (%(places)s)."
+
+#: app/templates/trips/stats.html:154
+#, python-format
+msgid "Depuis %(home)s, dans un rayon de 30 km."
+msgstr "Desde %(home)s, en un radio de 30 km."
+
+#: app/templates/trips/stats.html:155
+#, python-format
+msgid ""
+"%(num)s absence n'a pas de retour renseigné : elle s'arrête au dernier "
+"trajet connu."
+msgid_plural ""
+"%(num)s absences n'ont pas de retour renseigné : elles s'arrêtent au "
+"dernier trajet connu."
+msgstr[0] ""
+"%(num)s ausencia no tiene regreso registrado: termina en el último "
+"trayecto conocido."
+msgstr[1] ""
+"%(num)s ausencias no tienen regreso registrado: terminan en el último "
+"trayecto conocido."
+
+#: app/templates/trips/stats.html:162 app/templates/trips/stats.html:194
+msgid "Année"
+msgstr "Año"
+
+#: app/templates/trips/stats.html:164
+msgid "Part de l'année"
+msgstr "Parte del año"
+
+#: app/templates/trips/stats.html:165
+msgid "Nuits à l'étranger"
+msgstr "Noches en el extranjero"
+
+#: app/templates/trips/stats.html:166
+msgid "Départs"
+msgstr "Salidas"
+
+#: app/templates/trips/stats.html:188
+msgid "Année par année"
+msgstr "Año por año"
+
+#: app/templates/trips/stats.html:197
+msgid "Modes"
+msgstr "Modos"
+
+#: app/templates/trips/stats.html:226
+#, python-format
+msgid "Nouveaux : %(list)s"
+msgstr "Nuevos: %(list)s"
+
+#: app/templates/trips/stats.html:242
+msgid "Par étiquette"
+msgstr "Por etiqueta"
+
+#: app/templates/trips/stats.html:248
+msgid "Étiquette"
+msgstr "Etiqueta"
+
+#: app/templates/trips/stats.html:252
+#, python-format
+msgid "CO₂ en %(year)s"
+msgstr "CO₂ en %(year)s"
+
+#: app/templates/trips/stats.html:260
+msgid "Sans étiquette"
+msgstr "Sin etiqueta"
+
+#: app/templates/trips/stats.html:267
+#, python-format
+msgid "%(num)s voyage"
+msgid_plural "%(num)s voyages"
+msgstr[0] "%(num)s viaje"
+msgstr[1] "%(num)s viajes"
+
+#: app/templates/trips/stats.html:281
+msgid "Émissions par mode"
+msgstr "Emisiones por modo"
+
+#: app/templates/trips/stats.html:294
+msgid "Comment est-ce calculé ?"
+msgstr "¿Cómo se calcula?"
+
+#: app/templates/trips/stats.html:295
+#, python-format
+msgid ""
+"Estimation par voyageur et par trajet. Distance : itinéraire calculé "
+"quand il est connu, sinon distance à vol d'oiseau multipliée par un "
+"facteur de détour (route et vélo ×%(road)s, train ×%(rail)s, bateau "
+"×%(boat)s ; avion en ligne directe). Facteurs d'émission moyens de "
+"l'ADEME (Base Carbone) :"
+msgstr ""
+"Estimación por viajero y trayecto. Distancia: la ruta calculada si se "
+"conoce; si no, la distancia en línea recta multiplicada por un factor de "
+"rodeo (carretera y bici ×%(road)s, tren ×%(rail)s, barco ×%(boat)s; avión"
+" en línea recta). Factores de emisión medios de la ADEME (Base Carbone):"
+
+#: app/templates/trips/stats.html:298
+#, python-format
+msgid ""
+"Avion : %(short)s g/km (moins de 1 000 km), %(medium)s g/km (jusqu'à 3 "
+"500 km), %(long)s g/km au-delà, traînées de condensation comprises"
+msgstr ""
+"Avión: %(short)s g/km (menos de 1000 km), %(medium)s g/km (hasta 3500 "
+"km), %(long)s g/km a partir de ahí, estelas incluidas"
+
+#: app/templates/trips/stats.html:300
+#, python-format
+msgid "Train : %(value)s g/km"
+msgstr "Tren: %(value)s g/km"
+
+#: app/templates/trips/stats.html:300
+#, python-format
+msgid "Autocar : %(value)s g/km"
+msgstr "Autocar: %(value)s g/km"
+
+#: app/templates/trips/stats.html:300
+#, python-format
+msgid "Ferry : %(value)s g/km"
+msgstr "Ferri: %(value)s g/km"
+
+#: app/templates/trips/stats.html:301
+#, python-format
+msgid "Voiture : %(value)s g/km, une personne à bord"
+msgstr "Coche: %(value)s g/km, una persona a bordo"
+
+#: app/templates/trips/stats.html:301
+msgid "Vélo et marche : 0"
+msgstr "Bici y a pie: 0"
+
+#: app/templates/trips/stats.html:323
+msgid "Aucun pays identifié."
+msgstr "Ningún país identificado."
+
+#: app/transfer/formats.py:126
+msgid ""
+"En-têtes CSV manquants : depart_date, origin_name, dest_name… (exportez "
+"un fichier pour voir le format attendu)."
+msgstr ""
+"Faltan encabezados CSV: depart_date, origin_name, dest_name… (exporta un "
+"archivo para ver el formato esperado)."
+
+#: app/transfer/formats.py:143 app/transfer/formats.py:146
+msgid "Fichier GeoJSON invalide."
+msgstr "Archivo GeoJSON no válido."
+
+#: app/transfer/formats.py:164 app/transfer/formats.py:168
+msgid "Fichier GPX invalide."
+msgstr "Archivo GPX no válido."
+
+#: app/transfer/formats.py:173
+msgid "Aucun itinéraire (<rte>) dans ce fichier GPX."
+msgstr "No hay ninguna ruta (<rte>) en este archivo GPX."
+
+#: app/transfer/formats.py:229
+msgid "date de départ invalide (format attendu : AAAA-MM-JJ)"
+msgstr "fecha de salida no válida (formato esperado: AAAA-MM-DD)"
+
+#: app/transfer/formats.py:236
+msgid "la date de retour précède la date de départ"
+msgstr "la fecha de regreso es anterior a la de salida"
+
+#: app/transfer/formats.py:238
+msgid "date de retour invalide (format attendu : AAAA-MM-JJ)"
+msgstr "fecha de regreso no válida (formato esperado: AAAA-MM-DD)"
+
+#: app/transfer/formats.py:241
+#, python-format
+msgid "mode de transport inconnu : « %(mode)s » (valeurs possibles : %(modes)s)"
+msgstr "modo de transporte desconocido: «%(mode)s» (valores posibles: %(modes)s)"
+
+#: app/transfer/formats.py:247
+msgid "lieu de départ manquant"
+msgstr "falta el lugar de salida"
+
+#: app/transfer/formats.py:247
+msgid "lieu d'arrivée manquant"
+msgstr "falta el lugar de llegada"
+
+#: app/transfer/formats.py:253
+#, python-format
+msgid "coordonnées invalides pour « %(place)s »"
+msgstr "coordenadas no válidas para «%(place)s»"
+
+#: app/transfer/formats.py:262
+#, python-format
+msgid "champ %(field)s trop long (%(max)s caractères au maximum)"
+msgstr "campo %(field)s demasiado largo (%(max)s caracteres como máximo)"
+
+#: app/transfer/routes.py:32
+msgid "Fichier CSV, GeoJSON, GPX ou sauvegarde complète (.zip)"
+msgstr "Archivo CSV, GeoJSON o GPX, o copia completa (.zip)"
+
+#: app/transfer/routes.py:32
+msgid "Choisissez un fichier."
+msgstr "Elige un archivo."
+
+#: app/transfer/routes.py:90
+msgid ""
+"Sauvegarde complète de votre Carnet de voyages. Pour la restaurer, "
+"importez ce fichier .zip depuis la page Importer / exporter."
+msgstr ""
+"Copia completa de tu Cuaderno de viajes. Para restaurarla, importa este "
+"archivo .zip desde la página Importar / exportar."
+
+#: app/transfer/routes.py:110
+msgid "Archive .zip invalide."
+msgstr "Archivo .zip no válido."
+
+#: app/transfer/routes.py:114
+msgid "Archive trop volumineuse."
+msgstr "Archivo demasiado grande."
+
+#: app/transfer/routes.py:118
+msgid ""
+"Archive invalide : trips.geojson absent (utilisez une sauvegarde "
+"complète)."
+msgstr "Archivo no válido: falta trips.geojson (usa una copia completa)."
+
+#: app/transfer/routes.py:149
+#, python-format
+msgid "Fichier trop volumineux (%(max)s Mo au maximum)."
+msgstr "Archivo demasiado grande (%(max)s MB como máximo)."
+
+#: app/transfer/routes.py:162
+msgid "Ce fichier ne contient aucun trajet."
+msgstr "Este archivo no contiene ningún trayecto."
+
+#: app/transfer/routes.py:164
+#, python-format
+msgid "Trop de trajets dans ce fichier (%(max)s au maximum)."
+msgstr "Demasiados trayectos en este archivo (%(max)s como máximo)."
+
+#: app/transfer/routes.py:173
+#, python-format
+msgid "Ligne %(line)s : %(error)s"
+msgstr "Línea %(line)s: %(error)s"
+
+#: app/transfer/routes.py:228
+#, python-format
+msgid "%(num)s trajet importé."
+msgid_plural "%(num)s trajets importés."
+msgstr[0] "%(num)s trayecto importado."
+msgstr[1] "%(num)s trayectos importados."
+
+#: app/transfer/routes.py:230
+#, python-format
+msgid "%(num)s voyage recréé."
+msgid_plural "%(num)s voyages recréés."
+msgstr[0] "%(num)s viaje recreado."
+msgstr[1] "%(num)s viajes recreados."
+
+#: app/transfer/routes.py:232
+#, python-format
+msgid "%(num)s doublon ignoré."
+msgid_plural "%(num)s doublons ignorés."
+msgstr[0] "%(num)s duplicado ignorado."
+msgstr[1] "%(num)s duplicados ignorados."
+
+#: app/transfer/routes.py:234
+#, python-format
+msgid "%(num)s photo restaurée."
+msgid_plural "%(num)s photos restaurées."
+msgstr[0] "%(num)s foto restaurada."
+msgstr[1] "%(num)s fotos restauradas."
+
+#: app/transfer/routes.py:236
+#, python-format
+msgid "%(num)s photo illisible ignorée."
+msgid_plural "%(num)s photos illisibles ignorées."
+msgstr[0] "%(num)s foto ilegible ignorada."
+msgstr[1] "%(num)s fotos ilegibles ignoradas."
+
+#: app/transport.py:6
+msgid "Avion"
+msgstr "Avión"
+
+#: app/transport.py:7
+msgid "Train"
+msgstr "Tren"
+
+#: app/transport.py:8
+msgid "Voiture"
+msgstr "Coche"
+
+#: app/transport.py:9
+msgid "Bus"
+msgstr "Autobús"
+
+#: app/transport.py:10
+msgid "Bateau"
+msgstr "Barco"
+
+#: app/transport.py:11
+msgid "Vélo"
+msgstr "Bicicleta"
+
+#: app/transport.py:12
+msgid "À pied"
+msgstr "A pie"
+
+#: app/trips/badges.py:28
+msgid "Globe-trotter"
+msgstr "Trotamundos"
+
+#: app/trips/badges.py:28
+msgid "10 voyages"
+msgstr "10 viajes"
+
+#: app/trips/badges.py:29
+msgid "Grand voyageur"
+msgstr "Gran viajero"
+
+#: app/trips/badges.py:29
+msgid "50 voyages"
+msgstr "50 viajes"
+
+#: app/trips/badges.py:30
+msgid "Voyageur légendaire"
+msgstr "Viajero legendario"
+
+#: app/trips/badges.py:30
+msgid "100 voyages"
+msgstr "100 viajes"
+
+#: app/trips/badges.py:31
+msgid "Explorateur"
+msgstr "Explorador"
+
+#: app/trips/badges.py:31
+msgid "5 pays visités"
+msgstr "5 países visitados"
+
+#: app/trips/badges.py:32
+msgid "Collectionneur de pays"
+msgstr "Coleccionista de países"
+
+#: app/trips/badges.py:32
+msgid "10 pays visités"
+msgstr "10 países visitados"
+
+#: app/trips/badges.py:33
+msgid "Passeport bien rempli"
+msgstr "Pasaporte bien sellado"
+
+#: app/trips/badges.py:33
+msgid "25 pays visités"
+msgstr "25 países visitados"
+
+#: app/trips/badges.py:34
+msgid "Citoyen du monde"
+msgstr "Ciudadano del mundo"
+
+#: app/trips/badges.py:34
+msgid "50 pays visités"
+msgstr "50 países visitados"
+
+#: app/trips/badges.py:35
+msgid "Centurion"
+msgstr "Centurión"
+
+#: app/trips/badges.py:35
+msgid "100 pays visités"
+msgstr "100 países visitados"
+
+#: app/trips/badges.py:36
+msgid "Trois continents"
+msgstr "Tres continentes"
+
+#: app/trips/badges.py:36
+msgid "3 continents visités"
+msgstr "3 continentes visitados"
+
+#: app/trips/badges.py:37
+msgid "Tous les continents habités"
+msgstr "Todos los continentes habitados"
+
+#: app/trips/badges.py:38
+msgid "Europe, Asie, Afrique, Amériques et Océanie"
+msgstr "Europa, Asia, África, las Américas y Oceanía"
+
+#: app/trips/badges.py:39
+msgid "Les sept continents"
+msgstr "Los siete continentes"
+
+#: app/trips/badges.py:39
+msgid "Antarctique compris"
+msgstr "Antártida incluida"
+
+#: app/trips/badges.py:40
+msgid "10 000 km"
+msgstr "10.000 km"
+
+#: app/trips/badges.py:40
+msgid "10 000 km parcourus"
+msgstr "10.000 km recorridos"
+
+#: app/trips/badges.py:41
+msgid "Tour du monde"
+msgstr "Vuelta al mundo"
+
+#: app/trips/badges.py:42
+msgid "L'équivalent d'un tour de la Terre (40 075 km)"
+msgstr "El equivalente a una vuelta a la Tierra (40.075 km)"
+
+#: app/trips/badges.py:43
+msgid "100 000 km"
+msgstr "100.000 km"
+
+#: app/trips/badges.py:43
+msgid "100 000 km parcourus"
+msgstr "100.000 km recorridos"
+
+#: app/trips/badges.py:44
+msgid "Jusqu'à la Lune"
+msgstr "Hasta la Luna"
+
+#: app/trips/badges.py:44
+msgid "La distance Terre-Lune (384 400 km)"
+msgstr "La distancia Tierra-Luna (384.400 km)"
+
+#: app/trips/badges.py:45
+msgid "Tous les moyens sont bons"
+msgstr "Todos los medios valen"
+
+#: app/trips/badges.py:46
+msgid "Avion, train, voiture, bus, bateau, vélo et marche"
+msgstr "Avión, tren, coche, autobús, barco, bici y a pie"
+
+#: app/trips/badges.py:47
+msgid "Voyageur sobre"
+msgstr "Viajero sobrio"
+
+#: app/trips/badges.py:47
+msgid "10 trajets en train, à vélo ou à pied"
+msgstr "10 trayectos en tren, en bici o a pie"
+
+#: app/trips/badges.py:48
+msgid "Long-courrier"
+msgstr "Largo recorrido"
+
+#: app/trips/badges.py:48
+msgid "Un trajet de plus de 8 000 km"
+msgstr "Un trayecto de más de 8.000 km"
+
+#: app/trips/forms.py:15
+#, python-format
+msgid "Les notes sont limitées à %(max)d caractères."
+msgstr "Las notas están limitadas a %(max)d caracteres."
+
+#: app/trips/forms.py:24
+#, python-format
+msgid "%(max)d étiquettes au maximum."
+msgstr "%(max)d etiquetas como máximo."
+
+#: app/trips/forms.py:26
+#, python-format
+msgid "Une étiquette ne peut pas dépasser %(max)d caractères."
+msgstr "Una etiqueta no puede superar los %(max)d caracteres."
+
+#: app/trips/forms.py:38
+msgid "Origine"
+msgstr "Origen"
+
+#: app/trips/forms.py:39
+msgid "L'origine est obligatoire."
+msgstr "El origen es obligatorio."
+
+#: app/trips/forms.py:44
+msgid "Destination"
+msgstr "Destino"
+
+#: app/trips/forms.py:45
+msgid "La destination est obligatoire."
+msgstr "El destino es obligatorio."
+
+#: app/trips/forms.py:52
+msgid "Date de départ"
+msgstr "Fecha de salida"
+
+#: app/trips/forms.py:53
+msgid "La date de départ est obligatoire."
+msgstr "La fecha de salida es obligatoria."
+
+#: app/trips/forms.py:55
+msgid "Mode de transport"
+msgstr "Medio de transporte"
+
+#: app/trips/forms.py:56
+msgid "Choisissez un mode de transport."
+msgstr "Elige un medio de transporte."
+
+#: app/trips/forms.py:59
+msgid "Date de retour"
+msgstr "Fecha de regreso"
+
+#: app/trips/forms.py:85
+msgid "Nom du voyage"
+msgstr "Nombre del viaje"
+
+#: app/trips/forms.py:95
+msgid "Ajouter des photos"
+msgstr "Añadir fotos"
+
+#: app/trips/forms.py:96
+msgid "Choisissez au moins une photo."
+msgstr "Elige al menos una foto."
+
+#: app/trips/forms.py:100
+msgid "Envoyer"
+msgstr "Subir"
+
+#: app/trips/queries.py:32
+msgid "Date de début invalide (format attendu : AAAA-MM-JJ)."
+msgstr "Fecha de inicio no válida (formato esperado: AAAA-MM-DD)."
+
+#: app/trips/queries.py:33
+msgid "Date de fin invalide (format attendu : AAAA-MM-JJ)."
+msgstr "Fecha de fin no válida (formato esperado: AAAA-MM-DD)."
+
+#: app/trips/queries.py:39
+#, python-format
+msgid "Mode de transport inconnu : %(modes)s"
+msgstr "Medio de transporte desconocido: %(modes)s"
+
+#: app/trips/queries.py:42
+#, python-format
+msgid "Type de voyage inconnu : %(kind)s"
+msgstr "Tipo de viaje desconocido: %(kind)s"
+
+#: app/trips/queries.py:46
+msgid "Étiquettes invalides."
+msgstr "Etiquetas no válidas."
+
+#: app/trips/queries.py:49
+#, python-format
+msgid "Période inconnue : %(when)s"
+msgstr "Periodo desconocido: %(when)s"
+
+#: app/trips/routes.py:114
+msgid "Lieu introuvable : choisissez une suggestion de la liste."
+msgstr "Lugar no encontrado: elige una sugerencia de la lista."
+
+#: app/trips/routes.py:179
+msgid "Voyage ajouté."
+msgstr "Viaje añadido."
+
+#: app/trips/routes.py:194
+msgid "Voyage modifié."
+msgstr "Viaje actualizado."
+
+#: app/trips/routes.py:209
+msgid "Voyage supprimé."
+msgstr "Viaje eliminado."
+
+#: app/trips/routes.py:223
+msgid "Sélectionnez au moins deux trajets à regrouper."
+msgstr "Selecciona al menos dos trayectos para agrupar."
+
+#: app/trips/routes.py:237
+msgid "Trajets regroupés en un voyage."
+msgstr "Trayectos agrupados en un viaje."
+
+#: app/trips/routes.py:261
+msgid "Voyage enregistré."
+msgstr "Viaje guardado."
+
+#: app/trips/routes.py:272
+msgid "Voyage dégroupé : ses trajets sont de nouveau indépendants."
+msgstr "Viaje desagrupado: sus trayectos vuelven a ser independientes."
+
+#: app/trips/routes.py:285
+msgid "Trajet retiré du voyage."
+msgstr "Trayecto quitado del viaje."
+
+#: app/trips/routes.py:325
+#, python-format
+msgid "%(num)s photo ajoutée."
+msgid_plural "%(num)s photos ajoutées."
+msgstr[0] "%(num)s foto añadida."
+msgstr[1] "%(num)s fotos añadidas."
+
+#: app/trips/routes.py:373
+msgid "Photo supprimée."
+msgstr "Foto eliminada."
+
+#: app/trips/stats.py:13
+#, python-format
+msgid "%(count)s voyage"
+msgid_plural "%(count)s voyages"
+msgstr[0] "%(count)s viaje"
+msgstr[1] "%(count)s viajes"
+

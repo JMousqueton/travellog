@@ -1,0 +1,152 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import field %}
+{% block title %}{{ _("Préférences") }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <h1 class="h3 fw-bold mb-4">{{ _("Préférences") }}</h1>
+    <div class="card shadow-soft">
+      <div class="card-body p-4">
+        <p class="text-body-secondary mb-4">
+          <i class="fa-regular fa-circle-user me-1" aria-hidden="true"></i>{{ current_user.email }}
+        </p>
+        <form method="post">
+          {{ form.hidden_tag() }}
+          <div class="mb-3">
+            {{ form.locale.label(class_='form-label') }}
+            {{ form.locale(class_='form-select') }}
+          </div>
+          <div class="mb-4">
+            {{ form.theme.label(class_='form-label') }}
+            {{ form.theme(class_='form-select', **{'aria-describedby': 'theme-help'}) }}
+            <div class="form-text" id="theme-help">{{ _("Le mode automatique suit le réglage de votre appareil.") }}</div>
+          </div>
+          <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Enregistrement…') }}">
+            {{ form.submit.label.text }}</button>
+        </form>
+      </div>
+    </div>
+
+    <h2 class="h5 fw-semibold mt-5 mb-3" id="home">{{ _("Domicile") }}</h2>
+    <div class="card shadow-soft">
+      <div class="card-body p-4">
+        <p class="text-body-secondary">{{ _("Votre ville de domicile sert à calculer vos jours d'absence et vos nuits à l'étranger. Elle n'est jamais affichée sur les liens de partage.") }}</p>
+        <form method="post" action="{{ url_for('auth.set_home') }}" id="homeForm" novalidate
+              data-geocode-url="{{ url_for('api.geocode_view') }}">
+          {{ home_form.hidden_tag() }}
+          {% set f = home_form.home_name %}
+          <div class="mb-3 autocomplete" data-autocomplete data-lat="#home_lat" data-lon="#home_lon" data-country="#home_country">
+            <label class="form-label" for="{{ f.id }}">{{ f.label.text }}</label>
+            <div class="input-icon">
+              <i class="fa-solid fa-house" aria-hidden="true"></i>
+              {{ f(class_='form-control' ~ (' is-invalid' if f.errors else ''), autocomplete='off', role='combobox', spellcheck='false',
+                   placeholder=_("Ville, gare, aéroport…"),
+                   **{'aria-autocomplete': 'list', 'aria-expanded': 'false', 'aria-controls': 'home-listbox',
+                      'aria-describedby': 'home-status home-error'}) }}
+              <span class="input-spinner spinner-border spinner-border-sm" role="presentation" hidden></span>
+              <span class="input-check" aria-hidden="true" {% if home_form.home_lat.data is none %}hidden{% endif %}>
+                <i class="fa-solid fa-circle-check"></i></span>
+            </div>
+            <ul class="autocomplete-list shadow-soft" id="home-listbox" role="listbox" aria-label="{{ _('Suggestions de lieux') }}" hidden></ul>
+            <div class="visually-hidden" id="home-status" role="status" aria-live="polite"></div>
+            <div class="invalid-feedback {% if f.errors %}d-block{% endif %}" id="home-error">{{ f.errors|join(' ') }}</div>
+            {{ home_form.home_lat() }}{{ home_form.home_lon() }}{{ home_form.home_country() }}
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Enregistrement…') }}">
+              {{ home_form.submit.label.text }}</button>
+          </div>
+        </form>
+        {% if current_user.has_home %}
+        <form method="post" action="{{ url_for('auth.clear_home') }}" class="mt-2">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-link btn-sm px-0 text-danger">{{ _("Supprimer le domicile") }}</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+
+    <h2 class="h5 fw-semibold mt-5 mb-3">{{ _("Mot de passe") }}</h2>
+    <div class="card shadow-soft">
+      <div class="card-body p-4">
+        <form method="post" action="{{ url_for('auth.change_password') }}" novalidate>
+          {{ password_form.hidden_tag() }}
+          {{ field(password_form.current_password, attrs={'autocomplete': 'current-password', 'required': True}) }}
+          {{ field(password_form.password, help=_("Au moins 8 caractères."),
+                   attrs={'autocomplete': 'new-password', 'required': True, 'minlength': 8}) }}
+          {{ field(password_form.confirm, attrs={'autocomplete': 'new-password', 'required': True}) }}
+          <p class="form-text mt-0 mb-3">{{ _("Vos autres sessions seront déconnectées.") }}</p>
+          <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Enregistrement…') }}">
+            {{ password_form.submit.label.text }}</button>
+        </form>
+      </div>
+    </div>
+
+    <h2 class="h5 fw-semibold mt-5 mb-3" id="calendar">{{ _("Agenda") }}</h2>
+    <div class="card shadow-soft">
+      <div class="card-body p-4">
+        <p class="text-body-secondary">
+          {{ _("Abonnez votre agenda (Google Agenda, Apple Calendrier, Outlook…) à vos voyages : ils y apparaissent du départ au retour, et les nouveaux s'ajoutent automatiquement. Les notes ne sont pas transmises.") }}
+        </p>
+        {% if current_user.calendar_token %}
+        {% set feed = url_for('trips.calendar_feed', token=current_user.calendar_token, _external=True) %}
+        <div class="input-group mb-3">
+          <input type="text" class="form-control font-monospace form-control-sm" value="{{ feed }}" readonly
+                 aria-label="{{ _("Adresse d'abonnement") }}">
+          <button type="button" class="btn btn-outline-primary btn-sm" data-copy="{{ feed }}">
+            <i class="fa-regular fa-copy me-1" aria-hidden="true"></i>{{ _("Copier") }}</button>
+        </div>
+        <p class="form-text mt-0">{{ _("Gardez cette adresse pour vous : toute personne qui la possède voit vos dates de voyage.") }}</p>
+        <div class="d-flex flex-wrap gap-2">
+          <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" href="{{ feed|replace('https://', 'webcal://')|replace('http://', 'webcal://') }}">
+            <i class="fa-regular fa-calendar-plus me-1" aria-hidden="true"></i>{{ _("Ouvrir dans l'agenda") }}</a>
+          <form method="post" action="{{ url_for('auth.calendar_enable') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+              <i class="fa-solid fa-rotate me-1" aria-hidden="true"></i>{{ _("Changer d'adresse") }}</button>
+          </form>
+          <form method="post" action="{{ url_for('auth.calendar_disable') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">{{ _("Désactiver") }}</button>
+          </form>
+        </div>
+        {% else %}
+        <form method="post" action="{{ url_for('auth.calendar_enable') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-primary rounded-pill px-4">
+            <i class="fa-regular fa-calendar-plus me-1" aria-hidden="true"></i>{{ _("Activer l'abonnement") }}</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+
+    <h2 class="h5 fw-semibold mt-5 mb-3">{{ _("Sauvegarde") }}</h2>
+    <div class="card shadow-soft">
+      <div class="card-body p-4 d-flex flex-wrap align-items-center gap-3">
+        <p class="text-body-secondary mb-0 flex-grow-1">{{ _("Téléchargez tous vos trajets, notes, étiquettes et photos dans un fichier .zip. Il se réimporte depuis la page Importer / exporter.") }}</p>
+        <a class="btn btn-outline-primary rounded-pill px-3" href="{{ url_for('transfer.export_archive') }}" download>
+          <i class="fa-solid fa-box-archive me-1" aria-hidden="true"></i>{{ _("Télécharger ma sauvegarde") }}</a>
+      </div>
+    </div>
+
+    <h2 class="h5 fw-semibold mt-5 mb-3 text-danger">{{ _("Supprimer mon compte") }}</h2>
+    <div class="card shadow-soft border-danger-subtle">
+      <div class="card-body p-4">
+        <p class="text-body-secondary">
+          {{ _("Votre compte, vos voyages et vos liens de partage seront définitivement supprimés. Cette action est irréversible.") }}
+        </p>
+        <form method="post" action="{{ url_for('auth.delete_account') }}" novalidate>
+          {{ delete_form.hidden_tag() }}
+          {{ field(delete_form.delete_password, help=_("Confirmez avec votre mot de passe."),
+                   attrs={'autocomplete': 'current-password', 'required': True}) }}
+          <button type="submit" class="btn btn-outline-danger rounded-pill px-4">
+            <i class="fa-solid fa-trash-can me-1" aria-hidden="true"></i>{{ delete_form.submit.label.text }}</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/profile.js') }}"></script>
+{% endblock %}

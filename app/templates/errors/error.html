@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="empty-state py-5">
+  <div class="empty-illustration" aria-hidden="true"><i class="fa-solid fa-compass"></i></div>
+  <p class="display-6 fw-bold mb-1">{{ code }}</p>
+  <h1 class="h4">{{ title }}</h1>
+  <p class="text-body-secondary">{{ text }}</p>
+  <a class="btn btn-primary rounded-pill px-4" href="{{ url_for('trips.index') }}">
+    <i class="fa-solid fa-house me-1" aria-hidden="true"></i>{{ _("Retour à l'accueil") }}</a>
+</div>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import field, tags_input with context %}
+{% set title = _("Modifier le voyage") if trip else _("Nouveau voyage") %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-8 col-xl-7">
+    <nav aria-label="{{ _('Fil d’Ariane') }}" class="mb-3">
+      <a class="link-secondary text-decoration-none small" href="{{ url_for('trips.index') }}">
+        <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>{{ _("Retour à la carte") }}</a>
+    </nav>
+    <h1 class="h3 fw-bold mb-4">{{ title }}</h1>
+
+    <form method="post" novalidate id="tripForm" class="card shadow-soft"
+          data-geocode-url="{{ url_for('api.geocode_view') }}" data-draft-key="trip-form:{{ request.path }}">
+      <div class="card-body p-4 p-md-5">
+        {{ form.hidden_tag() }}
+
+        <fieldset class="mb-2">
+          <legend class="form-section-title">{{ _("Itinéraire") }}</legend>
+          <div class="route-fields">
+            {% for prefix, icon in [('origin', 'fa-location-dot'), ('dest', 'fa-flag-checkered')] %}
+            {% set f = form[prefix ~ '_name'] %}
+            <div class="mb-3 autocomplete" data-autocomplete data-lat="#{{ prefix }}_lat" data-lon="#{{ prefix }}_lon"
+                 data-country="#{{ prefix }}_country">
+              <label class="form-label" for="{{ f.id }}">{{ f.label.text }} <span class="text-danger" aria-hidden="true">*</span></label>
+              <div class="input-icon">
+                <i class="fa-solid {{ icon }}" aria-hidden="true"></i>
+                {{ f(class_='form-control' ~ (' is-invalid' if f.errors else ''), required=True, autocomplete='off',
+                     role='combobox', spellcheck='false',
+                     placeholder=_("Ville, gare, aéroport…"),
+                     **{'aria-autocomplete': 'list', 'aria-expanded': 'false', 'aria-controls': prefix ~ '-listbox',
+                        'aria-describedby': prefix ~ '-status ' ~ prefix ~ '-error',
+                        'aria-invalid': 'true' if f.errors else 'false'}) }}
+                <span class="input-spinner spinner-border spinner-border-sm" role="presentation" hidden></span>
+                <span class="input-check" aria-hidden="true" {% if form[prefix ~ '_lat'].data is none %}hidden{% endif %}>
+                  <i class="fa-solid fa-circle-check"></i></span>
+              </div>
+              <ul class="autocomplete-list shadow-soft" id="{{ prefix }}-listbox" role="listbox"
+                  aria-label="{{ _('Suggestions de lieux') }}" hidden></ul>
+              <div class="visually-hidden" id="{{ prefix }}-status" role="status" aria-live="polite"></div>
+              <div class="invalid-feedback {% if f.errors %}d-block{% endif %}" id="{{ prefix }}-error">{{ f.errors|join(' ') }}</div>
+              {{ form[prefix ~ '_lat']() }}{{ form[prefix ~ '_lon']() }}{{ form[prefix ~ '_country']() }}
+            </div>
+            {% if prefix == 'origin' %}
+            <div class="swap-row">
+              <button type="button" class="btn btn-icon btn-swap" id="swapPlaces" aria-label="{{ _('Inverser origine et destination') }}">
+                <i class="fa-solid fa-arrow-right-arrow-left fa-rotate-90" aria-hidden="true"></i></button>
+            </div>
+            {% endif %}
+            {% endfor %}
+          </div>
+        </fieldset>
+
+        <fieldset class="mb-4">
+          <legend class="form-section-title">{{ form.transport_mode.label.text }} <span class="text-danger" aria-hidden="true">*</span></legend>
+          <div class="mode-picker {% if form.transport_mode.errors %}is-invalid{% endif %}" role="radiogroup"
+               aria-label="{{ form.transport_mode.label.text }}">
+            {% for value, m in TRANSPORT_MODES.items() %}
+            <input type="radio" class="btn-check" name="transport_mode" id="mode-{{ value }}" value="{{ value }}"
+                   {% if form.transport_mode.data == value or (not form.transport_mode.data and loop.first) %}checked{% endif %} required>
+            <label class="mode-option" for="mode-{{ value }}" style="--mode-color: {{ m.color }}; --mode-color-dark: {{ m.color_dark }}">
+              <i class="fa-solid {{ m.icon }}" aria-hidden="true"></i><span>{{ m.label }}</span>
+            </label>
+            {% endfor %}
+          </div>
+          {% if form.transport_mode.errors %}<div class="invalid-feedback d-block">{{ form.transport_mode.errors|join(' ') }}</div>{% endif %}
+        </fieldset>
+
+        <fieldset>
+          <legend class="form-section-title">{{ _("Dates") }}</legend>
+          <div class="row g-3">
+            <div class="col-sm-6">
+              {{ field(form.depart_date, icon='fa-plane-departure', attrs={'required': True}) }}
+            </div>
+            <div class="col-sm-6 d-flex align-items-sm-end">
+              <div class="form-check form-switch mb-3 pb-sm-2">
+                {{ form.is_round_trip(class_='form-check-input', role='switch',
+                     **{'aria-controls': 'returnDateWrapper', 'aria-expanded': 'true' if form.is_round_trip.data else 'false'}) }}
+                {{ form.is_round_trip.label(class_='form-check-label fw-medium') }}
+              </div>
+            </div>
+          </div>
+          <div class="reveal {% if form.is_round_trip.data %}is-open{% endif %}" id="returnDateWrapper"
+               {% if not form.is_round_trip.data %}aria-hidden="true" inert{% endif %}>
+            <div class="reveal-inner">
+              <div class="row g-3"><div class="col-sm-6">
+                {{ field(form.return_date, icon='fa-plane-arrival',
+                         help=_("Le retour reprend le même itinéraire et le même mode, en sens inverse.")) }}
+              </div></div>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset class="mt-2">
+          <legend class="form-section-title">{{ _("Étiquettes et notes") }}</legend>
+          {{ tags_input(form.tags, current_user.tags) }}
+          <label class="form-label" for="{{ form.notes.id }}">{{ form.notes.label.text }}</label>
+          {{ form.notes(class_='form-control' ~ (' is-invalid' if form.notes.errors else ''), rows=4, maxlength=5000,
+                        placeholder=_("Souvenirs, adresses, conseils…")) }}
+          {% for error in form.notes.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
+          {% if trip %}<div class="form-text">{{ _("Pour ajouter des photos, ouvrez la fiche du trajet.") }}
+            <a href="{{ url_for('trips.detail', trip_id=trip.id) }}">{{ _("Ouvrir la fiche") }}</a></div>{% endif %}
+        </fieldset>
+      </div>
+      <div class="card-footer bg-transparent border-0 px-4 px-md-5 pb-4 pt-0 d-flex flex-wrap gap-2 justify-content-between">
+        <div>
+          {% if trip %}
+          <button type="button" class="btn btn-outline-danger rounded-pill px-3" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                  data-delete-url="{{ url_for('trips.delete', trip_id=trip.id) }}"
+                  data-delete-label="{{ trip.origin_name }} → {{ trip.dest_name }}" data-delete-next="{{ url_for('trips.index') }}">
+            <i class="fa-solid fa-trash-can me-1" aria-hidden="true"></i>{{ _("Supprimer") }}</button>
+          {% endif %}
+        </div>
+        <div class="d-flex gap-2">
+          <a class="btn btn-light rounded-pill px-4" href="{{ url_for('trips.index') }}">{{ _("Annuler") }}</a>
+          <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Enregistrement…') }}">
+            <i class="fa-solid fa-check me-1" aria-hidden="true"></i>{{ form.submit.label.text }}</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/trip-form.js') }}"></script>
+{% endblock %}

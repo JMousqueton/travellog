@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.pyc
+instance/
+.env
+.pytest_cache/
+*.mo
+# Données et secrets locaux (jamais publiés)
+*.db
+*.sqlite3
+*.log
+.env.*
+!.env.example

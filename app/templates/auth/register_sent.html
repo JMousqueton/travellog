@@ -1,0 +1,12 @@
+{% extends "auth/_layout.html" %}
+{% block title %}{{ _("Vérifiez votre messagerie") }}{% endblock %}
+{% block heading %}{{ _("Vérifiez votre messagerie") }}{% endblock %}
+{% block subheading %}{{ _("Un e-mail vient d'être envoyé à %(email)s.", email=email) }}{% endblock %}
+{% block form %}
+<div class="text-center">
+  <div class="empty-illustration mb-3" aria-hidden="true"><i class="fa-regular fa-envelope-open"></i></div>
+  <p>{{ _("Ouvrez-le dans les %(minutes)s minutes pour choisir votre mot de passe et créer votre compte.", minutes=minutes) }}</p>
+  <p class="small text-body-secondary">{{ _("Rien reçu ? Vérifiez les courriers indésirables, ou recommencez avec la bonne adresse.") }}</p>
+  <a class="btn btn-outline-primary rounded-pill px-4" href="{{ url_for('auth.register') }}">{{ _("Recommencer") }}</a>
+</div>
+{% endblock %}

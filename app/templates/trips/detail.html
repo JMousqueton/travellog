@@ -1,0 +1,133 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import mode_badge, country_chips, status_badge, tag_chips with context %}
+{% set item = trip or journey %}
+{% set title = (trip.origin_name ~ ' → ' ~ trip.dest_name) if trip else journey.display_name %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-9 col-xl-8">
+    <nav aria-label="{{ _('Fil d’Ariane') }}" class="mb-3">
+      <a class="link-secondary text-decoration-none small" href="{{ url_for('trips.list_view') }}">
+        <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>{{ _("Mes voyages") }}</a>
+    </nav>
+
+    <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-4">
+      <div style="min-width: 0">
+        <h1 class="h3 fw-bold mb-1">{{ title }}</h1>
+        {% set start = trip.depart_date if trip else journey.start_date %}
+        {% set end = trip.end_date if trip else journey.end_date %}
+        {% if item.status != 'past' %}<div class="mb-1">{{ status_badge(item.status, start, end) }}</div>{% endif %}
+        {% if journey and journey.name %}<div class="text-body-secondary">{{ journey.route_label }}</div>{% endif %}
+      </div>
+      <div class="d-flex flex-wrap gap-2">
+        <a class="btn btn-outline-secondary btn-sm rounded-pill px-3"
+           href="{{ url_for('trips.index', focus=trip.id if trip else journey.legs[0].id) }}">
+          <i class="fa-solid fa-map-location-dot me-1" aria-hidden="true"></i>{{ _("Voir sur la carte") }}</a>
+        <a class="btn btn-outline-secondary btn-sm rounded-pill px-3"
+           href="{{ url_for('trips.trip_ics', trip_id=trip.id) if trip else url_for('trips.journey_ics', journey_id=journey.id) }}">
+          <i class="fa-regular fa-calendar-plus me-1" aria-hidden="true"></i>{{ _("Ajouter à l'agenda") }}</a>
+        <a class="btn btn-primary btn-sm rounded-pill px-3"
+           href="{{ url_for('trips.edit', trip_id=trip.id) if trip else url_for('trips.edit_journey', journey_id=journey.id) }}">
+          <i class="fa-solid fa-pen me-1" aria-hidden="true"></i>{{ _("Modifier") }}</a>
+      </div>
+    </div>
+
+    <div class="card shadow-soft mb-4">
+      <div class="card-body p-4">
+        <dl class="detail-facts mb-0">
+          {% if trip %}
+          <div><dt>{{ _("Mode") }}</dt><dd>{{ mode_badge(trip.transport_mode) }}</dd></div>
+          <div><dt>{{ _("Départ") }}</dt><dd>{{ trip.depart_date|day }}</dd></div>
+          {% if trip.is_round_trip %}<div><dt>{{ _("Retour") }}</dt><dd>{{ trip.return_date|day }}</dd></div>{% endif %}
+          {% else %}
+          <div><dt>{{ _("Dates") }}</dt><dd>{{ journey.start_date|day }}{% if journey.end_date != journey.start_date %} – {{ journey.end_date|day }}{% endif %}</dd></div>
+          <div><dt>{{ _("Trajets") }}</dt><dd>{{ journey.legs|length }}</dd></div>
+          {% endif %}
+          <div><dt>{{ _("Distance") }}</dt><dd>{{ item.total_distance_km|distance }}
+            {% if trip %}<div class="small text-body-secondary fw-normal">
+              {% if trip.distance_source == 'route' %}{{ _("par la route") }}
+              {% elif trip.distance_source == 'estimate' %}{{ _("estimée (%(km)s à vol d'oiseau)", km=trip.straight_km|distance) }}
+              {% else %}{{ _("à vol d'oiseau") }}{% endif %}</div>{% endif %}
+          </dd></div>
+          <div><dt>{{ _("CO₂ estimé") }}</dt><dd>{{ item.co2_kg|co2 }}</dd></div>
+          <div class="detail-wide"><dt>{{ _("Pays") }}</dt><dd>{{ country_chips(item.countries) }}</dd></div>
+          {% set item_tags = trip.tags if trip else (journey.legs|map(attribute='tags')|sum(start=[])|unique|sort(attribute='name')|list) %}
+          {% if item_tags %}<div class="detail-wide"><dt>{{ _("Étiquettes") }}</dt><dd>{{ tag_chips(item_tags) }}</dd></div>{% endif %}
+        </dl>
+      </div>
+    </div>
+
+    {% if journey %}
+    <h2 class="h5 fw-semibold mb-3">{{ _("Étapes") }}</h2>
+    <ol class="list-group list-group-numbered shadow-soft mb-4">
+      {% for leg in journey.legs %}
+      <li class="list-group-item d-flex flex-wrap align-items-center gap-2">
+        <a class="fw-medium text-decoration-none me-auto" href="{{ url_for('trips.detail', trip_id=leg.id) }}">
+          {{ leg.origin_name }} → {{ leg.dest_name }}</a>
+        <span class="small text-body-secondary">{{ leg.depart_date|day }}</span>
+        {{ mode_badge(leg.transport_mode) }}
+        {% if leg.photos %}<span class="small text-body-secondary" title="{{ _('Photos') }}">
+          <i class="fa-regular fa-image me-1" aria-hidden="true"></i>{{ leg.photos|length }}</span>{% endif %}
+      </li>
+      {% endfor %}
+    </ol>
+    {% elif trip.journey %}
+    <p class="mb-4">
+      <i class="fa-solid fa-route me-1 text-primary" aria-hidden="true"></i>
+      {{ _("Fait partie du voyage") }}
+      <a href="{{ url_for('trips.journey_detail', journey_id=trip.journey.id) }}">{{ trip.journey.display_name }}</a>
+    </p>
+    {% endif %}
+
+    <h2 class="h5 fw-semibold mb-3">{{ _("Notes") }}</h2>
+    <div class="card shadow-soft mb-4">
+      <div class="card-body p-4">
+        {% if item.notes %}
+        <div class="notes-text">{{ item.notes }}</div>
+        {% else %}
+        <p class="text-body-secondary mb-0">{{ _("Aucune note.") }}
+          <a href="{{ url_for('trips.edit', trip_id=trip.id) if trip else url_for('trips.edit_journey', journey_id=journey.id) }}">{{ _("Ajouter une note") }}</a></p>
+        {% endif %}
+      </div>
+    </div>
+
+    <h2 class="h5 fw-semibold mb-3">{{ _("Photos") }}
+      {% if photos %}<span class="text-body-secondary fw-normal small">· {{ photos|length }}</span>{% endif %}</h2>
+    {% if photos %}
+    <ul class="photo-grid list-unstyled mb-4">
+      {% for photo in photos %}
+      <li class="photo-tile">
+        <a href="{{ url_for('trips.photo_file', photo_id=photo.id) }}" target="_blank" rel="noopener">
+          <img src="{{ url_for('trips.photo_thumb', photo_id=photo.id) }}" loading="lazy" width="240" height="240"
+               alt="{{ photo.original_name or _('Photo') }}"></a>
+        <form method="post" action="{{ url_for('trips.delete_photo', photo_id=photo.id) }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-sm photo-delete"
+                  aria-label="{{ _('Supprimer la photo %(name)s', name=photo.original_name or photo.id) }}"
+                  title="{{ _('Supprimer') }}"><i class="fa-solid fa-trash-can" aria-hidden="true"></i></button>
+        </form>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="card shadow-soft">
+      <div class="card-body p-4">
+        <form method="post" action="{{ upload_url }}" enctype="multipart/form-data" class="row g-2 align-items-end">
+          {{ upload_form.hidden_tag() }}
+          <div class="col-sm">
+            {{ upload_form.photos.label(class_='form-label') }}
+            {{ upload_form.photos(class_='form-control', multiple=True, accept='image/jpeg,image/png,image/webp,image/gif',
+                                  **{'aria-describedby': 'photos-help'}) }}
+            <div class="form-text" id="photos-help">
+              {{ _("JPEG, PNG, WebP ou GIF. Les métadonnées (dont la position GPS) sont retirées. Photos privées : elles n'apparaissent pas sur les liens de partage.") }}</div>
+          </div>
+          <div class="col-sm-auto">
+            <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Envoi…') }}">
+              <i class="fa-solid fa-upload me-1" aria-hidden="true"></i>{{ upload_form.submit.label.text }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
