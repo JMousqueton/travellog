@@ -3,8 +3,9 @@ import secrets
 
 from flask import g, request
 
-# Origines externes autorisées : CDN des bibliothèques et Google Fonts.
-SCRIPT_SOURCES = ("https://cdn.jsdelivr.net", "https://unpkg.com")
+# Origines externes autorisées : CDN des bibliothèques, Google Fonts et mesure d'audience (Matomo).
+ANALYTICS_ORIGIN = "https://stats.mousqueton.io"
+SCRIPT_SOURCES = ("https://cdn.jsdelivr.net", "https://unpkg.com", ANALYTICS_ORIGIN)
 STYLE_SOURCES = ("https://cdn.jsdelivr.net", "https://unpkg.com", "https://cdnjs.cloudflare.com",
                  "https://fonts.googleapis.com")
 FONT_SOURCES = ("https://cdnjs.cloudflare.com", "https://fonts.gstatic.com")
@@ -26,7 +27,7 @@ def content_security_policy(nonce):
         "style-src": ["'self'", "'unsafe-inline'", *STYLE_SOURCES],
         "font-src": ["'self'", *FONT_SOURCES],
         "img-src": ["'self'", "data:", "https:"],
-        "connect-src": ["'self'"],
+        "connect-src": ["'self'", ANALYTICS_ORIGIN],
         "object-src": ["'none'"],
         "base-uri": ["'self'"],
         "form-action": ["'self'"],

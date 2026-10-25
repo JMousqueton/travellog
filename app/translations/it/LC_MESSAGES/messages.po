@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-25 10:48+0000\n"
+"POT-Creation-Date: 2026-10-25 12:16+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -111,10 +111,6 @@ msgstr[1] "%(num)s tratte"
 #: app/api/routes.py:165
 msgid "Recherche trop longue."
 msgstr "Ricerca troppo lunga."
-
-#: app/api/routes.py:170 app/i18n.py:114 app/trips/routes.py:111
-msgid "La recherche de lieux est momentanément indisponible."
-msgstr "La ricerca dei luoghi non è al momento disponibile."
 
 #: app/auth/forms.py:16 app/auth/forms.py:28 app/auth/forms.py:91
 #: app/auth/forms.py:119 app/templates/admin/users.html:12
@@ -411,7 +407,7 @@ msgstr "Modifica o reimposta i filtri per vedere i tuoi viaggi."
 msgid "Réinitialiser les filtres"
 msgstr "Reimposta filtri"
 
-#: app/i18n.py:94 app/templates/base.html:118 app/templates/base.html:119
+#: app/i18n.py:94 app/templates/base.html:137 app/templates/base.html:138
 #: app/templates/map.html:179 app/templates/trips/list.html:11
 #: app/templates/trips/list.html:171
 msgid "Ajouter un voyage"
@@ -422,7 +418,7 @@ msgstr "Aggiungi un viaggio"
 msgid "Modifier"
 msgstr "Modifica"
 
-#: app/i18n.py:96 app/templates/base.html:196
+#: app/i18n.py:96 app/templates/base.html:215
 #: app/templates/trips/detail.html:107 app/templates/trips/form.html:112
 msgid "Supprimer"
 msgstr "Elimina"
@@ -503,6 +499,10 @@ msgstr "contributori di OpenStreetMap"
 #: app/i18n.py:113
 msgid "Aucun lieu trouvé"
 msgstr "Nessun luogo trovato"
+
+#: app/api/routes.py:170 app/i18n.py:114 app/trips/routes.py:111
+msgid "La recherche de lieux est momentanément indisponible."
+msgstr "La ricerca dei luoghi non è al momento disponibile."
 
 #: app/i18n.py:115
 msgid "Recherche…"
@@ -693,7 +693,7 @@ msgstr "Nuovi paesi"
 
 #: app/seo.py:103 app/seo.py:104 app/templates/base.html:9
 #: app/templates/base.html:19 app/templates/base.html:20
-#: app/templates/base.html:64 app/templates/landing.html:7
+#: app/templates/base.html:83 app/templates/landing.html:7
 #: app/transfer/routes.py:53 app/trips/routes.py:414 app/trips/routes.py:430
 #: app/trips/routes.py:474
 msgid "Carnet de voyages"
@@ -761,11 +761,6 @@ msgstr "Questo link ora mostra i tuoi viaggi in arrivo."
 msgid "Ce lien ne montre plus vos voyages à venir."
 msgstr "Questo link non mostra più i tuoi viaggi in arrivo."
 
-#: app/templates/admin/_nav.html:1 app/templates/admin/settings.html:2
-#: app/templates/admin/users.html:2 app/templates/base.html:134
-msgid "Administration"
-msgstr "Amministrazione"
-
 #: app/templates/admin/_nav.html:3 app/templates/admin/settings.html:2
 msgid "Paramètres"
 msgstr "Impostazioni"
@@ -794,12 +789,6 @@ msgstr "Elenco degli utenti"
 #: app/templates/admin/users.html:13
 msgid "Inscription"
 msgstr "Registrazione"
-
-#: app/templates/admin/users.html:15 app/templates/map.html:37
-#: app/templates/map.html:132 app/templates/trips/stats.html:52
-#: app/templates/trips/stats.html:200 app/templates/trips/stats.html:254
-msgid "Voyages"
-msgstr "Viaggi"
 
 #: app/templates/admin/users.html:16 app/templates/trips/list.html:108
 msgid "Actions"
@@ -897,11 +886,6 @@ msgstr "Invio…"
 msgid "Retour à la connexion"
 msgstr "Torna all'accesso"
 
-#: app/templates/auth/login.html:3 app/templates/auth/login.html:4
-#: app/templates/base.html:149
-msgid "Connexion"
-msgstr "Accedi"
-
 #: app/templates/auth/login.html:5
 msgid "Retrouvez tous vos voyages sur la carte."
 msgstr "Ritrova tutti i tuoi viaggi sulla mappa."
@@ -917,16 +901,6 @@ msgstr "Accesso in corso…"
 #: app/templates/auth/login.html:25
 msgid "Pas encore de compte ?"
 msgstr "Non hai ancora un account?"
-
-#: app/templates/auth/login.html:25 app/templates/auth/register.html:3
-#: app/templates/auth/register.html:4 app/templates/base.html:151
-msgid "Créer un compte"
-msgstr "Crea un account"
-
-#: app/templates/auth/profile.html:3 app/templates/auth/profile.html:7
-#: app/templates/base.html:127
-msgid "Préférences"
-msgstr "Preferenze"
 
 #: app/templates/auth/profile.html:22
 msgid "Le mode automatique suit le réglage de votre appareil."
@@ -1119,75 +1093,95 @@ msgstr ""
 msgid "Carnet de voyages : vos trajets sur une carte du monde"
 msgstr "Diario di viaggio: i tuoi tragitti su una mappa del mondo"
 
-#: app/templates/base.html:58
+#: app/templates/base.html:77
 msgid "Aller au contenu principal"
 msgstr "Vai al contenuto principale"
 
-#: app/templates/base.html:60
+#: app/templates/base.html:79
 msgid "Navigation principale"
 msgstr "Navigazione principale"
 
-#: app/templates/base.html:70
+#: app/templates/base.html:89
 #, python-format
 msgid "Langue : %(lang)s"
 msgstr "Lingua: %(lang)s"
 
-#: app/templates/base.html:74
+#: app/templates/base.html:93
 msgid "Choisir la langue"
 msgstr "Scegli la lingua"
 
-#: app/templates/base.html:88
+#: app/templates/base.html:107
 msgid "Basculer le thème clair ou sombre"
 msgstr "Attiva/disattiva tema chiaro o scuro"
 
-#: app/templates/base.html:93
+#: app/templates/base.html:112
 msgid "Ouvrir le menu"
 msgstr "Apri menu"
 
-#: app/templates/base.html:102 app/templates/base.html:104
+#: app/templates/base.html:121 app/templates/base.html:123
 #: app/templates/map.html:2
 msgid "Carte"
 msgstr "Mappa"
 
-#: app/templates/base.html:107 app/templates/base.html:109
+#: app/templates/base.html:126 app/templates/base.html:128
 #: app/templates/trips/detail.html:11 app/templates/trips/list.html:3
 #: app/templates/trips/list.html:6
 msgid "Mes voyages"
 msgstr "I miei viaggi"
 
-#: app/templates/base.html:112 app/templates/base.html:114
+#: app/templates/base.html:131 app/templates/base.html:133
 #: app/templates/trips/stats.html:3 app/templates/trips/stats.html:7
 msgid "Statistiques"
 msgstr "Statistiche"
 
-#: app/templates/base.html:129 app/templates/share/links.html:2
+#: app/templates/auth/profile.html:3 app/templates/auth/profile.html:7
+#: app/templates/base.html:146
+msgid "Préférences"
+msgstr "Preferenze"
+
+#: app/templates/base.html:148 app/templates/share/links.html:2
 #: app/templates/share/links.html:6
 msgid "Partager mes voyages"
 msgstr "Condividi i miei viaggi"
 
-#: app/templates/base.html:131 app/templates/transfer/index.html:2
+#: app/templates/base.html:150 app/templates/transfer/index.html:2
 #: app/templates/transfer/index.html:6 app/templates/trips/list.html:9
 #: app/templates/trips/stats.html:12
 msgid "Importer / exporter"
 msgstr "Importa / esporta"
 
-#: app/templates/base.html:141
+#: app/templates/admin/_nav.html:1 app/templates/admin/settings.html:2
+#: app/templates/admin/users.html:2 app/templates/base.html:153
+msgid "Administration"
+msgstr "Amministrazione"
+
+#: app/templates/base.html:160
 msgid "Déconnexion"
 msgstr "Esci"
 
-#: app/templates/base.html:172 app/templates/map.html:17
+#: app/templates/auth/login.html:3 app/templates/auth/login.html:4
+#: app/templates/base.html:168
+msgid "Connexion"
+msgstr "Accedi"
+
+#: app/templates/auth/login.html:25 app/templates/auth/register.html:3
+#: app/templates/auth/register.html:4 app/templates/base.html:170
+msgid "Créer un compte"
+msgstr "Crea un account"
+
+#: app/templates/base.html:191 app/templates/map.html:17
 msgid "Fermer"
 msgstr "Chiudi"
 
-#: app/templates/base.html:187
+#: app/templates/base.html:206
 msgid "Supprimer ce voyage ?"
 msgstr "Eliminare questo viaggio?"
 
-#: app/templates/base.html:190
+#: app/templates/base.html:209
 msgid "Cette action est définitive."
 msgstr "Questa azione è definitiva."
 
-#: app/templates/base.html:194 app/templates/trips/form.html:116
+#: app/templates/base.html:213 app/templates/trips/form.html:116
 #: app/templates/trips/journey.html:29
 msgid "Annuler"
 msgstr "Annulla"
@@ -1334,7 +1328,7 @@ msgstr "Hosting"
 msgid "Téléphone : %(phone)s"
 msgstr "Telefono: %(phone)s"
 
-#: app/templates/legal/notice.html:17 app/templates/legal/privacy.html:50
+#: app/templates/legal/notice.html:17 app/templates/legal/privacy.html:54
 #, python-format
 msgid "Le site et ses données sont hébergés à %(location)s."
 msgstr "Il sito e i suoi dati sono ospitati a %(location)s."
@@ -1402,7 +1396,7 @@ msgstr ""
 "indicativo. L'editore si impegna a garantire la disponibilità del "
 "servizio senza poterla assicurare; scarica regolarmente il tuo backup."
 
-#: app/templates/legal/notice.html:44 app/templates/legal/privacy.html:92
+#: app/templates/legal/notice.html:44 app/templates/legal/privacy.html:104
 #, python-format
 msgid "Dernière mise à jour : %(date)s"
 msgstr "Ultimo aggiornamento: %(date)s"
@@ -1421,13 +1415,15 @@ msgstr ""
 
 #: app/templates/legal/privacy.html:7
 msgid ""
-"En bref : vos voyages restent privés, rien n'est vendu, aucune publicité,"
-" aucun outil de mesure d'audience. Vous pouvez tout exporter ou tout "
-"supprimer vous-même, à tout moment."
+"En bref : vos voyages restent privés, rien n'est vendu, aucune publicité "
+"; seule une mesure d'audience anonyme, hébergée par l'éditeur, compte les"
+" visites. Vous pouvez tout exporter ou tout supprimer vous-même, à tout "
+"moment."
 msgstr ""
-"In breve: i tuoi viaggi restano privati, nulla viene venduto, niente "
-"pubblicità né strumenti di analisi del traffico. Puoi esportare o "
-"eliminare tutto da solo, in qualsiasi momento."
+"In breve: i tuoi viaggi restano privati, nulla viene venduto, nessuna "
+"pubblicità; solo una misurazione anonima dell'audience, ospitata "
+"dall'editore, conta le visite. Puoi esportare o eliminare tutto da solo, "
+"in qualsiasi momento."
 
 #: app/templates/legal/privacy.html:10
 msgid "Responsable du traitement"
@@ -1517,7 +1513,26 @@ msgstr "Sicurezza del servizio, rilevamento di abusi e guasti"
 msgid "Intérêt légitime (sécurité)"
 msgstr "Legittimo interesse (sicurezza)"
 
-#: app/templates/legal/privacy.html:36
+#: app/templates/legal/privacy.html:33
+msgid ""
+"Mesure d'audience (Matomo) : pages vues, page d'origine, navigateur, "
+"système, taille d'écran, adresse IP tronquée, pays approximatif"
+msgstr ""
+"Misurazione dell'audience (Matomo): pagine viste, pagina di provenienza, "
+"browser, sistema, dimensioni dello schermo, indirizzo IP troncato, paese "
+"approssimativo"
+
+#: app/templates/legal/privacy.html:34
+msgid ""
+"Compter les visites et savoir quelles pages sont utiles, pour améliorer "
+"le site"
+msgstr "Contare le visite e capire quali pagine sono utili, per migliorare il sito"
+
+#: app/templates/legal/privacy.html:35
+msgid "Intérêt légitime (statistiques anonymes, dispensées de consentement)"
+msgstr "Interesse legittimo (statistiche anonime, esenti da consenso)"
+
+#: app/templates/legal/privacy.html:39
 msgid ""
 "Les photos sont ré-enregistrées à l'envoi : leurs métadonnées (dont la "
 "position GPS et le modèle d'appareil) sont supprimées. Notes, photos, "
@@ -1531,11 +1546,11 @@ msgstr ""
 "condivisione; i viaggi in arrivo compaiono solo se l'hai scelto per quel "
 "link."
 
-#: app/templates/legal/privacy.html:40
+#: app/templates/legal/privacy.html:43
 msgid "Qui a accès à vos données"
 msgstr "Chi ha accesso ai tuoi dati"
 
-#: app/templates/legal/privacy.html:41
+#: app/templates/legal/privacy.html:44
 msgid ""
 "Seul l'éditeur, en tant qu'administrateur technique du serveur, peut y "
 "accéder. Elles ne sont ni vendues, ni louées, ni cédées. Certains "
@@ -1545,7 +1560,7 @@ msgstr ""
 "accedervi. Non vengono venduti, affittati né ceduti. Alcuni servizi di "
 "terze parti intervengono tuttavia nel funzionamento del sito:"
 
-#: app/templates/legal/privacy.html:43
+#: app/templates/legal/privacy.html:46
 msgid ""
 "Recherche de lieux : le texte que vous tapez est transmis par notre "
 "serveur au service Nominatim de la fondation OpenStreetMap. Votre adresse"
@@ -1555,7 +1570,7 @@ msgstr ""
 " servizio Nominatim della fondazione OpenStreetMap. Il tuo indirizzo IP "
 "non gli viene trasmesso."
 
-#: app/templates/legal/privacy.html:44
+#: app/templates/legal/privacy.html:47
 #, python-format
 msgid ""
 "Fonds de carte : votre navigateur télécharge les tuiles de la carte "
@@ -1564,7 +1579,23 @@ msgstr ""
 "Mappe di base: il tuo browser scarica le tessere della mappa da %(host)s,"
 " che riceve quindi il tuo indirizzo IP."
 
-#: app/templates/legal/privacy.html:45
+#: app/templates/legal/privacy.html:48
+msgid ""
+"Mesure d'audience : votre navigateur envoie les pages consultées à "
+"l'outil Matomo de l'éditeur (stats.mousqueton.io), qui reçoit donc votre "
+"adresse IP et la tronque avant de l'enregistrer. Les jetons secrets des "
+"liens de partage, d'inscription et de réinitialisation sont masqués avant"
+" l'envoi. Ces statistiques ne sont ni croisées avec votre compte, ni "
+"partagées avec qui que ce soit."
+msgstr ""
+"Misurazione dell'audience: il tuo browser invia le pagine consultate allo"
+" strumento Matomo dell'editore (stats.mousqueton.io), che riceve quindi "
+"il tuo indirizzo IP e lo tronca prima di registrarlo. I token segreti dei"
+" link di condivisione, di registrazione e di reimpostazione vengono "
+"mascherati prima dell'invio. Queste statistiche non vengono mai "
+"incrociate con il tuo account né condivise con nessuno."
+
+#: app/templates/legal/privacy.html:49
 msgid ""
 "Bibliothèques et polices de caractères : votre navigateur les télécharge "
 "depuis jsDelivr, unpkg, cdnjs (Cloudflare) et Google Fonts, qui reçoivent"
@@ -1573,7 +1604,7 @@ msgstr ""
 "Librerie e caratteri: il tuo browser li scarica da jsDelivr, unpkg, cdnjs"
 " (Cloudflare) e Google Fonts, che ricevono il tuo indirizzo IP."
 
-#: app/templates/legal/privacy.html:46
+#: app/templates/legal/privacy.html:50
 msgid ""
 "Distances routières : les coordonnées de départ et d'arrivée des trajets "
 "en voiture ou en bus sont envoyées par notre serveur à un service de "
@@ -1583,7 +1614,7 @@ msgstr ""
 "auto o autobus vengono inviate dal nostro server a un servizio di calcolo"
 " dei percorsi (OSRM)."
 
-#: app/templates/legal/privacy.html:47
+#: app/templates/legal/privacy.html:51
 msgid ""
 "Agenda : si vous activez l'abonnement, votre service d'agenda récupère "
 "vos dates et lieux de voyage (sans les notes) à l'adresse secrète que "
@@ -1593,7 +1624,7 @@ msgstr ""
 "recupera date e luoghi dei viaggi (senza le note) dall'indirizzo segreto "
 "che gli fornisci."
 
-#: app/templates/legal/privacy.html:48
+#: app/templates/legal/privacy.html:52
 msgid ""
 "Liens de partage : toute personne qui possède un de vos liens voit les "
 "voyages qu'il montre. Vous pouvez révoquer un lien à tout moment."
@@ -1601,15 +1632,15 @@ msgstr ""
 "Link di condivisione: chiunque abbia uno dei tuoi link vede i viaggi che "
 "mostra. Puoi revocare un link in qualsiasi momento."
 
-#: app/templates/legal/privacy.html:50
+#: app/templates/legal/privacy.html:54
 msgid "Les e-mails sont envoyés directement par notre serveur."
 msgstr "Le e-mail vengono inviate direttamente dal nostro server."
 
-#: app/templates/legal/privacy.html:54
+#: app/templates/legal/privacy.html:58
 msgid "Durées de conservation"
 msgstr "Tempi di conservazione"
 
-#: app/templates/legal/privacy.html:56
+#: app/templates/legal/privacy.html:60
 msgid ""
 "Compte et contenus : tant que votre compte existe. Supprimer votre compte"
 " efface immédiatement vos données et vos photos du site."
@@ -1617,7 +1648,7 @@ msgstr ""
 "Account e contenuti: finché il tuo account esiste. Eliminare l'account "
 "cancella immediatamente i tuoi dati e le tue foto dal sito."
 
-#: app/templates/legal/privacy.html:57
+#: app/templates/legal/privacy.html:61
 #, python-format
 msgid ""
 "Sauvegardes : des copies de sécurité sont faites chaque nuit et "
@@ -1628,12 +1659,16 @@ msgstr ""
 "massimo %(days)s giorni; i tuoi dati ne scompaiono quindi al più tardi "
 "%(days)s giorni dopo la cancellazione."
 
-#: app/templates/legal/privacy.html:58
+#: app/templates/legal/privacy.html:62
 #, python-format
 msgid "Journaux du serveur web : %(days)s jours."
 msgstr "Log del server web: %(days)s giorni."
 
-#: app/templates/legal/privacy.html:59
+#: app/templates/legal/privacy.html:63
+msgid "Mesure d'audience : 25 mois au plus."
+msgstr "Misurazione dell'audience: al massimo 25 mesi."
+
+#: app/templates/legal/privacy.html:64
 #, python-format
 msgid ""
 "Cache des recherches de lieux (sans lien avec votre compte) : %(days)s "
@@ -1642,7 +1677,7 @@ msgstr ""
 "Cache delle ricerche di luoghi (non collegata al tuo account): %(days)s "
 "giorni."
 
-#: app/templates/legal/privacy.html:60
+#: app/templates/legal/privacy.html:65
 #, python-format
 msgid ""
 "Liens envoyés par e-mail : %(signup)s minutes pour l'inscription, "
@@ -1651,25 +1686,27 @@ msgstr ""
 "Link inviati per e-mail: %(signup)s minuti per l'iscrizione, %(reset)s "
 "minuti per la reimpostazione della password."
 
-#: app/templates/legal/privacy.html:65
+#: app/templates/legal/privacy.html:70
 msgid "Cookies et stockage local"
 msgstr "Cookie e archiviazione locale"
 
-#: app/templates/legal/privacy.html:66
+#: app/templates/legal/privacy.html:71
 msgid ""
-"Le site n'utilise aucun cookie publicitaire ni de mesure d'audience. Les "
-"seuls éléments déposés sont nécessaires à son fonctionnement ou "
-"mémorisent vos choix ; ils ne demandent donc pas de consentement :"
+"Le site n'utilise aucun cookie publicitaire. Les éléments déposés sont "
+"nécessaires à son fonctionnement, mémorisent vos choix ou servent à une "
+"mesure d'audience anonyme limitée au site, conforme aux conditions "
+"d'exemption de la CNIL ; ils ne demandent donc pas de consentement :"
 msgstr ""
-"Il sito non usa cookie pubblicitari né di analisi. Gli unici elementi "
-"memorizzati sono necessari al funzionamento o ricordano le tue scelte, "
-"quindi non richiedono consenso:"
+"Il sito non utilizza alcun cookie pubblicitario. Gli elementi memorizzati"
+" sono necessari al suo funzionamento, ricordano le tue scelte o servono a"
+" una misurazione anonima dell'audience limitata al sito, conforme alle "
+"condizioni di esenzione della CNIL; non richiedono quindi il consenso:"
 
-#: app/templates/legal/privacy.html:68
+#: app/templates/legal/privacy.html:73
 msgid "maintient votre connexion et protège les formulaires (cookie de session)."
 msgstr "mantiene l'accesso e protegge i moduli (cookie di sessione)."
 
-#: app/templates/legal/privacy.html:69
+#: app/templates/legal/privacy.html:74
 msgid ""
 "uniquement si vous cochez « Rester connecté » : vous reconnecte "
 "automatiquement (365 jours)."
@@ -1677,11 +1714,19 @@ msgstr ""
 "solo se selezioni «Resta connesso»: ti riconnette automaticamente (365 "
 "giorni)."
 
-#: app/templates/legal/privacy.html:70
+#: app/templates/legal/privacy.html:75
 msgid "mémorise la langue choisie (1 an)."
 msgstr "ricorda la lingua scelta (1 anno)."
 
-#: app/templates/legal/privacy.html:71
+#: app/templates/legal/privacy.html:76
+msgid ""
+"mesure d'audience Matomo : distinguent les visites sans vous identifier "
+"(13 mois et 30 minutes)."
+msgstr ""
+"misurazione dell'audience Matomo: distinguono le visite senza "
+"identificarti (13 mesi e 30 minuti)."
+
+#: app/templates/legal/privacy.html:77
 msgid ""
 "Stockage local du navigateur : thème clair ou sombre, couches de carte "
 "affichées, brouillon d'un trajet en cours de saisie. Ces données ne "
@@ -1691,11 +1736,35 @@ msgstr ""
 "mappa mostrati, bozza di un tragitto in corso di inserimento. Questi dati"
 " non lasciano il tuo dispositivo."
 
-#: app/templates/legal/privacy.html:76
+#: app/templates/legal/privacy.html:79
+msgid ""
+"Vous pouvez refuser la mesure d'audience : le site cessera alors de vous "
+"compter sur ce navigateur (un cookie mémorise ce choix)."
+msgstr ""
+"Puoi rifiutare la misurazione dell'audience: il sito smetterà di contarti"
+" su questo browser (un cookie ricorda questa scelta)."
+
+#: app/templates/legal/privacy.html:81
+msgid "Accepter à nouveau d'être compté"
+msgstr "Contami di nuovo"
+
+#: app/templates/legal/privacy.html:81 app/templates/legal/privacy.html:83
+msgid "Ne plus être compté"
+msgstr "Non contarmi più"
+
+#: app/templates/legal/privacy.html:82
+msgid "Vous n'êtes plus compté dans les statistiques."
+msgstr "Non sei più conteggiato nelle statistiche."
+
+#: app/templates/legal/privacy.html:82
+msgid "Vous êtes compté dans les statistiques anonymes."
+msgstr "Sei conteggiato nelle statistiche anonime."
+
+#: app/templates/legal/privacy.html:88
 msgid "Sécurité"
 msgstr "Sicurezza"
 
-#: app/templates/legal/privacy.html:77
+#: app/templates/legal/privacy.html:89
 msgid ""
 "Connexion chiffrée (HTTPS), mots de passe hachés, limitation des "
 "tentatives de connexion, déconnexion des autres sessions au changement de"
@@ -1705,11 +1774,11 @@ msgstr ""
 "accesso, disconnessione delle altre sessioni al cambio di password, "
 "backup giornalieri."
 
-#: app/templates/legal/privacy.html:81
+#: app/templates/legal/privacy.html:93
 msgid "Vos droits"
 msgstr "I tuoi diritti"
 
-#: app/templates/legal/privacy.html:82
+#: app/templates/legal/privacy.html:94
 msgid ""
 "Vous disposez des droits d'accès, de rectification, d'effacement, de "
 "limitation, d'opposition et de portabilité de vos données. La plupart "
@@ -1719,7 +1788,7 @@ msgstr ""
 "opposizione e portabilità dei tuoi dati. La maggior parte si esercita "
 "direttamente nell'applicazione:"
 
-#: app/templates/legal/privacy.html:84
+#: app/templates/legal/privacy.html:96
 msgid ""
 "Accès et portabilité : page Importer / exporter (CSV, GeoJSON, GPX) ou "
 "sauvegarde complète avec vos photos (.zip)."
@@ -1727,17 +1796,17 @@ msgstr ""
 "Accesso e portabilità: pagina Importa / esporta (CSV, GeoJSON, GPX) o "
 "backup completo con le tue foto (.zip)."
 
-#: app/templates/legal/privacy.html:85
+#: app/templates/legal/privacy.html:97
 msgid ""
 "Rectification : modifiez vos trajets, voyages et préférences à tout "
 "moment."
 msgstr "Rettifica: modifica tragitti, viaggi e preferenze in qualsiasi momento."
 
-#: app/templates/legal/privacy.html:86
+#: app/templates/legal/privacy.html:98
 msgid "Effacement : Préférences, puis « Supprimer mon compte »."
 msgstr "Cancellazione: Preferenze, poi «Elimina il mio account»."
 
-#: app/templates/legal/privacy.html:88
+#: app/templates/legal/privacy.html:100
 msgid ""
 "Pour toute autre demande, écrivez à l'adresse de contact ci-dessus. Vous "
 "pouvez aussi adresser une réclamation à la CNIL :"
@@ -1766,6 +1835,12 @@ msgstr "Vedi il bilancio dell'anno"
 #: app/templates/map.html:32
 msgid "Tableau de bord"
 msgstr "Riepilogo"
+
+#: app/templates/admin/users.html:15 app/templates/map.html:37
+#: app/templates/map.html:132 app/templates/trips/stats.html:52
+#: app/templates/trips/stats.html:200 app/templates/trips/stats.html:254
+msgid "Voyages"
+msgstr "Viaggi"
 
 #: app/templates/map.html:42 app/templates/trips/stats.html:53
 msgid "Distance estimée"

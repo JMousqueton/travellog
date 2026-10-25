@@ -44,7 +44,7 @@ def test_privacy_policy_is_specific(client, legal):
     legal.config.update(BACKUP_KEEP=14, LEGAL_LOG_RETENTION_DAYS=52)
     html = client.get("/privacy").text
     for text in ("Politique de confidentialité", "tile.openstreetmap.org", "Google Fonts", "Nominatim",
-                 "14 jours", "52 jours", "remember_token", "CNIL", "Supprimer mon compte", "Gravelines, France"):
+                 "14 jours", "52 jours", "remember_token", "_pk_id", "stats.mousqueton.io", "CNIL", "Supprimer mon compte", "Gravelines, France"):
         assert text in html, text
     assert "OSRM" not in html  # pas de calcul d'itinéraire configuré
 

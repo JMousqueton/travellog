@@ -4,7 +4,7 @@
 {% block content %}
 <article class="legal-page mx-auto">
   <h1 class="h3 fw-bold mb-2">{{ _("Politique de confidentialité") }}</h1>
-  <p class="lead text-body-secondary">{{ _("En bref : vos voyages restent privés, rien n'est vendu, aucune publicité, aucun outil de mesure d'audience. Vous pouvez tout exporter ou tout supprimer vous-même, à tout moment.") }}</p>
+  <p class="lead text-body-secondary">{{ _("En bref : vos voyages restent privés, rien n'est vendu, aucune publicité ; seule une mesure d'audience anonyme, hébergée par l'éditeur, compte les visites. Vous pouvez tout exporter ou tout supprimer vous-même, à tout moment.") }}</p>
 
   <section>
     <h2 class="h5">{{ _("Responsable du traitement") }}</h2>
@@ -30,6 +30,9 @@
           <tr><td>{{ _("Journaux du serveur web : adresse IP, date, page demandée, navigateur") }}</td>
               <td>{{ _("Sécurité du service, détection des abus et des pannes") }}</td>
               <td>{{ _("Intérêt légitime (sécurité)") }}</td></tr>
+          <tr><td>{{ _("Mesure d'audience (Matomo) : pages vues, page d'origine, navigateur, système, taille d'écran, adresse IP tronquée, pays approximatif") }}</td>
+              <td>{{ _("Compter les visites et savoir quelles pages sont utiles, pour améliorer le site") }}</td>
+              <td>{{ _("Intérêt légitime (statistiques anonymes, dispensées de consentement)") }}</td></tr>
         </tbody>
       </table>
     </div>
@@ -42,6 +45,7 @@
     <ul>
       <li>{{ _("Recherche de lieux : le texte que vous tapez est transmis par notre serveur au service Nominatim de la fondation OpenStreetMap. Votre adresse IP ne lui est pas transmise.") }}</li>
       <li>{{ _("Fonds de carte : votre navigateur télécharge les tuiles de la carte depuis %(host)s, qui reçoit donc votre adresse IP.", host=tile_host) }}</li>
+      <li>{{ _("Mesure d'audience : votre navigateur envoie les pages consultées à l'outil Matomo de l'éditeur (stats.mousqueton.io), qui reçoit donc votre adresse IP et la tronque avant de l'enregistrer. Les jetons secrets des liens de partage, d'inscription et de réinitialisation sont masqués avant l'envoi. Ces statistiques ne sont ni croisées avec votre compte, ni partagées avec qui que ce soit.") }}</li>
       <li>{{ _("Bibliothèques et polices de caractères : votre navigateur les télécharge depuis jsDelivr, unpkg, cdnjs (Cloudflare) et Google Fonts, qui reçoivent votre adresse IP.") }}</li>
       {% if routing %}<li>{{ _("Distances routières : les coordonnées de départ et d'arrivée des trajets en voiture ou en bus sont envoyées par notre serveur à un service de calcul d'itinéraire (OSRM).") }}</li>{% endif %}
       <li>{{ _("Agenda : si vous activez l'abonnement, votre service d'agenda récupère vos dates et lieux de voyage (sans les notes) à l'adresse secrète que vous lui donnez.") }}</li>
@@ -56,6 +60,7 @@
       <li>{{ _("Compte et contenus : tant que votre compte existe. Supprimer votre compte efface immédiatement vos données et vos photos du site.") }}</li>
       <li>{{ _("Sauvegardes : des copies de sécurité sont faites chaque nuit et conservées %(days)s jours au plus ; vos données y disparaissent donc au plus tard %(days)s jours après leur suppression.", days=backup_days) }}</li>
       <li>{{ _("Journaux du serveur web : %(days)s jours.", days=log_days) }}</li>
+      <li>{{ _("Mesure d'audience : 25 mois au plus.") }}</li>
       <li>{{ _("Cache des recherches de lieux (sans lien avec votre compte) : %(days)s jours.", days=geocode_days) }}</li>
       <li>{{ _("Liens envoyés par e-mail : %(signup)s minutes pour l'inscription, %(reset)s minutes pour la réinitialisation du mot de passe.", signup=signup_minutes, reset=reset_minutes) }}</li>
     </ul>
@@ -63,13 +68,20 @@
 
   <section>
     <h2 class="h5">{{ _("Cookies et stockage local") }}</h2>
-    <p>{{ _("Le site n'utilise aucun cookie publicitaire ni de mesure d'audience. Les seuls éléments déposés sont nécessaires à son fonctionnement ou mémorisent vos choix ; ils ne demandent donc pas de consentement :") }}</p>
+    <p>{{ _("Le site n'utilise aucun cookie publicitaire. Les éléments déposés sont nécessaires à son fonctionnement, mémorisent vos choix ou servent à une mesure d'audience anonyme limitée au site, conforme aux conditions d'exemption de la CNIL ; ils ne demandent donc pas de consentement :") }}</p>
     <ul>
       <li><code>session</code> — {{ _("maintient votre connexion et protège les formulaires (cookie de session).") }}</li>
       <li><code>remember_token</code> — {{ _("uniquement si vous cochez « Rester connecté » : vous reconnecte automatiquement (365 jours).") }}</li>
       <li><code>lang</code> — {{ _("mémorise la langue choisie (1 an).") }}</li>
+      <li><code>_pk_id</code>, <code>_pk_ses</code> — {{ _("mesure d'audience Matomo : distinguent les visites sans vous identifier (13 mois et 30 minutes).") }}</li>
       <li>{{ _("Stockage local du navigateur : thème clair ou sombre, couches de carte affichées, brouillon d'un trajet en cours de saisie. Ces données ne quittent pas votre appareil.") }}</li>
     </ul>
+    <p>{{ _("Vous pouvez refuser la mesure d'audience : le site cessera alors de vous compter sur ce navigateur (un cookie mémorise ce choix).") }}</p>
+    <p><button type="button" class="btn btn-outline-secondary btn-sm" id="matomo-optout"
+               data-label-out="{{ _("Ne plus être compté") }}" data-label-in="{{ _("Accepter à nouveau d'être compté") }}"
+               data-status-out="{{ _("Vous n'êtes plus compté dans les statistiques.") }}" data-status-in="{{ _("Vous êtes compté dans les statistiques anonymes.") }}"
+               disabled>{{ _("Ne plus être compté") }}</button>
+      <span class="small text-body-secondary ms-2" id="matomo-optout-status" role="status"></span></p>
   </section>
 
   <section>
@@ -91,4 +103,25 @@
 
   <p class="small text-body-secondary mt-4">{{ _("Dernière mise à jour : %(date)s", date=updated|day) }}</p>
 </article>
+{% endblock %}
+
+{% block scripts %}
+<script nonce="{{ csp_nonce() }}">
+  /* Bouton d'opposition à la mesure d'audience (API JavaScript de Matomo). */
+  _paq.push([function () {
+    var tracker = this, button = document.getElementById("matomo-optout"),
+        status = document.getElementById("matomo-optout-status");
+    function render() {
+      var out = tracker.isUserOptedOut();
+      button.textContent = out ? button.dataset.labelIn : button.dataset.labelOut;
+      status.textContent = out ? button.dataset.statusOut : button.dataset.statusIn;
+    }
+    button.addEventListener("click", function () {
+      if (tracker.isUserOptedOut()) { _paq.push(["forgetUserOptOut"]); } else { _paq.push(["optUserOut"]); }
+      setTimeout(render, 0);
+    });
+    button.disabled = false;
+    render();
+  }]);
+</script>
 {% endblock %}

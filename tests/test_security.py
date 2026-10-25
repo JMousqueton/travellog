@@ -30,6 +30,19 @@ def test_inline_script_nonce_matches_csp(client):
     assert nonce not in client.get("/").headers["Content-Security-Policy"]  # un nonce par requête
 
 
+def test_matomo_on_every_page_and_allowed_by_csp(client):
+    for path in ("/", "/auth/login", "/privacy", "/does-not-exist"):
+        response = client.get(path)
+        assert "setSiteId', '13'" in response.text, path
+        csp = response.headers["Content-Security-Policy"]
+        assert "https://stats.mousqueton.io" in csp.split("script-src")[1].split(";")[0]
+        assert "https://stats.mousqueton.io" in csp.split("connect-src")[1].split(";")[0]
+
+
+def test_matomo_masks_secret_tokens(client):
+    assert "(s|signup|reset)" in client.get("/").text
+
+
 def test_cdn_assets_have_integrity(auth_client):
     html = auth_client.get("/").text
     for tag in re.findall(r"<(?:script|link)[^>]+(?:src|href)=\"https://(?:cdn\.jsdelivr|unpkg|cdnjs)[^>]+>", html):
