@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-25 12:34+0000\n"
+"POT-Creation-Date: 2026-10-25 13:37+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,61 +18,61 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: app/__init__.py:44 app/__init__.py:51
+#: app/__init__.py:45 app/__init__.py:52
 msgid "Connectez-vous pour accéder à cette page."
 msgstr "Please log in to access this page."
 
-#: app/__init__.py:50
+#: app/__init__.py:51
 msgid "Authentification requise."
 msgstr "Authentication required."
 
-#: app/__init__.py:101
+#: app/__init__.py:102
 msgid "Requête invalide"
 msgstr "Bad request"
 
-#: app/__init__.py:101
+#: app/__init__.py:102
 msgid "La requête envoyée n'a pas pu être traitée."
 msgstr "The request could not be processed."
 
-#: app/__init__.py:102
+#: app/__init__.py:103
 msgid "Accès refusé"
 msgstr "Access denied"
 
-#: app/__init__.py:102
+#: app/__init__.py:103
 msgid "Vous n'avez pas l'autorisation d'accéder à cette page."
 msgstr "You are not allowed to access this page."
 
-#: app/__init__.py:103
+#: app/__init__.py:104
 msgid "Page introuvable"
 msgstr "Page not found"
 
-#: app/__init__.py:103
+#: app/__init__.py:104
 msgid "La page demandée n'existe pas ou a été déplacée."
 msgstr "The page you requested does not exist or has been moved."
 
-#: app/__init__.py:104
+#: app/__init__.py:105
 msgid "Fichier trop volumineux"
 msgstr "File too large"
 
-#: app/__init__.py:104
+#: app/__init__.py:105
 msgid "Le fichier envoyé dépasse la taille autorisée."
 msgstr "The uploaded file exceeds the allowed size."
 
-#: app/__init__.py:105
+#: app/__init__.py:106
 msgid "Trop de tentatives"
 msgstr "Too many attempts"
 
-#: app/__init__.py:105
+#: app/__init__.py:106
 msgid ""
 "Vous avez effectué trop de demandes. Patientez quelques minutes puis "
 "réessayez."
 msgstr "You have made too many requests. Please wait a few minutes and try again."
 
-#: app/__init__.py:106
+#: app/__init__.py:107
 msgid "Erreur interne"
 msgstr "Internal error"
 
-#: app/__init__.py:106
+#: app/__init__.py:107
 msgid "Une erreur inattendue s'est produite. Réessayez plus tard."
 msgstr "An unexpected error occurred. Please try again later."
 
@@ -98,17 +98,17 @@ msgstr "The account %(email)s has been deleted."
 msgid "Paramètres enregistrés."
 msgstr "Settings saved."
 
-#: app/api/routes.py:111 app/api/routes.py:123
+#: app/api/routes.py:124 app/api/routes.py:136
 #: app/templates/admin/users.html:34 app/templates/trips/list.html:126
-#: app/templates/trips/stats.html:99 app/templates/trips/stats.html:213
-#: app/templates/trips/stats.html:323
+#: app/templates/trips/stats.html:102 app/templates/trips/stats.html:216
+#: app/templates/trips/stats.html:326
 #, python-format
 msgid "%(num)s trajet"
 msgid_plural "%(num)s trajets"
 msgstr[0] "%(num)s leg"
 msgstr[1] "%(num)s legs"
 
-#: app/api/routes.py:165
+#: app/api/routes.py:178
 msgid "Recherche trop longue."
 msgstr "Search query is too long."
 
@@ -399,7 +399,7 @@ msgstr "Change or reset the filters to see your trips."
 msgid "Réinitialiser les filtres"
 msgstr "Reset filters"
 
-#: app/i18n.py:94 app/templates/base.html:137 app/templates/base.html:138
+#: app/i18n.py:94 app/templates/base.html:138 app/templates/base.html:139
 #: app/templates/map.html:177 app/templates/trips/list.html:11
 #: app/templates/trips/list.html:171
 msgid "Ajouter un voyage"
@@ -410,7 +410,7 @@ msgstr "Add a trip"
 msgid "Modifier"
 msgstr "Edit"
 
-#: app/i18n.py:96 app/templates/base.html:215
+#: app/i18n.py:96 app/templates/base.html:216
 #: app/templates/trips/detail.html:107 app/templates/trips/form.html:112
 msgid "Supprimer"
 msgstr "Delete"
@@ -441,8 +441,8 @@ msgid "Retour"
 msgstr "Return"
 
 #: app/i18n.py:102 app/templates/trips/detail.html:46
-#: app/templates/trips/list.html:107 app/templates/trips/stats.html:201
-#: app/templates/trips/stats.html:255
+#: app/templates/trips/list.html:107 app/templates/trips/stats.html:204
+#: app/templates/trips/stats.html:258
 msgid "Distance"
 msgstr "Distance"
 
@@ -492,7 +492,7 @@ msgstr "OpenStreetMap contributors"
 msgid "Aucun lieu trouvé"
 msgstr "No place found"
 
-#: app/api/routes.py:170 app/i18n.py:114 app/trips/routes.py:111
+#: app/api/routes.py:183 app/i18n.py:114 app/trips/routes.py:111
 msgid "La recherche de lieux est momentanément indisponible."
 msgstr "Place search is temporarily unavailable."
 
@@ -563,7 +563,7 @@ msgstr "This field is required."
 msgid "La date de début doit précéder la date de fin."
 msgstr "Start date must be before end date."
 
-#: app/i18n.py:131 app/templates/trips/stats.html:314
+#: app/i18n.py:131 app/templates/trips/stats.html:317
 msgid "Pays visités"
 msgstr "Countries visited"
 
@@ -585,7 +585,7 @@ msgid "À venir (estompé)"
 msgstr "Upcoming (faded)"
 
 #: app/i18n.py:137 app/templates/trips/stats.html:55
-#: app/templates/trips/stats.html:91
+#: app/templates/trips/stats.html:94
 msgid "Lieux visités"
 msgstr "Places visited"
 
@@ -685,9 +685,9 @@ msgstr "New countries"
 
 #: app/seo.py:103 app/seo.py:104 app/templates/base.html:9
 #: app/templates/base.html:19 app/templates/base.html:20
-#: app/templates/base.html:83 app/templates/landing.html:7
-#: app/transfer/routes.py:53 app/trips/routes.py:414 app/trips/routes.py:430
-#: app/trips/routes.py:474
+#: app/templates/base.html:84 app/templates/landing.html:7
+#: app/transfer/routes.py:53 app/trips/routes.py:415 app/trips/routes.py:431
+#: app/trips/routes.py:475
 msgid "Carnet de voyages"
 msgstr "Travel Log"
 
@@ -735,19 +735,19 @@ msgstr "Also show upcoming trips"
 msgid "Générer un lien"
 msgstr "Generate a link"
 
-#: app/share/routes.py:27
+#: app/share/routes.py:28
 msgid "Lien de partage créé. Toute personne qui le possède peut voir vos voyages."
 msgstr "Share link created. Anyone who has it can see your trips."
 
-#: app/share/routes.py:40
+#: app/share/routes.py:41
 msgid "Lien révoqué : il ne donne plus accès à vos voyages."
 msgstr "Link revoked: it no longer gives access to your trips."
 
-#: app/share/routes.py:52
+#: app/share/routes.py:53
 msgid "Ce lien montre désormais vos voyages à venir."
 msgstr "This link now shows your upcoming trips."
 
-#: app/share/routes.py:53
+#: app/share/routes.py:54
 msgid "Ce lien ne montre plus vos voyages à venir."
 msgstr "This link no longer shows your upcoming trips."
 
@@ -1080,95 +1080,95 @@ msgstr ""
 msgid "Carnet de voyages : vos trajets sur une carte du monde"
 msgstr "Travel Log: your trips on a world map"
 
-#: app/templates/base.html:77
+#: app/templates/base.html:78
 msgid "Aller au contenu principal"
 msgstr "Skip to main content"
 
-#: app/templates/base.html:79
+#: app/templates/base.html:80
 msgid "Navigation principale"
 msgstr "Main navigation"
 
-#: app/templates/base.html:89
+#: app/templates/base.html:90
 #, python-format
 msgid "Langue : %(lang)s"
 msgstr "Language: %(lang)s"
 
-#: app/templates/base.html:93
+#: app/templates/base.html:94
 msgid "Choisir la langue"
 msgstr "Choose language"
 
-#: app/templates/base.html:107
+#: app/templates/base.html:108
 msgid "Basculer le thème clair ou sombre"
 msgstr "Toggle light or dark theme"
 
-#: app/templates/base.html:112
+#: app/templates/base.html:113
 msgid "Ouvrir le menu"
 msgstr "Open menu"
 
-#: app/templates/base.html:121 app/templates/base.html:123
+#: app/templates/base.html:122 app/templates/base.html:124
 #: app/templates/map.html:2
 msgid "Carte"
 msgstr "Map"
 
-#: app/templates/base.html:126 app/templates/base.html:128
+#: app/templates/base.html:127 app/templates/base.html:129
 #: app/templates/trips/detail.html:11 app/templates/trips/list.html:3
 #: app/templates/trips/list.html:6
 msgid "Mes voyages"
 msgstr "My trips"
 
-#: app/templates/base.html:131 app/templates/base.html:133
+#: app/templates/base.html:132 app/templates/base.html:134
 #: app/templates/trips/stats.html:3 app/templates/trips/stats.html:7
 msgid "Statistiques"
 msgstr "Statistics"
 
 #: app/templates/auth/profile.html:3 app/templates/auth/profile.html:7
-#: app/templates/base.html:146
+#: app/templates/base.html:147
 msgid "Préférences"
 msgstr "Preferences"
 
-#: app/templates/base.html:148 app/templates/share/links.html:2
+#: app/templates/base.html:149 app/templates/share/links.html:2
 #: app/templates/share/links.html:6
 msgid "Partager mes voyages"
 msgstr "Share my trips"
 
-#: app/templates/base.html:150 app/templates/transfer/index.html:2
+#: app/templates/base.html:151 app/templates/transfer/index.html:2
 #: app/templates/transfer/index.html:6 app/templates/trips/list.html:9
 #: app/templates/trips/stats.html:12
 msgid "Importer / exporter"
 msgstr "Import / export"
 
 #: app/templates/admin/_nav.html:1 app/templates/admin/settings.html:2
-#: app/templates/admin/users.html:2 app/templates/base.html:153
+#: app/templates/admin/users.html:2 app/templates/base.html:154
 msgid "Administration"
 msgstr "Administration"
 
-#: app/templates/base.html:160
+#: app/templates/base.html:161
 msgid "Déconnexion"
 msgstr "Log out"
 
 #: app/templates/auth/login.html:3 app/templates/auth/login.html:4
-#: app/templates/base.html:168
+#: app/templates/base.html:169
 msgid "Connexion"
 msgstr "Log in"
 
 #: app/templates/auth/login.html:25 app/templates/auth/register.html:3
-#: app/templates/auth/register.html:4 app/templates/base.html:170
+#: app/templates/auth/register.html:4 app/templates/base.html:171
 msgid "Créer un compte"
 msgstr "Sign up"
 
-#: app/templates/base.html:191 app/templates/map.html:15
+#: app/templates/base.html:192 app/templates/map.html:15
 msgid "Fermer"
 msgstr "Close"
 
-#: app/templates/base.html:206
+#: app/templates/base.html:207
 msgid "Supprimer ce voyage ?"
 msgstr "Delete this trip?"
 
-#: app/templates/base.html:209
+#: app/templates/base.html:210
 msgid "Cette action est définitive."
 msgstr "This cannot be undone."
 
-#: app/templates/base.html:213 app/templates/trips/form.html:116
+#: app/templates/base.html:214 app/templates/trips/form.html:116
 #: app/templates/trips/journey.html:29
 msgid "Annuler"
 msgstr "Cancel"
@@ -1265,10 +1265,23 @@ msgid "Vos données vous appartiennent"
 msgstr "Your data belongs to you"
 
 #: app/templates/landing.html:67
+msgid "Gratuit, sans publicité, open source ; export complet à tout moment."
+msgstr "Free, no ads, open source; full export at any time."
+
+#: app/templates/landing.html:81
+msgid "Importez votre historique de vols"
+msgstr "Import your flight history"
+
+#: app/templates/landing.html:83
+#, python-format
 msgid ""
-"Gratuit, sans publicité ni pistage, open source ; export complet à tout "
-"moment."
-msgstr "Free, no ads or tracking, open source; full export at any time."
+"Vous suivez déjà vos vols avec %(flighty)s ou %(fr24)s ? Importez leur "
+"export CSV : chaque vol devient un trajet sur votre carte, avec son "
+"numéro, la compagnie et l'avion."
+msgstr ""
+"Already tracking your flights with %(flighty)s or %(fr24)s? Import their "
+"CSV export: each flight becomes a trip on your map, with its number, "
+"airline and aircraft."
 
 #: app/templates/legal/_contact.html:2
 msgid "adresse de contact bientôt disponible"
@@ -1814,12 +1827,13 @@ msgid "Voir le bilan de l'année"
 msgstr "See the year in review"
 
 #: app/templates/map.html:30
-msgid "Tableau de bord"
-msgstr "Dashboard"
+#, python-format
+msgid "Tableau de bord %(year)s"
+msgstr "Dashboard %(year)s"
 
 #: app/templates/admin/users.html:15 app/templates/map.html:35
 #: app/templates/map.html:130 app/templates/trips/stats.html:52
-#: app/templates/trips/stats.html:200 app/templates/trips/stats.html:254
+#: app/templates/trips/stats.html:203 app/templates/trips/stats.html:257
 msgid "Voyages"
 msgstr "Trips"
 
@@ -1832,8 +1846,8 @@ msgid "Pays et territoires"
 msgstr "Countries and territories"
 
 #: app/templates/map.html:50 app/templates/trips/detail.html:52
-#: app/templates/trips/stats.html:57 app/templates/trips/stats.html:204
-#: app/templates/trips/stats.html:256
+#: app/templates/trips/stats.html:57 app/templates/trips/stats.html:207
+#: app/templates/trips/stats.html:259
 msgid "CO₂ estimé"
 msgstr "Estimated CO₂"
 
@@ -2124,7 +2138,17 @@ msgstr ""
 "already present are skipped, and the country is derived from the "
 "coordinates if missing."
 
-#: app/templates/transfer/index.html:70
+#: app/templates/transfer/index.html:68
+msgid ""
+"Les historiques de vols exportés en CSV par Flighty ou myFlightradar24 "
+"sont aussi reconnus : chaque vol devient un trajet en avion (les vols "
+"annulés sont ignorés)."
+msgstr ""
+"Flight histories exported as CSV by Flighty or myFlightradar24 are also "
+"recognised: each flight becomes a plane trip (cancelled flights are "
+"skipped)."
+
+#: app/templates/transfer/index.html:71
 msgid "Import…"
 msgstr "Importing…"
 
@@ -2165,7 +2189,7 @@ msgstr "estimated (%(km)s as the crow flies)"
 msgid "à vol d'oiseau"
 msgstr "as the crow flies"
 
-#: app/templates/trips/detail.html:53 app/templates/trips/stats.html:203
+#: app/templates/trips/detail.html:53 app/templates/trips/stats.html:206
 msgid "Pays"
 msgstr "Countries"
 
@@ -2351,7 +2375,7 @@ msgid "Essayez un autre mot, ou une partie du nom d'un lieu."
 msgstr "Try another word, or part of a place name."
 
 #: app/templates/trips/review.html:3 app/templates/trips/review.html:9
-#: app/templates/trips/review.html:128 app/templates/trips/stats.html:211
+#: app/templates/trips/review.html:128 app/templates/trips/stats.html:214
 #, python-format
 msgid "Bilan %(year)s"
 msgstr "%(year)s in review"
@@ -2479,25 +2503,30 @@ msgstr[1] ""
 "%(num)s trips have no identified country (point at sea or outside known "
 "borders)."
 
-#: app/templates/trips/stats.html:76
-msgid "Badges"
-msgstr "Badges"
+#: app/templates/trips/stats.html:74
+msgid "Badges · tous vos voyages"
+msgstr "Badges · all your trips"
 
-#: app/templates/trips/stats.html:84
+#: app/templates/trips/stats.html:75
+#, python-format
+msgid "Badges de l'année %(year)s"
+msgstr "%(year)s badges"
+
+#: app/templates/trips/stats.html:86
 #, python-format
 msgid "%(num)s badge à obtenir"
 msgid_plural "%(num)s badges à obtenir"
 msgstr[0] "%(num)s badge to earn"
 msgstr[1] "%(num)s badges to earn"
 
-#: app/templates/trips/stats.html:106
+#: app/templates/trips/stats.html:109
 #, python-format
 msgid "Voir %(num)s autre lieu"
 msgid_plural "Voir les %(num)s autres lieux"
 msgstr[0] "See %(num)s more place"
 msgstr[1] "See the %(num)s other places"
 
-#: app/templates/trips/stats.html:111
+#: app/templates/trips/stats.html:114
 msgid ""
 "Les lieux distants de moins de 15 km comptent pour un seul (par exemple "
 "une ville et son aéroport)."
@@ -2505,34 +2534,34 @@ msgstr ""
 "Places less than 15 km apart count as one (for example a city and its "
 "airport)."
 
-#: app/templates/trips/stats.html:112
+#: app/templates/trips/stats.html:115
 msgid "Votre domicile n'est pas compté."
 msgstr "Your home is not counted."
 
-#: app/templates/trips/stats.html:113
+#: app/templates/trips/stats.html:116
 msgid "Aucun lieu visité pour l'instant."
 msgstr "No places visited yet."
 
-#: app/templates/trips/stats.html:117
+#: app/templates/trips/stats.html:120
 msgid "Continents"
 msgstr "Continents"
 
-#: app/templates/trips/stats.html:124
+#: app/templates/trips/stats.html:127
 #, python-format
 msgid "%(num)s pays"
 msgid_plural "%(num)s pays"
 msgstr[0] "%(num)s country"
 msgstr[1] "%(num)s countries"
 
-#: app/templates/trips/stats.html:127
+#: app/templates/trips/stats.html:130
 msgid "Pas encore visité"
 msgstr "Not visited yet"
 
-#: app/templates/trips/stats.html:134 app/templates/trips/stats.html:168
+#: app/templates/trips/stats.html:137 app/templates/trips/stats.html:171
 msgid "Jours d'absence"
 msgstr "Days away"
 
-#: app/templates/trips/stats.html:138
+#: app/templates/trips/stats.html:141
 msgid ""
 "Indiquez votre ville de domicile pour voir le nombre de jours passés en "
 "voyage, vos nuits à l'étranger et votre plus longue absence."
@@ -2540,42 +2569,42 @@ msgstr ""
 "Set your home city to see how many days you spent travelling, your nights"
 " abroad and your longest time away."
 
-#: app/templates/trips/stats.html:139
+#: app/templates/trips/stats.html:142
 msgid "Définir mon domicile"
 msgstr "Set my home"
 
-#: app/templates/trips/stats.html:142
+#: app/templates/trips/stats.html:145
 #, python-format
 msgid "Aucune absence : aucun trajet ne part encore de %(home)s."
 msgstr "No time away: no trip leaves from %(home)s yet."
 
-#: app/templates/trips/stats.html:146
+#: app/templates/trips/stats.html:149
 msgid "jour loin de chez moi"
 msgid_plural "jours loin de chez moi"
 msgstr[0] "day away from home"
 msgstr[1] "days away from home"
 
-#: app/templates/trips/stats.html:147
+#: app/templates/trips/stats.html:150
 msgid "nuit à l'étranger"
 msgid_plural "nuits à l'étranger"
 msgstr[0] "night abroad"
 msgstr[1] "nights abroad"
 
-#: app/templates/trips/stats.html:148
+#: app/templates/trips/stats.html:151
 msgid "jours : plus longue absence"
 msgstr "days: longest time away"
 
-#: app/templates/trips/stats.html:157
+#: app/templates/trips/stats.html:160
 #, python-format
 msgid "Plus longue absence : du %(start)s au %(end)s (%(places)s)."
 msgstr "Longest time away: from %(start)s to %(end)s (%(places)s)."
 
-#: app/templates/trips/stats.html:159
+#: app/templates/trips/stats.html:162
 #, python-format
 msgid "Depuis %(home)s, dans un rayon de 30 km."
 msgstr "From %(home)s, within a 30 km radius."
 
-#: app/templates/trips/stats.html:160
+#: app/templates/trips/stats.html:163
 #, python-format
 msgid ""
 "%(num)s absence n'a pas de retour renseigné : elle s'arrête au dernier "
@@ -2588,68 +2617,68 @@ msgstr[1] ""
 "%(num)s times away have no recorded return: they end at the last known "
 "trip."
 
-#: app/templates/trips/stats.html:167 app/templates/trips/stats.html:199
+#: app/templates/trips/stats.html:170 app/templates/trips/stats.html:202
 msgid "Année"
 msgstr "Year"
 
-#: app/templates/trips/stats.html:169
+#: app/templates/trips/stats.html:172
 msgid "Part de l'année"
 msgstr "Share of the year"
 
-#: app/templates/trips/stats.html:170
+#: app/templates/trips/stats.html:173
 msgid "Nuits à l'étranger"
 msgstr "Nights abroad"
 
-#: app/templates/trips/stats.html:171
+#: app/templates/trips/stats.html:174
 msgid "Départs"
 msgstr "Departures"
 
-#: app/templates/trips/stats.html:193
+#: app/templates/trips/stats.html:196
 msgid "Année par année"
 msgstr "Year by year"
 
-#: app/templates/trips/stats.html:202
+#: app/templates/trips/stats.html:205
 msgid "Modes"
 msgstr "Modes"
 
-#: app/templates/trips/stats.html:231
+#: app/templates/trips/stats.html:234
 #, python-format
 msgid "Nouveaux : %(list)s"
 msgstr "New: %(list)s"
 
-#: app/templates/trips/stats.html:247
+#: app/templates/trips/stats.html:250
 msgid "Par étiquette"
 msgstr "By tag"
 
-#: app/templates/trips/stats.html:253
+#: app/templates/trips/stats.html:256
 msgid "Étiquette"
 msgstr "Tag"
 
-#: app/templates/trips/stats.html:257
+#: app/templates/trips/stats.html:260
 #, python-format
 msgid "CO₂ en %(year)s"
 msgstr "CO₂ in %(year)s"
 
-#: app/templates/trips/stats.html:265
+#: app/templates/trips/stats.html:268
 msgid "Sans étiquette"
 msgstr "No tag"
 
-#: app/templates/trips/stats.html:272
+#: app/templates/trips/stats.html:275
 #, python-format
 msgid "%(num)s voyage"
 msgid_plural "%(num)s voyages"
 msgstr[0] "%(num)s trip"
 msgstr[1] "%(num)s trips"
 
-#: app/templates/trips/stats.html:286
+#: app/templates/trips/stats.html:289
 msgid "Émissions par mode"
 msgstr "Emissions by mode"
 
-#: app/templates/trips/stats.html:299
+#: app/templates/trips/stats.html:302
 msgid "Comment est-ce calculé ?"
 msgstr "How is this calculated?"
 
-#: app/templates/trips/stats.html:300
+#: app/templates/trips/stats.html:303
 #, python-format
 msgid ""
 "Estimation par voyageur et par trajet. Distance : itinéraire calculé "
@@ -2663,7 +2692,7 @@ msgstr ""
 " (road and bike ×%(road)s, train ×%(rail)s, boat ×%(boat)s; plane in a "
 "straight line). Average emission factors from ADEME (Base Carbone):"
 
-#: app/templates/trips/stats.html:303
+#: app/templates/trips/stats.html:306
 #, python-format
 msgid ""
 "Avion : %(short)s g/km (moins de 1 000 km), %(medium)s g/km (jusqu'à 3 "
@@ -2672,35 +2701,55 @@ msgstr ""
 "Plane: %(short)s g/km (under 1,000 km), %(medium)s g/km (up to 3,500 km),"
 " %(long)s g/km beyond, contrails included"
 
-#: app/templates/trips/stats.html:305
+#: app/templates/trips/stats.html:308
 #, python-format
 msgid "Train : %(value)s g/km"
 msgstr "Train: %(value)s g/km"
 
-#: app/templates/trips/stats.html:305
+#: app/templates/trips/stats.html:308
 #, python-format
 msgid "Autocar : %(value)s g/km"
 msgstr "Coach: %(value)s g/km"
 
-#: app/templates/trips/stats.html:305
+#: app/templates/trips/stats.html:308
 #, python-format
 msgid "Ferry : %(value)s g/km"
 msgstr "Ferry: %(value)s g/km"
 
-#: app/templates/trips/stats.html:306
+#: app/templates/trips/stats.html:309
 #, python-format
 msgid "Voiture : %(value)s g/km, une personne à bord"
 msgstr "Car: %(value)s g/km, one person on board"
 
-#: app/templates/trips/stats.html:306
+#: app/templates/trips/stats.html:309
 msgid "Vélo et marche : 0"
 msgstr "Bike and walking: 0"
 
-#: app/templates/trips/stats.html:328
+#: app/templates/trips/stats.html:331
 msgid "Aucun pays identifié."
 msgstr "No country identified."
 
-#: app/transfer/formats.py:126
+#: app/transfer/formats.py:196
+#, python-format
+msgid "aéroport inconnu : « %(code)s »"
+msgstr "unknown airport: “%(code)s”"
+
+#: app/transfer/formats.py:200
+#, python-format
+msgid "Vol %(number)s"
+msgstr "Flight %(number)s"
+
+#: app/transfer/formats.py:229
+#, python-format
+msgid "Aller : %(notes)s"
+msgstr "Outbound: %(notes)s"
+
+#: app/transfer/formats.py:230
+#, python-format
+msgid "Retour : %(notes)s"
+msgstr "Return: %(notes)s"
+
+#: app/transfer/formats.py:246
 msgid ""
 "En-têtes CSV manquants : depart_date, origin_name, dest_name… (exportez "
 "un fichier pour voir le format attendu)."
@@ -2708,49 +2757,50 @@ msgstr ""
 "Missing CSV headers: depart_date, origin_name, dest_name… (export a file "
 "to see the expected format)."
 
-#: app/transfer/formats.py:143 app/transfer/formats.py:146
+#: app/transfer/formats.py:269 app/transfer/formats.py:272
 msgid "Fichier GeoJSON invalide."
 msgstr "Invalid GeoJSON file."
 
-#: app/transfer/formats.py:164 app/transfer/formats.py:168
+#: app/transfer/formats.py:290 app/transfer/formats.py:294
 msgid "Fichier GPX invalide."
 msgstr "Invalid GPX file."
 
-#: app/transfer/formats.py:173
+#: app/transfer/formats.py:299
 msgid "Aucun itinéraire (<rte>) dans ce fichier GPX."
 msgstr "No route (<rte>) in this GPX file."
 
-#: app/transfer/formats.py:229
-msgid "date de départ invalide (format attendu : AAAA-MM-JJ)"
-msgstr "invalid departure date (expected format: YYYY-MM-DD)"
+#: app/transfer/formats.py:355
+#, python-format
+msgid "date de départ invalide : « %(value)s » (format attendu : AAAA-MM-JJ)"
+msgstr "invalid departure date: “%(value)s” (expected format: YYYY-MM-DD)"
 
-#: app/transfer/formats.py:236
+#: app/transfer/formats.py:363
 msgid "la date de retour précède la date de départ"
 msgstr "the return date is before the departure date"
 
-#: app/transfer/formats.py:238
+#: app/transfer/formats.py:365
 msgid "date de retour invalide (format attendu : AAAA-MM-JJ)"
 msgstr "invalid return date (expected format: YYYY-MM-DD)"
 
-#: app/transfer/formats.py:241
+#: app/transfer/formats.py:368
 #, python-format
 msgid "mode de transport inconnu : « %(mode)s » (valeurs possibles : %(modes)s)"
 msgstr "unknown transport mode: “%(mode)s” (possible values: %(modes)s)"
 
-#: app/transfer/formats.py:247
+#: app/transfer/formats.py:374
 msgid "lieu de départ manquant"
 msgstr "missing departure place"
 
-#: app/transfer/formats.py:247
+#: app/transfer/formats.py:374
 msgid "lieu d'arrivée manquant"
 msgstr "missing arrival place"
 
-#: app/transfer/formats.py:253
+#: app/transfer/formats.py:381
 #, python-format
 msgid "coordonnées invalides pour « %(place)s »"
 msgstr "invalid coordinates for “%(place)s”"
 
-#: app/transfer/formats.py:262
+#: app/transfer/formats.py:390
 #, python-format
 msgid "champ %(field)s trop long (%(max)s caractères au maximum)"
 msgstr "field %(field)s too long (%(max)s characters maximum)"
@@ -2867,149 +2917,245 @@ msgstr "Bike"
 msgid "À pied"
 msgstr "On foot"
 
-#: app/trips/badges.py:28
+#: app/trips/badges.py:30
 msgid "Globe-trotter"
 msgstr "Globetrotter"
 
-#: app/trips/badges.py:28
+#: app/trips/badges.py:30
 msgid "10 voyages"
 msgstr "10 trips"
 
-#: app/trips/badges.py:29
+#: app/trips/badges.py:31
 msgid "Grand voyageur"
 msgstr "Seasoned traveller"
 
-#: app/trips/badges.py:29
+#: app/trips/badges.py:31
 msgid "50 voyages"
 msgstr "50 trips"
 
-#: app/trips/badges.py:30
+#: app/trips/badges.py:32
 msgid "Voyageur légendaire"
 msgstr "Legendary traveller"
 
-#: app/trips/badges.py:30
+#: app/trips/badges.py:32
 msgid "100 voyages"
 msgstr "100 trips"
 
-#: app/trips/badges.py:31
+#: app/trips/badges.py:33
 msgid "Explorateur"
 msgstr "Explorer"
 
-#: app/trips/badges.py:31
+#: app/trips/badges.py:33
 msgid "5 pays visités"
 msgstr "5 countries visited"
 
-#: app/trips/badges.py:32
+#: app/trips/badges.py:34
 msgid "Collectionneur de pays"
 msgstr "Country collector"
 
-#: app/trips/badges.py:32
+#: app/trips/badges.py:34
 msgid "10 pays visités"
 msgstr "10 countries visited"
 
-#: app/trips/badges.py:33
+#: app/trips/badges.py:35
 msgid "Passeport bien rempli"
 msgstr "Well-stamped passport"
 
-#: app/trips/badges.py:33
+#: app/trips/badges.py:35
 msgid "25 pays visités"
 msgstr "25 countries visited"
 
-#: app/trips/badges.py:34
+#: app/trips/badges.py:36
 msgid "Citoyen du monde"
 msgstr "Citizen of the world"
 
-#: app/trips/badges.py:34
+#: app/trips/badges.py:36
 msgid "50 pays visités"
 msgstr "50 countries visited"
 
-#: app/trips/badges.py:35
+#: app/trips/badges.py:37
 msgid "Centurion"
 msgstr "Centurion"
 
-#: app/trips/badges.py:35
+#: app/trips/badges.py:37
 msgid "100 pays visités"
 msgstr "100 countries visited"
 
-#: app/trips/badges.py:36
+#: app/trips/badges.py:38
 msgid "Trois continents"
 msgstr "Three continents"
 
-#: app/trips/badges.py:36
+#: app/trips/badges.py:38
 msgid "3 continents visités"
 msgstr "3 continents visited"
 
-#: app/trips/badges.py:37
+#: app/trips/badges.py:39
 msgid "Tous les continents habités"
 msgstr "Every inhabited continent"
 
-#: app/trips/badges.py:38
+#: app/trips/badges.py:40
 msgid "Europe, Asie, Afrique, Amériques et Océanie"
 msgstr "Europe, Asia, Africa, the Americas and Oceania"
 
-#: app/trips/badges.py:39
+#: app/trips/badges.py:41
 msgid "Les sept continents"
 msgstr "All seven continents"
 
-#: app/trips/badges.py:39
+#: app/trips/badges.py:41
 msgid "Antarctique compris"
 msgstr "Antarctica included"
 
-#: app/trips/badges.py:40
+#: app/trips/badges.py:42
 msgid "10 000 km"
 msgstr "10,000 km"
 
-#: app/trips/badges.py:40
+#: app/trips/badges.py:42
 msgid "10 000 km parcourus"
 msgstr "10,000 km travelled"
 
-#: app/trips/badges.py:41
+#: app/trips/badges.py:43
 msgid "Tour du monde"
 msgstr "Around the world"
 
-#: app/trips/badges.py:42
+#: app/trips/badges.py:44
 msgid "L'équivalent d'un tour de la Terre (40 075 km)"
 msgstr "The equivalent of once around the Earth (40,075 km)"
 
-#: app/trips/badges.py:43
+#: app/trips/badges.py:45
 msgid "100 000 km"
 msgstr "100,000 km"
 
-#: app/trips/badges.py:43
+#: app/trips/badges.py:45
 msgid "100 000 km parcourus"
 msgstr "100,000 km travelled"
 
-#: app/trips/badges.py:44
+#: app/trips/badges.py:46
 msgid "Jusqu'à la Lune"
 msgstr "To the Moon"
 
-#: app/trips/badges.py:44
+#: app/trips/badges.py:46
 msgid "La distance Terre-Lune (384 400 km)"
 msgstr "The Earth–Moon distance (384,400 km)"
 
-#: app/trips/badges.py:45
+#: app/trips/badges.py:47
 msgid "Tous les moyens sont bons"
 msgstr "Any way will do"
 
-#: app/trips/badges.py:46
+#: app/trips/badges.py:48
 msgid "Avion, train, voiture, bus, bateau, vélo et marche"
 msgstr "Plane, train, car, bus, boat, bike and on foot"
 
-#: app/trips/badges.py:47
+#: app/trips/badges.py:49
 msgid "Voyageur sobre"
 msgstr "Low-carbon traveller"
 
-#: app/trips/badges.py:47
+#: app/trips/badges.py:49
 msgid "10 trajets en train, à vélo ou à pied"
 msgstr "10 trips by train, bike or on foot"
 
-#: app/trips/badges.py:48
+#: app/trips/badges.py:50
 msgid "Long-courrier"
 msgstr "Long haul"
 
-#: app/trips/badges.py:48
+#: app/trips/badges.py:50
 msgid "Un trajet de plus de 8 000 km"
 msgstr "One trip over 8,000 km"
+
+#: app/trips/badges.py:55
+msgid "Bien parti"
+msgstr "Off to a good start"
+
+#: app/trips/badges.py:55
+msgid "5 voyages dans l'année"
+msgstr "5 trips in the year"
+
+#: app/trips/badges.py:56
+msgid "Un voyage par mois"
+msgstr "A trip a month"
+
+#: app/trips/badges.py:56
+msgid "12 voyages dans l'année"
+msgstr "12 trips in the year"
+
+#: app/trips/badges.py:57
+msgid "Toujours en vadrouille"
+msgstr "Always on the move"
+
+#: app/trips/badges.py:58
+msgid "25 voyages dans l'année"
+msgstr "25 trips in the year"
+
+#: app/trips/badges.py:59
+msgid "Escapades"
+msgstr "Getaways"
+
+#: app/trips/badges.py:59
+msgid "3 pays visités dans l'année"
+msgstr "3 countries visited in the year"
+
+#: app/trips/badges.py:60
+msgid "Année passeport"
+msgstr "Passport year"
+
+#: app/trips/badges.py:61
+msgid "10 pays visités dans l'année"
+msgstr "10 countries visited in the year"
+
+#: app/trips/badges.py:62
+msgid "Changement de continent"
+msgstr "Continent hopper"
+
+#: app/trips/badges.py:63
+msgid "2 continents visités dans l'année"
+msgstr "2 continents visited in the year"
+
+#: app/trips/badges.py:64
+msgid "Trois continents en un an"
+msgstr "Three continents in a year"
+
+#: app/trips/badges.py:65
+msgid "3 continents visités dans l'année"
+msgstr "3 continents visited in the year"
+
+#: app/trips/badges.py:66
+msgid "10 000 km dans l'année"
+msgstr "10,000 km in a year"
+
+#: app/trips/badges.py:67
+msgid "10 000 km parcourus dans l'année"
+msgstr "10,000 km travelled in the year"
+
+#: app/trips/badges.py:68
+msgid "Tour du monde en un an"
+msgstr "Around the world in a year"
+
+#: app/trips/badges.py:69
+msgid "L'équivalent d'un tour de la Terre dans l'année"
+msgstr "The equivalent of a trip around the Earth in the year"
+
+#: app/trips/badges.py:70
+msgid "Multimodal"
+msgstr "Multimodal"
+
+#: app/trips/badges.py:71
+msgid "4 moyens de transport différents dans l'année"
+msgstr "4 different means of transport in the year"
+
+#: app/trips/badges.py:72
+msgid "Année sobre"
+msgstr "Low-carbon year"
+
+#: app/trips/badges.py:73
+msgid "5 trajets en train, à vélo ou à pied dans l'année"
+msgstr "5 trips by train, bike or on foot in the year"
+
+#: app/trips/badges.py:74
+msgid "Long-courrier de l'année"
+msgstr "Long-haul of the year"
+
+#: app/trips/badges.py:75
+msgid "Un trajet de plus de 8 000 km dans l'année"
+msgstr "One trip over 8,000 km in the year"
 
 #: app/trips/forms.py:15
 #, python-format

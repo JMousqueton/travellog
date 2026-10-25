@@ -4,7 +4,7 @@ import pytest
 
 from app import utils
 from app.models import ShareLink
-from app.trips.badges import compute_badges, continent_summary
+from app.trips.badges import YEAR_BADGES, compute_badges, compute_year_badges, continent_summary
 from app.trips.places import visited_places
 
 from .conftest import make_trip
@@ -99,6 +99,39 @@ def test_stats_page_shows_badges_continents_places(auth_client, user):
     html = auth_client.get("/stats").text
     for text in ("Badges", "Long-courrier", "Continents", "Amérique du Sud", "Lieux visités"):
         assert text in html
+
+
+def test_year_badges_only_count_that_year(app, user):
+    for month in range(1, 6):
+        make_trip(user, depart_date=date(2024, month, 1))  # année précédente : ignorée
+    for month in range(1, 6):
+        make_trip(user, depart_date=date(2025, month, 1))
+    make_trip(user, depart_date=date(2025, 9, 1))  # à venir (aujourd'hui : 1er juin 2025)
+    rows = {r["badge"].id: r for r in compute_year_badges(user.trips.all(), 2025)}
+    assert len(rows) == len(YEAR_BADGES)
+    assert rows["year_trips_5"]["earned"] == date(2025, 5, 1) and rows["year_trips_5"]["value"] == 5
+    assert rows["year_low_carbon_5"]["earned"] == date(2025, 5, 1)  # trajets en train
+    assert rows["year_trips_12"]["progress"] == pytest.approx(5 / 12)
+    assert {r["badge"].id: r for r in compute_badges(user.trips.all())}["trips_10"]["earned"] == date(2025, 5, 1)
+
+
+def test_stats_page_has_overall_and_year_badges(auth_client, user):
+    make_trip(user, depart_date=date(2025, 3, 1))
+    html = auth_client.get("/stats").text
+    assert "Badges · tous vos voyages" in html and "Badges de l'année 2025" in html
+    assert html.index("Badges · tous vos voyages") < html.index("Badges de l'année 2025")
+    assert "Un voyage par mois" in html and "Voyageur légendaire" in html
+
+
+def test_dashboard_stats_for_current_year(auth_client, user):
+    make_trip(user, depart_date=date(2024, 3, 1))
+    make_trip(user, depart_date=date(2025, 3, 1))
+    make_trip(user, depart_date=date(2025, 9, 1))  # à venir
+    assert auth_client.get("/api/stats").get_json()["count"] == 3
+    year = auth_client.get("/api/stats?year=2025").get_json()
+    assert year["count"] == 2 and year["next_trip"] is not None
+    assert auth_client.get("/api/stats?year=2024").get_json()["next_trip"] is not None  # prochain départ global
+    assert 'data-year="2025"' in auth_client.get("/").text and "Tableau de bord 2025" in auth_client.get("/").text
 
 
 # --- Lieux visités --------------------------------------------------------------------------

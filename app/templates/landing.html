@@ -64,7 +64,7 @@
       ('fa-chart-simple', _("Statistiques et CO₂"), _("Kilomètres, émissions de CO₂ estimées, jours passés en voyage, année par année.")),
       ('fa-calendar-check', _("Bilan de l'année"), _("Votre année de voyages en chiffres et en image, à télécharger ou à partager.")),
       ('fa-camera', _("Notes et photos"), _("Gardez vos souvenirs avec chaque trajet ; les photos restent privées.")),
-      ('fa-shield-halved', _("Vos données vous appartiennent"), _("Gratuit, sans publicité ni pistage, open source ; export complet à tout moment.")),
+      ('fa-shield-halved', _("Vos données vous appartiennent"), _("Gratuit, sans publicité, open source ; export complet à tout moment.")),
     ] %}
     <div class="col-sm-6 col-lg-4">
       <div class="feature card h-100 shadow-soft p-4">
@@ -74,6 +74,19 @@
       </div>
     </div>
     {% endfor %}
+    <div class="col-12">
+      <div class="feature card shadow-soft p-4 d-flex flex-column flex-md-row align-items-md-center gap-3">
+        <span class="feature-icon" aria-hidden="true"><i class="fa-solid fa-plane-arrival"></i></span>
+        <div>
+          <h3 class="h5 fw-semibold">{{ _("Importez votre historique de vols") }}</h3>
+          <p class="text-body-secondary mb-0">
+            {{ _("Vous suivez déjà vos vols avec %(flighty)s ou %(fr24)s ? Importez leur export CSV : chaque vol devient un trajet sur votre carte, avec son numéro, la compagnie et l'avion.",
+                 flighty='<a href="https://flighty.com/" rel="noopener">Flighty</a>'|safe,
+                 fr24='<a href="https://my.flightradar24.com/" rel="noopener">myFlightradar24</a>'|safe) }}
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 {% endblock %}

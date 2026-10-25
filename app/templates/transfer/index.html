@@ -65,6 +65,7 @@
             <div class="form-text" id="import-help">
               {{ _("Colonnes attendues : celles d'un export (depart_date au format AAAA-MM-JJ, transport_mode parmi %(modes)s, noms et coordonnées des lieux). Les trajets déjà présents sont ignorés, et le pays est déduit des coordonnées s'il manque.",
                    modes=TRANSPORT_MODES|join(', ')) }}
+              {{ _("Les historiques de vols exportés en CSV par Flighty ou myFlightradar24 sont aussi reconnus : chaque vol devient un trajet en avion (les vols annulés sont ignorés).") }}
             </div>
           </div>
           <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Import…') }}">

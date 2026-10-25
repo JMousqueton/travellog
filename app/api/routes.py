@@ -9,7 +9,7 @@ from ..i18n import LANGUAGES, current_locale, format_countdown, format_day, form
 from ..models import ShareLink
 from ..transport import mode_label
 from ..trips.queries import FilterError, list_trips, parse_filters, shared_trips_for
-from ..trips.stats import compute_stats, count_label, country_summary, trip_count
+from ..trips.stats import compute_stats, count_label, country_summary, next_trip, trip_count
 from . import bp
 
 
@@ -87,15 +87,28 @@ def shared_trips(token):
     )
 
 
+def _stats_json(items):
+    """Statistiques ; avec ?year=AAAA (tableau de bord), seulement les trajets partis cette année-là.
+
+    Le prochain départ reste cherché parmi tous les trajets : il peut tomber l'année suivante.
+    """
+    year = request.args.get("year", type=int)
+    if not year:
+        return jsonify(compute_stats(items))
+    stats = compute_stats([t for t in items if t.depart_date.year == year])
+    stats["next_trip"] = next_trip(items)
+    return jsonify(stats)
+
+
 @bp.route("/shared/<token>/stats")
 def shared_stats(token):
-    return jsonify(compute_stats(_shared_trips_or_404(token)))
+    return _stats_json(_shared_trips_or_404(token))
 
 
 @bp.route("/stats")
 @login_required
 def stats():
-    return jsonify(compute_stats(_filtered_trips()))
+    return _stats_json(_filtered_trips())
 
 
 def _countries_geojson(trips):

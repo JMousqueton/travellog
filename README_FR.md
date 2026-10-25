@@ -47,7 +47,10 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   commencée ailleurs s'arrête au retour dans cette ville ; un trajet qui ne part pas du dernier lieu atteint
   clôt l'absence en cours (déplacement non saisi). Le domicile n'apparaît jamais sur les liens de partage.
 - Continents et badges (pays, continents, distance, nombre de voyages, modes…), datés du trajet qui a fait
-  franchir le palier, avec la progression des badges restants. Les badges de l'année figurent dans le bilan.
+  franchir le palier, avec la progression des badges restants. Deux séries sur la page Statistiques : les
+  badges de tous vos voyages, et ceux de l'année en cours, aux paliers adaptés à une année (12 voyages,
+  10 000 km, 3 continents…) et remis à zéro chaque 1er janvier. Les badges obtenus dans l'année figurent dans
+  le bilan.
 - Lieux visités : extrémités des trajets regroupées dans un rayon de 15 km, liste et couche « Lieux visités »
   sur la carte (cercles proportionnels au nombre de trajets).
 - Rejouer : sur la carte, les trajets se dessinent dans l'ordre chronologique (aller à la date de départ,
@@ -58,12 +61,18 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   (dont notes et regroupements en voyages) et se réimportent sans perte : c'est aussi une sauvegarde, hors
   photos. À l'import, les trajets déjà présents sont ignorés, et un fichier contenant une erreur n'importe
   rien (les erreurs sont listées avec leur numéro de ligne).
+- Import d'historiques de vols : les exports CSV de Flighty et de myFlightradar24 sont reconnus
+  automatiquement. Chaque vol devient un trajet en avion entre les deux aéroports (vols annulés ignorés,
+  aéroport de déroutement pris comme arrivée, date américaine M/J/AA ou
+  JJ/MM/AAAA reconnue d'après le fichier), avec le numéro de vol, la compagnie et l'avion en note.
+  Un vol suivi de son vol retour (à 50 km près : CDG à l'aller, ORY au retour) devient un trajet
+  aller-retour ; les circuits restent en vols simples, et un retour annulé ou absent ne fausse pas les suivants.
 - Voyages : origine, destination, date, mode de transport (avion, train, voiture, bus, bateau, vélo, à pied),
   option aller-retour avec date de retour obligatoire et postérieure ou égale au départ.
 - Formulaire avec autocomplétion des lieux (Nominatim, géocodage côté serveur avec cache en base).
 - Carte Leaflet plein écran : marqueurs regroupés (markercluster), popups localisées, légende.
-- Panneau latéral (tiroir sur mobile) : tableau de bord, filtres (période, modes, type), liste triable
-  synchronisée avec la carte. Les filtres sont conservés dans l'URL.
+- Panneau latéral (tiroir sur mobile) : tableau de bord de l'année en cours (la période filtrée ne s'y
+  applique pas), filtres (période, modes, type), liste triable synchronisée avec la carte. Les filtres sont conservés dans l'URL.
 - Thème clair/sombre (préférence enregistrée et détection de `prefers-color-scheme`).
 - Internationalisation complète avec Flask-Babel. Dates, nombres et distances sont formatés selon la langue.
 
@@ -241,10 +250,11 @@ app/
   i18n.py            sélection de la langue, formatage, chaînes JS
   geo.py             haversine, client Nominatim et cache
   security.py        en-têtes de sécurité (CSP avec nonce, HSTS…)
+  airports.py        aéroports par code IATA ou OACI (import des historiques de vols)
   assets.py          fichiers statiques versionnés (?v=empreinte) et import map des modules JS
   countries.py       pays : recherche hors ligne, noms localisés, drapeaux, surfaces
   photos.py          photos : validation et ré-encodage (Pillow), miniatures, fichiers
-  data/              contours des pays (Natural Earth), police Inter (SIL OFL) pour l'image du bilan
+  data/              contours des pays (Natural Earth), aéroports (OurAirports), police Inter (SIL OFL) pour l'image du bilan
   ics.py             agenda iCalendar
   routing.py         distances d'itinéraire (OSRM)
   tags.py            étiquettes
@@ -282,6 +292,12 @@ Les liens de partage ont les équivalents `/api/shared/<jeton>/trips`, `/stats` 
   public), simplifiés dans `app/data/countries.geojson` (237 pays et territoires). Un point côtier qui tombe
   juste hors du tracé est rattaché au pays le plus proche dans un rayon de 25 km.
 - Les noms de pays sont localisés par Babel (CLDR).
+- Les aéroports (9 227 ayant un code IATA, avec leur code OACI) sont dans `app/data/airports.csv`. Ils viennent
+  d'[OurAirports](https://ourairports.com/data/) (domaine public), complété par
+  [OpenFlights](https://openflights.org/data.php) (licence [ODbL](https://opendatacommons.org/licenses/odbl/1-0/))
+  pour 174 aéroports fermés dont OurAirports a retiré le code (Berlin-Tegel, Schönefeld…), qui figurent pourtant
+  dans les historiques de vols. Ce fichier est donc diffusé sous ODbL. Mise à jour :
+  `.venv/bin/python scripts/make_airports.py`.
 - Le CO₂ est une estimation par voyageur : distance à vol d'oiseau × facteur moyen de l'ADEME (Base Carbone),
   défini dans `app/transport.py` (`CO2_KG_PER_KM`, `PLANE_CO2_BANDS`). Avion : 258, 187 ou 152 g/km selon
   la distance du vol, traînées comprises ; train et autocar 30 g/km ; voiture 218 g/km (une personne à bord) ;

@@ -3,15 +3,20 @@
 Les trois formats portent les mêmes champs (FIELDS), si bien qu'un export peut être réimporté tel quel :
 c'est aussi une sauvegarde (hors photos). Un aller-retour se reconnaît à la présence d'une date de retour ;
 les trajets d'un même voyage partagent la même clé `journey_key`.
+
+L'import CSV reconnaît aussi les historiques de vols exportés par Flighty et myFlightradar24.
 """
 import csv
 import io
 import json
+import re
 import xml.etree.ElementTree as ET
 from datetime import date, datetime, timezone
 
 from flask_babel import gettext as _
 
+from ..airports import find_airport, place_name
+from ..geo import haversine_km
 from ..transport import TRANSPORT_MODES
 
 FIELDS = [
@@ -116,14 +121,135 @@ def _decode(data):
         return data.decode("cp1252", errors="replace")  # export Excel « CSV (séparateur : point-virgule) »
 
 
+# « Amsterdam / Schiphol (AMS/EHAM) » : codes IATA et OACI entre parenthèses (l'un des deux peut manquer).
+FR24_AIRPORT = re.compile(r"\(([A-Z0-9]{3})?/([A-Z0-9]{4})?\)\s*$")
+TRAILING_CODES = re.compile(r"\s*\([^)]*\)\s*$")  # « Delta Air Lines (DL/DAL) » → « Delta Air Lines »
+ISO_DAY = re.compile(r"^(\d{4})-(\d{1,2})-(\d{1,2})")
+SLASH_DAY = re.compile(r"^(\d{1,2})[/.](\d{1,2})[/.](\d{2}|\d{4})\b")
+# Horaires Flighty au format ISO (heure locale de l'aéroport), plus sûrs que la colonne Date (« 10/12/15 »).
+FLIGHTY_TIMES = ("gate departure (scheduled)", "take off (scheduled)", "gate departure (actual)", "take off (actual)")
+SAME_PLACE_KM = 50        # CDG à l'aller, ORY au retour : même ville
+MAX_ROUND_TRIP_DAYS = 365
+
+
+def slash_order(values):
+    """« dmy » ou « mdy » pour les dates JJ/MM/AA ou MM/JJ/AA d'un fichier, d'après celles qui lèvent le doute."""
+    for value in values:
+        match = SLASH_DAY.match(value)
+        if match and int(match.group(1)) > 12:
+            return "dmy"
+        if match and int(match.group(2)) > 12:
+            return "mdy"
+    return "mdy"  # Flighty et myFlightradar24 suivent l'usage américain
+
+
+def flight_date(value, order):
+    """Date d'un historique de vols au format AAAA-MM-JJ, ou None si elle est illisible."""
+    if match := ISO_DAY.match(value):
+        year, month, day = (int(g) for g in match.groups())
+    elif match := SLASH_DAY.match(value):
+        first, second, year = (int(g) for g in match.groups())
+        day, month = (first, second) if order == "dmy" else (second, first)
+        year += 2000 if year < 100 else 0
+    else:
+        return None
+    try:
+        return date(year, month, day).isoformat()
+    except ValueError:
+        return None
+
+
+def flight_log_kind(fieldnames):
+    """« flighty », « flightradar24 » ou None d'après les en-têtes du CSV."""
+    names = {(f or "").strip().lower() for f in fieldnames}
+    if not {"date", "from", "to"} <= names:
+        return None
+    if "flight number" in names:
+        return "flightradar24"
+    if {"airline", "flight"} <= names:
+        return "flighty"
+    return None
+
+
+def flight_row(row, kind, order="mdy"):
+    """Vol Flighty ou myFlightradar24 (clés en minuscules) → ligne au format de l'export ; None si annulé."""
+    get = lambda key: row.get(key, "")  # noqa: E731
+    dates = [get("date")]
+    if kind == "flighty":
+        if get("canceled").lower() == "true":
+            return None
+        dates = [get(key) for key in FLIGHTY_TIMES] + dates
+        number, airline = get("airline") + get("flight"), ""
+        aircraft, note = get("aircraft type name"), get("notes")
+        codes = (get("from"), get("diverted to") or get("to"))
+    else:
+        number, airline = get("flight number"), TRAILING_CODES.sub("", get("airline"))
+        aircraft, note = TRAILING_CODES.sub("", get("aircraft")), get("note")
+        codes = tuple(m.group(1) or m.group(2) if (m := FR24_AIRPORT.search(v)) else v
+                      for v in (get("from"), get("to")))
+    depart = next((d for d in (flight_date(v, order) for v in dates if v) if d), get("date"))
+    out = {"depart_date": depart, "transport_mode": "plane", "_errors": []}
+    for prefix, code in zip(("origin", "dest"), codes):
+        airport = find_airport(code)
+        if airport is None:
+            out[f"{prefix}_name"] = code
+            out["_errors"].append(_("aéroport inconnu : « %(code)s »", code=code))
+            continue
+        out.update({f"{prefix}_name": place_name(airport), f"{prefix}_lat": str(airport["lat"]),
+                    f"{prefix}_lon": str(airport["lon"]), f"{prefix}_country": airport["country"] or ""})
+    details = " · ".join(p for p in (_("Vol %(number)s", number=number) if number else "", airline, aircraft) if p)
+    out["notes"] = "\n".join(p for p in (details, note) if p)
+    return out
+
+
+def _near(a, prefix_a, b, prefix_b):
+    return haversine_km(float(a[f"{prefix_a}_lat"]), float(a[f"{prefix_a}_lon"]),
+                        float(b[f"{prefix_b}_lat"]), float(b[f"{prefix_b}_lon"])) <= SAME_PLACE_KM
+
+
+def pair_round_trips(rows):
+    """Réunit un vol X → Y et son vol retour Y → X en un trajet aller-retour.
+
+    Les vols sont suivis dans l'ordre chronologique avec une pile des allers encore ouverts : un vol qui
+    repart de la destination du dernier aller s'y empile (étape d'un circuit) ou le ferme s'il revient à
+    son point de départ ; un vol qui part d'ailleurs (vol annulé ou absent de l'export) vide la pile.
+    """
+    usable = sorted((i for i, (_line, f) in enumerate(rows) if not f["_errors"] and ISO_DAY.match(f["depart_date"])),
+                    key=lambda i: (rows[i][1]["depart_date"], i))
+    stack, merged, returns = [], {}, set()
+    for i in usable:
+        flight = rows[i][1]
+        if stack and not _near(flight, "origin", rows[stack[-1]][1], "dest"):
+            stack.clear()
+        if stack:
+            out = rows[stack[-1]][1]
+            gap = (date.fromisoformat(flight["depart_date"]) - date.fromisoformat(out["depart_date"])).days
+            if _near(flight, "dest", out, "origin") and gap <= MAX_ROUND_TRIP_DAYS:
+                notes = "\n".join(n for n in (
+                    _("Aller : %(notes)s", notes=out["notes"]) if out["notes"] else "",
+                    _("Retour : %(notes)s", notes=flight["notes"]) if flight["notes"] else "") if n)
+                merged[stack.pop()] = dict(out, return_date=flight["depart_date"], notes=notes)
+                returns.add(i)
+                continue
+        stack.append(i)
+    return [(line, merged.get(i, flight)) for i, (line, flight) in enumerate(rows) if i not in returns]
+
+
 def parse_csv(data):
     text = _decode(data)
     first_line = text.split("\n", 1)[0]
     delimiter = max(",;\t", key=first_line.count)
     reader = csv.DictReader(io.StringIO(text), delimiter=delimiter)
-    if not reader.fieldnames or not {"depart_date", "origin_name", "dest_name"} <= {
-            (f or "").strip() for f in reader.fieldnames}:
+    kind = flight_log_kind(reader.fieldnames or [])
+    if kind is None and (not reader.fieldnames or not {"depart_date", "origin_name", "dest_name"} <= {
+            (f or "").strip() for f in reader.fieldnames}):
         raise FileFormatError(_("En-têtes CSV manquants : depart_date, origin_name, dest_name… (exportez un fichier pour voir le format attendu)."))
+    if kind:
+        flights = [(reader.line_num, {(k or "").strip().lower(): (v or "").strip() for k, v in row.items() if k})
+                   for row in reader]
+        order = slash_order(row.get("date", "") for _line, row in flights)
+        return pair_round_trips([(line, flight) for line, row in flights
+                                 if any(row.values()) and (flight := flight_row(row, kind, order)) is not None])
     rows = []
     for row in reader:
         clean = {(k or "").strip(): (v or "").strip() for k, v in row.items() if k}
@@ -222,11 +348,12 @@ def _float(value, low, high):
 
 def validate_record(raw):
     """Renvoie (valeurs propres, liste d'erreurs) pour une ligne lue."""
-    errors, out = [], {}
+    errors, out = list(raw.get("_errors") or []), {}  # erreurs déjà relevées à la lecture (aéroport inconnu…)
     try:
         out["depart_date"] = date.fromisoformat(raw.get("depart_date", "").strip())
     except ValueError:
-        errors.append(_("date de départ invalide (format attendu : AAAA-MM-JJ)"))
+        errors.append(_("date de départ invalide : « %(value)s » (format attendu : AAAA-MM-JJ)",
+                        value=raw.get("depart_date", "").strip()))
     ret = raw.get("return_date", "").strip()
     out["return_date"] = None
     if ret:
@@ -250,7 +377,8 @@ def validate_record(raw):
             out[f"{prefix}_lat"] = _float(raw.get(f"{prefix}_lat", ""), -90, 90)
             out[f"{prefix}_lon"] = _float(raw.get(f"{prefix}_lon", ""), -180, 180)
         except ValueError:
-            errors.append(_("coordonnées invalides pour « %(place)s »", place=name or prefix))
+            if not raw.get("_errors"):
+                errors.append(_("coordonnées invalides pour « %(place)s »", place=name or prefix))
         code = raw.get(f"{prefix}_country", "").strip().upper()
         out[f"{prefix}_country"] = code if len(code) == 2 and code.isalpha() else None
     for key in ("notes", "tags", "journey_key", "journey_name", "journey_notes"):

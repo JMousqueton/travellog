@@ -133,13 +133,18 @@ async function load() {
   setLoading(true);
   try {
     const query = params.toString();
+    // Tableau de bord : année en cours, quelle que soit la période filtrée (les autres filtres s'appliquent).
+    const yearQuery = new URLSearchParams(params);
+    yearQuery.delete("from");
+    yearQuery.delete("to");
+    yearQuery.set("year", mapEl.dataset.year);
     const optional = (url) => fetchJson(url, controller.signal).catch((error) => {
       if (error.name === "AbortError") throw error;
       return null; // couches facultatives
     });
     const [tripData, stats, countries, places] = await Promise.all([
       fetchJson(`${mapEl.dataset.tripsUrl}?${query}`, controller.signal),
-      fetchJson(`${mapEl.dataset.statsUrl}?${query}`, controller.signal),
+      fetchJson(`${mapEl.dataset.statsUrl}?${yearQuery}`, controller.signal),
       optional(`${mapEl.dataset.countriesUrl}?${query}`),
       optional(`${mapEl.dataset.placesUrl}?${query}`),
     ]);
@@ -152,7 +157,7 @@ async function load() {
     renderList(activeFilters > 0);
     renderStats(stats);
     $("listCount").textContent = `· ${tripData.count_label}`;
-    $("fabCount").textContent = stats.count_fmt;
+    $("fabCount").textContent = new Intl.NumberFormat(locale).format(tripData.count);
     if (!firstLoad) $("listStatus").textContent = `${t("results_updated")} : ${tripData.count_label}`;
     if (focusId && trips.some((trip) => trip.id === focusId)) {
       tripMap.select(focusId);

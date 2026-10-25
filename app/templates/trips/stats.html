@@ -71,14 +71,16 @@
     {% endif %}
   </section>
 
-  {% set earned = badges|selectattr('earned')|list %}
-  <section aria-labelledby="badgesTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="badgesTitle">{{ _("Badges") }}
-      <span class="text-body-secondary fw-normal small">· {{ earned|length }} / {{ badges|length }}</span></h2>
+  {% for rows, section_id, title in [(badges, 'badgesTitle', _("Badges · tous vos voyages")),
+                                     (year_badges, 'yearBadgesTitle', _("Badges de l'année %(year)s", year=current_year))] %}
+  {% set earned = rows|selectattr('earned')|list %}
+  <section aria-labelledby="{{ section_id }}" class="mb-5">
+    <h2 class="h5 fw-semibold mb-3" id="{{ section_id }}">{{ title }}
+      <span class="text-body-secondary fw-normal small">· {{ earned|length }} / {{ rows|length }}</span></h2>
     <ul class="badge-grid list-unstyled mb-2">
       {% for row in earned|sort(attribute='earned', reverse=True) %}{{ badge_tile(row) }}{% endfor %}
     </ul>
-    {% set locked = badges|rejectattr('earned')|sort(attribute='progress', reverse=True)|list %}
+    {% set locked = rows|rejectattr('earned')|sort(attribute='progress', reverse=True)|list %}
     {% if locked %}
     <details class="mt-2" {% if not earned %}open{% endif %}>
       <summary class="small text-body-secondary">{{ ngettext("%(num)s badge à obtenir", "%(num)s badges à obtenir", locked|length) }}</summary>
@@ -86,6 +88,7 @@
     </details>
     {% endif %}
   </section>
+  {% endfor %}
 
   <section aria-labelledby="placesTitle" class="mb-5">
     <h2 class="h5 fw-semibold mb-3" id="placesTitle">{{ _("Lieux visités") }}

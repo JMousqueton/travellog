@@ -4,6 +4,7 @@ from flask import abort, flash, redirect, render_template, url_for
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
 
+from .. import utils
 from ..extensions import db
 from ..models import ShareLink, utcnow
 from ..trips.routes import map_tiles, render_review, review_png_response
@@ -64,7 +65,7 @@ def view(token):
         "map.html", tiles=map_tiles(), focus=None, shared=link,
         trips_url=url_for("api.shared_trips", token=token), stats_url=url_for("api.shared_stats", token=token),
         countries_url=url_for("api.shared_countries", token=token),
-        places_url=url_for("api.shared_places", token=token),
+        places_url=url_for("api.shared_places", token=token), current_year=utils.today().year,
     )
 
 

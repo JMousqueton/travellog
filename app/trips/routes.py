@@ -19,7 +19,7 @@ from . import bp
 from .forms import JourneyForm, PhotoUploadForm, TripForm
 from .queries import list_trips
 from .absences import absence_summary
-from .badges import compute_badges, continent_summary
+from .badges import compute_badges, compute_year_badges, continent_summary
 from .places import visited_places
 from .stats import (compute_stats, country_summary, happened, review_years, tag_stats, upcoming_trips, year_review,
                     yearly_stats)
@@ -151,7 +151,7 @@ def index():
     if not current_user.is_authenticated:
         return render_template("landing.html")
     return render_template("map.html", focus=request.args.get("focus", type=int), tiles=map_tiles(),
-                           user_tags=current_user.tags)
+                           user_tags=current_user.tags, current_year=utils.today().year)
 
 
 @bp.route("/trips")
@@ -393,7 +393,8 @@ def stats_view():
                            countries=country_summary(trips), factors=_co2_factors_g(), detour=DETOUR_FACTORS,
                            upcoming=upcoming_trips(everything), tags=tag_stats(trips), current_year=utils.today().year,
                            away=absence_summary(current_user, everything),
-                           badges=compute_badges(everything), continents=continent_summary(everything, current_locale()),
+                           badges=compute_badges(everything),
+                           year_badges=compute_year_badges(everything, utils.today().year), continents=continent_summary(everything, current_locale()),
                            places=visited_places(everything, current_user),
                            missing_countries=sum(1 for t in trips if not t.origin_country or not t.dest_country))
 

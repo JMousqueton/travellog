@@ -45,7 +45,9 @@ available in French, English, Spanish, German and Italian.
   returning to that city; a trip that doesn't leave from the last place reached closes the current absence
   (unrecorded travel). Home is never shown on share links.
 - Continents and badges (countries, continents, distance, number of trips, modes…), dated by the trip that
-  crossed the threshold, with progress towards the remaining badges. The year's badges appear in the review.
+  crossed the threshold, with progress towards the remaining badges. The Statistics page shows two sets: badges
+  for all your trips, and badges for the current year, with thresholds suited to a single year (12 trips,
+  10,000 km, 3 continents…) that reset every 1 January. Badges earned during a year appear in its review.
 - Places visited: trip endpoints grouped within a 15 km radius, a list and a "Places visited" layer on the
   map (circles sized by the number of trips).
 - Replay: on the map, trips are drawn in chronological order (outbound leg on the departure date, return leg
@@ -56,12 +58,18 @@ available in French, English, Spanish, German and Italian.
   (including notes and journey groupings) and can be imported back without loss: they also serve as a
   backup, photos excepted. On import, trips already present are skipped, and a file containing an error
   imports nothing (errors are listed with their line number).
+- Flight history import: CSV exports from Flighty and myFlightradar24 are recognised automatically. Each
+  flight becomes a plane trip between the two airports (cancelled flights skipped, diversion airport used as
+  the arrival, US M/D/YY or DD/MM/YYYY dates detected from the file), with the flight number, airline and
+  aircraft in the notes.
+  A flight followed by its return flight (within 50 km: CDG out, ORY back) becomes a round trip; multi-stop
+  itineraries stay as one-way flights, and a cancelled or missing return does not throw off later ones.
 - Trips: origin, destination, date, mode of transport (plane, train, car, bus, boat, bike, on foot), round
   trip option with a mandatory return date on or after the departure date.
 - Form with place autocompletion (Nominatim, server-side geocoding with a database cache).
 - Full-screen Leaflet map: clustered markers (markercluster), localised popups, legend.
-- Side panel (drawer on mobile): dashboard, filters (period, modes, type), sortable list kept in sync with
-  the map. Filters are kept in the URL.
+- Side panel (drawer on mobile): dashboard for the current year (the period filter does not apply to it),
+  filters (period, modes, type), sortable list kept in sync with the map. Filters are kept in the URL.
 - Light/dark theme (saved preference and `prefers-color-scheme` detection).
 - Full internationalisation with Flask-Babel. Dates, numbers and distances are formatted for each language.
 
@@ -239,10 +247,11 @@ app/
   i18n.py            language selection, formatting, JS strings
   geo.py             haversine, Nominatim client and cache
   security.py        security headers (CSP with nonce, HSTS…)
+  airports.py        airports by IATA or ICAO code (flight history import)
   assets.py          versioned static files (?v=fingerprint) and import map for JS modules
   countries.py       countries: offline lookup, localised names, flags, areas
   photos.py          photos: validation and re-encoding (Pillow), thumbnails, files
-  data/              country borders (Natural Earth), Inter font (SIL OFL) for the review image
+  data/              country borders (Natural Earth), airports (OurAirports), Inter font (SIL OFL) for the review image
   ics.py             iCalendar feed
   routing.py         route distances (OSRM)
   tags.py            tags
@@ -280,6 +289,12 @@ Share links have the equivalents `/api/shared/<token>/trips`, `/stats` and `/cou
   simplified in `app/data/countries.geojson` (237 countries and territories). A coastal point that falls just
   outside the outline is attached to the nearest country within 25 km.
 - Country names are localised by Babel (CLDR).
+- Airports (the 9,227 with an IATA code, plus their ICAO code) are in `app/data/airports.csv`. They come from
+  [OurAirports](https://ourairports.com/data/) (public domain), supplemented by
+  [OpenFlights](https://openflights.org/data.php) ([ODbL](https://opendatacommons.org/licenses/odbl/1-0/)) for 174
+  closed airports whose code OurAirports removed (Berlin-Tegel, Schönefeld…) but which still appear in flight
+  histories. That file is therefore distributed under the ODbL. To refresh it:
+  `.venv/bin/python scripts/make_airports.py`.
 - CO₂ is an estimate per traveller: straight-line distance × an average factor from ADEME (Base Carbone),
   defined in `app/transport.py` (`CO2_KG_PER_KM`, `PLANE_CO2_BANDS`). Plane: 258, 187 or 152 g/km depending
   on flight distance, contrails included; train and coach 30 g/km; car 218 g/km (one person on board);
