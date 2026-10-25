@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Mentions légales") }}{% endblock %}
+{% block meta_description %}{{ _("Mentions légales du Carnet de voyages : éditeur, hébergement, licences et crédits.") }}{% endblock %}
+{% block content %}
+<article class="legal-page mx-auto">
+  <h1 class="h3 fw-bold mb-4">{{ _("Mentions légales") }}</h1>
+
+  <section>
+    <h2 class="h5">{{ _("Éditeur du site") }}</h2>
+    <p>{{ _("Ce site est édité à titre personnel et non commercial par %(name)s, qui en est le directeur de la publication.", name=publisher or "—") }}</p>
+    <p>{{ _("Contact :") }} {% include "legal/_contact.html" %}</p>
+  </section>
+
+  <section>
+    <h2 class="h5">{{ _("Hébergement") }}</h2>
+    <p>{{ host.name or "—" }}{% if host.address %}<br>{{ host.address }}{% endif %}{% if host.phone %}<br>{{ _("Téléphone : %(phone)s", phone=host.phone) }}{% endif %}</p>
+    {% if location %}<p>{{ _("Le site et ses données sont hébergés à %(location)s.", location=location) }}</p>{% endif %}
+  </section>
+
+  <section>
+    <h2 class="h5">{{ _("Données personnelles") }}</h2>
+    <p>{{ _("Les données que vous enregistrez restent privées, ne sont ni vendues ni utilisées à des fins publicitaires. Le détail des traitements et de vos droits figure dans la") }}
+      <a href="{{ url_for('main.privacy') }}">{{ _("politique de confidentialité") }}</a>.</p>
+  </section>
+
+  <section>
+    <h2 class="h5">{{ _("Propriété intellectuelle et licences") }}</h2>
+    <p>{{ _("Le code source de l'application est libre, publié sous licence MIT :") }}
+      <a href="{{ source_url }}" rel="noopener">{{ source_url|replace('https://', '') }}</a>.
+      {{ _("Les trajets, notes et photos appartiennent aux personnes qui les publient.") }}</p>
+    <ul>
+      <li>{{ _("Fonds de carte : © contributeurs OpenStreetMap, données sous licence ODbL.") }}
+        <a href="https://www.openstreetmap.org/copyright" rel="noopener">openstreetmap.org/copyright</a></li>
+      <li>{{ _("Contours des pays : Natural Earth (domaine public).") }}</li>
+      <li>{{ _("Carte interactive : Leaflet (licence BSD) ; interface : Bootstrap (licence MIT) ; icônes : Font Awesome Free (licences CC BY 4.0, SIL OFL et MIT) ; police : Inter (SIL Open Font License).") }}</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="h5">{{ _("Responsabilité") }}</h2>
+    <p>{{ _("Les distances et les émissions de CO₂ affichées sont des estimations, données à titre indicatif. L'éditeur s'efforce d'assurer la disponibilité du service sans pouvoir la garantir ; pensez à télécharger régulièrement votre sauvegarde.") }}</p>
+  </section>
+
+  <p class="small text-body-secondary mt-4">{{ _("Dernière mise à jour : %(date)s", date=updated|day) }}</p>
+</article>
+{% endblock %}

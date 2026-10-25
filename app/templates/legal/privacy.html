@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Politique de confidentialité") }}{% endblock %}
+{% block meta_description %}{{ _("Données collectées par le Carnet de voyages, finalités, durées de conservation, cookies et droits RGPD.") }}{% endblock %}
+{% block content %}
+<article class="legal-page mx-auto">
+  <h1 class="h3 fw-bold mb-2">{{ _("Politique de confidentialité") }}</h1>
+  <p class="lead text-body-secondary">{{ _("En bref : vos voyages restent privés, rien n'est vendu, aucune publicité, aucun outil de mesure d'audience. Vous pouvez tout exporter ou tout supprimer vous-même, à tout moment.") }}</p>
+
+  <section>
+    <h2 class="h5">{{ _("Responsable du traitement") }}</h2>
+    <p>{{ _("%(name)s, éditeur du site (voir les", name=publisher or "—") }} <a href="{{ url_for('main.legal') }}">{{ _("mentions légales") }}</a>).
+      {{ _("Contact :") }} {% include "legal/_contact.html" %}</p>
+  </section>
+
+  <section>
+    <h2 class="h5">{{ _("Données traitées, finalités et bases légales") }}</h2>
+    <div class="table-responsive">
+      <table class="table legal-table">
+        <thead><tr><th scope="col">{{ _("Données") }}</th><th scope="col">{{ _("Pourquoi") }}</th><th scope="col">{{ _("Base légale") }}</th></tr></thead>
+        <tbody>
+          <tr><td>{{ _("Adresse e-mail, mot de passe (stocké uniquement sous forme hachée), langue, thème, ville de domicile si vous la renseignez") }}</td>
+              <td>{{ _("Créer et sécuriser votre compte, vous envoyer les liens d'inscription et de réinitialisation, calculer vos jours d'absence") }}</td>
+              <td>{{ _("Exécution du service que vous demandez") }}</td></tr>
+          <tr><td>{{ _("Trajets (lieux, dates, modes de transport), voyages, notes, étiquettes, photos") }}</td>
+              <td>{{ _("Afficher votre carte, vos statistiques et votre bilan annuel") }}</td>
+              <td>{{ _("Exécution du service que vous demandez") }}</td></tr>
+          <tr><td>{{ _("Liens de partage et adresse d'abonnement agenda (jetons secrets), date de dernière consultation d'un lien") }}</td>
+              <td>{{ _("Partager vos voyages avec les personnes de votre choix, ajouter vos voyages à votre agenda") }}</td>
+              <td>{{ _("Exécution du service que vous demandez") }}</td></tr>
+          <tr><td>{{ _("Journaux du serveur web : adresse IP, date, page demandée, navigateur") }}</td>
+              <td>{{ _("Sécurité du service, détection des abus et des pannes") }}</td>
+              <td>{{ _("Intérêt légitime (sécurité)") }}</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>{{ _("Les photos sont ré-enregistrées à l'envoi : leurs métadonnées (dont la position GPS et le modèle d'appareil) sont supprimées. Notes, photos, domicile et adresse e-mail n'apparaissent jamais sur les liens de partage ; les voyages à venir n'y apparaissent que si vous l'avez choisi pour ce lien.") }}</p>
+  </section>
+
+  <section>
+    <h2 class="h5">{{ _("Qui a accès à vos données") }}</h2>
+    <p>{{ _("Seul l'éditeur, en tant qu'administrateur technique du serveur, peut y accéder. Elles ne sont ni vendues, ni louées, ni cédées. Certains services tiers interviennent toutefois dans le fonctionnement du site :") }}</p>
+    <ul>
+      <li>{{ _("Recherche de lieux : le texte que vous tapez est transmis par notre serveur au service Nominatim de la fondation OpenStreetMap. Votre adresse IP ne lui est pas transmise.") }}</li>
+      <li>{{ _("Fonds de carte : votre navigateur télécharge les tuiles de la carte depuis %(host)s, qui reçoit donc votre adresse IP.", host=tile_host) }}</li>
+      <li>{{ _("Bibliothèques et polices de caractères : votre navigateur les télécharge depuis jsDelivr, unpkg, cdnjs (Cloudflare) et Google Fonts, qui reçoivent votre adresse IP.") }}</li>
+      {% if routing %}<li>{{ _("Distances routières : les coordonnées de départ et d'arrivée des trajets en voiture ou en bus sont envoyées par notre serveur à un service de calcul d'itinéraire (OSRM).") }}</li>{% endif %}
+      <li>{{ _("Agenda : si vous activez l'abonnement, votre service d'agenda récupère vos dates et lieux de voyage (sans les notes) à l'adresse secrète que vous lui donnez.") }}</li>
+      <li>{{ _("Liens de partage : toute personne qui possède un de vos liens voit les voyages qu'il montre. Vous pouvez révoquer un lien à tout moment.") }}</li>
+    </ul>
+    <p>{{ _("Les e-mails sont envoyés directement par notre serveur.") }}{% if location %} {{ _("Le site et ses données sont hébergés à %(location)s.", location=location) }}{% endif %}</p>
+  </section>
+
+  <section>
+    <h2 class="h5">{{ _("Durées de conservation") }}</h2>
+    <ul>
+      <li>{{ _("Compte et contenus : tant que votre compte existe. Supprimer votre compte efface immédiatement vos données et vos photos du site.") }}</li>
+      <li>{{ _("Sauvegardes : des copies de sécurité sont faites chaque nuit et conservées %(days)s jours au plus ; vos données y disparaissent donc au plus tard %(days)s jours après leur suppression.", days=backup_days) }}</li>
+      <li>{{ _("Journaux du serveur web : %(days)s jours.", days=log_days) }}</li>
+      <li>{{ _("Cache des recherches de lieux (sans lien avec votre compte) : %(days)s jours.", days=geocode_days) }}</li>
+      <li>{{ _("Liens envoyés par e-mail : %(signup)s minutes pour l'inscription, %(reset)s minutes pour la réinitialisation du mot de passe.", signup=signup_minutes, reset=reset_minutes) }}</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="h5">{{ _("Cookies et stockage local") }}</h2>
+    <p>{{ _("Le site n'utilise aucun cookie publicitaire ni de mesure d'audience. Les seuls éléments déposés sont nécessaires à son fonctionnement ou mémorisent vos choix ; ils ne demandent donc pas de consentement :") }}</p>
+    <ul>
+      <li><code>session</code> — {{ _("maintient votre connexion et protège les formulaires (cookie de session).") }}</li>
+      <li><code>remember_token</code> — {{ _("uniquement si vous cochez « Rester connecté » : vous reconnecte automatiquement (365 jours).") }}</li>
+      <li><code>lang</code> — {{ _("mémorise la langue choisie (1 an).") }}</li>
+      <li>{{ _("Stockage local du navigateur : thème clair ou sombre, couches de carte affichées, brouillon d'un trajet en cours de saisie. Ces données ne quittent pas votre appareil.") }}</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2 class="h5">{{ _("Sécurité") }}</h2>
+    <p>{{ _("Connexion chiffrée (HTTPS), mots de passe hachés, limitation des tentatives de connexion, déconnexion des autres sessions au changement de mot de passe, sauvegardes quotidiennes.") }}</p>
+  </section>
+
+  <section>
+    <h2 class="h5">{{ _("Vos droits") }}</h2>
+    <p>{{ _("Vous disposez des droits d'accès, de rectification, d'effacement, de limitation, d'opposition et de portabilité de vos données. La plupart s'exercent directement dans l'application :") }}</p>
+    <ul>
+      <li>{{ _("Accès et portabilité : page Importer / exporter (CSV, GeoJSON, GPX) ou sauvegarde complète avec vos photos (.zip).") }}</li>
+      <li>{{ _("Rectification : modifiez vos trajets, voyages et préférences à tout moment.") }}</li>
+      <li>{{ _("Effacement : Préférences, puis « Supprimer mon compte ».") }}</li>
+    </ul>
+    <p>{{ _("Pour toute autre demande, écrivez à l'adresse de contact ci-dessus. Vous pouvez aussi adresser une réclamation à la CNIL :") }}
+      <a href="https://www.cnil.fr/fr/plaintes" rel="noopener">cnil.fr</a>.</p>
+  </section>
+
+  <p class="small text-body-secondary mt-4">{{ _("Dernière mise à jour : %(date)s", date=updated|day) }}</p>
+</article>
+{% endblock %}

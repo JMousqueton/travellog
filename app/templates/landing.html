@@ -1,5 +1,23 @@
 {% extends "base.html" %}
-{% block title %}{{ _("Bienvenue") }}{% endblock %}
+{% block title %}{{ _("Vos voyages sur une carte") }}{% endblock %}
+{% block head %}
+<script type="application/ld+json" nonce="{{ csp_nonce() }}">{{ {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": _("Carnet de voyages"),
+  "alternateName": "Travel Log",
+  "url": seo.base_url ~ "/",
+  "description": _("Carnet de voyages gratuit et open source : notez vos trajets en avion, train, voiture ou à vélo, voyez-les sur une carte, suivez pays visités, kilomètres et CO₂."),
+  "applicationCategory": "TravelApplication",
+  "operatingSystem": "Web",
+  "inLanguage": LANGUAGES|list,
+  "isAccessibleForFree": true,
+  "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"},
+  "license": "https://opensource.org/licenses/MIT",
+  "codeRepository": config.SOURCE_URL,
+  "author": {"@type": "Person", "name": config.LEGAL_PUBLISHER_NAME or "Julien Mousqueton"}
+}|tojson }}</script>
+{% endblock %}
 {% block main_class %}landing{% endblock %}
 {% block content %}
 <section class="hero container py-5">
@@ -39,15 +57,19 @@
 </section>
 <section class="container pb-5">
   <div class="row g-4">
+    <h2 class="visually-hidden">{{ _("Fonctionnalités") }}</h2>
     {% for icon, title, text in [
       ('fa-map-location-dot', _("Carte interactive"), _("Trajets colorés par mode, arcs géodésiques pour l'avion et retours en pointillés.")),
-      ('fa-chart-simple', _("Statistiques"), _("Nombre de voyages, distance totale et répartition par mode de transport.")),
-      ('fa-language', _("Multilingue"), _("Disponible en français, anglais, espagnol, allemand et italien.")),
+      ('fa-earth-europe', _("Pays et continents"), _("Les pays visités s'affichent sur la carte, avec badges, continents et lieux visités.")),
+      ('fa-chart-simple', _("Statistiques et CO₂"), _("Kilomètres, émissions de CO₂ estimées, jours passés en voyage, année par année.")),
+      ('fa-calendar-check', _("Bilan de l'année"), _("Votre année de voyages en chiffres et en image, à télécharger ou à partager.")),
+      ('fa-camera', _("Notes et photos"), _("Gardez vos souvenirs avec chaque trajet ; les photos restent privées.")),
+      ('fa-shield-halved', _("Vos données vous appartiennent"), _("Gratuit, sans publicité ni pistage, open source ; export complet à tout moment.")),
     ] %}
-    <div class="col-md-4">
+    <div class="col-sm-6 col-lg-4">
       <div class="feature card h-100 shadow-soft p-4">
         <span class="feature-icon mb-3" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></span>
-        <h2 class="h5 fw-semibold">{{ title }}</h2>
+        <h3 class="h5 fw-semibold">{{ title }}</h3>
         <p class="text-body-secondary mb-0">{{ text }}</p>
       </div>
     </div>

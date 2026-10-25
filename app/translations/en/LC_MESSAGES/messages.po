@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-25 09:14+0000\n"
+"POT-Creation-Date: 2026-10-25 10:48+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -18,61 +18,61 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
 
-#: app/__init__.py:43 app/__init__.py:50
+#: app/__init__.py:44 app/__init__.py:51
 msgid "Connectez-vous pour accéder à cette page."
 msgstr "Please log in to access this page."
 
-#: app/__init__.py:49
+#: app/__init__.py:50
 msgid "Authentification requise."
 msgstr "Authentication required."
 
-#: app/__init__.py:100
+#: app/__init__.py:101
 msgid "Requête invalide"
 msgstr "Bad request"
 
-#: app/__init__.py:100
+#: app/__init__.py:101
 msgid "La requête envoyée n'a pas pu être traitée."
 msgstr "The request could not be processed."
 
-#: app/__init__.py:101
+#: app/__init__.py:102
 msgid "Accès refusé"
 msgstr "Access denied"
 
-#: app/__init__.py:101
+#: app/__init__.py:102
 msgid "Vous n'avez pas l'autorisation d'accéder à cette page."
 msgstr "You are not allowed to access this page."
 
-#: app/__init__.py:102
+#: app/__init__.py:103
 msgid "Page introuvable"
 msgstr "Page not found"
 
-#: app/__init__.py:102
+#: app/__init__.py:103
 msgid "La page demandée n'existe pas ou a été déplacée."
 msgstr "The page you requested does not exist or has been moved."
 
-#: app/__init__.py:103
+#: app/__init__.py:104
 msgid "Fichier trop volumineux"
 msgstr "File too large"
 
-#: app/__init__.py:103
+#: app/__init__.py:104
 msgid "Le fichier envoyé dépasse la taille autorisée."
 msgstr "The uploaded file exceeds the allowed size."
 
-#: app/__init__.py:104
+#: app/__init__.py:105
 msgid "Trop de tentatives"
 msgstr "Too many attempts"
 
-#: app/__init__.py:104
+#: app/__init__.py:105
 msgid ""
 "Vous avez effectué trop de demandes. Patientez quelques minutes puis "
 "réessayez."
 msgstr "You have made too many requests. Please wait a few minutes and try again."
 
-#: app/__init__.py:105
+#: app/__init__.py:106
 msgid "Erreur interne"
 msgstr "Internal error"
 
-#: app/__init__.py:105
+#: app/__init__.py:106
 msgid "Une erreur inattendue s'est produite. Réessayez plus tard."
 msgstr "An unexpected error occurred. Please try again later."
 
@@ -100,8 +100,8 @@ msgstr "Settings saved."
 
 #: app/api/routes.py:111 app/api/routes.py:123
 #: app/templates/admin/users.html:34 app/templates/trips/list.html:126
-#: app/templates/trips/stats.html:94 app/templates/trips/stats.html:208
-#: app/templates/trips/stats.html:318
+#: app/templates/trips/stats.html:99 app/templates/trips/stats.html:213
+#: app/templates/trips/stats.html:323
 #, python-format
 msgid "%(num)s trajet"
 msgid_plural "%(num)s trajets"
@@ -112,7 +112,7 @@ msgstr[1] "%(num)s legs"
 msgid "Recherche trop longue."
 msgstr "Search query is too long."
 
-#: app/api/routes.py:170 app/i18n.py:112 app/trips/routes.py:111
+#: app/api/routes.py:170 app/i18n.py:114 app/trips/routes.py:111
 msgid "La recherche de lieux est momentanément indisponible."
 msgstr "Place search is temporarily unavailable."
 
@@ -146,7 +146,7 @@ msgid "Rester connecté"
 msgstr "Keep me signed in"
 
 #: app/auth/forms.py:24 app/templates/auth/register.html:24
-#: app/templates/landing.html:19
+#: app/templates/landing.html:37
 msgid "Se connecter"
 msgstr "Log in"
 
@@ -354,262 +354,266 @@ msgstr "This reset link is invalid or has expired. Request a new one."
 msgid "Mot de passe modifié. Vous pouvez vous connecter."
 msgstr "Password changed. You can now sign in."
 
-#: app/i18n.py:64 app/i18n.py:133 app/templates/partials/macros.html:38
+#: app/i18n.py:66 app/i18n.py:135 app/templates/partials/macros.html:38
 msgid "En cours"
 msgstr "Ongoing"
 
-#: app/i18n.py:69
+#: app/i18n.py:71
 msgid "Demain"
 msgstr "Tomorrow"
 
-#: app/i18n.py:70
+#: app/i18n.py:72
 #, python-format
 msgid "Dans %(num)s jour"
 msgid_plural "Dans %(num)s jours"
 msgstr[0] "In %(num)s day"
 msgstr[1] "In %(num)s days"
 
-#: app/i18n.py:84 app/templates/map.html:170
+#: app/i18n.py:86 app/templates/map.html:170
 msgid "Chargement…"
 msgstr "Loading…"
 
-#: app/i18n.py:85
+#: app/i18n.py:87
 msgid "Impossible de charger les voyages. Réessayez."
 msgstr "Could not load trips. Please try again."
 
-#: app/i18n.py:86
+#: app/i18n.py:88
 msgid "Réessayer"
 msgstr "Retry"
 
-#: app/i18n.py:87 app/templates/trips/list.html:168
-#: app/templates/trips/stats.html:39
+#: app/i18n.py:89 app/templates/trips/list.html:168
+#: app/templates/trips/stats.html:44
 msgid "Aucun voyage pour l'instant"
 msgstr "No trips yet"
 
-#: app/i18n.py:88 app/templates/trips/list.html:169
-#: app/templates/trips/stats.html:40
+#: app/i18n.py:90 app/templates/trips/list.html:169
+#: app/templates/trips/stats.html:45
 msgid "Ajoutez votre premier voyage pour le voir apparaître sur la carte."
 msgstr "Add your first trip to see it on the map."
 
-#: app/i18n.py:89
+#: app/i18n.py:91
 msgid "Aucun voyage ne correspond aux filtres"
 msgstr "No trips match the filters"
 
-#: app/i18n.py:90
+#: app/i18n.py:92
 msgid "Modifiez ou réinitialisez les filtres pour afficher vos voyages."
 msgstr "Change or reset the filters to see your trips."
 
-#: app/i18n.py:91
+#: app/i18n.py:93
 msgid "Réinitialiser les filtres"
 msgstr "Reset filters"
 
-#: app/i18n.py:92 app/templates/base.html:93 app/templates/map.html:179
-#: app/templates/trips/list.html:11 app/templates/trips/list.html:171
+#: app/i18n.py:94 app/templates/base.html:118 app/templates/base.html:119
+#: app/templates/map.html:179 app/templates/trips/list.html:11
+#: app/templates/trips/list.html:171
 msgid "Ajouter un voyage"
 msgstr "Add a trip"
 
-#: app/i18n.py:93 app/templates/trips/detail.html:31
+#: app/i18n.py:95 app/templates/trips/detail.html:31
 #: app/templates/trips/list.html:136
 msgid "Modifier"
 msgstr "Edit"
 
-#: app/i18n.py:94 app/templates/base.html:170
+#: app/i18n.py:96 app/templates/base.html:196
 #: app/templates/trips/detail.html:107 app/templates/trips/form.html:112
 msgid "Supprimer"
 msgstr "Delete"
 
-#: app/i18n.py:95
+#: app/i18n.py:97
 #, python-format
 msgid "Afficher %(route)s sur la carte"
 msgstr "Show %(route)s on the map"
 
-#: app/i18n.py:96 app/templates/trips/list.html:72
+#: app/i18n.py:98 app/templates/trips/list.html:72
 #, python-format
 msgid "Modifier le voyage %(route)s"
 msgstr "Edit trip %(route)s"
 
-#: app/i18n.py:97 app/templates/trips/list.html:77
+#: app/i18n.py:99 app/templates/trips/list.html:77
 #, python-format
 msgid "Supprimer le voyage %(route)s"
 msgstr "Delete trip %(route)s"
 
-#: app/i18n.py:98 app/templates/trips/detail.html:40
+#: app/i18n.py:100 app/templates/trips/detail.html:40
+#: app/templates/trips/stats.html:27
 msgid "Départ"
 msgstr "Departure"
 
-#: app/i18n.py:99 app/templates/trips/detail.html:41
+#: app/i18n.py:101 app/templates/trips/detail.html:41
+#: app/templates/trips/stats.html:29
 msgid "Retour"
 msgstr "Return"
 
-#: app/i18n.py:100 app/templates/trips/detail.html:46
-#: app/templates/trips/list.html:107 app/templates/trips/stats.html:196
-#: app/templates/trips/stats.html:250
+#: app/i18n.py:102 app/templates/trips/detail.html:46
+#: app/templates/trips/list.html:107 app/templates/trips/stats.html:201
+#: app/templates/trips/stats.html:255
 msgid "Distance"
 msgstr "Distance"
 
-#: app/i18n.py:101 app/templates/map.html:121 app/templates/trips/list.html:50
+#: app/i18n.py:103 app/templates/map.html:121 app/templates/trips/list.html:50
 #: app/trips/forms.py:58
 msgid "Aller-retour"
 msgstr "Round trip"
 
-#: app/i18n.py:102 app/templates/map.html:121 app/templates/trips/list.html:50
+#: app/i18n.py:104 app/templates/map.html:121 app/templates/trips/list.html:50
+#: app/templates/trips/stats.html:30
 msgid "Aller simple"
 msgstr "One way"
 
-#: app/i18n.py:103
+#: app/i18n.py:105
 msgid "Trajet aller"
 msgstr "Outbound journey"
 
-#: app/i18n.py:104
+#: app/i18n.py:106
 msgid "Trajet retour"
 msgstr "Return journey"
 
-#: app/i18n.py:105
+#: app/i18n.py:107
 msgid "Légende"
 msgstr "Legend"
 
-#: app/i18n.py:106
+#: app/i18n.py:108
 msgid "Aller"
 msgstr "Outbound"
 
-#: app/i18n.py:107
+#: app/i18n.py:109
 msgid "Retour (pointillés)"
 msgstr "Return (dotted)"
 
-#: app/i18n.py:108
+#: app/i18n.py:110
 msgid "Voyages passant par ce lieu"
 msgstr "Trips through this place"
 
-#: app/i18n.py:109 app/templates/map.html:163
+#: app/i18n.py:111 app/templates/map.html:163
 msgid "Carte des voyages"
 msgstr "Trip map"
 
-#: app/i18n.py:110
+#: app/i18n.py:112
 msgid "contributeurs OpenStreetMap"
 msgstr "OpenStreetMap contributors"
 
-#: app/i18n.py:111
+#: app/i18n.py:113
 msgid "Aucun lieu trouvé"
 msgstr "No place found"
 
-#: app/i18n.py:113
+#: app/i18n.py:115
 msgid "Recherche…"
 msgstr "Searching…"
 
-#: app/i18n.py:114
+#: app/i18n.py:116
 msgid "Saisissez au moins 3 caractères"
 msgstr "Type at least 3 characters"
 
-#: app/i18n.py:115
+#: app/i18n.py:117
 #, python-format
 msgid "%(count)s suggestions disponibles, utilisez les flèches haut et bas"
 msgstr "%(count)s suggestions available, use the up and down arrows"
 
-#: app/i18n.py:116 app/trips/forms.py:78
+#: app/i18n.py:118 app/trips/forms.py:78
 msgid "La date de retour doit être postérieure ou égale à la date de départ."
 msgstr "Return date must be on or after the departure date."
 
-#: app/i18n.py:117 app/trips/forms.py:74
+#: app/i18n.py:119 app/trips/forms.py:74
 msgid "La date de retour est obligatoire pour un aller-retour."
 msgstr "A return date is required for a round trip."
 
-#: app/i18n.py:118
+#: app/i18n.py:120
 msgid "Passer en mode clair"
 msgstr "Switch to light mode"
 
-#: app/i18n.py:119
+#: app/i18n.py:121
 msgid "Passer en mode sombre"
 msgstr "Switch to dark mode"
 
-#: app/i18n.py:120
+#: app/i18n.py:122
 msgid "Impossible d'enregistrer la préférence de thème."
 msgstr "Could not save the theme preference."
 
-#: app/i18n.py:121
+#: app/i18n.py:123
 #, python-format
 msgid "Voyage sélectionné : %(route)s"
 msgstr "Selected trip: %(route)s"
 
-#: app/i18n.py:122
+#: app/i18n.py:124
 #, python-format
 msgid "Voyage : %(name)s"
 msgstr "Trip: %(name)s"
 
-#: app/i18n.py:123
+#: app/i18n.py:125
 msgid "Aucun voyage à afficher"
 msgstr "No trips to show"
 
-#: app/i18n.py:124
+#: app/i18n.py:126
 msgid "Lien copié dans le presse-papiers."
 msgstr "Link copied to the clipboard."
 
-#: app/i18n.py:125
+#: app/i18n.py:127
 msgid "Impossible de copier le lien : sélectionnez-le et copiez-le manuellement."
 msgstr "Could not copy the link: select it and copy it manually."
 
-#: app/i18n.py:126
+#: app/i18n.py:128
 msgid "Liste mise à jour"
 msgstr "List updated"
 
-#: app/i18n.py:127
+#: app/i18n.py:129
 msgid "Ce champ est obligatoire."
 msgstr "This field is required."
 
-#: app/i18n.py:128 app/trips/queries.py:35
+#: app/i18n.py:130 app/trips/queries.py:35
 msgid "La date de début doit précéder la date de fin."
 msgstr "Start date must be before end date."
 
-#: app/i18n.py:129 app/templates/trips/stats.html:309
+#: app/i18n.py:131 app/templates/trips/stats.html:314
 msgid "Pays visités"
 msgstr "Countries visited"
 
-#: app/i18n.py:130
+#: app/i18n.py:132
 msgid "Fiche"
 msgstr "Details"
 
-#: app/i18n.py:131 app/templates/trips/list.html:69
+#: app/i18n.py:133 app/templates/trips/list.html:69
 #, python-format
 msgid "Fiche du trajet %(route)s"
 msgstr "Details of trip %(route)s"
 
-#: app/i18n.py:132 app/templates/map.html:112 app/templates/trips/stats.html:18
+#: app/i18n.py:134 app/templates/map.html:112 app/templates/trips/stats.html:18
 msgid "À venir"
 msgstr "Upcoming"
 
-#: app/i18n.py:134
+#: app/i18n.py:136
 msgid "À venir (estompé)"
 msgstr "Upcoming (faded)"
 
-#: app/i18n.py:135 app/templates/trips/stats.html:50
-#: app/templates/trips/stats.html:86
+#: app/i18n.py:137 app/templates/trips/stats.html:55
+#: app/templates/trips/stats.html:91
 msgid "Lieux visités"
 msgstr "Places visited"
 
-#: app/i18n.py:136
+#: app/i18n.py:138
 msgid "Rejouer"
 msgstr "Replay"
 
-#: app/i18n.py:137
+#: app/i18n.py:139
 msgid "Rejouer mes voyages dans l'ordre chronologique"
 msgstr "Replay my trips in chronological order"
 
-#: app/i18n.py:138
+#: app/i18n.py:140
 msgid "Lecture"
 msgstr "Play"
 
-#: app/i18n.py:139
+#: app/i18n.py:141
 msgid "Pause"
 msgstr "Pause"
 
-#: app/i18n.py:140
+#: app/i18n.py:142
 msgid "Fermer la relecture"
 msgstr "Close replay"
 
-#: app/i18n.py:141
+#: app/i18n.py:143
 msgid "Date de la relecture"
 msgstr "Replay date"
 
-#: app/i18n.py:142
+#: app/i18n.py:144
 msgid "Impossible de partager l'image : téléchargez-la puis partagez-la."
 msgstr "Couldn't share the image: download it, then share it."
 
@@ -679,6 +683,18 @@ msgstr "Longest trip"
 msgid "Nouveaux pays"
 msgstr "New countries"
 
+#: app/seo.py:103 app/seo.py:104 app/templates/base.html:9
+#: app/templates/base.html:19 app/templates/base.html:20
+#: app/templates/base.html:64 app/templates/landing.html:7
+#: app/transfer/routes.py:53 app/trips/routes.py:414 app/trips/routes.py:430
+#: app/trips/routes.py:474
+msgid "Carnet de voyages"
+msgstr "Travel Log"
+
+#: app/seo.py:105 app/templates/landing.html:28
+msgid "Tous vos voyages, sur une seule carte."
+msgstr "All your trips, on a single map."
+
 #: app/share/forms.py:10
 msgid "Jamais"
 msgstr "Never"
@@ -736,7 +752,7 @@ msgid "Ce lien ne montre plus vos voyages à venir."
 msgstr "This link no longer shows your upcoming trips."
 
 #: app/templates/admin/_nav.html:1 app/templates/admin/settings.html:2
-#: app/templates/admin/users.html:2 app/templates/base.html:108
+#: app/templates/admin/users.html:2 app/templates/base.html:134
 msgid "Administration"
 msgstr "Administration"
 
@@ -770,8 +786,8 @@ msgid "Inscription"
 msgstr "Signed up"
 
 #: app/templates/admin/users.html:15 app/templates/map.html:37
-#: app/templates/map.html:132 app/templates/trips/stats.html:47
-#: app/templates/trips/stats.html:195 app/templates/trips/stats.html:249
+#: app/templates/map.html:132 app/templates/trips/stats.html:52
+#: app/templates/trips/stats.html:200 app/templates/trips/stats.html:254
 msgid "Voyages"
 msgstr "Trips"
 
@@ -870,7 +886,7 @@ msgid "Retour à la connexion"
 msgstr "Back to sign in"
 
 #: app/templates/auth/login.html:3 app/templates/auth/login.html:4
-#: app/templates/base.html:123
+#: app/templates/base.html:149
 msgid "Connexion"
 msgstr "Log in"
 
@@ -891,12 +907,12 @@ msgid "Pas encore de compte ?"
 msgstr "No account yet?"
 
 #: app/templates/auth/login.html:25 app/templates/auth/register.html:3
-#: app/templates/auth/register.html:4 app/templates/base.html:125
+#: app/templates/auth/register.html:4 app/templates/base.html:151
 msgid "Créer un compte"
 msgstr "Sign up"
 
 #: app/templates/auth/profile.html:3 app/templates/auth/profile.html:7
-#: app/templates/base.html:101
+#: app/templates/base.html:127
 msgid "Préférences"
 msgstr "Preferences"
 
@@ -1077,79 +1093,88 @@ msgstr "Finish signing up"
 msgid "Adresse vérifiée : %(email)s"
 msgstr "Address verified: %(email)s"
 
-#: app/templates/base.html:9 app/templates/base.html:38
-#: app/transfer/routes.py:53 app/trips/routes.py:414 app/trips/routes.py:430
-#: app/trips/routes.py:474
-msgid "Carnet de voyages"
-msgstr "Travel Log"
+#: app/templates/base.html:10 app/templates/landing.html:10
+msgid ""
+"Carnet de voyages gratuit et open source : notez vos trajets en avion, "
+"train, voiture ou à vélo, voyez-les sur une carte, suivez pays visités, "
+"kilomètres et CO₂."
+msgstr ""
+"Free, open-source travel log: record your trips by plane, train, car or "
+"bike, see them on a map, and track countries visited, kilometres and CO₂."
 
-#: app/templates/base.html:32
+#: app/templates/base.html:26
+msgid "Carnet de voyages : vos trajets sur une carte du monde"
+msgstr "Travel Log: your trips on a world map"
+
+#: app/templates/base.html:58
 msgid "Aller au contenu principal"
 msgstr "Skip to main content"
 
-#: app/templates/base.html:34
+#: app/templates/base.html:60
 msgid "Navigation principale"
 msgstr "Main navigation"
 
-#: app/templates/base.html:44
+#: app/templates/base.html:70
 #, python-format
 msgid "Langue : %(lang)s"
 msgstr "Language: %(lang)s"
 
-#: app/templates/base.html:48
+#: app/templates/base.html:74
 msgid "Choisir la langue"
 msgstr "Choose language"
 
-#: app/templates/base.html:62
+#: app/templates/base.html:88
 msgid "Basculer le thème clair ou sombre"
 msgstr "Toggle light or dark theme"
 
-#: app/templates/base.html:67
+#: app/templates/base.html:93
 msgid "Ouvrir le menu"
 msgstr "Open menu"
 
-#: app/templates/base.html:78 app/templates/map.html:2
+#: app/templates/base.html:102 app/templates/base.html:104
+#: app/templates/map.html:2
 msgid "Carte"
 msgstr "Map"
 
-#: app/templates/base.html:83 app/templates/trips/detail.html:11
-#: app/templates/trips/list.html:3 app/templates/trips/list.html:6
+#: app/templates/base.html:107 app/templates/base.html:109
+#: app/templates/trips/detail.html:11 app/templates/trips/list.html:3
+#: app/templates/trips/list.html:6
 msgid "Mes voyages"
 msgstr "My trips"
 
-#: app/templates/base.html:88 app/templates/landing.html:44
+#: app/templates/base.html:112 app/templates/base.html:114
 #: app/templates/trips/stats.html:3 app/templates/trips/stats.html:7
 msgid "Statistiques"
 msgstr "Statistics"
 
-#: app/templates/base.html:103 app/templates/share/links.html:2
+#: app/templates/base.html:129 app/templates/share/links.html:2
 #: app/templates/share/links.html:6
 msgid "Partager mes voyages"
 msgstr "Share my trips"
 
-#: app/templates/base.html:105 app/templates/transfer/index.html:2
+#: app/templates/base.html:131 app/templates/transfer/index.html:2
 #: app/templates/transfer/index.html:6 app/templates/trips/list.html:9
 #: app/templates/trips/stats.html:12
 msgid "Importer / exporter"
 msgstr "Import / export"
 
-#: app/templates/base.html:115
+#: app/templates/base.html:141
 msgid "Déconnexion"
 msgstr "Log out"
 
-#: app/templates/base.html:146 app/templates/map.html:17
+#: app/templates/base.html:172 app/templates/map.html:17
 msgid "Fermer"
 msgstr "Close"
 
-#: app/templates/base.html:161
+#: app/templates/base.html:187
 msgid "Supprimer ce voyage ?"
 msgstr "Delete this trip?"
 
-#: app/templates/base.html:164
+#: app/templates/base.html:190
 msgid "Cette action est définitive."
 msgstr "This cannot be undone."
 
-#: app/templates/base.html:168 app/templates/trips/form.html:116
+#: app/templates/base.html:194 app/templates/trips/form.html:116
 #: app/templates/trips/journey.html:29
 msgid "Annuler"
 msgstr "Cancel"
@@ -1159,18 +1184,14 @@ msgid "Retour à l'accueil"
 msgstr "Back to home"
 
 #: app/templates/landing.html:2
-msgid "Bienvenue"
-msgstr "Welcome"
+msgid "Vos voyages sur une carte"
+msgstr "Your trips on a map"
 
-#: app/templates/landing.html:9
+#: app/templates/landing.html:27
 msgid "Votre carnet de route personnel"
 msgstr "Your personal travel log"
 
-#: app/templates/landing.html:10
-msgid "Tous vos voyages, sur une seule carte."
-msgstr "All your trips, on a single map."
-
-#: app/templates/landing.html:12
+#: app/templates/landing.html:30
 msgid ""
 "Notez vos trajets en avion, train, voiture ou à vélo, visualisez-les sur "
 "la carte et suivez les kilomètres parcourus."
@@ -1178,19 +1199,23 @@ msgstr ""
 "Log your journeys by plane, train, car or bike, see them on the map and "
 "track the kilometres you have travelled."
 
-#: app/templates/landing.html:16
+#: app/templates/landing.html:34
 msgid "Commencer gratuitement"
 msgstr "Get started for free"
 
-#: app/templates/landing.html:17
+#: app/templates/landing.html:35
 msgid "J'ai déjà un compte"
 msgstr "I already have an account"
 
-#: app/templates/landing.html:43
+#: app/templates/landing.html:60
+msgid "Fonctionnalités"
+msgstr "Features"
+
+#: app/templates/landing.html:62
 msgid "Carte interactive"
 msgstr "Interactive map"
 
-#: app/templates/landing.html:43
+#: app/templates/landing.html:62
 msgid ""
 "Trajets colorés par mode, arcs géodésiques pour l'avion et retours en "
 "pointillés."
@@ -1198,17 +1223,510 @@ msgstr ""
 "Routes coloured by mode, geodesic arcs for flights and dotted return "
 "journeys."
 
-#: app/templates/landing.html:44
-msgid "Nombre de voyages, distance totale et répartition par mode de transport."
-msgstr "Number of trips, total distance and breakdown by mode of transport."
+#: app/templates/landing.html:63
+msgid "Pays et continents"
+msgstr "Countries and continents"
 
-#: app/templates/landing.html:45
-msgid "Multilingue"
-msgstr "Multilingual"
+#: app/templates/landing.html:63
+msgid ""
+"Les pays visités s'affichent sur la carte, avec badges, continents et "
+"lieux visités."
+msgstr ""
+"Countries visited appear on the map, with badges, continents and places "
+"visited."
 
-#: app/templates/landing.html:45
-msgid "Disponible en français, anglais, espagnol, allemand et italien."
-msgstr "Available in French, English, Spanish, German and Italian."
+#: app/templates/landing.html:64
+msgid "Statistiques et CO₂"
+msgstr "Statistics and CO₂"
+
+#: app/templates/landing.html:64
+msgid ""
+"Kilomètres, émissions de CO₂ estimées, jours passés en voyage, année par "
+"année."
+msgstr ""
+"Kilometres, estimated CO₂ emissions and days spent travelling, year by "
+"year."
+
+#: app/templates/landing.html:65
+msgid ""
+"Votre année de voyages en chiffres et en image, à télécharger ou à "
+"partager."
+msgstr "Your year of travel in figures and in a picture, to download or share."
+
+#: app/templates/landing.html:65 app/templates/trips/review.html:3
+#: app/templates/trips/review.html:9 app/templates/trips/stats.html:10
+msgid "Bilan de l'année"
+msgstr "Year in review"
+
+#: app/templates/landing.html:66
+msgid "Notes et photos"
+msgstr "Notes and photos"
+
+#: app/templates/landing.html:66
+msgid "Gardez vos souvenirs avec chaque trajet ; les photos restent privées."
+msgstr "Keep your memories with each trip; photos stay private."
+
+#: app/templates/landing.html:67
+msgid "Vos données vous appartiennent"
+msgstr "Your data belongs to you"
+
+#: app/templates/landing.html:67
+msgid ""
+"Gratuit, sans publicité ni pistage, open source ; export complet à tout "
+"moment."
+msgstr "Free, no ads or tracking, open source; full export at any time."
+
+#: app/templates/legal/_contact.html:2
+msgid "adresse de contact bientôt disponible"
+msgstr "contact address coming soon"
+
+#: app/templates/legal/_contact.html:4
+msgid "Administrateur : renseignez LEGAL_CONTACT_EMAIL dans .env"
+msgstr "Administrator: set LEGAL_CONTACT_EMAIL in .env"
+
+#: app/templates/legal/notice.html:2 app/templates/legal/notice.html:6
+#: app/templates/partials/footer.html:7
+msgid "Mentions légales"
+msgstr "Legal notice"
+
+#: app/templates/legal/notice.html:3
+msgid ""
+"Mentions légales du Carnet de voyages : éditeur, hébergement, licences et"
+" crédits."
+msgstr "Travel Log legal notice: publisher, hosting, licences and credits."
+
+#: app/templates/legal/notice.html:9
+msgid "Éditeur du site"
+msgstr "Publisher"
+
+#: app/templates/legal/notice.html:10
+#, python-format
+msgid ""
+"Ce site est édité à titre personnel et non commercial par %(name)s, qui "
+"en est le directeur de la publication."
+msgstr ""
+"This site is published on a personal, non-commercial basis by %(name)s, "
+"who is its publication director."
+
+#: app/templates/legal/notice.html:11 app/templates/legal/privacy.html:12
+msgid "Contact :"
+msgstr "Contact:"
+
+#: app/templates/legal/notice.html:15
+msgid "Hébergement"
+msgstr "Hosting"
+
+#: app/templates/legal/notice.html:16
+#, python-format
+msgid "Téléphone : %(phone)s"
+msgstr "Phone: %(phone)s"
+
+#: app/templates/legal/notice.html:17 app/templates/legal/privacy.html:50
+#, python-format
+msgid "Le site et ses données sont hébergés à %(location)s."
+msgstr "The site and its data are hosted in %(location)s."
+
+#: app/templates/legal/notice.html:21
+msgid "Données personnelles"
+msgstr "Personal data"
+
+#: app/templates/legal/notice.html:22
+msgid ""
+"Les données que vous enregistrez restent privées, ne sont ni vendues ni "
+"utilisées à des fins publicitaires. Le détail des traitements et de vos "
+"droits figure dans la"
+msgstr ""
+"The data you record stays private and is neither sold nor used for "
+"advertising. Details of how it is processed and of your rights are set "
+"out in the"
+
+#: app/templates/legal/notice.html:23
+msgid "politique de confidentialité"
+msgstr "privacy policy"
+
+#: app/templates/legal/notice.html:27
+msgid "Propriété intellectuelle et licences"
+msgstr "Intellectual property and licences"
+
+#: app/templates/legal/notice.html:28
+msgid "Le code source de l'application est libre, publié sous licence MIT :"
+msgstr ""
+"The application's source code is free software, published under the MIT "
+"licence:"
+
+#: app/templates/legal/notice.html:30
+msgid "Les trajets, notes et photos appartiennent aux personnes qui les publient."
+msgstr "Trips, notes and photos belong to the people who publish them."
+
+#: app/templates/legal/notice.html:32
+msgid "Fonds de carte : © contributeurs OpenStreetMap, données sous licence ODbL."
+msgstr "Base maps: © OpenStreetMap contributors, data under the ODbL licence."
+
+#: app/templates/legal/notice.html:34
+msgid "Contours des pays : Natural Earth (domaine public)."
+msgstr "Country borders: Natural Earth (public domain)."
+
+#: app/templates/legal/notice.html:35
+msgid ""
+"Carte interactive : Leaflet (licence BSD) ; interface : Bootstrap "
+"(licence MIT) ; icônes : Font Awesome Free (licences CC BY 4.0, SIL OFL "
+"et MIT) ; police : Inter (SIL Open Font License)."
+msgstr ""
+"Interactive map: Leaflet (BSD licence); interface: Bootstrap (MIT "
+"licence); icons: Font Awesome Free (CC BY 4.0, SIL OFL and MIT licences);"
+" font: Inter (SIL Open Font License)."
+
+#: app/templates/legal/notice.html:40
+msgid "Responsabilité"
+msgstr "Liability"
+
+#: app/templates/legal/notice.html:41
+msgid ""
+"Les distances et les émissions de CO₂ affichées sont des estimations, "
+"données à titre indicatif. L'éditeur s'efforce d'assurer la disponibilité"
+" du service sans pouvoir la garantir ; pensez à télécharger régulièrement"
+" votre sauvegarde."
+msgstr ""
+"Distances and CO₂ emissions shown are estimates, for information only. "
+"The publisher does their best to keep the service available but cannot "
+"guarantee it; remember to download your backup regularly."
+
+#: app/templates/legal/notice.html:44 app/templates/legal/privacy.html:92
+#, python-format
+msgid "Dernière mise à jour : %(date)s"
+msgstr "Last updated: %(date)s"
+
+#: app/templates/legal/privacy.html:2 app/templates/legal/privacy.html:6
+msgid "Politique de confidentialité"
+msgstr "Privacy policy"
+
+#: app/templates/legal/privacy.html:3
+msgid ""
+"Données collectées par le Carnet de voyages, finalités, durées de "
+"conservation, cookies et droits RGPD."
+msgstr ""
+"Data collected by Travel Log, purposes, retention periods, cookies and "
+"GDPR rights."
+
+#: app/templates/legal/privacy.html:7
+msgid ""
+"En bref : vos voyages restent privés, rien n'est vendu, aucune publicité,"
+" aucun outil de mesure d'audience. Vous pouvez tout exporter ou tout "
+"supprimer vous-même, à tout moment."
+msgstr ""
+"In short: your trips stay private, nothing is sold, no ads, no analytics."
+" You can export or delete everything yourself, at any time."
+
+#: app/templates/legal/privacy.html:10
+msgid "Responsable du traitement"
+msgstr "Data controller"
+
+#: app/templates/legal/privacy.html:11
+#, python-format
+msgid "%(name)s, éditeur du site (voir les"
+msgstr "%(name)s, publisher of the site (see the"
+
+#: app/templates/legal/privacy.html:11
+msgid "mentions légales"
+msgstr "legal notice"
+
+#: app/templates/legal/privacy.html:16
+msgid "Données traitées, finalités et bases légales"
+msgstr "Data processed, purposes and legal bases"
+
+#: app/templates/legal/privacy.html:19
+msgid "Données"
+msgstr "Data"
+
+#: app/templates/legal/privacy.html:19
+msgid "Pourquoi"
+msgstr "Why"
+
+#: app/templates/legal/privacy.html:19
+msgid "Base légale"
+msgstr "Legal basis"
+
+#: app/templates/legal/privacy.html:21
+msgid ""
+"Adresse e-mail, mot de passe (stocké uniquement sous forme hachée), "
+"langue, thème, ville de domicile si vous la renseignez"
+msgstr ""
+"Email address, password (stored only in hashed form), language, theme, "
+"home city if you set one"
+
+#: app/templates/legal/privacy.html:22
+msgid ""
+"Créer et sécuriser votre compte, vous envoyer les liens d'inscription et "
+"de réinitialisation, calculer vos jours d'absence"
+msgstr ""
+"Create and secure your account, send you sign-up and reset links, "
+"calculate your days away"
+
+#: app/templates/legal/privacy.html:23 app/templates/legal/privacy.html:26
+#: app/templates/legal/privacy.html:29
+msgid "Exécution du service que vous demandez"
+msgstr "Performance of the service you request"
+
+#: app/templates/legal/privacy.html:24
+msgid ""
+"Trajets (lieux, dates, modes de transport), voyages, notes, étiquettes, "
+"photos"
+msgstr "Trips (places, dates, modes of transport), journeys, notes, tags, photos"
+
+#: app/templates/legal/privacy.html:25
+msgid "Afficher votre carte, vos statistiques et votre bilan annuel"
+msgstr "Show your map, statistics and year in review"
+
+#: app/templates/legal/privacy.html:27
+msgid ""
+"Liens de partage et adresse d'abonnement agenda (jetons secrets), date de"
+" dernière consultation d'un lien"
+msgstr ""
+"Share links and calendar subscription address (secret tokens), date a "
+"link was last viewed"
+
+#: app/templates/legal/privacy.html:28
+msgid ""
+"Partager vos voyages avec les personnes de votre choix, ajouter vos "
+"voyages à votre agenda"
+msgstr ""
+"Share your trips with the people you choose, add your trips to your "
+"calendar"
+
+#: app/templates/legal/privacy.html:30
+msgid "Journaux du serveur web : adresse IP, date, page demandée, navigateur"
+msgstr "Web server logs: IP address, date, page requested, browser"
+
+#: app/templates/legal/privacy.html:31
+msgid "Sécurité du service, détection des abus et des pannes"
+msgstr "Service security, detecting abuse and outages"
+
+#: app/templates/legal/privacy.html:32
+msgid "Intérêt légitime (sécurité)"
+msgstr "Legitimate interest (security)"
+
+#: app/templates/legal/privacy.html:36
+msgid ""
+"Les photos sont ré-enregistrées à l'envoi : leurs métadonnées (dont la "
+"position GPS et le modèle d'appareil) sont supprimées. Notes, photos, "
+"domicile et adresse e-mail n'apparaissent jamais sur les liens de partage"
+" ; les voyages à venir n'y apparaissent que si vous l'avez choisi pour ce"
+" lien."
+msgstr ""
+"Photos are re-saved on upload: their metadata (including GPS location and"
+" camera model) is removed. Notes, photos, home and email address never "
+"appear on share links; upcoming trips only appear there if you chose that"
+" for the link."
+
+#: app/templates/legal/privacy.html:40
+msgid "Qui a accès à vos données"
+msgstr "Who can access your data"
+
+#: app/templates/legal/privacy.html:41
+msgid ""
+"Seul l'éditeur, en tant qu'administrateur technique du serveur, peut y "
+"accéder. Elles ne sont ni vendues, ni louées, ni cédées. Certains "
+"services tiers interviennent toutefois dans le fonctionnement du site :"
+msgstr ""
+"Only the publisher, as technical administrator of the server, can access "
+"it. It is never sold, rented or transferred. Some third-party services "
+"are, however, involved in running the site:"
+
+#: app/templates/legal/privacy.html:43
+msgid ""
+"Recherche de lieux : le texte que vous tapez est transmis par notre "
+"serveur au service Nominatim de la fondation OpenStreetMap. Votre adresse"
+" IP ne lui est pas transmise."
+msgstr ""
+"Place search: the text you type is sent by our server to the "
+"OpenStreetMap Foundation's Nominatim service. Your IP address is not "
+"passed on to it."
+
+#: app/templates/legal/privacy.html:44
+#, python-format
+msgid ""
+"Fonds de carte : votre navigateur télécharge les tuiles de la carte "
+"depuis %(host)s, qui reçoit donc votre adresse IP."
+msgstr ""
+"Base maps: your browser downloads the map tiles from %(host)s, which "
+"therefore receives your IP address."
+
+#: app/templates/legal/privacy.html:45
+msgid ""
+"Bibliothèques et polices de caractères : votre navigateur les télécharge "
+"depuis jsDelivr, unpkg, cdnjs (Cloudflare) et Google Fonts, qui reçoivent"
+" votre adresse IP."
+msgstr ""
+"Libraries and fonts: your browser downloads them from jsDelivr, unpkg, "
+"cdnjs (Cloudflare) and Google Fonts, which receive your IP address."
+
+#: app/templates/legal/privacy.html:46
+msgid ""
+"Distances routières : les coordonnées de départ et d'arrivée des trajets "
+"en voiture ou en bus sont envoyées par notre serveur à un service de "
+"calcul d'itinéraire (OSRM)."
+msgstr ""
+"Road distances: the start and end coordinates of car and bus trips are "
+"sent by our server to a route-planning service (OSRM)."
+
+#: app/templates/legal/privacy.html:47
+msgid ""
+"Agenda : si vous activez l'abonnement, votre service d'agenda récupère "
+"vos dates et lieux de voyage (sans les notes) à l'adresse secrète que "
+"vous lui donnez."
+msgstr ""
+"Calendar: if you enable the subscription, your calendar service fetches "
+"your travel dates and places (without notes) from the secret address you "
+"give it."
+
+#: app/templates/legal/privacy.html:48
+msgid ""
+"Liens de partage : toute personne qui possède un de vos liens voit les "
+"voyages qu'il montre. Vous pouvez révoquer un lien à tout moment."
+msgstr ""
+"Share links: anyone who has one of your links sees the trips it shows. "
+"You can revoke a link at any time."
+
+#: app/templates/legal/privacy.html:50
+msgid "Les e-mails sont envoyés directement par notre serveur."
+msgstr "Emails are sent directly by our server."
+
+#: app/templates/legal/privacy.html:54
+msgid "Durées de conservation"
+msgstr "Retention periods"
+
+#: app/templates/legal/privacy.html:56
+msgid ""
+"Compte et contenus : tant que votre compte existe. Supprimer votre compte"
+" efface immédiatement vos données et vos photos du site."
+msgstr ""
+"Account and content: for as long as your account exists. Deleting your "
+"account immediately erases your data and photos from the site."
+
+#: app/templates/legal/privacy.html:57
+#, python-format
+msgid ""
+"Sauvegardes : des copies de sécurité sont faites chaque nuit et "
+"conservées %(days)s jours au plus ; vos données y disparaissent donc au "
+"plus tard %(days)s jours après leur suppression."
+msgstr ""
+"Backups: copies are made every night and kept for at most %(days)s days, "
+"so your data disappears from them at the latest %(days)s days after it is"
+" deleted."
+
+#: app/templates/legal/privacy.html:58
+#, python-format
+msgid "Journaux du serveur web : %(days)s jours."
+msgstr "Web server logs: %(days)s days."
+
+#: app/templates/legal/privacy.html:59
+#, python-format
+msgid ""
+"Cache des recherches de lieux (sans lien avec votre compte) : %(days)s "
+"jours."
+msgstr "Place search cache (not linked to your account): %(days)s days."
+
+#: app/templates/legal/privacy.html:60
+#, python-format
+msgid ""
+"Liens envoyés par e-mail : %(signup)s minutes pour l'inscription, "
+"%(reset)s minutes pour la réinitialisation du mot de passe."
+msgstr ""
+"Links sent by email: %(signup)s minutes for sign-up, %(reset)s minutes "
+"for password reset."
+
+#: app/templates/legal/privacy.html:65
+msgid "Cookies et stockage local"
+msgstr "Cookies and local storage"
+
+#: app/templates/legal/privacy.html:66
+msgid ""
+"Le site n'utilise aucun cookie publicitaire ni de mesure d'audience. Les "
+"seuls éléments déposés sont nécessaires à son fonctionnement ou "
+"mémorisent vos choix ; ils ne demandent donc pas de consentement :"
+msgstr ""
+"The site uses no advertising or analytics cookies. The only items stored "
+"are needed for it to work or remember your choices, so they do not "
+"require consent:"
+
+#: app/templates/legal/privacy.html:68
+msgid "maintient votre connexion et protège les formulaires (cookie de session)."
+msgstr "keeps you signed in and protects forms (session cookie)."
+
+#: app/templates/legal/privacy.html:69
+msgid ""
+"uniquement si vous cochez « Rester connecté » : vous reconnecte "
+"automatiquement (365 jours)."
+msgstr ""
+"only if you tick “Keep me signed in”: signs you back in automatically "
+"(365 days)."
+
+#: app/templates/legal/privacy.html:70
+msgid "mémorise la langue choisie (1 an)."
+msgstr "remembers your chosen language (1 year)."
+
+#: app/templates/legal/privacy.html:71
+msgid ""
+"Stockage local du navigateur : thème clair ou sombre, couches de carte "
+"affichées, brouillon d'un trajet en cours de saisie. Ces données ne "
+"quittent pas votre appareil."
+msgstr ""
+"Browser local storage: light or dark theme, map layers shown, draft of a "
+"trip being entered. This data never leaves your device."
+
+#: app/templates/legal/privacy.html:76
+msgid "Sécurité"
+msgstr "Security"
+
+#: app/templates/legal/privacy.html:77
+msgid ""
+"Connexion chiffrée (HTTPS), mots de passe hachés, limitation des "
+"tentatives de connexion, déconnexion des autres sessions au changement de"
+" mot de passe, sauvegardes quotidiennes."
+msgstr ""
+"Encrypted connection (HTTPS), hashed passwords, limits on sign-in "
+"attempts, other sessions signed out when the password changes, daily "
+"backups."
+
+#: app/templates/legal/privacy.html:81
+msgid "Vos droits"
+msgstr "Your rights"
+
+#: app/templates/legal/privacy.html:82
+msgid ""
+"Vous disposez des droits d'accès, de rectification, d'effacement, de "
+"limitation, d'opposition et de portabilité de vos données. La plupart "
+"s'exercent directement dans l'application :"
+msgstr ""
+"You have the rights of access, rectification, erasure, restriction, "
+"objection and portability over your data. Most can be exercised directly "
+"in the application:"
+
+#: app/templates/legal/privacy.html:84
+msgid ""
+"Accès et portabilité : page Importer / exporter (CSV, GeoJSON, GPX) ou "
+"sauvegarde complète avec vos photos (.zip)."
+msgstr ""
+"Access and portability: the Import / export page (CSV, GeoJSON, GPX) or a"
+" full backup with your photos (.zip)."
+
+#: app/templates/legal/privacy.html:85
+msgid ""
+"Rectification : modifiez vos trajets, voyages et préférences à tout "
+"moment."
+msgstr "Rectification: edit your trips, journeys and preferences at any time."
+
+#: app/templates/legal/privacy.html:86
+msgid "Effacement : Préférences, puis « Supprimer mon compte »."
+msgstr "Erasure: Preferences, then “Delete my account”."
+
+#: app/templates/legal/privacy.html:88
+msgid ""
+"Pour toute autre demande, écrivez à l'adresse de contact ci-dessus. Vous "
+"pouvez aussi adresser une réclamation à la CNIL :"
+msgstr ""
+"For any other request, write to the contact address above. You can also "
+"lodge a complaint with the CNIL (the French data protection authority):"
 
 #: app/templates/map.html:2 app/templates/map.html:24
 #: app/templates/trips/review.html:10
@@ -1231,17 +1749,17 @@ msgstr "See the year in review"
 msgid "Tableau de bord"
 msgstr "Dashboard"
 
-#: app/templates/map.html:42 app/templates/trips/stats.html:48
+#: app/templates/map.html:42 app/templates/trips/stats.html:53
 msgid "Distance estimée"
 msgstr "Estimated distance"
 
-#: app/templates/map.html:47 app/templates/trips/stats.html:49
+#: app/templates/map.html:47 app/templates/trips/stats.html:54
 msgid "Pays et territoires"
 msgstr "Countries and territories"
 
 #: app/templates/map.html:52 app/templates/trips/detail.html:52
-#: app/templates/trips/stats.html:52 app/templates/trips/stats.html:199
-#: app/templates/trips/stats.html:251
+#: app/templates/trips/stats.html:57 app/templates/trips/stats.html:204
+#: app/templates/trips/stats.html:256
 msgid "CO₂ estimé"
 msgstr "Estimated CO₂"
 
@@ -1329,6 +1847,10 @@ msgstr "Destination (A → Z)"
 #: app/templates/partials/footer.html:5
 msgid "Open source"
 msgstr "Open source"
+
+#: app/templates/partials/footer.html:9
+msgid "Confidentialité"
+msgstr "Privacy"
 
 #: app/templates/partials/macros.html:31
 msgid "Inconnus"
@@ -1569,7 +2091,7 @@ msgstr "estimated (%(km)s as the crow flies)"
 msgid "à vol d'oiseau"
 msgstr "as the crow flies"
 
-#: app/templates/trips/detail.html:53 app/templates/trips/stats.html:198
+#: app/templates/trips/detail.html:53 app/templates/trips/stats.html:203
 msgid "Pays"
 msgstr "Countries"
 
@@ -1755,15 +2277,10 @@ msgid "Essayez un autre mot, ou une partie du nom d'un lieu."
 msgstr "Try another word, or part of a place name."
 
 #: app/templates/trips/review.html:3 app/templates/trips/review.html:9
-#: app/templates/trips/review.html:128 app/templates/trips/stats.html:206
+#: app/templates/trips/review.html:128 app/templates/trips/stats.html:211
 #, python-format
 msgid "Bilan %(year)s"
 msgstr "%(year)s in review"
-
-#: app/templates/trips/review.html:3 app/templates/trips/review.html:9
-#: app/templates/trips/stats.html:10
-msgid "Bilan de l'année"
-msgstr "Year in review"
 
 #: app/templates/trips/review.html:13
 msgid "Choisir l’année"
@@ -1861,19 +2378,19 @@ msgstr "People with one of your share links can also see this review."
 msgid "Gérer les liens"
 msgstr "Manage links"
 
-#: app/templates/trips/stats.html:32
+#: app/templates/trips/stats.html:37
 msgid "Les voyages à venir ne sont pas comptés dans les statistiques ci-dessous."
 msgstr "Upcoming trips are not counted in the statistics below."
 
-#: app/templates/trips/stats.html:44
+#: app/templates/trips/stats.html:49
 msgid "Totaux"
 msgstr "Totals"
 
-#: app/templates/trips/stats.html:51
+#: app/templates/trips/stats.html:56
 msgid "des terres émergées"
 msgstr "of the world's land"
 
-#: app/templates/trips/stats.html:63
+#: app/templates/trips/stats.html:68
 #, python-format
 msgid ""
 "%(num)s trajet n'a pas de pays identifié (point en mer ou hors des "
@@ -1888,25 +2405,25 @@ msgstr[1] ""
 "%(num)s trips have no identified country (point at sea or outside known "
 "borders)."
 
-#: app/templates/trips/stats.html:71
+#: app/templates/trips/stats.html:76
 msgid "Badges"
 msgstr "Badges"
 
-#: app/templates/trips/stats.html:79
+#: app/templates/trips/stats.html:84
 #, python-format
 msgid "%(num)s badge à obtenir"
 msgid_plural "%(num)s badges à obtenir"
 msgstr[0] "%(num)s badge to earn"
 msgstr[1] "%(num)s badges to earn"
 
-#: app/templates/trips/stats.html:101
+#: app/templates/trips/stats.html:106
 #, python-format
 msgid "Voir %(num)s autre lieu"
 msgid_plural "Voir les %(num)s autres lieux"
 msgstr[0] "See %(num)s more place"
 msgstr[1] "See the %(num)s other places"
 
-#: app/templates/trips/stats.html:106
+#: app/templates/trips/stats.html:111
 msgid ""
 "Les lieux distants de moins de 15 km comptent pour un seul (par exemple "
 "une ville et son aéroport)."
@@ -1914,34 +2431,34 @@ msgstr ""
 "Places less than 15 km apart count as one (for example a city and its "
 "airport)."
 
-#: app/templates/trips/stats.html:107
+#: app/templates/trips/stats.html:112
 msgid "Votre domicile n'est pas compté."
 msgstr "Your home is not counted."
 
-#: app/templates/trips/stats.html:108
+#: app/templates/trips/stats.html:113
 msgid "Aucun lieu visité pour l'instant."
 msgstr "No places visited yet."
 
-#: app/templates/trips/stats.html:112
+#: app/templates/trips/stats.html:117
 msgid "Continents"
 msgstr "Continents"
 
-#: app/templates/trips/stats.html:119
+#: app/templates/trips/stats.html:124
 #, python-format
 msgid "%(num)s pays"
 msgid_plural "%(num)s pays"
 msgstr[0] "%(num)s country"
 msgstr[1] "%(num)s countries"
 
-#: app/templates/trips/stats.html:122
+#: app/templates/trips/stats.html:127
 msgid "Pas encore visité"
 msgstr "Not visited yet"
 
-#: app/templates/trips/stats.html:129 app/templates/trips/stats.html:163
+#: app/templates/trips/stats.html:134 app/templates/trips/stats.html:168
 msgid "Jours d'absence"
 msgstr "Days away"
 
-#: app/templates/trips/stats.html:133
+#: app/templates/trips/stats.html:138
 msgid ""
 "Indiquez votre ville de domicile pour voir le nombre de jours passés en "
 "voyage, vos nuits à l'étranger et votre plus longue absence."
@@ -1949,42 +2466,42 @@ msgstr ""
 "Set your home city to see how many days you spent travelling, your nights"
 " abroad and your longest time away."
 
-#: app/templates/trips/stats.html:134
+#: app/templates/trips/stats.html:139
 msgid "Définir mon domicile"
 msgstr "Set my home"
 
-#: app/templates/trips/stats.html:137
+#: app/templates/trips/stats.html:142
 #, python-format
 msgid "Aucune absence : aucun trajet ne part encore de %(home)s."
 msgstr "No time away: no trip leaves from %(home)s yet."
 
-#: app/templates/trips/stats.html:141
+#: app/templates/trips/stats.html:146
 msgid "jour loin de chez moi"
 msgid_plural "jours loin de chez moi"
 msgstr[0] "day away from home"
 msgstr[1] "days away from home"
 
-#: app/templates/trips/stats.html:142
+#: app/templates/trips/stats.html:147
 msgid "nuit à l'étranger"
 msgid_plural "nuits à l'étranger"
 msgstr[0] "night abroad"
 msgstr[1] "nights abroad"
 
-#: app/templates/trips/stats.html:143
+#: app/templates/trips/stats.html:148
 msgid "jours : plus longue absence"
 msgstr "days: longest time away"
 
-#: app/templates/trips/stats.html:152
+#: app/templates/trips/stats.html:157
 #, python-format
 msgid "Plus longue absence : du %(start)s au %(end)s (%(places)s)."
 msgstr "Longest time away: from %(start)s to %(end)s (%(places)s)."
 
-#: app/templates/trips/stats.html:154
+#: app/templates/trips/stats.html:159
 #, python-format
 msgid "Depuis %(home)s, dans un rayon de 30 km."
 msgstr "From %(home)s, within a 30 km radius."
 
-#: app/templates/trips/stats.html:155
+#: app/templates/trips/stats.html:160
 #, python-format
 msgid ""
 "%(num)s absence n'a pas de retour renseigné : elle s'arrête au dernier "
@@ -1997,68 +2514,68 @@ msgstr[1] ""
 "%(num)s times away have no recorded return: they end at the last known "
 "trip."
 
-#: app/templates/trips/stats.html:162 app/templates/trips/stats.html:194
+#: app/templates/trips/stats.html:167 app/templates/trips/stats.html:199
 msgid "Année"
 msgstr "Year"
 
-#: app/templates/trips/stats.html:164
+#: app/templates/trips/stats.html:169
 msgid "Part de l'année"
 msgstr "Share of the year"
 
-#: app/templates/trips/stats.html:165
+#: app/templates/trips/stats.html:170
 msgid "Nuits à l'étranger"
 msgstr "Nights abroad"
 
-#: app/templates/trips/stats.html:166
+#: app/templates/trips/stats.html:171
 msgid "Départs"
 msgstr "Departures"
 
-#: app/templates/trips/stats.html:188
+#: app/templates/trips/stats.html:193
 msgid "Année par année"
 msgstr "Year by year"
 
-#: app/templates/trips/stats.html:197
+#: app/templates/trips/stats.html:202
 msgid "Modes"
 msgstr "Modes"
 
-#: app/templates/trips/stats.html:226
+#: app/templates/trips/stats.html:231
 #, python-format
 msgid "Nouveaux : %(list)s"
 msgstr "New: %(list)s"
 
-#: app/templates/trips/stats.html:242
+#: app/templates/trips/stats.html:247
 msgid "Par étiquette"
 msgstr "By tag"
 
-#: app/templates/trips/stats.html:248
+#: app/templates/trips/stats.html:253
 msgid "Étiquette"
 msgstr "Tag"
 
-#: app/templates/trips/stats.html:252
+#: app/templates/trips/stats.html:257
 #, python-format
 msgid "CO₂ en %(year)s"
 msgstr "CO₂ in %(year)s"
 
-#: app/templates/trips/stats.html:260
+#: app/templates/trips/stats.html:265
 msgid "Sans étiquette"
 msgstr "No tag"
 
-#: app/templates/trips/stats.html:267
+#: app/templates/trips/stats.html:272
 #, python-format
 msgid "%(num)s voyage"
 msgid_plural "%(num)s voyages"
 msgstr[0] "%(num)s trip"
 msgstr[1] "%(num)s trips"
 
-#: app/templates/trips/stats.html:281
+#: app/templates/trips/stats.html:286
 msgid "Émissions par mode"
 msgstr "Emissions by mode"
 
-#: app/templates/trips/stats.html:294
+#: app/templates/trips/stats.html:299
 msgid "Comment est-ce calculé ?"
 msgstr "How is this calculated?"
 
-#: app/templates/trips/stats.html:295
+#: app/templates/trips/stats.html:300
 #, python-format
 msgid ""
 "Estimation par voyageur et par trajet. Distance : itinéraire calculé "
@@ -2072,7 +2589,7 @@ msgstr ""
 " (road and bike ×%(road)s, train ×%(rail)s, boat ×%(boat)s; plane in a "
 "straight line). Average emission factors from ADEME (Base Carbone):"
 
-#: app/templates/trips/stats.html:298
+#: app/templates/trips/stats.html:303
 #, python-format
 msgid ""
 "Avion : %(short)s g/km (moins de 1 000 km), %(medium)s g/km (jusqu'à 3 "
@@ -2081,31 +2598,31 @@ msgstr ""
 "Plane: %(short)s g/km (under 1,000 km), %(medium)s g/km (up to 3,500 km),"
 " %(long)s g/km beyond, contrails included"
 
-#: app/templates/trips/stats.html:300
+#: app/templates/trips/stats.html:305
 #, python-format
 msgid "Train : %(value)s g/km"
 msgstr "Train: %(value)s g/km"
 
-#: app/templates/trips/stats.html:300
+#: app/templates/trips/stats.html:305
 #, python-format
 msgid "Autocar : %(value)s g/km"
 msgstr "Coach: %(value)s g/km"
 
-#: app/templates/trips/stats.html:300
+#: app/templates/trips/stats.html:305
 #, python-format
 msgid "Ferry : %(value)s g/km"
 msgstr "Ferry: %(value)s g/km"
 
-#: app/templates/trips/stats.html:301
+#: app/templates/trips/stats.html:306
 #, python-format
 msgid "Voiture : %(value)s g/km, une personne à bord"
 msgstr "Car: %(value)s g/km, one person on board"
 
-#: app/templates/trips/stats.html:301
+#: app/templates/trips/stats.html:306
 msgid "Vélo et marche : 0"
 msgstr "Bike and walking: 0"
 
-#: app/templates/trips/stats.html:323
+#: app/templates/trips/stats.html:328
 msgid "Aucun pays identifié."
 msgstr "No country identified."
 

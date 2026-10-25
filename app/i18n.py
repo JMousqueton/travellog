@@ -21,9 +21,11 @@ LANGUAGES = {
 
 
 def select_locale():
-    """Profil utilisateur, puis cookie, puis Accept-Language, puis français."""
+    """Paramètre ?lang, puis profil utilisateur, puis cookie, puis Accept-Language, puis français."""
     if not has_request_context():
         return DEFAULT_LOCALE
+    if request.args.get("lang") in LANGUAGES:
+        return request.args["lang"]  # adresse propre à une langue (?lang=en), utilisée par les moteurs
     if current_user.is_authenticated and current_user.locale in LANGUAGES:
         return current_user.locale
     cookie = request.cookies.get(current_app.config["LANG_COOKIE_NAME"])

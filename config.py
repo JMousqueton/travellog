@@ -76,6 +76,19 @@ class Config:
     BACKUP_DIR = os.environ.get("BACKUP_DIR", "")
     BACKUP_KEEP = int(os.environ.get("BACKUP_KEEP", "14"))
 
+    # Mentions légales et politique de confidentialité (valeurs propres à chaque installation, dans .env).
+    LEGAL_PUBLISHER_NAME = os.environ.get("LEGAL_PUBLISHER_NAME", "")
+    LEGAL_CONTACT_EMAIL = os.environ.get("LEGAL_CONTACT_EMAIL", "")
+    LEGAL_HOST_NAME = os.environ.get("LEGAL_HOST_NAME", "")
+    LEGAL_HOST_ADDRESS = os.environ.get("LEGAL_HOST_ADDRESS", "")
+    LEGAL_HOST_PHONE = os.environ.get("LEGAL_HOST_PHONE", "")
+    # Lieu de stockage des données : ville et code pays ISO (le nom du pays est traduit sur la page).
+    LEGAL_DATA_CITY = os.environ.get("LEGAL_DATA_CITY", "")
+    LEGAL_DATA_COUNTRY = os.environ.get("LEGAL_DATA_COUNTRY", "")
+    LEGAL_LOG_RETENTION_DAYS = int(os.environ.get("LEGAL_LOG_RETENTION_DAYS", "52"))
+    LEGAL_UPDATED = os.environ.get("LEGAL_UPDATED", "2026-10-25")
+    SOURCE_URL = os.environ.get("SOURCE_URL", "https://github.com/JMousqueton/travellog")
+
     BABEL_DEFAULT_LOCALE = "fr"
     BABEL_DEFAULT_TIMEZONE = "UTC"
     LANG_COOKIE_NAME = "lang"
