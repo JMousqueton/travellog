@@ -25,10 +25,12 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   des coordonnées hors ligne). Couche « Pays visités » sur la carte, drapeaux dans la liste et les fiches.
 - Statistiques (`/stats`) : vue d'ensemble de tous les voyages (chiffres clés, graphiques des trajets et de la
   distance par année et par mode avec Chart.js, une carte par année, badges, avion et train, pays, lieux,
-  continents, jours d'absence, émissions de CO₂ par mode). Chaque année a sa page (`/stats/<année>`) :
-  chiffres et évolution par rapport à l'année précédente (à la même date pour l'année en cours), départs par
-  mois, distance par mode, pays visités (nouveaux signalés), faits marquants, badges de l'année, avion et
-  train, étiquettes.
+  continents, régions, jours d'absence, émissions de CO₂ par mode). Chaque année a sa page
+  (`/stats/<année>`) : chiffres et évolution par rapport à l'année précédente (à la même date pour l'année en
+  cours), calendrier de l'année façon GitHub (une case par jour : jour de voyage, loin de chez moi, à la
+  maison, prévu), départs par mois, distance par mode, pays visités (nouveaux signalés), faits marquants,
+  badges de l'année, avion et train, étiquettes. Les jours loin de chez soi du calendrier viennent du
+  domicile s'il est défini, sinon des allers-retours.
 - Notes et photos sur chaque trajet et chaque voyage (fiche détaillée). Les photos sont ré-encodées en JPEG,
   sans métadonnées EXIF (donc sans position GPS), avec une miniature. Elles restent privées : les liens de
   partage n'affichent ni notes ni photos.
@@ -56,6 +58,11 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   nuits à l'étranger, part de l'année, plus longue absence. Les allers simples s'enchaînent ; une absence
   commencée ailleurs s'arrête au retour dans cette ville ; un trajet qui ne part pas du dernier lieu atteint
   clôt l'absence en cours (déplacement non saisi). Le domicile n'apparaît jamais sur les liens de partage.
+- Couverture du monde : pays et territoires visités sur les 237 de Natural Earth (et part des terres
+  émergées), pays visités par continent avec une barre de progression, et régions visitées dans 14 grands
+  pays (États américains, mexicains, brésiliens et indiens, provinces canadiennes, États australiens, Länder,
+  cantons suisses, préfectures japonaises, provinces chinoises, régions françaises, espagnoles et italiennes,
+  nations du Royaume-Uni), trouvées hors ligne d'après les extrémités des trajets (`app/regions.py`).
 - Continents et badges (pays, continents, distance, nombre de voyages, modes…), datés du trajet qui a fait
   franchir le palier, avec la progression des badges restants. Deux séries : les badges de tous vos voyages
   (vue d'ensemble des statistiques), et ceux de chaque année (page de l'année), aux paliers adaptés à une
@@ -65,6 +72,12 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   sur la carte (cercles proportionnels au nombre de trajets).
 - Rejouer : sur la carte, les trajets se dessinent dans l'ordre chronologique (aller à la date de départ,
   retour à la date de retour) ; un curseur avec les années permet de se placer à n'importe quelle date.
+- Globe : un bouton « Carte / Globe » sur la carte affiche les mêmes trajets sur un globe en 3D (projection
+  orthographique d3-geo sur un canevas, sans WebGL) : les vols forment des arcs au-dessus de la surface, les
+  pays visités sont colorés, le globe tourne seul jusqu'au premier geste et se fait glisser, zoomer (molette,
+  pincement, boutons) et tourner avec les flèches du clavier. Cliquer sur un trajet (sur le globe ou dans la
+  liste) tourne le globe vers lui et affiche sa fiche ; la relecture fonctionne aussi sur le globe. Le choix
+  est mémorisé dans le navigateur.
 - Import / export (`/import-export`) en CSV, GeoJSON et GPX. Les trois formats contiennent les mêmes champs
   (dont notes et regroupements en voyages) et se réimportent sans perte : c'est aussi une sauvegarde, hors
   photos. À l'import, un aperçu liste les trajets lus : décochez ceux à écarter (boutons tout / rien / par
@@ -101,7 +114,8 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
 - Application installable et consultable hors ligne : un service worker (`/sw.js`, `app/pwa.py`) garde les
   fichiers statiques et les bibliothèques en cache, et la dernière version des pages et des données déjà
   ouvertes (carte, liste, statistiques, fiches). Les tuiles de la carte ne sont pas gardées : hors ligne, la
-  carte montre les trajets sans fond de carte. Les pages du compte sont effacées du cache à la déconnexion.
+  carte montre les trajets sans fond de carte (le globe, lui, reste complet). Les pages du compte sont
+  effacées du cache à la déconnexion.
 - Page 404 en forme de passeport : couverture en marbre, carte du monde (générée depuis les contours Natural
   Earth par `scripts/make_world_svg.py`), avion et tampon « 404 · Destination introuvable ».
 - Internationalisation complète avec Flask-Babel. Dates, nombres et distances sont formatés selon la langue.
@@ -110,7 +124,8 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
 
 - Python 3.11 ou plus récent
 - Un accès réseau aux CDN (Bootstrap, Font Awesome, Chart.js, Google Fonts), aux tuiles de carte, à Nominatim
-  et, pour la recherche par numéro de vol, à adsbdb. Leaflet et MarkerCluster sont fournis dans `app/static/vendor/`.
+  et, pour la recherche par numéro de vol, à adsbdb. Leaflet, MarkerCluster, d3-geo et d3-array sont fournis dans
+  `app/static/vendor/`.
 
 ## Installation
 
@@ -335,6 +350,10 @@ Les liens de partage ont les équivalents `/api/shared/<jeton>/trips`, `/stats` 
   code OACI, code IATA et nom) viennent aussi d'OpenFlights, dans `app/data/airlines.csv` (ODbL) ; une
   compagnie disparue garde son code, son code OACI ayant pu être réattribué. Mise à jour des deux fichiers :
   `.venv/bin/python scripts/make_flight_data.py`.
+- Les contours du globe (`app/static/data/world.json`, simplifiés depuis `app/data/countries.geojson`) viennent
+  de `scripts/make_globe_data.py`. Les régions des grands pays (`app/data/regions.json`) viennent des
+  subdivisions Natural Earth 1:10m (domaine public), simplifiées et regroupées par
+  `scripts/make_region_data.py` (la source de 40 Mo est téléchargée si elle n'est pas fournie).
 - Le CO₂ est une estimation par voyageur : distance à vol d'oiseau × facteur moyen de l'ADEME (Base Carbone),
   défini dans `app/transport.py` (`CO2_KG_PER_KM`, `PLANE_CO2_BANDS`). Avion : 258, 187 ou 152 g/km selon
   la distance du vol, traînées comprises ; train et autocar 30 g/km ; voiture 218 g/km (une personne à bord) ;

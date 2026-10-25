@@ -23,10 +23,12 @@ available in French, English, Spanish, German and Italian.
 - Countries: each trip knows its departure and arrival country (ISO code returned by Nominatim, or derived
   offline from the coordinates). "Countries visited" layer on the map, flags in the list and detail pages.
 - Statistics (`/stats`): overview of all trips (key figures, Chart.js charts of trips and distance per year
-  and mode, one card per year, badges, plane and train, countries, places, continents, days away, CO₂ by
-  mode). Each year has its own page (`/stats/<year>`): figures and change from the previous year (at the same
-  date for the current year), departures per month, distance by mode, countries visited (new ones flagged),
-  highlights, the year's badges, plane and train, tags.
+  and mode, one card per year, badges, plane and train, countries, places, continents, regions, days away,
+  CO₂ by mode). Each year has its own page (`/stats/<year>`): figures and change from the previous year (at the
+  same date for the current year), a GitHub-style calendar of the year (one square per day: travel day, away
+  from home, at home, planned), departures per month, distance by mode, countries visited (new ones flagged),
+  highlights, the year's badges, plane and train, tags. The calendar's days away come from the home city when
+  it is set, otherwise from round trips.
 - Notes and photos on every trip and journey (detail page). Photos are re-encoded as JPEG, without EXIF
   metadata (so without GPS location), with a thumbnail. They stay private: share links show neither notes
   nor photos.
@@ -52,6 +54,11 @@ available in French, English, Spanish, German and Italian.
   share of the year, longest time away. One-way trips are chained; an absence that started elsewhere ends on
   returning to that city; a trip that doesn't leave from the last place reached closes the current absence
   (unrecorded travel). Home is never shown on share links.
+- World coverage: countries and territories visited out of the 237 in Natural Earth (and share of the
+  world's land), countries visited per continent with a progress bar, and the regions visited in 14 large
+  countries (US, Mexican, Brazilian and Indian states, Canadian provinces, Australian states, German Länder,
+  Swiss cantons, Japanese prefectures, Chinese provinces, French, Spanish and Italian regions, UK nations),
+  found offline from the trip endpoints (`app/regions.py`).
 - Continents and badges (countries, continents, distance, number of trips, modes…), dated by the trip that
   crossed the threshold, with progress towards the remaining badges. Two sets: badges for all your trips
   (statistics overview), and badges for each year (year page), with thresholds suited to a single year
@@ -60,6 +67,11 @@ available in French, English, Spanish, German and Italian.
   map (circles sized by the number of trips).
 - Replay: on the map, trips are drawn in chronological order (outbound leg on the departure date, return leg
   on the return date); a slider with the years lets you jump to any date.
+- Globe: a "Map / Globe" switch on the map shows the same trips on a 3D globe (d3-geo orthographic projection
+  on a canvas, no WebGL): flights arc above the surface, visited countries are tinted, the globe spins until
+  touched and can be dragged, zoomed (wheel, pinch, buttons) and turned with the arrow keys. Clicking a trip
+  (on the globe or in the list) turns the globe towards it and shows its card; replay works on the globe too.
+  The choice is remembered in the browser.
 - Import / export (`/import-export`) as CSV, GeoJSON and GPX. All three formats carry the same fields
   (including notes and journey groupings) and can be imported back without loss: they also serve as a
   backup, photos excepted. On import, a preview lists the trips read: untick the ones to leave out (all /
@@ -94,8 +106,8 @@ available in French, English, Spanish, German and Italian.
 - Light/dark theme (saved preference and `prefers-color-scheme` detection).
 - Installable app that works offline: a service worker (`/sw.js`, `app/pwa.py`) caches static files and
   libraries, plus the latest version of pages and data already opened (map, list, statistics, trip pages).
-  Map tiles are not kept: offline, the map shows the trips without a base map. Account pages are removed from
-  the cache on logout.
+  Map tiles are not kept: offline, the map shows the trips without a base map (the globe stays complete).
+  Account pages are removed from the cache on logout.
 - Passport-style 404 page: marble cover, world map (generated from the Natural Earth outlines by
   `scripts/make_world_svg.py`), plane and a "404 · Destination not found" stamp.
 - Full internationalisation with Flask-Babel. Dates, numbers and distances are formatted for each language.
@@ -105,7 +117,7 @@ available in French, English, Spanish, German and Italian.
 - Python 3.11 or later
 - Network access to the CDNs (Bootstrap, Font Awesome, Chart.js, Google Fonts), the map tiles, Nominatim
   and, for flight number lookup, adsbdb.
-  Leaflet and MarkerCluster are bundled in `app/static/vendor/`.
+  Leaflet, MarkerCluster, d3-geo and d3-array are bundled in `app/static/vendor/`.
 
 ## Installation
 
@@ -330,6 +342,10 @@ Share links have the equivalents `/api/shared/<token>/trips`, `/stats` and `/cou
   code and name) also come from OpenFlights, in `app/data/airlines.csv` (ODbL); a defunct airline keeps its
   code, since its ICAO code may have been reassigned. To refresh both files:
   `.venv/bin/python scripts/make_flight_data.py`.
+- The globe's outlines (`app/static/data/world.json`, simplified from `app/data/countries.geojson`) come from
+  `scripts/make_globe_data.py`. The regions of large countries (`app/data/regions.json`) come from the Natural
+  Earth 1:10m admin-1 subdivisions (public domain), simplified and grouped by
+  `scripts/make_region_data.py` (the 40 MB source is downloaded if not given).
 - CO₂ is an estimate per traveller: straight-line distance × an average factor from ADEME (Base Carbone),
   defined in `app/transport.py` (`CO2_KG_PER_KM`, `PLANE_CO2_BANDS`). Plane: 258, 187 or 152 g/km depending
   on flight distance, contrails included; train and coach 30 g/km; car 218 g/km (one person on board);
