@@ -9,6 +9,7 @@ from flask_login import current_user, login_required
 from ..extensions import db
 from ..geo import GeocodingError, geocode
 from ..i18n import current_locale
+from .. import countries as geo_countries
 from .. import ics, review_image
 from ..models import Journey, Photo, Trip, User
 from ..photos import PhotoError, merge_notes, move_photos, photo_path, save_upload
@@ -22,10 +23,12 @@ from . import bp
 from .forms import JourneyForm, PhotoUploadForm, TripForm
 from .queries import list_trips
 from .absences import absence_summary
+from .activity import year_calendar
 from .badges import compute_badges, compute_year_badges, continent_summary
 from .places import visited_places
-from .stats import (compute_stats, country_summary, happened, open_review_years, review_years, service_stats, tag_stats,
-                    transport_details, upcoming_trips, year_comparison, year_review, yearly_stats)
+from .stats import (compute_stats, country_summary, happened, open_review_years, region_summary, review_years,
+                    service_stats, tag_stats, transport_details, upcoming_trips, year_comparison, year_review,
+                    yearly_stats)
 
 bp.add_app_template_global(carrier_suggestions)  # suggestions des champs compagnie et appareil
 bp.add_app_template_global(vehicle_suggestions)
@@ -417,6 +420,7 @@ def _year_details(everything, year, away):
         "countries": country_summary(items),
         "places": visited_places(items, current_user),
         "away": away["by_year"].get(year) if away else None,
+        "calendar": year_calendar(everything, year, away["absences"] if away else None),
         "comparison": year_comparison(happened(everything), year),
         # Graphique des départs par mois, empilés par mode.
         "month_labels": [name for _number, name in sorted(get_month_names("abbreviated", locale=current_locale()).items())],
@@ -438,7 +442,9 @@ def stats_view():
     years = yearly_stats(trips)
     return render_template("trips/stats.html", totals=compute_stats(trips), years=years,
                            current_year=year,
-                           countries=country_summary(trips), factors=_co2_factors_g(), detour=DETOUR_FACTORS,
+                           countries=country_summary(trips), regions=region_summary(trips),
+                           country_total=geo_countries.country_count(),
+                           factors=_co2_factors_g(), detour=DETOUR_FACTORS,
                            upcoming=upcoming_trips(everything), away=away, badges=compute_badges(everything),
                            continents=continent_summary(everything, current_locale()),
                            places=visited_places(everything, current_user), services=service_stats(trips),

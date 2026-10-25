@@ -88,6 +88,41 @@
 {% endif %}
 {% endmacro %}
 
+{# Calendrier de l'année : une case par jour (voyage, loin de chez moi, à la maison). #}
+{% macro activity_calendar(cal) %}
+<section aria-labelledby="calendar{{ cal.year }}" class="mb-5">
+  <div class="card shadow-soft"><div class="card-body p-4">
+    <div class="d-flex flex-wrap align-items-baseline justify-content-between gap-2 mb-3">
+      <h2 class="h6 fw-semibold mb-0" id="calendar{{ cal.year }}">{{ _("Calendrier %(year)s", year=cal.year) }}</h2>
+      <p class="small text-body-secondary mb-0">
+        {{ ngettext("%(num)s jour de voyage", "%(num)s jours de voyage", cal.travel_days) }} ·
+        {{ ngettext("%(num)s jour loin de chez moi", "%(num)s jours loin de chez moi", cal.away_days) }}
+        {% if cal.planned_days %}· {{ ngettext("%(num)s jour prévu", "%(num)s jours prévus", cal.planned_days) }}{% endif %}</p>
+    </div>
+    <div class="activity-scroll">
+      <div class="activity-calendar" style="--weeks: {{ cal.weeks|length }}" aria-hidden="true">
+        <div class="activity-months">{% for m in cal.months %}<span style="grid-column: {{ m.week + 1 }} / span 4">{{ m.name }}</span>{% endfor %}</div>
+        <div class="activity-weekdays">{% for name in cal.weekdays %}<span>{% if loop.index0 in (0, 2, 4) %}{{ name }}{% endif %}</span>{% endfor %}</div>
+        <div class="activity-grid">
+          {% for week in cal.weeks %}{% for c in week %}{% if c %}<span class="activity-day level-{{ c.level }}{{ ' is-upcoming' if c.upcoming }}{{ ' is-future' if c.future }}{{ ' is-today' if c.today }}" title="{{ c.title }}"></span>{% else %}<span></span>{% endif %}{% endfor %}{% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="activity-legend small text-body-secondary mt-3">
+      <span><span class="activity-day level-0" aria-hidden="true"></span>{{ _("À la maison") }}</span>
+      <span><span class="activity-day level-1" aria-hidden="true"></span>{{ _("Loin de chez moi") }}</span>
+      <span><span class="activity-day level-2" aria-hidden="true"></span>{{ _("Jour de voyage") }}</span>
+      <span><span class="activity-day level-1 is-upcoming" aria-hidden="true"></span>{{ _("Prévu") }}</span>
+    </div>
+    {% if not cal.from_absences %}
+    <p class="small text-body-secondary mt-2 mb-0"><i class="fa-solid fa-circle-info me-1" aria-hidden="true"></i>
+      {{ _("Sans domicile défini, seuls les allers-retours comptent comme jours loin de chez moi.") }}
+      <a href="{{ url_for('auth.profile', _anchor='home') }}">{{ _("Définir mon domicile") }}</a></p>
+    {% endif %}
+  </div></div>
+</section>
+{% endmacro %}
+
 {# Une année en détail : chiffres, graphiques, pays, faits marquants, badges, avion et train, étiquettes. #}
 {% macro year_sections(d) %}
 {% set y = d.year %}
@@ -112,6 +147,8 @@
     {% else %}{{ _("Évolution par rapport à %(year)s.", year=d.comparison.year) }}{% endif %}</p>
   {% endif %}
 </section>
+
+{{ activity_calendar(d.calendar) }}
 
 <div class="row g-4 mb-5">
   <section class="col-lg-7" aria-labelledby="months{{ y }}">

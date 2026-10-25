@@ -1,5 +1,6 @@
 import { escapeHtml, locale, modes, t } from "./i18n.js";
 import { currentTheme } from "./theme.js";
+import { Globe } from "./globe.js";
 import { Replay } from "./replay.js";
 import { TripMap } from "./trip-map.js";
 
@@ -22,14 +23,25 @@ const tripMap = new TripMap(mapEl, {
   tiles: JSON.parse(mapEl.dataset.tiles),
   onSelect: (id) => markActive(id, true),
 });
-document.addEventListener("themechange", (event) => tripMap.setTheme(event.detail.theme));
+const globe = new Globe(mapEl.parentElement, {
+  theme: currentTheme(),
+  worldUrl: mapEl.dataset.worldUrl,
+  onSelect: (id) => markActive(id, true),
+});
+document.addEventListener("themechange", (event) => {
+  tripMap.setTheme(event.detail.theme);
+  globe.setTheme(event.detail.theme);
+});
+/** Vue affichée : la carte ou le globe. */
+const view = () => (globe.visible ? globe : tripMap);
 
 /* --- Rejouer ------------------------------------------------------------------- */
 
 const replay = new Replay(mapEl.parentElement, tripMap, () => trips, {
-  onClose: () => replayButton?.focus(),
+  onClose: () => (globe.visible ? globeReplayButton : replayButton)?.focus(),
 });
 let replayButton = null;
+const toggleReplay = () => (replay.active ? replay.close() : replay.open());
 const ReplayControl = L.Control.extend({
   options: { position: "topleft" },
   onAdd: () => {
@@ -38,12 +50,63 @@ const ReplayControl = L.Control.extend({
     button.innerHTML = `<i class="fa-solid fa-clock-rotate-left me-1" aria-hidden="true"></i>${escapeHtml(t("replay"))}`;
     button.title = t("replay_title");
     L.DomEvent.disableClickPropagation(button);
-    L.DomEvent.on(button, "click", () => (replay.active ? replay.close() : replay.open()));
+    L.DomEvent.on(button, "click", toggleReplay);
     replayButton = button;
     return button;
   },
 });
 new ReplayControl().addTo(tripMap.map);
+
+/* --- Carte ou globe ------------------------------------------------------------ */
+
+const VIEW_PREF = "map:view";
+const globeReplayButton = document.createElement("button");
+globeReplayButton.type = "button";
+globeReplayButton.className = "btn replay-toggle shadow-sm globe-replay";
+globeReplayButton.title = t("replay_title");
+globeReplayButton.innerHTML = `<i class="fa-solid fa-clock-rotate-left me-1" aria-hidden="true"></i>${escapeHtml(t("replay"))}`;
+globeReplayButton.addEventListener("click", toggleReplay);
+globe.el.append(globeReplayButton);
+
+const viewSwitch = document.createElement("div");
+viewSwitch.className = "view-switch shadow-sm";
+viewSwitch.setAttribute("role", "group");
+viewSwitch.setAttribute("aria-label", t("view_choice"));
+viewSwitch.innerHTML = [["map", "fa-map", t("view_map")], ["globe", "fa-earth-americas", t("view_globe")]]
+  .map(([value, icon, label]) => `<button type="button" data-view="${value}" aria-pressed="false">
+    <i class="fa-solid ${icon}" aria-hidden="true"></i><span>${escapeHtml(label)}</span></button>`).join("");
+mapEl.parentElement.append(viewSwitch);
+
+function setView(name, { save = true } = {}) {
+  const toGlobe = name === "globe";
+  if (toGlobe === globe.visible) return;
+  replay.close();
+  const selected = view().selectedId;
+  if (toGlobe) {
+    mapEl.style.visibility = "hidden";
+    globe.show().then(() => (selected ? globe.select(selected) : globe.fitAll()));
+  } else {
+    globe.hide();
+    mapEl.style.visibility = "";
+    tripMap.invalidate();
+    if (selected) tripMap.select(selected);
+  }
+  replay.tripMap = view();
+  viewSwitch.querySelectorAll("[data-view]").forEach((button) => {
+    button.setAttribute("aria-pressed", String(button.dataset.view === name));
+  });
+  if (save) {
+    try { localStorage.setItem(VIEW_PREF, name); } catch { /* stockage indisponible */ }
+  }
+}
+viewSwitch.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-view]");
+  if (button) setView(button.dataset.view);
+});
+let savedView = "map";
+try { savedView = localStorage.getItem(VIEW_PREF) || "map"; } catch { /* stockage indisponible */ }
+viewSwitch.querySelector('[data-view="map"]').setAttribute("aria-pressed", "true");
+if (savedView === "globe") setView("globe", { save: false });
 
 /* --- Filtres <-> URL ----------------------------------------------------- */
 
@@ -184,8 +247,11 @@ async function load() {
     trips = tripData.trips;
     replay.close();  // un nouvel affichage remplace la relecture en cours
     tripMap.render(trips);
+    globe.render(trips);
     if (replayButton) replayButton.disabled = trips.length === 0;
+    globeReplayButton.disabled = trips.length === 0;
     tripMap.renderCountries(countries);
+    globe.renderCountries(countries);
     tripMap.renderPlaces(places);
     renderList(activeFilters > 0);
     renderStats(stats);
@@ -193,10 +259,10 @@ async function load() {
     $("fabCount").textContent = new Intl.NumberFormat(locale).format(tripData.count);
     if (!firstLoad) $("listStatus").textContent = `${t("results_updated")} : ${tripData.count_label}`;
     if (focusId && trips.some((trip) => trip.id === focusId)) {
-      tripMap.select(focusId);
+      view().select(focusId);
       markActive(focusId, true);
     } else {
-      tripMap.fitAll();
+      view().fitAll();
     }
     focusId = null;
   } catch (error) {
@@ -276,7 +342,7 @@ function renderList(filtered) {
       </div>` : ""}
     </li>`;
   }).join("");
-  if (tripMap.selectedId) markActive(tripMap.selectedId, false);
+  if (view().selectedId) markActive(view().selectedId, false);
 }
 
 function renderStats(stats) {
@@ -323,7 +389,7 @@ $("nextTrip").addEventListener("click", (event) => {
   const id = Number(event.currentTarget.dataset.tripId);
   if (trips.some((trip) => trip.id === id)) {
     markActive(id, true);
-    tripMap.select(id);
+    view().select(id);
   }
 });
 
@@ -351,10 +417,10 @@ list.addEventListener("click", (event) => {
   $("listStatus").textContent = t("selected_trip", { route: `${trip.origin.name} → ${trip.destination.name}` });
   const offcanvas = isCompact.matches ? bootstrap.Offcanvas.getInstance(sidebar) : null;
   if (offcanvas && sidebar.classList.contains("show")) {
-    sidebar.addEventListener("hidden.bs.offcanvas", () => tripMap.select(id), { once: true });
+    sidebar.addEventListener("hidden.bs.offcanvas", () => view().select(id), { once: true });
     offcanvas.hide();
   } else {
-    tripMap.select(id);
+    view().select(id);
   }
 });
 

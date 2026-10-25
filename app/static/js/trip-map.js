@@ -57,7 +57,7 @@ const modeStyle = (key) => {
   return `--mode-color:${m.color};--mode-color-dark:${m.colorDark}`;
 };
 
-function tripPopup(trip, leg) {
+export function tripPopup(trip, leg) {
   const m = modes[trip.transport_mode];
   const isReturn = leg === "return";
   const [from, to] = isReturn ? [trip.destination.name, trip.origin.name] : [trip.origin.name, trip.destination.name];

@@ -110,6 +110,15 @@ def continent_name(code, locale):
     return country_name(CONTINENTS.get(code, code), locale)
 
 
+def countries_in(continent_code):
+    """Codes des pays et territoires d'un continent."""
+    return [c.code for c in _countries().values() if c.continent == continent_code]
+
+
+def country_count():
+    return len(_countries())
+
+
 def area_km2(code):
     country = _countries().get(code)
     return country.area_km2 if country else 0

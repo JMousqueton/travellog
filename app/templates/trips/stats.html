@@ -100,14 +100,20 @@
       </div>
 
       <section aria-labelledby="continentsTitle" class="mb-5">
-        <h2 class="h5 fw-semibold mb-3" id="continentsTitle">{{ _("Continents") }}
+        <h2 class="h5 fw-semibold mb-1" id="continentsTitle">{{ _("Continents") }}
           <span class="text-body-secondary fw-normal small">· {{ continents|selectattr('countries')|list|length }} / {{ continents|length }}</span></h2>
+        <p class="small text-body-secondary mb-3">{{ _("%(visited)s pays et territoires sur %(total)s (%(share)s), soit %(land)s des terres émergées.",
+            visited=countries|length|number, total=country_total|number, share=(countries|length / country_total)|percent,
+            land=totals.land_share_fmt) }}</p>
         <ul class="continent-grid list-unstyled mb-0">
           {% for c in continents %}
           <li class="continent-tile {{ 'is-visited' if c.countries else '' }}">
-            <span class="fw-semibold">{{ c.name }}</span>
+            <span class="d-flex justify-content-between align-items-baseline gap-2">
+              <span class="fw-semibold">{{ c.name }}</span>
+              {% if c.total %}<span class="small text-body-secondary text-nowrap">{{ c.countries|length }} / {{ c.total }}</span>{% endif %}</span>
+            {% if c.total %}<span class="coverage-bar" role="img" aria-label="{{ _('%(share)s des pays', share=c.share|percent) }}"><span style="width: {{ (100 * c.share)|round(1) }}%"></span></span>{% endif %}
             {% if c.countries %}
-            <span class="small text-body-secondary">{{ ngettext("%(num)s pays", "%(num)s pays", c.countries|length) }}</span>
+            <span class="small text-body-secondary">{{ _("%(share)s des pays", share=c.share|percent) }}</span>
             <span class="continent-flags">{% for code in c.countries %}<span title="{{ code|country_name }}">{{ code|flag }}</span>{% endfor %}</span>
             <span class="visually-hidden">{{ c.countries|map('country_name')|join(', ') }}</span>
             {% else %}<span class="small text-body-secondary">{{ _("Pas encore visité") }}</span>{% endif %}
@@ -115,6 +121,27 @@
           {% endfor %}
         </ul>
       </section>
+
+      {% if regions %}
+      <section aria-labelledby="regionsTitle" class="mb-5">
+        <h2 class="h5 fw-semibold mb-1" id="regionsTitle">{{ _("Régions") }}</h2>
+        <p class="small text-body-secondary mb-3">{{ _("États, provinces et régions visités dans les grands pays, d'après les lieux de départ et d'arrivée.") }}</p>
+        <ul class="region-grid list-unstyled mb-0">
+          {% for r in regions %}
+          <li class="region-tile">
+            <span class="d-flex align-items-center gap-2">
+              <span class="fs-5" aria-hidden="true">{{ r.flag }}</span>
+              <span class="fw-semibold me-auto">{{ r.name }}</span>
+              <span class="small text-body-secondary text-nowrap">{{ r.regions|length }} / {{ r.total }}</span>
+            </span>
+            <span class="coverage-bar" role="img" aria-label="{{ r.unit }} : {{ r.share_fmt }}"><span style="width: {{ (100 * r.share)|round(1) }}%"></span></span>
+            <span class="small text-body-secondary">{{ r.unit }} · {{ r.share_fmt }}</span>
+            <span class="small region-names">{{ r.regions|join(' · ') }}</span>
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+      {% endif %}
 
       <section aria-labelledby="awayTitle" class="mb-5">
         <h2 class="h5 fw-semibold mb-3" id="awayTitle">{{ _("Jours d'absence") }}</h2>

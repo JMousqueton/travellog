@@ -125,6 +125,10 @@ def continent_summary(trips, locale):
     for trip in happened(trips):
         for code in trip.countries:
             visited.setdefault(geo_countries.continent(code), set()).add(code)
-    return [{"code": code, "name": geo_countries.continent_name(code, locale),
-             "countries": sorted(visited.get(code, ()), key=lambda c: geo_countries.country_name(c, locale))}
-            for code in geo_countries.CONTINENTS]
+    rows = []
+    for code in geo_countries.CONTINENTS:
+        total = len(geo_countries.countries_in(code))
+        countries = sorted(visited.get(code, ()), key=lambda c: geo_countries.country_name(c, locale))
+        rows.append({"code": code, "name": geo_countries.continent_name(code, locale), "countries": countries,
+                     "total": total, "share": len(countries) / total if total else 0})
+    return rows

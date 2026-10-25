@@ -5,6 +5,7 @@ from collections import Counter, defaultdict
 from flask_babel import format_percent, ngettext
 
 from .. import countries as geo_countries
+from .. import regions as geo_regions
 from ..i18n import current_locale, format_co2, format_countdown, format_distance, format_number, format_share
 from ..transport import SERVICE_FIELDS, TRANSPORT_MODES
 from .. import utils
@@ -137,6 +138,33 @@ def country_summary(trips):
             entry["trips"] += 1
             entry["last"] = trip.depart_date
     return sorted(info.values(), key=lambda e: (-e["trips"], _sort_key(e["name"])))
+
+
+def region_summary(trips):
+    """Régions visitées des pays découpés en régions (États, provinces, Länder…), une ligne par pays :
+    les plus explorés d'abord."""
+    locale = current_locale()
+    visited = {}
+    for trip in sorted(happened(trips), key=lambda t: (t.depart_date, t.id)):
+        for lat, lon, code in ((trip.origin_lat, trip.origin_lon, trip.origin_country),
+                               (trip.dest_lat, trip.dest_lon, trip.dest_country)):
+            region = geo_regions.region_at(lat, lon, code)
+            if region:
+                visited.setdefault(code, set()).add(region)
+    rows = []
+    for code, found in visited.items():
+        total = geo_regions.region_count(code)
+        rows.append({
+            "code": code,
+            "name": geo_countries.country_name(code, locale),
+            "flag": geo_countries.flag(code),
+            "unit": geo_regions.unit_label(code),
+            "regions": sorted((geo_regions.region_name(r, locale) for r in found), key=_sort_key),
+            "total": total,
+            "share": len(found) / total,
+            "share_fmt": format_percent(len(found) / total),
+        })
+    return sorted(rows, key=lambda r: (-r["share"], _sort_key(r["name"])))
 
 
 def _sort_key(name):
