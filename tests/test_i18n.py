@@ -198,6 +198,7 @@ def test_every_js_string_translated(app, lang):
         french = js_strings()
     assert set(strings) == set(french)
     if lang != "fr":
-        # Mots identiques en français et dans d'autres langues (« Distance », « Pause »).
-        unchanged = [k for k in strings if strings[k] == french[k] and k not in {"distance", "replay_pause"}]
+        # Mots identiques en français et dans d'autres langues (« Distance », « Pause », « Globe »).
+        same = {"distance", "replay_pause", "view_globe"}
+        unchanged = [k for k in strings if strings[k] == french[k] and k not in same]
         assert not unchanged, f"[{lang}] chaînes JS non traduites : {unchanged}"
