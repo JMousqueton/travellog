@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% from "trips/_stats_parts.html" import year_sections, chart_scripts with context %}
+{% block title %}{{ _("Statistiques %(year)s", year=year) }}{% endblock %}
+{% block content %}
+<div class="stats-page">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+    <div>
+      <a class="small text-decoration-none" href="{{ url_for('trips.stats_view') }}">
+        <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>{{ _("Statistiques") }}</a>
+      <h1 class="h3 fw-bold mb-0 mt-1">{{ _("Statistiques %(year)s", year=year) }}</h1>
+    </div>
+    {% if details %}
+    <a class="btn btn-primary btn-sm rounded-pill px-3" href="{{ url_for('trips.review', year=year) }}">
+      <i class="fa-solid fa-calendar-check me-1" aria-hidden="true"></i>{{ _("Bilan %(year)s", year=year) }}</a>
+    {% endif %}
+  </div>
+
+  <nav class="year-nav d-flex flex-wrap align-items-center gap-2 mb-4" aria-label="{{ _('Années') }}">
+    {% if older %}<a class="btn btn-outline-secondary btn-sm rounded-pill" href="{{ url_for('trips.year_stats', year=older) }}"
+       aria-label="{{ _('Année précédente : %(year)s', year=older) }}"><i class="fa-solid fa-chevron-left" aria-hidden="true"></i></a>{% endif %}
+    {% for y in years|reverse %}
+    <a class="btn btn-sm rounded-pill {{ 'btn-primary' if y == year else 'btn-outline-secondary' }}"
+       href="{{ url_for('trips.year_stats', year=y) }}" {% if y == year %}aria-current="page"{% endif %}>{{ y }}</a>
+    {% endfor %}
+    {% if newer %}<a class="btn btn-outline-secondary btn-sm rounded-pill" href="{{ url_for('trips.year_stats', year=newer) }}"
+       aria-label="{{ _('Année suivante : %(year)s', year=newer) }}"><i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>{% endif %}
+  </nav>
+
+  {% if details %}{{ year_sections(details) }}
+  {% else %}
+  <div class="empty-state card shadow-soft py-5">
+    <div class="empty-illustration" aria-hidden="true"><i class="fa-solid fa-chart-column"></i></div>
+    <p class="text-body-secondary mb-0">{{ _("Aucun voyage cette année pour l'instant.") }}</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
+{% block scripts %}{{ chart_scripts() }}{% endblock %}

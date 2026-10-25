@@ -27,6 +27,11 @@
               {{ form.include_upcoming.label(class_='form-check-label') }}
               <div class="form-text mt-0" id="upcoming-help">{{ _("Désactivé par défaut : vos dates de départ à venir indiquent quand vous serez absent.") }}</div>
             </div>
+            <div class="form-check mb-0 mt-2">
+              {{ form.show_trips(class_='form-check-input', **{'aria-describedby': 'trips-help'}) }}
+              {{ form.show_trips.label(class_='form-check-label') }}
+              <div class="form-text mt-0" id="trips-help">{{ _("Dates, lieux, mode et distance de chaque trajet, sans les notes ni les photos.") }}</div>
+            </div>
           </div>
           <div class="col-sm-auto">
             <button type="submit" class="btn btn-primary rounded-pill px-4">
@@ -60,6 +65,9 @@
               ·
               {% if link.include_upcoming %}<span class="text-warning-emphasis"><i class="fa-regular fa-clock me-1" aria-hidden="true"></i>{{ _("voyages à venir visibles") }}</span>
               {% else %}{{ _("voyages à venir masqués") }}{% endif %}
+              ·
+              {% if link.show_trips %}<span class="text-warning-emphasis"><i class="fa-solid fa-list me-1" aria-hidden="true"></i>{{ _("liste des trajets visible") }}</span>
+              {% else %}{{ _("liste des trajets masquée") }}{% endif %}
             </div>
             <input type="text" class="form-control form-control-sm mt-2 font-monospace" value="{{ url }}" readonly
                    aria-label="{{ _('Adresse du lien %(label)s', label=link.label or _('Lien sans libellé')) }}">
@@ -74,6 +82,12 @@
               <button type="submit" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
                 <i class="fa-regular {{ 'fa-eye-slash' if link.include_upcoming else 'fa-eye' }} me-1" aria-hidden="true"></i>
                 {{ _("Masquer les voyages à venir") if link.include_upcoming else _("Montrer les voyages à venir") }}</button>
+            </form>
+            <form method="post" action="{{ url_for('share.toggle_trips', link_id=link.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                <i class="fa-solid {{ 'fa-list-check' if link.show_trips else 'fa-list' }} me-1" aria-hidden="true"></i>
+                {{ _("Masquer la liste des trajets") if link.show_trips else _("Montrer la liste des trajets") }}</button>
             </form>
             <form method="post" action="{{ url_for('share.revoke', link_id=link.id) }}">
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">

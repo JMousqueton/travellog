@@ -22,4 +22,5 @@ class ShareLinkForm(FlaskForm):
     ])
     expires_in = SelectField(_l("Expiration"), choices=select_choices(EXPIRY_CHOICES), default="")
     include_upcoming = BooleanField(_l("Montrer aussi les voyages à venir"), default=False)
+    show_trips = BooleanField(_l("Montrer la liste des voyages"), default=False)
     submit = SubmitField(_l("Générer un lien"))

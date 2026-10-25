@@ -574,3 +574,55 @@ body.page .landing { min-height: 0; }
 .legal-page li { margin-bottom: .35rem; }
 .legal-table { font-size: .9rem; }
 .legal-table th { font-size: .75rem; text-transform: uppercase; letter-spacing: .04em; color: var(--text-muted); }
+
+/* Statistiques : graphiques, cartes des années précédentes, historique replié */
+.chart-box { position: relative; width: 100%; }
+.year-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: .75rem; }
+.year-card { color: inherit; transition: transform .15s ease, box-shadow .15s ease; }
+.year-card:hover, .year-card:focus-visible { transform: translateY(-2px); color: inherit; }
+.year-heading { border-top: 1px solid var(--border-soft); }
+details.history > summary { cursor: pointer; list-style-position: outside; }
+@media (prefers-reduced-motion: reduce) { .year-card { transition: none; } .year-card:hover { transform: none; } }
+
+/* Page 404 : passeport en marbre (inspiré d'un étui de passeport), carte du monde, avion et tampon */
+.lost-page { --marble: #ececef; --marble-light: #fafafb; --vein: rgba(110, 114, 128, .2); --ink: #16181d;
+  --stitch: rgba(255, 255, 255, .85); --stamp: #c2410c;
+  display: grid; grid-template-columns: minmax(0, 1fr); gap: 2.5rem; align-items: center;
+  max-width: 980px; margin: 0 auto; padding: 2rem 0 3rem; }
+@media (min-width: 768px) { .lost-page { grid-template-columns: 340px minmax(0, 1fr); gap: 4rem; } }
+[data-bs-theme="dark"] .lost-page { --marble: #34373f; --marble-light: #42454e; --vein: rgba(220, 224, 235, .14);
+  --ink: #eef0f4; --stitch: rgba(255, 255, 255, .35); --stamp: #fb923c; }
+.passport { position: relative; width: min(300px, 78vw); aspect-ratio: 3 / 4; margin: 0 auto; }
+.passport-cover { position: absolute; inset: 0; border-radius: 14px; overflow: hidden; transform: rotate(-8deg);
+  box-shadow: 0 18px 40px rgba(15, 23, 42, .22), 0 2px 6px rgba(15, 23, 42, .12);
+  /* Marbre : fines veines à différents angles sur un fond nuageux */
+  background:
+    linear-gradient(121deg, transparent 27%, var(--vein) 27.6%, transparent 28.6%),
+    linear-gradient(117deg, transparent 31%, var(--vein) 31.4%, transparent 32.2%),
+    linear-gradient(158deg, transparent 55%, var(--vein) 55.5%, transparent 56.6%),
+    linear-gradient(72deg, transparent 69%, var(--vein) 69.4%, transparent 70.3%),
+    linear-gradient(140deg, transparent 80%, var(--vein) 80.4%, transparent 81.4%),
+    radial-gradient(ellipse 60% 40% at 70% 30%, color-mix(in srgb, var(--vein) 35%, transparent), transparent 70%),
+    radial-gradient(ellipse 50% 35% at 20% 75%, color-mix(in srgb, var(--vein) 30%, transparent), transparent 70%),
+    radial-gradient(ellipse at 25% 15%, var(--marble-light), var(--marble) 75%); }
+.passport-cover::before { content: ""; position: absolute; inset: 9px; border: 2px dashed var(--stitch); border-radius: 9px; }
+.passport-title { position: absolute; top: 20%; left: 0; right: 0; text-align: center; color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif; font-size: clamp(1.5rem, 7vw, 2.1rem); letter-spacing: .06em; }
+.passport-trail { position: absolute; left: 6%; top: 30%; width: 82%; height: auto; overflow: visible; }
+.passport-trail path { fill: none; stroke: var(--ink); stroke-width: 1.6; stroke-dasharray: 4 5; stroke-linecap: round;
+  animation: trail-march 1.6s linear infinite; }
+@keyframes trail-march { to { stroke-dashoffset: -18; } }
+.passport-plane { position: absolute; left: 70.5%; top: 34.5%; color: var(--ink); font-size: 1.3rem; transform: rotate(-32deg); }
+.passport-cover .world-map { position: absolute; left: 12%; bottom: 13%; width: 80%; color: var(--ink); }
+.passport-stamp { position: absolute; right: -14%; bottom: -5%; display: flex; flex-direction: column; align-items: center;
+  justify-content: center; gap: .2rem; width: 132px; height: 132px;
+  border: 4px double var(--stamp); border-radius: 50%; color: var(--stamp); transform: rotate(14deg); opacity: .9;
+  background: color-mix(in srgb, var(--surface, #fff) 80%, transparent); text-align: center; line-height: 1; padding: 1.1rem; }
+.passport-stamp-code { font-size: 2.4rem; font-weight: 800; letter-spacing: .04em; }
+.passport-stamp-text { font-size: .62rem; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; }
+.lost-code { color: var(--stamp); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; margin-bottom: .5rem; }
+@media (prefers-reduced-motion: reduce) { .passport-trail path { animation: none; } }
+
+/* Liste partagée : voyages à venir estompés (comme sur la carte) */
+.trips-table tr.trip-upcoming > * { color: var(--text-muted); }
+.trips-table tr.trip-upcoming > td:first-child { border-left: 3px dashed var(--brand); }

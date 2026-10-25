@@ -1,0 +1,288 @@
+{# Éléments communs à la vue d'ensemble des statistiques et aux pages d'année. #}
+{% from "partials/macros.html" import mode_badge, badge_tile with context %}
+
+{% macro tiles(items) %}
+<div class="stats-grid">
+  {% for icon, value, label in items %}
+  <div class="stat-card">
+    <span class="stat-icon" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></span>
+    <div><div class="stat-value">{{ value }}</div><div class="stat-label">{{ label }}</div></div>
+  </div>
+  {% endfor %}
+</div>
+{% endmacro %}
+
+{% macro chart(id, spec, label, height=260) %}
+<div class="chart-box" style="height: {{ height }}px">
+  <canvas data-chart="{{ id }}" role="img" aria-label="{{ label }}"></canvas>
+</div>
+<script type="application/json" id="{{ id }}">{{ spec|tojson }}</script>
+{% endmacro %}
+
+{% macro badges_section(rows, section_id, title) %}
+{% set earned = rows|selectattr('earned')|list %}
+<section aria-labelledby="{{ section_id }}" class="mb-5">
+  <h2 class="h5 fw-semibold mb-3" id="{{ section_id }}">{{ title }}
+    <span class="text-body-secondary fw-normal small">· {{ earned|length }} / {{ rows|length }}</span></h2>
+  {% if earned %}
+  <ul class="badge-grid list-unstyled mb-2">
+    {% for row in earned|sort(attribute='earned', reverse=True) %}{{ badge_tile(row) }}{% endfor %}
+  </ul>
+  {% endif %}
+  {% set locked = rows|rejectattr('earned')|sort(attribute='progress', reverse=True)|list %}
+  {% if locked %}
+  <details class="mt-2" {% if not earned %}open{% endif %}>
+    <summary class="small text-body-secondary">{{ ngettext("%(num)s badge à obtenir", "%(num)s badges à obtenir", locked|length) }}</summary>
+    <ul class="badge-grid list-unstyled mt-3 mb-0">{% for row in locked %}{{ badge_tile(row) }}{% endfor %}</ul>
+  </details>
+  {% endif %}
+</section>
+{% endmacro %}
+
+{% macro services_section(services, section_id, year=None) %}
+{% if services %}
+<section aria-labelledby="{{ section_id }}" class="mb-5">
+  <h2 class="h5 fw-semibold mb-3" id="{{ section_id }}">{{ _("Avion et train") }}</h2>
+  <div class="row g-4">
+    {% for row in services %}
+    {% set labels = SERVICE_FIELDS[row.mode] %}
+    <div class="col-lg-6">
+      <div class="card shadow-soft h-100">
+        <div class="card-body p-4">
+          <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+            {{ mode_badge(row.mode) }}
+            <span class="fw-semibold">{% if row.mode == 'plane' %}{{ ngettext("%(num)s vol", "%(num)s vols", row.legs) }}
+              {% else %}{{ ngettext("%(num)s trajet", "%(num)s trajets", row.legs) }}{% endif %}</span>
+            <span class="text-body-secondary small">· {{ row.distance_km|distance }}</span>
+            <a class="ms-auto small text-decoration-none" href="{{ url_for('trips.transport_stats', mode=row.mode, year=year) }}">
+              {{ _("Voir le détail") }}<i class="fa-solid fa-arrow-right ms-1" aria-hidden="true"></i></a>
+          </div>
+          <div class="row g-3 small">
+            {% set columns = [(labels.carrier[0], row.carriers)] + ([(labels.vehicle[0], row.vehicles)] if 'vehicle' in labels else [])
+                             + [(_("Aéroports") if row.mode == 'plane' else _("Gares"), row.places)] %}
+            {% for title, items in columns %}
+            <div class="col-sm-{{ 12 // columns|length }}">
+              <h3 class="h6 fw-semibold mb-2">{{ title }}</h3>
+              {% if items %}
+              <ol class="list-unstyled mb-0 service-top">
+                {% for name, count in items %}
+                <li class="d-flex justify-content-between gap-2"><span class="text-truncate" title="{{ name }}">{{ name }}</span>
+                  <span class="text-body-secondary">{{ count|number }}</span></li>
+                {% endfor %}
+              </ol>
+              {% else %}<p class="text-body-secondary mb-0">{{ _("À renseigner dans la fiche du trajet.") }}</p>{% endif %}
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</section>
+{% endif %}
+{% endmacro %}
+
+{# Une année en détail : chiffres, graphiques, pays, faits marquants, badges, avion et train, étiquettes. #}
+{% macro year_sections(d) %}
+{% set y = d.year %}
+{% set review = d.review %}
+<section aria-labelledby="yearTotals{{ y }}" class="mb-4">
+  <h2 class="visually-hidden" id="yearTotals{{ y }}">{{ _("Chiffres de %(year)s", year=y) }}</h2>
+  {% set items = [
+    ('fa-suitcase', d.totals.count_fmt, _("Voyages")),
+    ('fa-route', d.totals.total_distance_fmt, _("Distance estimée")),
+    ('fa-earth-europe', d.totals.countries_fmt,
+     ngettext("pays, dont %(num)s nouveau", "pays, dont %(num)s nouveaux", review.new_countries|length)
+     if review.new_countries else _("Pays et territoires")),
+    ('fa-location-dot', d.places|length|number, _("Lieux visités")),
+    ('fa-smog', d.totals.co2_fmt, _("CO₂ estimé")),
+  ] %}
+  {% if d.away %}{% set items = items + [('fa-calendar-days', d.away.days|number, ngettext("jour loin de chez moi", "jours loin de chez moi", d.away.days))] %}{% endif %}
+  {{ tiles(items) }}
+</section>
+
+<div class="row g-4 mb-5">
+  <section class="col-lg-7" aria-labelledby="months{{ y }}">
+    <div class="card shadow-soft h-100"><div class="card-body p-4">
+      <h2 class="h6 fw-semibold mb-3" id="months{{ y }}">{{ _("Départs par mois") }}</h2>
+      {{ chart('chart-months-' ~ y, {'type': 'stacked', 'labels': d.month_labels, 'series': d.month_modes, 'unit': None},
+               _("Départs par mois et par mode en %(year)s", year=y)) }}
+    </div></div>
+  </section>
+  <section class="col-lg-5" aria-labelledby="modes{{ y }}">
+    <div class="card shadow-soft h-100"><div class="card-body p-4">
+      <h2 class="h6 fw-semibold mb-3" id="modes{{ y }}">{{ _("Distance par mode") }}</h2>
+      {% set km = {} %}{% for m in d.totals.by_mode %}{% do km.update({m.mode: m.distance_km}) %}{% endfor %}
+      {{ chart('chart-modes-' ~ y, {'type': 'doughnut', 'series': km, 'unit': 'km'},
+               _("Distance par mode de transport en %(year)s", year=y), height=220) }}
+      <ul class="list-unstyled small mt-3 mb-0">
+        {% for m in d.totals.by_mode %}
+        <li class="d-flex align-items-center gap-2 py-1">{{ mode_badge(m.mode) }}
+          <span class="text-body-secondary me-auto">{{ m.count_fmt }}</span>
+          <span class="text-nowrap">{{ m.distance_fmt }}</span>
+          <span class="text-body-secondary text-nowrap" style="min-width: 5.5rem; text-align: right">{{ m.co2_fmt }}</span></li>
+        {% endfor %}
+      </ul>
+    </div></div>
+  </section>
+</div>
+
+<div class="row g-4 mb-5">
+  <section class="col-lg-6" aria-labelledby="countries{{ y }}">
+    <h2 class="h5 fw-semibold mb-3" id="countries{{ y }}">{{ _("Pays visités") }}
+      <span class="text-body-secondary fw-normal small">· {{ d.countries|length }}</span></h2>
+    <div class="card shadow-soft"><ul class="list-group list-group-flush">
+      {% set new_codes = review.new_countries|map(attribute='code')|list %}
+      {% for c in d.countries %}
+      <li class="list-group-item d-flex align-items-center gap-2 bg-transparent">
+        <span class="fs-5" aria-hidden="true">{{ c.flag }}</span>
+        <span class="me-auto">{{ c.name }}
+          {% if c.code in new_codes %}<span class="badge rounded-pill text-bg-primary-subtle ms-1">{{ _("Nouveau") }}</span>{% endif %}</span>
+        <span class="small text-body-secondary">{{ ngettext("%(num)s trajet", "%(num)s trajets", c.trips) }}</span>
+      </li>
+      {% else %}
+      <li class="list-group-item bg-transparent text-body-secondary">{{ _("Aucun pays identifié.") }}</li>
+      {% endfor %}
+    </ul></div>
+  </section>
+  <section class="col-lg-6" aria-labelledby="highlights{{ y }}">
+    <h2 class="h5 fw-semibold mb-3" id="highlights{{ y }}">{{ _("Faits marquants") }}</h2>
+    <div class="card shadow-soft"><ul class="list-group list-group-flush">
+      <li class="list-group-item bg-transparent">
+        <div class="small text-body-secondary">{{ _("Trajet le plus long") }}</div>
+        <a class="text-decoration-none" href="{{ url_for('trips.detail', trip_id=review.longest.id) }}">
+          {{ review.longest.origin_name }} → {{ review.longest.dest_name }}</a>
+        <span class="small text-body-secondary">· {{ review.longest.total_distance_km|distance }}</span>
+      </li>
+      {% if review.top_destinations %}
+      <li class="list-group-item bg-transparent">
+        <div class="small text-body-secondary">{{ _("Destinations favorites") }}</div>
+        {% for name, count in review.top_destinations %}{{ name }} <span class="small text-body-secondary">({{ count }})</span>{% if not loop.last %} · {% endif %}{% endfor %}
+      </li>
+      {% endif %}
+      <li class="list-group-item bg-transparent">
+        <div class="small text-body-secondary">{{ _("Premier et dernier départ") }}</div>
+        {{ review.first.depart_date|day }} · {{ review.first.dest_name }}
+        {% if review.last.id != review.first.id %}<br>{{ review.last.depart_date|day }} · {{ review.last.dest_name }}{% endif %}
+      </li>
+      {% if review.earth_laps >= 0.1 %}
+      <li class="list-group-item bg-transparent">
+        <div class="small text-body-secondary">{{ _("Tours de la Terre") }}</div>
+        {{ review.earth_laps|round(1)|number }}
+      </li>
+      {% endif %}
+    </ul></div>
+  </section>
+</div>
+
+{{ badges_section(d.badges, 'yearBadges' ~ y, _("Badges de l'année %(year)s", year=y)) }}
+
+{{ services_section(d.services, 'services' ~ y, year=y) }}
+
+{% if d.tags %}
+<section aria-labelledby="tags{{ y }}" class="mb-5">
+  <h2 class="h5 fw-semibold mb-3" id="tags{{ y }}">{{ _("Par étiquette") }}</h2>
+  <div class="card shadow-soft"><div class="table-responsive">
+    <table class="table align-middle mb-0 trips-table">
+      <thead><tr>
+        <th scope="col">{{ _("Étiquette") }}</th>
+        <th scope="col" class="text-end">{{ _("Voyages") }}</th>
+        <th scope="col" class="text-end">{{ _("Distance") }}</th>
+        <th scope="col" class="text-end">{{ _("CO₂ estimé") }}</th>
+      </tr></thead>
+      <tbody>
+        {% for row in d.tags %}
+        <tr>
+          <th scope="row">{% if row.tag %}<a class="tag-chip text-decoration-none" href="{{ url_for('trips.index', tags=row.tag.id) }}">{{ row.name }}</a>
+            {% else %}<span class="text-body-secondary fw-normal">{{ _("Sans étiquette") }}</span>{% endif %}</th>
+          <td class="text-end">{{ row.count|number }}</td>
+          <td class="text-end text-nowrap">{{ row.distance_km|distance }}</td>
+          <td class="text-end text-nowrap">{{ row.co2_kg|co2 }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div></div>
+</section>
+{% endif %}
+{% endmacro %}
+
+{# « Depuis le début » (chiffres et graphiques par année) puis une carte par année.
+   `linked` : cartes cliquables vers la page de l'année (désactivé sur un lien de partage). #}
+{% macro overall_sections(totals, years, continents, current_year, missing_countries=0, linked=True) %}
+  {# --- Depuis le début : quelques chiffres et les badges --- #}
+  <section aria-labelledby="overallTitle" class="mb-5">
+    <h2 class="h5 fw-semibold mb-3" id="overallTitle">{{ _("Depuis le début") }}
+      <span class="text-body-secondary fw-normal small">· {{ years[-1].year }}{% if years|length > 1 %}–{{ years[0].year }}{% endif %}</span></h2>
+    {{ tiles([
+      ('fa-suitcase', totals.count_fmt, _("Voyages")),
+      ('fa-route', totals.total_distance_fmt, _("Distance estimée")),
+      ('fa-earth-europe', totals.countries_fmt, _("Pays et territoires")),
+      ('fa-globe', continents|selectattr('countries')|list|length ~ ' / ' ~ continents|length, _("Continents")),
+      ('fa-percent', totals.land_share_fmt, _("des terres émergées")),
+      ('fa-smog', totals.co2_fmt, _("CO₂ estimé")),
+    ]) }}
+    {% if missing_countries %}
+    <p class="small text-body-secondary mt-3 mb-0">
+      <i class="fa-solid fa-circle-info me-1" aria-hidden="true"></i>
+      {{ ngettext("%(num)s trajet n'a pas de pays identifié (point en mer ou hors des contours connus).",
+                  "%(num)s trajets n'ont pas de pays identifié (point en mer ou hors des contours connus).",
+                  missing_countries) }}</p>
+    {% endif %}
+    {% if years|length > 1 %}
+    <div class="row g-4 mt-1">
+      {% set ascending = years|reverse|list %}
+      {% set count_series, km_series = {}, {} %}
+      {% for key in TRANSPORT_MODES if ascending|map(attribute='modes')|map(attribute=key)|sum %}
+      {% do count_series.update({key: ascending|map(attribute='modes')|map(attribute=key)|list}) %}
+      {% do km_series.update({key: ascending|map(attribute='mode_km')|map(attribute=key)|map('round')|list}) %}
+      {% endfor %}
+      <div class="col-lg-6"><div class="card shadow-soft h-100"><div class="card-body p-4">
+        <h3 class="h6 fw-semibold mb-3">{{ _("Trajets par année") }}</h3>
+        {{ chart('chart-years-count', {'type': 'stacked', 'labels': ascending|map(attribute='year')|list, 'series': count_series, 'unit': None},
+                 _("Trajets par année et par mode")) }}
+      </div></div></div>
+      <div class="col-lg-6"><div class="card shadow-soft h-100"><div class="card-body p-4">
+        <h3 class="h6 fw-semibold mb-3">{{ _("Distance par année") }}</h3>
+        {{ chart('chart-years-km', {'type': 'stacked', 'labels': ascending|map(attribute='year')|list, 'series': km_series, 'unit': 'km'},
+                 _("Distance par année et par mode")) }}
+      </div></div></div>
+    </div>
+    {% endif %}
+  </section>
+
+  {# --- Une carte par année, vers sa page --- #}
+  {% if years %}
+  <section aria-labelledby="previousTitle" class="mb-5">
+    <h2 class="h5 fw-semibold mb-3" id="previousTitle">{{ _("Années") }}</h2>
+    {% set max_km = years|map(attribute='distance_km')|max %}
+    <div class="year-cards">
+      {% for row in years %}
+      {% if linked %}<a class="year-card card shadow-soft text-decoration-none" href="{{ url_for('trips.year_stats', year=row.year) }}">
+      {% else %}<div class="year-card card shadow-soft">{% endif %}
+        <div class="card-body p-3">
+          <div class="d-flex align-items-baseline justify-content-between">
+            <span class="h5 fw-bold mb-0">{{ row.year }}{% if row.year == current_year %}
+              <span class="badge rounded-pill text-bg-primary-subtle align-middle ms-1 fs-6 fw-semibold">{{ _("En cours") }}</span>{% endif %}</span>
+            <span class="small text-body-secondary">{{ ngettext("%(num)s voyage", "%(num)s voyages", row.count) }}</span>
+          </div>
+          <div class="small mt-2">{{ row.distance_km|distance }} · {{ row.co2_kg|co2 }}</div>
+          <div class="year-bar mt-1" aria-hidden="true"><span style="width: {{ (100 * row.distance_km / max_km) if max_km else 0 }}%"></span></div>
+          <div class="small text-body-secondary mt-2">{{ ngettext("%(num)s pays", "%(num)s pays", row.countries|length) }}
+            {% if row.new_countries %}· {{ _("Nouveaux : %(list)s", list=row.new_countries|map('flag')|join(' ')) }}
+            <span class="visually-hidden">{{ row.new_countries|map('country_name')|join(', ') }}</span>{% endif %}</div>
+        </div>
+      {% if linked %}</a>{% else %}</div>{% endif %}
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
+{% endmacro %}
+
+{% macro chart_scripts() %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"
+        integrity="sha384-NrKB+u6Ts6AtkIhwPixiKTzgSKNblyhlk0Sohlgar9UHUBzai/sgnNNWWd291xqt" crossorigin="anonymous"></script>
+<script type="module" src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endmacro %}

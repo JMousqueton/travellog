@@ -116,7 +116,25 @@
       </div>
 
       <div class="collapse navbar-collapse" id="mainNav">
+        {% if shared %}
+        {# Lien de partage : carte, statistiques, liste des voyages (si le lien la montre) et bilan. #}
+        <ul class="navbar-nav me-auto ms-lg-3 gap-lg-1">
+          {% for endpoint, active, icon, label in [
+            ('share.view', ['share.view'], 'fa-map-location-dot', _("Carte")),
+            ('share.stats', ['share.stats'], 'fa-chart-column', _("Statistiques")),
+          ] + ([('share.trips', ['share.trips'], 'fa-list', _("Voyages"))] if shared.show_trips else []) + [
+            ('share.review_latest', ['share.review', 'share.review_latest'], 'fa-calendar-check', _("Bilan")),
+          ] %}
+          <li class="nav-item">
+            <a class="nav-link {% if request.endpoint in active %}active{% endif %}" href="{{ url_for(endpoint, token=shared.token) }}"
+               title="{{ label }}" {% if request.endpoint in active %}aria-current="page"{% endif %}>
+              <i class="fa-solid {{ icon }} me-1" aria-hidden="true"></i><span class="nav-label">{{ label }}</span></a>
+          </li>
+          {% endfor %}
+        </ul>
+        {% endif %}
         {% if current_user.is_authenticated %}
+        {% if not shared %}
         <ul class="navbar-nav me-auto ms-lg-3 gap-lg-1">
           <li class="nav-item">
             <a class="nav-link {% if request.endpoint == 'trips.index' %}active{% endif %}" href="{{ url_for('trips.index') }}" title="{{ _('Carte') }}"
@@ -134,6 +152,7 @@
               <i class="fa-solid fa-chart-column me-1" aria-hidden="true"></i><span class="nav-label">{{ _("Statistiques") }}</span></a>
           </li>
         </ul>
+        {% endif %}
         <div class="d-flex flex-column flex-lg-row gap-2 align-items-lg-center py-2 py-lg-0">
           <a class="btn btn-primary btn-sm rounded-pill px-3" href="{{ url_for('trips.create') }}" title="{{ _('Ajouter un voyage') }}">
             <i class="fa-solid fa-plus me-1" aria-hidden="true"></i><span class="nav-label">{{ _("Ajouter un voyage") }}</span></a>

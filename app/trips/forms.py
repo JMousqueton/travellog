@@ -59,7 +59,7 @@ class TripForm(FlaskForm):
     return_date = DateField(_l("Date de retour"), validators=[Optional()])
     carrier = StringField(_l("Compagnie ou opérateur"), validators=[Optional(), Length(max=80)])
     service_number = StringField(_l("Numéro"), validators=[Optional(), Length(max=40)])
-    vehicle = StringField(_l("Appareil ou type de train"), validators=[Optional(), Length(max=80)])
+    vehicle = StringField(_l("Appareil"), validators=[Optional(), Length(max=80)])
     tags = _tags_field()
     notes = _notes_field()
     submit = SubmitField(_l("Enregistrer"))

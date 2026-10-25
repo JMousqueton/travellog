@@ -67,7 +67,7 @@ available in French, English, Spanish, German and Italian.
   the preview.
   A flight followed by its return flight (within 50 km: CDG out, ORY back) becomes a round trip; multi-stop
   itineraries stay as one-way flights, and a cancelled or missing return does not throw off later ones.
-- Plane and train: airline or operator, flight or train number and aircraft or train type, entered in the
+- Plane and train: airline, flight number and aircraft for planes, operator for trains, entered in the
   form (labels follow the mode; the airline or operator field autocompletes, first with the ones already
   entered, then with the main airlines or rail operators from `app/carriers.py`) or filled by the flight
   import. The statistics derive, per mode, the number of

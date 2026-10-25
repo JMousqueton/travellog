@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Destination introuvable") }}{% endblock %}
+{% block head %}<meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+<div class="lost-page">
+  {# Passeport en marbre, carte du monde, avion et tampon « 404 » (décoratif). #}
+  <div class="passport" aria-hidden="true">
+    <div class="passport-cover">
+      <span class="passport-title">{{ _("Passeport")|upper }}</span>
+      <svg class="passport-trail" viewBox="0 0 260 200" focusable="false">
+        <path d="M8 124 C 28 104, 52 94, 70 102 C 88 110, 82 130, 66 126 C 50 121, 66 88, 110 80
+                 C 150 73, 182 62, 212 42" />
+      </svg>
+      <i class="fa-solid fa-plane passport-plane"></i>
+      {% include "partials/world_map.svg" %}
+    </div>
+    <div class="passport-stamp">
+      <span class="passport-stamp-code">404</span>
+      <span class="passport-stamp-text">{{ _("Destination introuvable") }}</span>
+    </div>
+  </div>
+
+  <div class="lost-text">
+    <p class="lost-code">{{ _("Erreur 404") }}</p>
+    <h1 class="h2 fw-bold">{{ _("Destination introuvable") }}</h1>
+    <p class="text-body-secondary mb-4">{{ _("Cette page n'existe pas ou a changé d'adresse. Même avec un passeport en règle, impossible d'y embarquer.") }}</p>
+    <div class="d-flex flex-wrap gap-2">
+      <a class="btn btn-primary rounded-pill px-4" href="{{ url_for('trips.index') }}">
+        <i class="fa-solid fa-map-location-dot me-1" aria-hidden="true"></i>{{ _("Retour à la carte") }}</a>
+      {% if current_user.is_authenticated %}
+      <a class="btn btn-outline-secondary rounded-pill px-4" href="{{ url_for('trips.list_view') }}">
+        <i class="fa-solid fa-list me-1" aria-hidden="true"></i>{{ _("Mes voyages") }}</a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

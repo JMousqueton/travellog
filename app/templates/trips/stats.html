@@ -1,5 +1,6 @@
 {% extends "base.html" %}
-{% from "partials/macros.html" import mode_badge, badge_tile with context %}
+{% from "partials/macros.html" import mode_badge with context %}
+{% from "trips/_stats_parts.html" import tiles, overall_sections, badges_section, services_section, chart_scripts with context %}
 {% block title %}{{ _("Statistiques") }}{% endblock %}
 {% block content %}
 <div class="stats-page">
@@ -45,334 +46,154 @@
     <p class="text-body-secondary">{{ _("Ajoutez votre premier voyage pour le voir apparaître sur la carte.") }}</p>
   </div>
   {% else %}
-  <section aria-labelledby="totalsTitle" class="mb-5">
-    <h2 class="visually-hidden" id="totalsTitle">{{ _("Totaux") }}</h2>
-    <div class="stats-grid">
-      {% for icon, value, label in [
-        ('fa-suitcase', totals.count_fmt, _("Voyages")),
-        ('fa-route', totals.total_distance_fmt, _("Distance estimée")),
-        ('fa-earth-europe', totals.countries_fmt, _("Pays et territoires")),
-        ('fa-location-dot', places|length|number, _("Lieux visités")),
-        ('fa-percent', totals.land_share_fmt, _("des terres émergées")),
-        ('fa-smog', totals.co2_fmt, _("CO₂ estimé")),
-      ] %}
-      <div class="stat-card">
-        <span class="stat-icon" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></span>
-        <div><div class="stat-value">{{ value }}</div><div class="stat-label">{{ label }}</div></div>
-      </div>
-      {% endfor %}
-    </div>
-    {% if missing_countries %}
-    <p class="small text-body-secondary mt-3 mb-0">
-      <i class="fa-solid fa-circle-info me-1" aria-hidden="true"></i>
-      {{ ngettext("%(num)s trajet n'a pas de pays identifié (point en mer ou hors des contours connus).",
-                  "%(num)s trajets n'ont pas de pays identifié (point en mer ou hors des contours connus).",
-                  missing_countries) }}</p>
-    {% endif %}
-  </section>
 
-  {% for rows, section_id, title in [(badges, 'badgesTitle', _("Badges · tous vos voyages")),
-                                     (year_badges, 'yearBadgesTitle', _("Badges de l'année %(year)s", year=current_year))] %}
-  {% set earned = rows|selectattr('earned')|list %}
-  <section aria-labelledby="{{ section_id }}" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="{{ section_id }}">{{ title }}
-      <span class="text-body-secondary fw-normal small">· {{ earned|length }} / {{ rows|length }}</span></h2>
-    <ul class="badge-grid list-unstyled mb-2">
-      {% for row in earned|sort(attribute='earned', reverse=True) %}{{ badge_tile(row) }}{% endfor %}
-    </ul>
-    {% set locked = rows|rejectattr('earned')|sort(attribute='progress', reverse=True)|list %}
-    {% if locked %}
-    <details class="mt-2" {% if not earned %}open{% endif %}>
-      <summary class="small text-body-secondary">{{ ngettext("%(num)s badge à obtenir", "%(num)s badges à obtenir", locked|length) }}</summary>
-      <ul class="badge-grid list-unstyled mt-3 mb-0">{% for row in locked %}{{ badge_tile(row) }}{% endfor %}</ul>
-    </details>
-    {% endif %}
-  </section>
-  {% endfor %}
+  {{ overall_sections(totals, years, continents, current_year, missing_countries) }}
 
-  <section aria-labelledby="placesTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="placesTitle">{{ _("Lieux visités") }}
-      <span class="text-body-secondary fw-normal small">· {{ places|length }}</span></h2>
-    {% if places %}
-    <div class="card shadow-soft">
-      <ol class="list-group list-group-flush list-group-numbered">
-        {% for p in places[:10] %}
-        <li class="list-group-item d-flex align-items-center gap-2 bg-transparent">
-          <span class="me-auto">{% if p.country %}<span aria-hidden="true">{{ p.country|flag }}</span> {% endif %}{{ p.name }}</span>
-          <span class="small text-body-secondary text-end">{{ ngettext("%(num)s trajet", "%(num)s trajets", p.visits) }}<br>
-            {{ p.first|day }}{% if p.last != p.first %} – {{ p.last|day }}{% endif %}</span>
-        </li>
-        {% endfor %}
-      </ol>
-      {% if places|length > 10 %}
-      <details class="card-body pt-2">
-        <summary class="small text-body-secondary">{{ ngettext("Voir %(num)s autre lieu", "Voir les %(num)s autres lieux", places|length - 10) }}</summary>
-        <p class="small mt-2 mb-0">{% for p in places[10:] %}{{ p.name }}{% if not loop.last %} · {% endif %}{% endfor %}</p>
-      </details>
-      {% endif %}
-    </div>
-    <p class="small text-body-secondary mt-2 mb-0">{{ _("Les lieux distants de moins de 15 km comptent pour un seul (par exemple une ville et son aéroport).") }}
-      {% if current_user.has_home %}{{ _("Votre domicile n'est pas compté.") }}{% endif %}</p>
-    {% else %}<p class="text-body-secondary">{{ _("Aucun lieu visité pour l'instant.") }}</p>{% endif %}
-  </section>
+  {{ badges_section(badges, 'badgesTitle', _("Badges · tous vos voyages")) }}
 
-  <section aria-labelledby="continentsTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="continentsTitle">{{ _("Continents") }}
-      <span class="text-body-secondary fw-normal small">· {{ continents|selectattr('countries')|list|length }} / {{ continents|length }}</span></h2>
-    <ul class="continent-grid list-unstyled mb-0">
-      {% for c in continents %}
-      <li class="continent-tile {{ 'is-visited' if c.countries else '' }}">
-        <span class="fw-semibold">{{ c.name }}</span>
-        {% if c.countries %}
-        <span class="small text-body-secondary">{{ ngettext("%(num)s pays", "%(num)s pays", c.countries|length) }}</span>
-        <span class="continent-flags">{% for code in c.countries %}<span title="{{ code|country_name }}">{{ code|flag }}</span>{% endfor %}</span>
-        <span class="visually-hidden">{{ c.countries|map('country_name')|join(', ') }}</span>
-        {% else %}<span class="small text-body-secondary">{{ _("Pas encore visité") }}</span>{% endif %}
-      </li>
-      {% endfor %}
-    </ul>
-  </section>
+  {# --- Tout l'historique en détail --- #}
+  <div>
+      {{ services_section(services, 'servicesTitle') }}
 
-  <section aria-labelledby="awayTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="awayTitle">{{ _("Jours d'absence") }}</h2>
-    {% if not current_user.has_home %}
-    <div class="card shadow-soft"><div class="card-body p-4 d-flex flex-wrap align-items-center gap-3">
-      <i class="fa-solid fa-house fs-4 text-primary" aria-hidden="true"></i>
-      <p class="mb-0 flex-grow-1">{{ _("Indiquez votre ville de domicile pour voir le nombre de jours passés en voyage, vos nuits à l'étranger et votre plus longue absence.") }}</p>
-      <a class="btn btn-primary btn-sm rounded-pill px-3" href="{{ url_for('auth.profile', _anchor='home') }}">{{ _("Définir mon domicile") }}</a>
-    </div></div>
-    {% elif not away %}
-    <p class="text-body-secondary">{{ _("Aucune absence : aucun trajet ne part encore de %(home)s.", home=current_user.home_name) }}</p>
-    {% else %}
-    <div class="stats-grid mb-3">
-      {% for icon, value, label in [
-        ('fa-calendar-days', away.days|number, ngettext("jour loin de chez moi", "jours loin de chez moi", away.days)),
-        ('fa-moon', away.nights_abroad|number, ngettext("nuit à l'étranger", "nuits à l'étranger", away.nights_abroad)),
-        ('fa-hourglass-half', away.longest.days|number, _("jours : plus longue absence")),
-      ] %}
-      <div class="stat-card">
-        <span class="stat-icon" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></span>
-        <div><div class="stat-value">{{ value }}</div><div class="stat-label">{{ label }}</div></div>
-      </div>
-      {% endfor %}
-    </div>
-    <p class="small text-body-secondary mb-3">
-      {{ _("Plus longue absence : du %(start)s au %(end)s (%(places)s).", start=away.longest.start|day, end=away.longest.end|day,
-           places=away.longest.destinations|map(attribute=0)|unique|join(', ')) }}
-      {{ _("Depuis %(home)s, dans un rayon de 30 km.", home=current_user.home_name) }}
-      {% if away.open_count %}{{ ngettext("%(num)s absence n'a pas de retour renseigné : elle s'arrête au dernier trajet connu.",
-                                           "%(num)s absences n'ont pas de retour renseigné : elles s'arrêtent au dernier trajet connu.", away.open_count) }}{% endif %}
-    </p>
-    <div class="card shadow-soft">
-      <div class="table-responsive">
-        <table class="table align-middle mb-0 trips-table">
-          <thead><tr>
-            <th scope="col">{{ _("Année") }}</th>
-            <th scope="col" class="text-end">{{ _("Jours d'absence") }}</th>
-            <th scope="col">{{ _("Part de l'année") }}</th>
-            <th scope="col" class="text-end">{{ _("Nuits à l'étranger") }}</th>
-            <th scope="col" class="text-end">{{ _("Départs") }}</th>
-          </tr></thead>
-          <tbody>
-            {% for row in away.per_year %}
-            <tr>
-              <th scope="row">{{ row.year }}</th>
-              <td class="text-end">{{ row.days|number }}</td>
-              <td><div class="d-flex align-items-center gap-2"><span class="year-bar flex-grow-1" aria-hidden="true"><span style="width: {{ 100 * row.share }}%"></span></span>
-                <span class="small text-nowrap">{{ row.share|percent }}</span></div></td>
-              <td class="text-end">{{ row.nights_abroad|number }}</td>
-              <td class="text-end">{{ row.absences|number }}</td>
-            </tr>
+      <div class="row g-4 mb-5">
+        <section class="col-lg-6" aria-labelledby="countriesTitle">
+          <h2 class="h5 fw-semibold mb-3" id="countriesTitle">{{ _("Pays visités") }}
+            <span class="text-body-secondary fw-normal small">· {{ countries|length }}</span></h2>
+          <div class="card shadow-soft"><ul class="list-group list-group-flush">
+            {% for c in countries %}
+            <li class="list-group-item d-flex align-items-center gap-2 bg-transparent">
+              <span class="fs-5" aria-hidden="true">{{ c.flag }}</span>
+              <span class="me-auto">{{ c.name }}</span>
+              <span class="small text-body-secondary text-end">{{ ngettext("%(num)s trajet", "%(num)s trajets", c.trips) }}<br>
+                {{ c.first|day }}{% if c.last != c.first %} – {{ c.last|day }}{% endif %}</span>
+            </li>
+            {% else %}
+            <li class="list-group-item bg-transparent text-body-secondary">{{ _("Aucun pays identifié.") }}</li>
             {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-    {% endif %}
-  </section>
-
-  {% set max_km = years|map(attribute='distance_km')|max %}
-  <section aria-labelledby="yearsTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="yearsTitle">{{ _("Année par année") }}</h2>
-    <div class="card shadow-soft">
-      <div class="table-responsive">
-        <table class="table align-middle mb-0 trips-table">
-          <thead>
-            <tr>
-              <th scope="col">{{ _("Année") }}</th>
-              <th scope="col" class="text-end">{{ _("Voyages") }}</th>
-              <th scope="col">{{ _("Distance") }}</th>
-              <th scope="col">{{ _("Modes") }}</th>
-              <th scope="col">{{ _("Pays") }}</th>
-              <th scope="col" class="text-end">{{ _("CO₂ estimé") }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for row in years %}
-            <tr>
-              <th scope="row"><a class="text-decoration-none" href="{{ url_for('trips.review', year=row.year) }}"
-                  title="{{ _('Bilan %(year)s', year=row.year) }}">{{ row.year }}</a></th>
-              <td class="text-end">{{ row.count|number }}
-                {% if row.legs != row.count %}<div class="small text-body-secondary">{{ ngettext("%(num)s trajet", "%(num)s trajets", row.legs) }}</div>{% endif %}
-              </td>
-              <td>
-                <div class="text-nowrap">{{ row.distance_km|distance }}</div>
-                <div class="year-bar" aria-hidden="true"><span style="width: {{ (100 * row.distance_km / max_km) if max_km else 0 }}%"></span></div>
-              </td>
-              <td>
-                <div class="mode-stack" role="img" aria-label="{% for key, n in row.modes.items() if n %}{{ TRANSPORT_MODES[key].label }} : {{ n }}{% if not loop.last %}, {% endif %}{% endfor %}">
-                  {% for key, n in row.modes.items() if n %}
-                  <span style="flex: {{ n }}; --mode-color: {{ TRANSPORT_MODES[key].color }}; --mode-color-dark: {{ TRANSPORT_MODES[key].color_dark }}"
-                        title="{{ TRANSPORT_MODES[key].label }} : {{ n }}"></span>
-                  {% endfor %}
-                </div>
-              </td>
-              <td>
-                {{ row.countries|length }}
-                {% if row.new_countries %}
-                <div class="small text-body-secondary">
-                  {{ _("Nouveaux : %(list)s", list=row.new_countries|map('flag')|join(' ')) }}
-                  <span class="visually-hidden">{{ row.new_countries|map('country_name')|join(', ') }}</span>
-                </div>
-                {% endif %}
-              </td>
-              <td class="text-end text-nowrap">{{ row.co2_kg|co2 }}</td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-
-  {% if services %}
-  <section aria-labelledby="servicesTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="servicesTitle">{{ _("Avion et train") }}</h2>
-    <div class="row g-4">
-      {% for row in services %}
-      {% set labels = SERVICE_FIELDS[row.mode] %}
-      <div class="col-lg-6">
-        <div class="card shadow-soft h-100">
-          <div class="card-body p-4">
-            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
-              {{ mode_badge(row.mode) }}
-              <span class="fw-semibold">{% if row.mode == 'plane' %}{{ ngettext("%(num)s vol", "%(num)s vols", row.legs) }}
-                {% else %}{{ ngettext("%(num)s trajet", "%(num)s trajets", row.legs) }}{% endif %}</span>
-              <span class="text-body-secondary small">· {{ row.distance_km|distance }}</span>
-            </div>
-            <div class="row g-3 small">
-              {% for title, items in [(labels.carrier[0], row.carriers), (labels.vehicle[0], row.vehicles),
-                                      (_("Aéroports") if row.mode == 'plane' else _("Gares"), row.places)] %}
-              <div class="col-sm-4">
-                <h3 class="h6 fw-semibold mb-2">{{ title }}</h3>
-                {% if items %}
-                <ol class="list-unstyled mb-0 service-top">
-                  {% for name, count in items %}
-                  <li class="d-flex justify-content-between gap-2"><span class="text-truncate" title="{{ name }}">{{ name }}</span>
-                    <span class="text-body-secondary">{{ count|number }}</span></li>
-                  {% endfor %}
-                </ol>
-                {% else %}<p class="text-body-secondary mb-0">{{ _("À renseigner dans la fiche du trajet.") }}</p>{% endif %}
-              </div>
+          </ul></div>
+        </section>
+        <section class="col-lg-6" aria-labelledby="placesTitle">
+          <h2 class="h5 fw-semibold mb-3" id="placesTitle">{{ _("Lieux visités") }}
+            <span class="text-body-secondary fw-normal small">· {{ places|length }}</span></h2>
+          {% if places %}
+          <div class="card shadow-soft">
+            <ol class="list-group list-group-flush list-group-numbered">
+              {% for p in places[:10] %}
+              <li class="list-group-item d-flex align-items-center gap-2 bg-transparent">
+                <span class="me-auto">{% if p.country %}<span aria-hidden="true">{{ p.country|flag }}</span> {% endif %}{{ p.name }}</span>
+                <span class="small text-body-secondary text-end">{{ ngettext("%(num)s trajet", "%(num)s trajets", p.visits) }}<br>
+                  {{ p.first|day }}{% if p.last != p.first %} – {{ p.last|day }}{% endif %}</span>
+              </li>
               {% endfor %}
-            </div>
+            </ol>
+            {% if places|length > 10 %}
+            <details class="card-body pt-2">
+              <summary class="small text-body-secondary">{{ ngettext("Voir %(num)s autre lieu", "Voir les %(num)s autres lieux", places|length - 10) }}</summary>
+              <p class="small mt-2 mb-0">{% for p in places[10:] %}{{ p.name }}{% if not loop.last %} · {% endif %}{% endfor %}</p>
+            </details>
+            {% endif %}
+          </div>
+          <p class="small text-body-secondary mt-2 mb-0">{{ _("Les lieux distants de moins de 15 km comptent pour un seul (par exemple une ville et son aéroport).") }}
+            {% if current_user.has_home %}{{ _("Votre domicile n'est pas compté.") }}{% endif %}</p>
+          {% else %}<p class="text-body-secondary">{{ _("Aucun lieu visité pour l'instant.") }}</p>{% endif %}
+        </section>
+      </div>
+
+      <section aria-labelledby="continentsTitle" class="mb-5">
+        <h2 class="h5 fw-semibold mb-3" id="continentsTitle">{{ _("Continents") }}
+          <span class="text-body-secondary fw-normal small">· {{ continents|selectattr('countries')|list|length }} / {{ continents|length }}</span></h2>
+        <ul class="continent-grid list-unstyled mb-0">
+          {% for c in continents %}
+          <li class="continent-tile {{ 'is-visited' if c.countries else '' }}">
+            <span class="fw-semibold">{{ c.name }}</span>
+            {% if c.countries %}
+            <span class="small text-body-secondary">{{ ngettext("%(num)s pays", "%(num)s pays", c.countries|length) }}</span>
+            <span class="continent-flags">{% for code in c.countries %}<span title="{{ code|country_name }}">{{ code|flag }}</span>{% endfor %}</span>
+            <span class="visually-hidden">{{ c.countries|map('country_name')|join(', ') }}</span>
+            {% else %}<span class="small text-body-secondary">{{ _("Pas encore visité") }}</span>{% endif %}
+          </li>
+          {% endfor %}
+        </ul>
+      </section>
+
+      <section aria-labelledby="awayTitle" class="mb-5">
+        <h2 class="h5 fw-semibold mb-3" id="awayTitle">{{ _("Jours d'absence") }}</h2>
+        {% if not current_user.has_home %}
+        <div class="card shadow-soft"><div class="card-body p-4 d-flex flex-wrap align-items-center gap-3">
+          <i class="fa-solid fa-house fs-4 text-primary" aria-hidden="true"></i>
+          <p class="mb-0 flex-grow-1">{{ _("Indiquez votre ville de domicile pour voir le nombre de jours passés en voyage, vos nuits à l'étranger et votre plus longue absence.") }}</p>
+          <a class="btn btn-primary btn-sm rounded-pill px-3" href="{{ url_for('auth.profile', _anchor='home') }}">{{ _("Définir mon domicile") }}</a>
+        </div></div>
+        {% elif not away %}
+        <p class="text-body-secondary">{{ _("Aucune absence : aucun trajet ne part encore de %(home)s.", home=current_user.home_name) }}</p>
+        {% else %}
+        <div class="mb-3">{{ tiles([
+          ('fa-calendar-days', away.days|number, ngettext("jour loin de chez moi", "jours loin de chez moi", away.days)),
+          ('fa-moon', away.nights_abroad|number, ngettext("nuit à l'étranger", "nuits à l'étranger", away.nights_abroad)),
+          ('fa-hourglass-half', away.longest.days|number, _("jours : plus longue absence")),
+        ]) }}</div>
+        <p class="small text-body-secondary mb-3">
+          {{ _("Plus longue absence : du %(start)s au %(end)s (%(places)s).", start=away.longest.start|day, end=away.longest.end|day,
+               places=away.longest.destinations|map(attribute=0)|unique|join(', ')) }}
+          {{ _("Depuis %(home)s, dans un rayon de 30 km.", home=current_user.home_name) }}
+          {% if away.open_count %}{{ ngettext("%(num)s absence n'a pas de retour renseigné : elle s'arrête au dernier trajet connu.",
+                                               "%(num)s absences n'ont pas de retour renseigné : elles s'arrêtent au dernier trajet connu.", away.open_count) }}{% endif %}
+        </p>
+        <div class="card shadow-soft"><div class="table-responsive">
+          <table class="table align-middle mb-0 trips-table">
+            <thead><tr>
+              <th scope="col">{{ _("Année") }}</th>
+              <th scope="col" class="text-end">{{ _("Jours d'absence") }}</th>
+              <th scope="col">{{ _("Part de l'année") }}</th>
+              <th scope="col" class="text-end">{{ _("Nuits à l'étranger") }}</th>
+              <th scope="col" class="text-end">{{ _("Départs") }}</th>
+            </tr></thead>
+            <tbody>
+              {% for row in away.per_year %}
+              <tr>
+                <th scope="row">{{ row.year }}</th>
+                <td class="text-end">{{ row.days|number }}</td>
+                <td><div class="d-flex align-items-center gap-2"><span class="year-bar flex-grow-1" aria-hidden="true"><span style="width: {{ 100 * row.share }}%"></span></span>
+                  <span class="small text-nowrap">{{ row.share|percent }}</span></div></td>
+                <td class="text-end">{{ row.nights_abroad|number }}</td>
+                <td class="text-end">{{ row.absences|number }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div></div>
+        {% endif %}
+      </section>
+
+      <section aria-labelledby="co2Title" class="mb-2">
+        <h2 class="h5 fw-semibold mb-3" id="co2Title">{{ _("Émissions par mode") }}</h2>
+        <div class="card shadow-soft">
+          <ul class="list-group list-group-flush">
+            {% for item in totals.by_mode|sort(attribute='co2_kg', reverse=True) %}
+            <li class="list-group-item d-flex align-items-center gap-2 bg-transparent">
+              {{ mode_badge(item.mode) }}
+              <span class="small text-body-secondary me-auto">{{ item.distance_fmt }}</span>
+              <span class="fw-semibold text-nowrap">{{ item.co2_fmt }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+          <div class="card-body pt-2">
+            <details class="co2-factors">
+              <summary>{{ _("Comment est-ce calculé ?") }}</summary>
+              <p class="mt-2 mb-1">{{ _("Estimation par voyageur et par trajet. Distance : itinéraire calculé quand il est connu, sinon distance à vol d'oiseau multipliée par un facteur de détour (route et vélo ×%(road)s, train ×%(rail)s, bateau ×%(boat)s ; avion en ligne directe). Facteurs d'émission moyens de l'ADEME (Base Carbone) :",
+                  road=detour.car|number, rail=detour.train|number, boat=detour.boat|number) }}</p>
+              <ul class="mb-0">
+                <li>{{ _("Avion : %(short)s g/km (moins de 1 000 km), %(medium)s g/km (jusqu'à 3 500 km), %(long)s g/km au-delà, traînées de condensation comprises",
+                         short=factors.plane[0], medium=factors.plane[1], long=factors.plane[2]) }}</li>
+                <li>{{ _("Train : %(value)s g/km", value=factors.train) }} · {{ _("Autocar : %(value)s g/km", value=factors.bus) }} · {{ _("Ferry : %(value)s g/km", value=factors.boat) }}</li>
+                <li>{{ _("Voiture : %(value)s g/km, une personne à bord", value=factors.car) }} · {{ _("Vélo et marche : 0") }}</li>
+              </ul>
+            </details>
           </div>
         </div>
-      </div>
-      {% endfor %}
-    </div>
-  </section>
-  {% endif %}
-
-  {% if tags %}
-  <section aria-labelledby="tagsTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="tagsTitle">{{ _("Par étiquette") }}</h2>
-    <div class="card shadow-soft">
-      <div class="table-responsive">
-        <table class="table align-middle mb-0 trips-table">
-          <thead>
-            <tr>
-              <th scope="col">{{ _("Étiquette") }}</th>
-              <th scope="col" class="text-end">{{ _("Voyages") }}</th>
-              <th scope="col" class="text-end">{{ _("Distance") }}</th>
-              <th scope="col" class="text-end">{{ _("CO₂ estimé") }}</th>
-              <th scope="col" class="text-end">{{ _("CO₂ en %(year)s", year=current_year) }}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {% for row in tags %}
-            <tr>
-              <th scope="row">
-                {% if row.tag %}<a class="tag-chip text-decoration-none" href="{{ url_for('trips.index', tags=row.tag.id) }}">{{ row.name }}</a>
-                {% else %}<span class="text-body-secondary fw-normal">{{ _("Sans étiquette") }}</span>{% endif %}
-              </th>
-              <td class="text-end">{{ row.count|number }}</td>
-              <td class="text-end text-nowrap">{{ row.distance_km|distance }}</td>
-              <td class="text-end text-nowrap">{{ row.co2_kg|co2 }}</td>
-              <td class="text-end text-nowrap">
-                {% if row.year_count %}{{ row.year_co2_kg|co2 }}
-                <div class="small text-body-secondary">{{ ngettext("%(num)s voyage", "%(num)s voyages", row.year_count) }}</div>
-                {% else %}<span class="text-body-secondary">—</span>{% endif %}
-              </td>
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </section>
-  {% endif %}
-
-  <div class="row g-4">
-    <section class="col-lg-6" aria-labelledby="co2Title">
-      <h2 class="h5 fw-semibold mb-3" id="co2Title">{{ _("Émissions par mode") }}</h2>
-      <div class="card shadow-soft">
-        <ul class="list-group list-group-flush">
-          {% for item in totals.by_mode|sort(attribute='co2_kg', reverse=True) %}
-          <li class="list-group-item d-flex align-items-center gap-2 bg-transparent">
-            {{ mode_badge(item.mode) }}
-            <span class="small text-body-secondary me-auto">{{ item.distance_fmt }}</span>
-            <span class="fw-semibold text-nowrap">{{ item.co2_fmt }}</span>
-          </li>
-          {% endfor %}
-        </ul>
-        <div class="card-body pt-2">
-          <details class="co2-factors">
-            <summary>{{ _("Comment est-ce calculé ?") }}</summary>
-            <p class="mt-2 mb-1">{{ _("Estimation par voyageur et par trajet. Distance : itinéraire calculé quand il est connu, sinon distance à vol d'oiseau multipliée par un facteur de détour (route et vélo ×%(road)s, train ×%(rail)s, bateau ×%(boat)s ; avion en ligne directe). Facteurs d'émission moyens de l'ADEME (Base Carbone) :",
-                road=detour.car|number, rail=detour.train|number, boat=detour.boat|number) }}</p>
-            <ul class="mb-0">
-              <li>{{ _("Avion : %(short)s g/km (moins de 1 000 km), %(medium)s g/km (jusqu'à 3 500 km), %(long)s g/km au-delà, traînées de condensation comprises",
-                       short=factors.plane[0], medium=factors.plane[1], long=factors.plane[2]) }}</li>
-              <li>{{ _("Train : %(value)s g/km", value=factors.train) }} · {{ _("Autocar : %(value)s g/km", value=factors.bus) }} · {{ _("Ferry : %(value)s g/km", value=factors.boat) }}</li>
-              <li>{{ _("Voiture : %(value)s g/km, une personne à bord", value=factors.car) }} · {{ _("Vélo et marche : 0") }}</li>
-            </ul>
-          </details>
-        </div>
-      </div>
-    </section>
-
-    <section class="col-lg-6" aria-labelledby="countriesTitle">
-      <h2 class="h5 fw-semibold mb-3" id="countriesTitle">{{ _("Pays visités") }}
-        <span class="text-body-secondary fw-normal small">· {{ countries|length }}</span></h2>
-      <div class="card shadow-soft">
-        <ul class="list-group list-group-flush">
-          {% for c in countries %}
-          <li class="list-group-item d-flex align-items-center gap-2 bg-transparent">
-            <span class="fs-5" aria-hidden="true">{{ c.flag }}</span>
-            <span class="me-auto">{{ c.name }}</span>
-            <span class="small text-body-secondary text-end">
-              {{ ngettext("%(num)s trajet", "%(num)s trajets", c.trips) }}<br>
-              {{ c.first|day }}{% if c.last != c.first %} – {{ c.last|day }}{% endif %}
-            </span>
-          </li>
-          {% else %}
-          <li class="list-group-item bg-transparent text-body-secondary">{{ _("Aucun pays identifié.") }}</li>
-          {% endfor %}
-        </ul>
-      </div>
-    </section>
+      </section>
   </div>
   {% endif %}
 </div>
 {% endblock %}
+{% block scripts %}{{ chart_scripts() }}{% endblock %}

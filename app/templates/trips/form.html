@@ -76,13 +76,14 @@
               <div class="row g-3">
                 {% for key in ("carrier", "service_number", "vehicle") %}
                 {% set f = form[key] %}
-                <div class="col-sm-4">
+                {# Un champ absent du mode (numéro et type pour le train) est masqué. #}
+                <div class="col-sm-4" {% if service and key not in service %}hidden{% endif %}>
                   <label class="form-label" for="{{ f.id }}"
-                         {% for mode, labels in SERVICE_FIELDS.items() %}data-label-{{ mode }}="{{ labels[key][0] }}" data-example-{{ mode }}="{{ labels[key][1] }}" {% endfor %}>
-                    {{- service[key][0] if service else f.label.text -}}</label>
+                         {% for mode, labels in SERVICE_FIELDS.items() if key in labels %}data-label-{{ mode }}="{{ labels[key][0] }}" data-example-{{ mode }}="{{ labels[key][1] }}" {% endfor %}>
+                    {{- service[key][0] if service and key in service else f.label.text -}}</label>
                   {% set extra = {'list': 'carriers-' ~ (form.transport_mode.data or TRANSPORT_MODES|first)} if key == 'carrier' else {} %}
                   {{ f(class_='form-control' ~ (' is-invalid' if f.errors else ''), maxlength=40 if key == 'service_number' else 80,
-                       placeholder=service[key][1] if service else '', autocomplete='off', **extra) }}
+                       placeholder=service[key][1] if service and key in service else '', autocomplete='off', **extra) }}
                   {% for error in f.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
                 </div>
                 {% endfor %}

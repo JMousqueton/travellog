@@ -231,7 +231,7 @@ class Trip(db.Model):
     origin_country = db.Column(db.String(2), nullable=True)
     dest_country = db.Column(db.String(2), nullable=True)
     notes = db.Column(db.Text, nullable=True)
-    # Vols et trains : compagnie ou opérateur, numéro (« AF1148 », « TGV 6201 »), appareil ou type de train.
+    # Vols : compagnie, numéro (« AF1148 ») et appareil ; trains : opérateur seulement (SERVICE_FIELDS).
     carrier = db.Column(db.String(80), nullable=True)
     service_number = db.Column(db.String(40), nullable=True)
     vehicle = db.Column(db.String(80), nullable=True)
@@ -388,6 +388,8 @@ class ShareLink(db.Model):
     last_used_at = db.Column(db.DateTime(timezone=True), nullable=True)
     # Les voyages à venir révèlent quand on est absent : masqués par défaut.
     include_upcoming = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
+    # Statistiques partagées : la liste des trajets n'est montrée que si le lien le prévoit.
+    show_trips = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
 
     user = db.relationship("User", back_populates="share_links")
 

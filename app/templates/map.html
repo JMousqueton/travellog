@@ -21,7 +21,6 @@
       <div>
         <div class="fw-semibold">{{ shared.label or _("Carte partagée") }}</div>
         {{ _("Vous consultez ces voyages en lecture seule.") }}
-        <a href="{{ url_for('share.review_latest', token=shared.token) }}">{{ _("Voir le bilan de l'année") }}</a>
       </div>
     </div>
     {% endif %}

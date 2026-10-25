@@ -121,6 +121,7 @@
       <div class="review-preview card shadow-soft p-3">
         <img src="{{ image_url }}" width="1080" height="1350" class="img-fluid rounded-3"
              alt="{{ _('Image du bilan %(year)s', year=review.year) }}">
+        {% if not shared %}{# Lien de partage : image affichée, sans téléchargement ni partage. #}
         <div class="d-flex flex-wrap gap-2 mt-3">
           <a class="btn btn-primary rounded-pill px-3" href="{{ image_url }}" download="bilan-{{ review.year }}.png">
             <i class="fa-solid fa-download me-1" aria-hidden="true"></i>{{ _("Télécharger l'image") }}</a>
@@ -128,7 +129,6 @@
                   data-share-title="{{ _('Bilan %(year)s', year=review.year) }}" hidden>
             <i class="fa-solid fa-share-nodes me-1" aria-hidden="true"></i>{{ _("Partager") }}</button>
         </div>
-        {% if not shared %}
         <p class="small text-body-secondary mt-3 mb-0">
           {{ _("Les personnes qui ont un de vos liens de partage peuvent aussi voir ce bilan.") }}
           <a href="{{ url_for('share.links') }}">{{ _("Gérer les liens") }}</a></p>

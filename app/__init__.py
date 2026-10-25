@@ -115,7 +115,8 @@ def _register_error_handlers(app):
         title, text = messages.get(code, messages[500])
         if request.path.startswith("/api/"):
             return jsonify(error=str(title)), code
-        return render_template("errors/error.html", code=code, title=title, text=text), code
+        template = "errors/404.html" if code == 404 else "errors/error.html"
+        return render_template(template, code=code, title=title, text=text), code
 
     for code in messages:
         app.register_error_handler(code, handler)

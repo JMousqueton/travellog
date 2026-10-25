@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% from "trips/_stats_parts.html" import overall_sections, badges_section, chart_scripts with context %}
+{% block title %}{{ _("Statistiques partagées") }}{% endblock %}
+{% block head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block content %}
+<div class="stats-page">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+    <div>
+      <h1 class="h3 fw-bold mb-0">{{ shared.label or _("Statistiques partagées") }}</h1>
+      <p class="small text-body-secondary mb-0">{{ _("Vous consultez ces voyages en lecture seule.") }}</p>
+    </div>
+  </div>
+
+  {% if not years %}
+  <div class="empty-state card shadow-soft py-5">
+    <div class="empty-illustration" aria-hidden="true"><i class="fa-solid fa-chart-column"></i></div>
+    <h2 class="h5">{{ _("Aucun voyage à afficher") }}</h2>
+  </div>
+  {% else %}
+  {{ overall_sections(totals, years, continents, current_year, linked=False) }}
+
+  {{ badges_section(badges, 'badgesTitle', _("Badges · tous vos voyages")) }}
+
+  {% endif %}
+</div>
+{% endblock %}
+{% block scripts %}{{ chart_scripts() }}{% endblock %}

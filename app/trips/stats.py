@@ -1,3 +1,4 @@
+import re
 import unicodedata
 from collections import Counter, defaultdict
 
@@ -118,6 +119,7 @@ def yearly_stats(trips):
             "countries": codes,
             "new_countries": new,
             "modes": {m: sum(1 for t in items if t.transport_mode == m) for m in TRANSPORT_MODES},
+            "mode_km": {m: sum(t.total_distance_km for t in items if t.transport_mode == m) for m in TRANSPORT_MODES},
         })
     return rows[::-1]
 
@@ -204,7 +206,93 @@ def service_stats(trips):
     return rows
 
 
+# Constructeurs reconnus en tête du nom d'appareil (« Airbus A321 », « Boeing 777-300 ER »…).
+MANUFACTURERS = ("Airbus", "Boeing", "Embraer", "ATR", "Bombardier", "De Havilland", "Fokker",
+                 "McDonnell Douglas", "Hawker Beechcraft", "Beechcraft", "Saab", "Dornier", "Sukhoi", "Comac",
+                 "Tupolev", "Ilyushin", "Antonov", "Cessna", "Pilatus")
+IATA_SUFFIX = re.compile(r"\(([A-Z0-9]{3})\)$")  # « Charles de Gaulle International Airport (CDG) »
+
+
+def legs(trip):
+    """Sens effectués d'un trajet : l'aller, plus le retour d'un aller-retour (compagnie, appareil et numéro
+    répartis d'après « AF1148 / AF1549 »)."""
+    count = 2 if trip.is_round_trip else 1
+
+    def split(value):
+        return _per_leg(trip, value) or [None] * count
+
+    ends = [(trip.depart_date, trip.origin_name, trip.dest_name)]
+    if trip.is_round_trip:
+        ends.append((trip.return_date, trip.dest_name, trip.origin_name))
+    return [{"date": day, "origin": origin, "dest": dest, "carrier": carrier, "vehicle": vehicle, "number": number,
+             "km": trip.distance_km}
+            for (day, origin, dest), carrier, vehicle, number
+            in zip(ends, split(trip.carrier), split(trip.vehicle), split(trip.service_number))]
+
+
+def manufacturer(vehicle):
+    for name in MANUFACTURERS:
+        if vehicle.casefold().startswith(name.casefold()):
+            return name
+    return vehicle.split()[0]
+
+
+def short_place(name):
+    """Code IATA d'un aéroport importé, sinon le nom jusqu'à la première virgule."""
+    match = IATA_SUFFIX.search(name)
+    return match.group(1) if match else name.split(",")[0]
+
+
+def _ranking(rows, key, year):
+    """Regroupe les sens par `key` : nombre, distance, part, première et dernière date, nombre cette année."""
+    groups = defaultdict(list)
+    for leg in rows:
+        if leg[key]:
+            groups[leg[key]].append(leg)
+    total = sum(len(items) for items in groups.values())
+    ranking = [{"name": name, "count": len(items), "km": sum(leg["km"] for leg in items),
+                "share": len(items) / total, "first": min(leg["date"] for leg in items),
+                "last": max(leg["date"] for leg in items),
+                "year_count": sum(1 for leg in items if leg["date"].year == year)}
+               for name, items in groups.items()]
+    return sorted(ranking, key=lambda r: (-r["count"], -r["km"], _sort_key(r["name"])))
+
+
+def transport_details(trips, mode):
+    """Page de détail d'un mode (avion ou train) : compagnies, appareils, constructeurs, lignes, lieux."""
+    year = utils.today().year
+    rows = [leg for trip in trips if trip.transport_mode == mode for leg in legs(trip)]
+    for leg in rows:
+        leg["manufacturer"] = manufacturer(leg["vehicle"]) if leg["vehicle"] and mode == "plane" else None
+        leg["route"] = " – ".join(sorted((short_place(leg["origin"]), short_place(leg["dest"]))))
+    places = Counter(name for leg in rows for name in (leg["origin"], leg["dest"]))
+    return {
+        "mode": mode,
+        "legs": len(rows),
+        "year_legs": sum(1 for leg in rows if leg["date"].year == year),
+        "km": sum(leg["km"] for leg in rows),
+        "missing_carrier": sum(1 for leg in rows if not leg["carrier"]),
+        "missing_vehicle": sum(1 for leg in rows if not leg["vehicle"]),
+        "carriers": _ranking(rows, "carrier", year),
+        "vehicles": _ranking(rows, "vehicle", year),
+        "manufacturers": _ranking(rows, "manufacturer", year),
+        "routes": _ranking(rows, "route", year)[:15],
+        "places": places.most_common(15),
+    }
+
+
 EARTH_CIRCUMFERENCE_KM = 40_075
+
+
+REVIEW_GRACE_MONTHS = 2  # lien de partage : en janvier et février, le bilan de l'année écoulée reste visible
+
+
+def open_review_years(trips):
+    """Années dont le bilan est consultable par un lien de partage : l'année en cours, et la précédente en
+    janvier et février."""
+    today = utils.today()
+    allowed = {today.year} | ({today.year - 1} if today.month <= REVIEW_GRACE_MONTHS else set())
+    return [year for year in review_years(trips) if year in allowed]
 
 
 def review_years(trips):

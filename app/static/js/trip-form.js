@@ -49,9 +49,13 @@ function syncService() {
   serviceWrapper.setAttribute("aria-hidden", String(!open));
   if (!open) return;
   form.elements.carrier.setAttribute("list", `carriers-${mode}`);
+  const suffix = `${mode[0].toUpperCase()}${mode.slice(1)}`;
   serviceWrapper.querySelectorAll("label").forEach((label) => {
-    label.textContent = label.dataset[`label${mode[0].toUpperCase()}${mode.slice(1)}`];
-    document.getElementById(label.htmlFor).placeholder = label.dataset[`example${mode[0].toUpperCase()}${mode.slice(1)}`];
+    const used = label.dataset[`label${suffix}`] !== undefined;  // numéro et type : avion seulement
+    label.parentElement.hidden = !used;
+    if (!used) return;
+    label.textContent = label.dataset[`label${suffix}`];
+    document.getElementById(label.htmlFor).placeholder = label.dataset[`example${suffix}`];
   });
 }
 

@@ -13,7 +13,7 @@ from ..photos import PhotoError, merge_notes, move_photos, photo_path, save_uplo
 from ..routing import update_route
 from ..tags import parse_tags, prune_unused, resolve, tags_text
 from ..carriers import carrier_suggestions
-from ..transport import CO2_KG_PER_KM, DETOUR_FACTORS, PLANE_CO2_BANDS, SERVICE_FIELDS
+from ..transport import CO2_KG_PER_KM, DETOUR_FACTORS, PLANE_CO2_BANDS, SERVICE_FIELDS, TRANSPORT_MODES
 from .. import utils
 from ..utils import is_safe_redirect
 from . import bp
@@ -22,8 +22,8 @@ from .queries import list_trips
 from .absences import absence_summary
 from .badges import compute_badges, compute_year_badges, continent_summary
 from .places import visited_places
-from .stats import (compute_stats, country_summary, happened, review_years, service_stats, tag_stats, upcoming_trips,
-                    year_review, yearly_stats)
+from .stats import (compute_stats, country_summary, happened, open_review_years, review_years, service_stats, tag_stats,
+                    transport_details, upcoming_trips, year_review, yearly_stats)
 
 bp.add_app_template_global(carrier_suggestions)  # suggestions du champ compagnie / opérateur
 
@@ -136,7 +136,7 @@ def _save(form, trip):
     trip.fill_missing_countries()
     trip.notes = (form.notes.data or "").strip() or None
     for key in ("carrier", "service_number", "vehicle"):  # seulement pour l'avion et le train
-        value = (getattr(form, key).data or "").strip() if trip.transport_mode in SERVICE_FIELDS else ""
+        value = (getattr(form, key).data or "").strip() if key in SERVICE_FIELDS.get(trip.transport_mode, {}) else ""
         setattr(trip, key, value or None)
     if (trip.origin_lat, trip.origin_lon, trip.dest_lat, trip.dest_lon, trip.transport_mode) != before:
         update_route(trip)
@@ -389,20 +389,62 @@ def _co2_factors_g():
     return factors
 
 
+def _year_details(everything, year, away):
+    """Tout ce que montre une année : sa page, et l'année en cours sur la page d'ensemble."""
+    items = [t for t in happened(everything) if t.depart_date.year == year]
+    if not items:
+        return None
+    return {
+        "year": year,
+        "totals": compute_stats(items),
+        "review": year_review(everything, year),
+        "badges": compute_year_badges(everything, year),
+        "services": service_stats(items),
+        "tags": tag_stats(items),
+        "countries": country_summary(items),
+        "places": visited_places(items, current_user),
+        "away": away["by_year"].get(year) if away else None,
+        # Graphique des départs par mois, empilés par mode.
+        "month_labels": [name for _number, name in sorted(get_month_names("abbreviated", locale=current_locale()).items())],
+        "month_modes": {mode: [sum(1 for t in items if t.transport_mode == mode and t.depart_date.month == m)
+                               for m in range(1, 13)]
+                        for mode in TRANSPORT_MODES if any(t.transport_mode == mode for t in items)},
+    }
+
+
 @bp.route("/stats")
 @login_required
 def stats_view():
+    """Vue d'ensemble de tous les voyages ; chaque année, l'année en cours comprise, a sa propre page."""
     everything = list_trips(current_user)
     # Les trajets à venir n'ont pas encore eu lieu : ils ne comptent ni dans les pays visités ni dans le CO₂.
     trips = happened(everything)
-    return render_template("trips/stats.html", totals=compute_stats(trips), years=yearly_stats(trips),
+    year = utils.today().year
+    away = absence_summary(current_user, everything)
+    years = yearly_stats(trips)
+    return render_template("trips/stats.html", totals=compute_stats(trips), years=years,
+                           current_year=year,
                            countries=country_summary(trips), factors=_co2_factors_g(), detour=DETOUR_FACTORS,
-                           upcoming=upcoming_trips(everything), tags=tag_stats(trips), current_year=utils.today().year,
-                           away=absence_summary(current_user, everything),
-                           badges=compute_badges(everything),
-                           year_badges=compute_year_badges(everything, utils.today().year), continents=continent_summary(everything, current_locale()),
+                           upcoming=upcoming_trips(everything), away=away, badges=compute_badges(everything),
+                           continents=continent_summary(everything, current_locale()),
                            places=visited_places(everything, current_user), services=service_stats(trips),
                            missing_countries=sum(1 for t in trips if not t.origin_country or not t.dest_country))
+
+
+@bp.route("/stats/<int:year>")
+@login_required
+def year_stats(year):
+    everything = list_trips(current_user)
+    years = review_years(everything)
+    current = utils.today().year
+    if year not in years and year != current:
+        abort(404)
+    details = _year_details(everything, year, absence_summary(current_user, everything))
+    nav = sorted(set(years) | {current}, reverse=True)
+    position = nav.index(year)
+    return render_template("trips/year_stats.html", details=details, year=year, years=nav, current_year=current,
+                           newer=nav[position - 1] if position > 0 else None,
+                           older=nav[position + 1] if position + 1 < len(nav) else None)
 
 
 # --- Agenda (.ics) -----------------------------------------------------------------------
@@ -454,10 +496,11 @@ def add_absences(review, user, trips):
 
 def render_review(user, year, shared=None):
     trips = list_trips(user)
-    years = review_years(trips)
+    # Lien de partage : année en cours seulement (et la précédente en janvier-février) ; sinon toutes les années.
+    years = open_review_years(trips) if shared else review_years(trips)
     review = year_review(trips, year) if year in years else None
-    if review is None and years:
-        abort(404)
+    if review is None and (years or year is not None):
+        abort(404)  # année sans bilan consultable ; /review sans année montre la page vide
     if review is not None:
         add_absences(review, user, trips)
     if shared:
@@ -472,9 +515,9 @@ def render_review(user, year, shared=None):
                            month_letters=get_month_names("narrow", locale=current_locale()))
 
 
-def review_png_response(user, year):
+def review_png_response(user, year, shared=False):
     trips = list_trips(user)
-    review = year_review(trips, year)
+    review = year_review(trips, year) if not shared or year in open_review_years(trips) else None
     if review is None:
         abort(404)
     add_absences(review, user, trips)
@@ -483,6 +526,18 @@ def review_png_response(user, year):
     response.cache_control.private = True
     response.cache_control.max_age = 300
     return response
+
+
+@bp.route("/stats/<any(plane, train):mode>")
+@login_required
+def transport_stats(mode):
+    """Détail d'un mode : compagnies ou opérateurs, appareils, lignes, aéroports ou gares (?year=AAAA : une année)."""
+    trips = happened(list_trips(current_user))
+    year = request.args.get("year", type=int)
+    if year:
+        trips = [t for t in trips if t.depart_date.year == year]
+    return render_template("trips/transport_stats.html", details=transport_details(trips, mode), year=year,
+                           current_year=utils.today().year)
 
 
 @bp.route("/review")

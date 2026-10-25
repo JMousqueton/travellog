@@ -1,0 +1,131 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import mode_badge with context %}
+{% set plane = details.mode == 'plane' %}
+{% set labels = SERVICE_FIELDS[details.mode] %}
+{% set page_title = _("Vols : compagnies et appareils") if plane else _("Trains : opérateurs") %}
+{% if year %}{% set page_title = page_title ~ " · " ~ year %}{% endif %}
+{% block title %}{{ page_title }}{% endblock %}
+
+{% macro ranking_table(rows, label, dates=True) %}
+<div class="card shadow-soft">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0 trips-table">
+      <thead><tr>
+        <th scope="col">{{ label }}</th>
+        <th scope="col" class="text-end">{{ _("Vols") if plane else _("Trajets") }}</th>
+        <th scope="col" class="text-end">{{ _("Distance") }}</th>
+        <th scope="col" class="d-none d-md-table-cell" style="width: 22%">{{ _("Part") }}</th>
+        {% if dates %}<th scope="col" class="text-end d-none d-lg-table-cell">{{ _("Premier") }}</th>
+        <th scope="col" class="text-end">{{ _("Dernier") }}</th>{% endif %}
+        <th scope="col" class="text-end">{{ _("En %(year)s", year=current_year) }}</th>
+      </tr></thead>
+      <tbody>
+        {% for row in rows %}
+        <tr>
+          <th scope="row" class="fw-medium">{{ row.name }}</th>
+          <td class="text-end">{{ row.count|number }}</td>
+          <td class="text-end text-nowrap">{{ row.km|distance }}</td>
+          <td class="d-none d-md-table-cell">
+            <div class="progress" role="progressbar" aria-label="{{ row.name }}" aria-valuenow="{{ (row.share * 100)|round|int }}"
+                 aria-valuemin="0" aria-valuemax="100" style="height: .5rem">
+              <div class="progress-bar" style="width: {{ row.share * 100 }}%"></div></div>
+            <span class="small text-body-secondary">{{ row.share|percent }}</span>
+          </td>
+          {% if dates %}<td class="text-end text-nowrap d-none d-lg-table-cell">{{ row.first|day }}</td>
+          <td class="text-end text-nowrap">{{ row.last|day }}</td>{% endif %}
+          <td class="text-end">{% if row.year_count %}{{ row.year_count|number }}{% else %}<span class="text-body-secondary">—</span>{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endmacro %}
+
+{% block content %}
+<div class="stats-page">
+  <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+    <div>
+      <a class="small text-decoration-none" href="{{ url_for('trips.year_stats', year=year) if year else url_for('trips.stats_view') }}">
+        <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>{{ _("Statistiques %(year)s", year=year) if year else _("Statistiques") }}</a>
+      <h1 class="h3 fw-bold mb-0 mt-1">{{ page_title }}</h1>
+    </div>
+    <div class="d-flex gap-2">
+      {% for mode in SERVICE_FIELDS %}
+      <a class="btn btn-sm rounded-pill px-3 {{ 'btn-primary' if mode == details.mode else 'btn-outline-secondary' }}"
+         href="{{ url_for('trips.transport_stats', mode=mode, year=year) }}" {% if mode == details.mode %}aria-current="page"{% endif %}>
+        <i class="fa-solid {{ TRANSPORT_MODES[mode].icon }} me-1" aria-hidden="true"></i>{{ TRANSPORT_MODES[mode].label }}</a>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if not details.legs %}
+  <div class="empty-state card shadow-soft p-5 text-center">
+    <p class="text-body-secondary mb-0">{{ _("Aucun vol pour l'instant.") if plane else _("Aucun trajet en train pour l'instant.") }}</p>
+  </div>
+  {% else %}
+  <section aria-labelledby="totalsTitle" class="mb-5">
+    <h2 class="visually-hidden" id="totalsTitle">{{ _("Totaux") }}</h2>
+    <div class="stats-grid">
+      {% for icon, value, label in [
+        (TRANSPORT_MODES[details.mode].icon, details.legs|number, _("Vols") if plane else _("Trajets")),
+        ('fa-route', details.km|distance, _("Distance estimée")),
+        ('fa-building', details.carriers|length|number, labels.carrier[0]),
+      ] + ([('fa-plane-up', details.vehicles|length|number, labels.vehicle[0])] if plane else []) + [
+        ('fa-calendar', details.year_legs|number, _("En %(year)s", year=current_year)),
+      ] %}
+      <div class="stat-card">
+        <span class="stat-icon" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></span>
+        <div><div class="stat-value">{{ value }}</div><div class="stat-label">{{ label }}</div></div>
+      </div>
+      {% endfor %}
+    </div>
+    {% if details.missing_carrier or (plane and details.missing_vehicle) %}
+    <p class="small text-body-secondary mt-3 mb-0">
+      <i class="fa-solid fa-circle-info me-1" aria-hidden="true"></i>
+      {% if details.missing_carrier %}{{ ngettext("%(num)s sans compagnie ou opérateur.", "%(num)s sans compagnie ou opérateur.", details.missing_carrier) }}{% endif %}
+      {% if plane and details.missing_vehicle %}{{ ngettext("%(num)s sans appareil.", "%(num)s sans appareil.", details.missing_vehicle) }}{% endif %}
+      {{ _("À renseigner dans la fiche du trajet.") }}</p>
+    {% endif %}
+  </section>
+
+  <section aria-labelledby="carriersTitle" class="mb-5">
+    <h2 class="h5 fw-semibold mb-3" id="carriersTitle">{{ labels.carrier[0] }}</h2>
+    {% if details.carriers %}{{ ranking_table(details.carriers, labels.carrier[0]) }}
+    {% else %}<p class="text-body-secondary">{{ _("À renseigner dans la fiche du trajet.") }}</p>{% endif %}
+  </section>
+
+  {% if plane %}
+  <section aria-labelledby="vehiclesTitle" class="mb-5">
+    <h2 class="h5 fw-semibold mb-3" id="vehiclesTitle">{{ labels.vehicle[0] }}</h2>
+    {% if details.vehicles %}{{ ranking_table(details.vehicles, labels.vehicle[0]) }}
+    {% else %}<p class="text-body-secondary">{{ _("À renseigner dans la fiche du trajet.") }}</p>{% endif %}
+  </section>
+  {% endif %}
+
+  {% if details.manufacturers %}
+  <section aria-labelledby="makersTitle" class="mb-5">
+    <h2 class="h5 fw-semibold mb-3" id="makersTitle">{{ _("Constructeurs") }}</h2>
+    {{ ranking_table(details.manufacturers, _("Constructeur"), dates=False) }}
+  </section>
+  {% endif %}
+
+  <div class="row g-4 mb-5">
+    <section class="col-lg-7" aria-labelledby="routesTitle">
+      <h2 class="h5 fw-semibold mb-3" id="routesTitle">{{ _("Lignes les plus fréquentes") }}</h2>
+      {{ ranking_table(details.routes, _("Ligne"), dates=False) }}
+    </section>
+    <section class="col-lg-5" aria-labelledby="placesTitle">
+      <h2 class="h5 fw-semibold mb-3" id="placesTitle">{{ _("Aéroports") if plane else _("Gares") }}</h2>
+      <div class="card shadow-soft"><ol class="list-group list-group-flush mb-0">
+        {% for name, count in details.places %}
+        <li class="list-group-item d-flex justify-content-between gap-2">
+          <span class="text-truncate" title="{{ name }}">{{ name }}</span>
+          <span class="text-body-secondary text-nowrap">{{ ngettext("%(num)s passage", "%(num)s passages", count) }}</span></li>
+        {% endfor %}
+      </ol></div>
+    </section>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}
