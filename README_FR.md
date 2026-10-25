@@ -70,8 +70,8 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
 ## Prérequis
 
 - Python 3.11 ou plus récent
-- Un accès réseau aux CDN (Bootstrap, Font Awesome, Leaflet, Google Fonts), aux tuiles de carte
-  et à Nominatim
+- Un accès réseau aux CDN (Bootstrap, Font Awesome, Google Fonts), aux tuiles de carte
+  et à Nominatim. Leaflet et MarkerCluster sont fournis dans `app/static/vendor/`.
 
 ## Installation
 
@@ -109,7 +109,8 @@ refuse de démarrer si `SECRET_KEY` est absente ou vaut une valeur d'exemple.
   et `PROXY_FIX_COUNT=1` (le reste vient de `.env`). `sudo systemctl restart travellog` après une mise à jour
   du code ; journal : `journalctl -u travellog`.
 - nginx : `deploy/nginx/travellog.julien.io.conf` (HTTPS, fichiers statiques servis directement, 64 Mo par
-  envoi). Tant que le certificat n'existe pas, une configuration transitoire ne fait que la validation
+  envoi). Les adresses des fichiers statiques portent l'empreinte de leur contenu (`?v=…`, voir
+  `app/assets.py`) : nginx les met en cache un an, et un fichier modifié change d'adresse. Tant que le certificat n'existe pas, une configuration transitoire ne fait que la validation
   Let's Encrypt et la redirection vers HTTPS.
 - Certificat : une fois le DNS en place (A `213.32.17.149`, AAAA `2001:41d0:305:2100::1:1c4b`), lancer
   `deploy/enable-https.sh`. Le renouvellement est assuré par `certbot.timer`.
@@ -168,6 +169,12 @@ sauvegardes, avec la base de données.
 - En-têtes : `Content-Security-Policy` avec nonce pour le script en ligne, `X-Frame-Options: DENY`,
   `X-Content-Type-Options`, `Referrer-Policy: strict-origin-when-cross-origin` (le jeton des liens de partage
   ne part pas vers les tuiles ou les CDN), `Permissions-Policy`, et HSTS en HTTPS (`HSTS_MAX_AGE`).
+- `tests/test_csp.py` charge les pages principales et vérifie que chaque script, feuille de style et image
+  est autorisé par la CSP et que chaque script en ligne porte le nonce : ajoutez l'origine d'une nouvelle
+  bibliothèque ou d'un nouveau service dans `app/security.py`, sinon le test échoue.
+- Mesure d'audience : Matomo auto-hébergé (`stats.mousqueton.io`, site 13), chargé dans `base.html`. Les
+  jetons des liens de partage, d'inscription et de réinitialisation sont masqués avant l'envoi. La
+  politique de confidentialité (`/privacy`) le décrit et propose un bouton d'opposition.
 - Les fichiers CDN sont chargés avec un hash `integrity` (SRI). Après une mise à jour de version, recalculez
   le hash : `curl -sL URL | openssl dgst -sha384 -binary | openssl base64 -A`.
 - L'identifiant de session contient une empreinte du mot de passe : changer ou réinitialiser le mot de passe
@@ -234,6 +241,7 @@ app/
   i18n.py            sélection de la langue, formatage, chaînes JS
   geo.py             haversine, client Nominatim et cache
   security.py        en-têtes de sécurité (CSP avec nonce, HSTS…)
+  assets.py          fichiers statiques versionnés (?v=empreinte) et import map des modules JS
   countries.py       pays : recherche hors ligne, noms localisés, drapeaux, surfaces
   photos.py          photos : validation et ré-encodage (Pillow), miniatures, fichiers
   data/              contours des pays (Natural Earth), police Inter (SIL OFL) pour l'image du bilan
@@ -287,7 +295,7 @@ make test               # ou : pytest
 
 La suite couvre les modèles et contraintes, la validation aller-retour, l'isolation entre utilisateurs,
 l'API (filtres, statistiques, géocodage simulé, cache, limite de débit), l'authentification, la protection
-CSRF et l'i18n. Pour l'i18n, elle vérifie la détection de la langue, le changement de langue, le
+CSRF, la conformité de chaque page à la CSP et l'i18n. Pour l'i18n, elle vérifie la détection de la langue, le changement de langue, le
 formatage des dates et distances, l'absence de clé manquante, non traduite ou fuzzy dans chaque `.po`
 (comparaison avec une extraction à jour du code), la cohérence des variables `%(x)s` et l'absence
 de texte en dur dans le JavaScript. Les tests ne font aucun appel réseau.

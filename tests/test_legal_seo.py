@@ -70,7 +70,7 @@ def test_landing_meta_tags(client, legal):
     for code in ("fr", "en", "es", "de", "it"):
         assert f'<link rel="alternate" hreflang="{code}" href="https://travellog.example/?lang={code}">' in html
     assert '<link rel="alternate" hreflang="x-default" href="https://travellog.example/">' in html
-    assert '<meta property="og:image" content="https://travellog.example/static/img/og-image.png">' in html
+    assert re.search(r'<meta property="og:image" content="https://travellog\.example/static/img/og-image\.png\?v=\w+">', html)
     assert '<meta name="twitter:card" content="summary_large_image">' in html
     data = json.loads(re.search(r'<script type="application/ld\+json"[^>]*>(.*?)</script>', html, re.S).group(1))
     assert data["@type"] == "WebApplication" and data["isAccessibleForFree"] is True

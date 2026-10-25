@@ -7,7 +7,7 @@ from flask_babel import lazy_gettext as _l
 
 from config import INSECURE_SECRET_KEYS, config_by_name
 
-from . import i18n, security, seo
+from . import assets, i18n, security, seo
 from .extensions import babel, csrf, db, limiter, login_manager, migrate
 from .mail import mail_enabled
 
@@ -37,6 +37,7 @@ def create_app(config_name=None):
     csrf.init_app(app)
     limiter.init_app(app)
     security.init_app(app)
+    assets.init_app(app)
     seo.init_app(app)
     babel.init_app(app, locale_selector=i18n.select_locale)
     login_manager.init_app(app)

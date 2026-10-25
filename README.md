@@ -68,7 +68,8 @@ available in French, English, Spanish, German and Italian.
 ## Requirements
 
 - Python 3.11 or later
-- Network access to the CDNs (Bootstrap, Font Awesome, Leaflet, Google Fonts), the map tiles and Nominatim
+- Network access to the CDNs (Bootstrap, Font Awesome, Google Fonts), the map tiles and Nominatim.
+  Leaflet and MarkerCluster are bundled in `app/static/vendor/`.
 
 ## Installation
 
@@ -106,6 +107,8 @@ if `SECRET_KEY` is missing or set to an example value.
   `PROXY_FIX_COUNT=1` (everything else comes from `.env`). `sudo systemctl restart travellog` after a code
   update; logs: `journalctl -u travellog`.
 - nginx: `deploy/nginx/travellog.julien.io.conf` (HTTPS, static files served directly, 64 MB per upload).
+  Static file URLs carry a fingerprint of their content (`?v=…`, see `app/assets.py`): nginx caches them
+  for a year, and a modified file gets a new URL.
   Until the certificate exists, a temporary configuration only handles Let's Encrypt validation and the
   redirect to HTTPS.
 - Certificate: once DNS is in place (A `213.32.17.149`, AAAA `2001:41d0:305:2100::1:1c4b`), run
@@ -165,6 +168,12 @@ the database.
 - Headers: `Content-Security-Policy` with a nonce for the inline script, `X-Frame-Options: DENY`,
   `X-Content-Type-Options`, `Referrer-Policy: strict-origin-when-cross-origin` (share link tokens are not
   sent to tile servers or CDNs), `Permissions-Policy`, and HSTS over HTTPS (`HSTS_MAX_AGE`).
+- `tests/test_csp.py` loads the main pages and checks that every script, stylesheet and image is allowed by
+  the CSP and that every inline script carries the nonce: add the origin of a new library or service to
+  `app/security.py`, or the test fails.
+- Audience measurement: self-hosted Matomo (`stats.mousqueton.io`, site 13), loaded in `base.html`. Tokens in
+  share, sign-up and password reset links are masked before sending. The privacy policy (`/privacy`)
+  describes it and offers an opt-out button.
 - CDN files are loaded with an `integrity` hash (SRI). After a version upgrade, recompute the hash:
   `curl -sL URL | openssl dgst -sha384 -binary | openssl base64 -A`.
 - The session identifier contains a fingerprint of the password: changing or resetting the password
@@ -230,6 +239,7 @@ app/
   i18n.py            language selection, formatting, JS strings
   geo.py             haversine, Nominatim client and cache
   security.py        security headers (CSP with nonce, HSTS…)
+  assets.py          versioned static files (?v=fingerprint) and import map for JS modules
   countries.py       countries: offline lookup, localised names, flags, areas
   photos.py          photos: validation and re-encoding (Pillow), thumbnails, files
   data/              country borders (Natural Earth), Inter font (SIL OFL) for the review image
@@ -282,7 +292,7 @@ make test               # or: pytest
 ```
 
 The suite covers the models and constraints, round-trip validation, isolation between users, the API
-(filters, statistics, mocked geocoding, cache, rate limit), authentication, CSRF protection and i18n. For
+(filters, statistics, mocked geocoding, cache, rate limit), authentication, CSRF protection, CSP compliance of every page and i18n. For
 i18n, it checks language detection, language switching, date and distance formatting, that no key is
 missing, untranslated or fuzzy in any `.po` file (compared against a fresh extraction from the code), that
 `%(x)s` variables are consistent, and that the JavaScript contains no hard-coded text. The tests make no
