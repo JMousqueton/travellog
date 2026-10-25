@@ -94,7 +94,7 @@ def next_trip(trips):
     if not upcoming:
         return None
     trip = upcoming[0]
-    return {"id": trip.id, "route": f"{trip.origin_name} → {trip.dest_name}", "mode": trip.transport_mode,
+    return {"id": trip.id, "destination": trip.dest_name, "mode": trip.transport_mode,
             "countdown": format_countdown(trip.depart_date, trip.end_date)}
 
 

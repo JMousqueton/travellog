@@ -378,7 +378,7 @@ function renderNextTrip(next) {
   const card = $("nextTrip");
   card.hidden = !next;
   if (!next) return;
-  card.querySelector("[data-next-route]").textContent = next.route;
+  card.querySelector("[data-next-route]").textContent = next.destination;
   card.querySelector("[data-next-countdown]").textContent = next.countdown;
   card.dataset.tripId = next.id;
   card.href = "#";

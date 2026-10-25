@@ -57,6 +57,7 @@ def test_next_trip_in_stats(auth_client, user):
     soonest = make_trip(user, depart_date=date(2025, 6, 20), dest_name="Nantes, France")
     stats = auth_client.get("/api/stats").get_json()
     assert stats["next_trip"]["id"] == soonest.id and stats["next_trip"]["countdown"] == "Dans 10 jours"
+    assert stats["next_trip"]["destination"] == soonest.dest_name and "route" not in stats["next_trip"]
     assert auth_client.get("/api/stats?when=past").get_json()["next_trip"] is None
 
 
