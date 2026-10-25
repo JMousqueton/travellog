@@ -48,6 +48,7 @@ function syncService() {
   serviceWrapper.toggleAttribute("inert", !open);
   serviceWrapper.setAttribute("aria-hidden", String(!open));
   if (!open) return;
+  form.elements.carrier.setAttribute("list", `carriers-${mode}`);
   serviceWrapper.querySelectorAll("label").forEach((label) => {
     label.textContent = label.dataset[`label${mode[0].toUpperCase()}${mode.slice(1)}`];
     document.getElementById(label.htmlFor).placeholder = label.dataset[`example${mode[0].toUpperCase()}${mode.slice(1)}`];

@@ -52,3 +52,22 @@ def test_stats_page_shows_services(auth_client, user):
     make_trip(user, transport_mode="plane", carrier="Air France")
     html = auth_client.get("/stats").text
     assert "Avion et train" in html and "Air France" in html and "Aéroports" in html
+
+
+def test_carrier_suggestions_put_users_own_first(app, user):
+    from app.carriers import carrier_suggestions
+
+    make_trip(user, transport_mode="plane", carrier="Air Serbia / Air France", is_round_trip=True,
+              return_date=date(2025, 5, 3))
+    make_trip(user, transport_mode="plane", carrier="Air Serbia")
+    make_trip(user, transport_mode="train", carrier="Eurostar")
+    planes = carrier_suggestions(user, "plane")
+    assert planes[:2] == ["Air Serbia", "Air France"] and planes.count("Air France") == 1
+    assert "KLM" in planes and "Eurostar" not in planes
+    assert carrier_suggestions(user, "train")[0] == "Eurostar" and "SNCF" in carrier_suggestions(user, "train")
+
+
+def test_form_offers_carrier_lists(auth_client):
+    html = auth_client.get("/trips/new").text
+    assert 'list="carriers-plane"' in html
+    assert '<datalist id="carriers-train">' in html and '<option value="Trenitalia">' in html

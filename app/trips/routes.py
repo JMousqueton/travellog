@@ -12,6 +12,7 @@ from ..models import Journey, Photo, Trip, User
 from ..photos import PhotoError, merge_notes, move_photos, photo_path, save_upload
 from ..routing import update_route
 from ..tags import parse_tags, prune_unused, resolve, tags_text
+from ..carriers import carrier_suggestions
 from ..transport import CO2_KG_PER_KM, DETOUR_FACTORS, PLANE_CO2_BANDS, SERVICE_FIELDS
 from .. import utils
 from ..utils import is_safe_redirect
@@ -23,6 +24,8 @@ from .badges import compute_badges, compute_year_badges, continent_summary
 from .places import visited_places
 from .stats import (compute_stats, country_summary, happened, review_years, service_stats, tag_stats, upcoming_trips,
                     year_review, yearly_stats)
+
+bp.add_app_template_global(carrier_suggestions)  # suggestions du champ compagnie / opérateur
 
 # Clés de tri d'une ligne de la liste : un trajet isolé ou un voyage (trié selon son premier trajet).
 SORTS = {

@@ -71,7 +71,9 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   Un vol suivi de son vol retour (à 50 km près : CDG à l'aller, ORY au retour) devient un trajet
   aller-retour ; les circuits restent en vols simples, et un retour annulé ou absent ne fausse pas les suivants.
 - Avion et train : compagnie ou opérateur, numéro de vol ou de train et appareil ou type de train, saisis
-  dans le formulaire (libellés selon le mode) ou remplis par l'import des vols. Les statistiques en tirent,
+  dans le formulaire (libellés selon le mode ; la compagnie se complète automatiquement, avec d'abord celles
+  déjà saisies puis les principales compagnies aériennes ou ferroviaires de `app/carriers.py`) ou remplis par
+  l'import des vols. Les statistiques en tirent,
   pour chaque mode, le nombre de vols ou de trajets et les compagnies, appareils et aéroports ou gares les
   plus fréquents (un aller-retour « AF1148 / AF1549 » compte pour deux).
 - Voyages : origine, destination, date, mode de transport (avion, train, voiture, bus, bateau, vélo, à pied),
