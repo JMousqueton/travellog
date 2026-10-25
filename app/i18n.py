@@ -8,7 +8,7 @@ from flask_babel import gettext as _
 from flask_babel import ngettext
 from flask_login import current_user
 
-from .transport import TRANSPORT_MODES
+from .transport import SERVICE_FIELDS, TRANSPORT_MODES
 
 DEFAULT_LOCALE = "fr"
 LANGUAGES = {
@@ -142,6 +142,8 @@ def js_strings():
         "replay_close": _("Fermer la relecture"),
         "replay_date": _("Date de la relecture"),
         "share_failed": _("Impossible de partager l'image : téléchargez-la puis partagez-la."),
+        "offline": _("Hors ligne : vous voyez les données de votre dernière visite."),
+        "online": _("Connexion rétablie."),
     }
 
 
@@ -176,4 +178,5 @@ def init_app(app):
             "current_locale": current_locale(),
             "js_i18n": js_i18n,
             "TRANSPORT_MODES": TRANSPORT_MODES,
+            "SERVICE_FIELDS": SERVICE_FIELDS,
         }

@@ -39,6 +39,10 @@
           <div><dt>{{ _("Mode") }}</dt><dd>{{ mode_badge(trip.transport_mode) }}</dd></div>
           <div><dt>{{ _("Départ") }}</dt><dd>{{ trip.depart_date|day }}</dd></div>
           {% if trip.is_round_trip %}<div><dt>{{ _("Retour") }}</dt><dd>{{ trip.return_date|day }}</dd></div>{% endif %}
+          {% set service = SERVICE_FIELDS.get(trip.transport_mode) %}
+          {% if service %}{% for key in ("carrier", "service_number", "vehicle") if trip[key] %}
+          <div><dt>{{ service[key][0] }}</dt><dd>{{ trip[key] }}</dd></div>
+          {% endfor %}{% endif %}
           {% else %}
           <div><dt>{{ _("Dates") }}</dt><dd>{{ journey.start_date|day }}{% if journey.end_date != journey.start_date %} – {{ journey.end_date|day }}{% endif %}</dd></div>
           <div><dt>{{ _("Trajets") }}</dt><dd>{{ journey.legs|length }}</dd></div>

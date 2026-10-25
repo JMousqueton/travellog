@@ -12,7 +12,7 @@ from ..models import Journey, Photo, Trip, User
 from ..photos import PhotoError, merge_notes, move_photos, photo_path, save_upload
 from ..routing import update_route
 from ..tags import parse_tags, prune_unused, resolve, tags_text
-from ..transport import CO2_KG_PER_KM, DETOUR_FACTORS, PLANE_CO2_BANDS
+from ..transport import CO2_KG_PER_KM, DETOUR_FACTORS, PLANE_CO2_BANDS, SERVICE_FIELDS
 from .. import utils
 from ..utils import is_safe_redirect
 from . import bp
@@ -21,8 +21,8 @@ from .queries import list_trips
 from .absences import absence_summary
 from .badges import compute_badges, compute_year_badges, continent_summary
 from .places import visited_places
-from .stats import (compute_stats, country_summary, happened, review_years, tag_stats, upcoming_trips, year_review,
-                    yearly_stats)
+from .stats import (compute_stats, country_summary, happened, review_years, service_stats, tag_stats, upcoming_trips,
+                    year_review, yearly_stats)
 
 # Clés de tri d'une ligne de la liste : un trajet isolé ou un voyage (trié selon son premier trajet).
 SORTS = {
@@ -132,6 +132,9 @@ def _save(form, trip):
     trip.dest_country = (form.dest_country.data or "").upper() or None
     trip.fill_missing_countries()
     trip.notes = (form.notes.data or "").strip() or None
+    for key in ("carrier", "service_number", "vehicle"):  # seulement pour l'avion et le train
+        value = (getattr(form, key).data or "").strip() if trip.transport_mode in SERVICE_FIELDS else ""
+        setattr(trip, key, value or None)
     if (trip.origin_lat, trip.origin_lon, trip.dest_lat, trip.dest_lon, trip.transport_mode) != before:
         update_route(trip)
     trip.tags = resolve(current_user, parse_tags(form.tags.data))
@@ -395,7 +398,7 @@ def stats_view():
                            away=absence_summary(current_user, everything),
                            badges=compute_badges(everything),
                            year_badges=compute_year_badges(everything, utils.today().year), continents=continent_summary(everything, current_locale()),
-                           places=visited_places(everything, current_user),
+                           places=visited_places(everything, current_user), services=service_stats(trips),
                            missing_countries=sum(1 for t in trips if not t.origin_country or not t.dest_country))
 
 

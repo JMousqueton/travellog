@@ -35,6 +35,15 @@ def co2_kg(mode, km):
     return km * co2_factor(mode, km)
 
 
+# Modes qui ont une compagnie, un numéro et un appareil : libellés et exemples propres à chacun.
+SERVICE_FIELDS = {
+    "plane": {"carrier": (_l("Compagnie aérienne"), "Air France"), "service_number": (_l("Numéro de vol"), "AF1148"),
+              "vehicle": (_l("Appareil"), "Airbus A321")},
+    "train": {"carrier": (_l("Opérateur"), "SNCF"), "service_number": (_l("Numéro de train"), "TGV 6201"),
+              "vehicle": (_l("Type de train"), "TGV inOui")},
+}
+
+
 def mode_choices():
     from .utils import select_choices
 

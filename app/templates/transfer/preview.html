@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import mode_badge with context %}
+{% block title %}{{ _("Aperçu de l'import") }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-xl-10">
+    <h1 class="h3 fw-bold mb-2">{{ _("Aperçu de l'import") }}</h1>
+    <p class="text-body-secondary mb-3">
+      {{ ngettext("%(num)s trajet trouvé dans « %(file)s ». Décochez ceux que vous ne voulez pas importer.",
+                  "%(num)s trajets trouvés dans « %(file)s ». Décochez ceux que vous ne voulez pas importer.",
+                  rows|length, file=filename) }}
+      {% if duplicate_total %}{{ ngettext("%(num)s est déjà dans votre carnet (décoché).",
+                                         "%(num)s sont déjà dans votre carnet (décochés).", duplicate_total) }}{% endif %}
+    </p>
+    {% if cancelled %}
+    <details class="mb-3">
+      <summary class="small text-body-secondary">{{ ngettext("%(num)s vol annulé ignoré", "%(num)s vols annulés ignorés", cancelled|length) }}</summary>
+      <ul class="small text-body-secondary mt-2 mb-0">
+        {% for flight in cancelled %}<li>{{ flight.depart_date }} · {{ flight.origin_name }} → {{ flight.dest_name }}{% if flight.service_number %} · {{ flight.service_number }}{% endif %}</li>{% endfor %}
+      </ul>
+    </details>
+    {% endif %}
+
+    <form method="post" action="{{ url_for('transfer.confirm_import') }}" id="importPreview" novalidate>
+      {{ form.hidden_tag() }}
+      <div class="d-flex flex-wrap align-items-center gap-2 mb-3" role="group" aria-label="{{ _('Sélection rapide') }}">
+        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill" data-select="all">{{ _("Tout cocher") }}</button>
+        <button type="button" class="btn btn-outline-secondary btn-sm rounded-pill" data-select="none">{{ _("Tout décocher") }}</button>
+        {% if years|length > 1 %}
+        <span class="small text-body-secondary ms-2">{{ _("Par année :") }}</span>
+        {% for year in years %}
+        <button type="button" class="btn btn-outline-primary btn-sm rounded-pill" data-select-year="{{ year }}"
+                aria-pressed="true">{{ year }}</button>
+        {% endfor %}
+        {% endif %}
+      </div>
+
+      <div class="card shadow-soft mb-3">
+        <div class="table-responsive">
+          <table class="table table-hover align-middle mb-0 import-preview">
+            <thead><tr>
+              <th scope="col" class="text-center"><span class="visually-hidden">{{ _("Importer") }}</span></th>
+              <th scope="col">{{ _("Date") }}</th>
+              <th scope="col">{{ _("Trajet") }}</th>
+              <th scope="col">{{ _("Mode") }}</th>
+              <th scope="col">{{ _("Détails") }}</th>
+            </tr></thead>
+            <tbody>
+              {% for index, (record, duplicate) in rows %}
+              <tr data-year="{{ record.depart_date.year }}" {% if duplicate %}class="text-body-secondary"{% endif %}>
+                <td class="text-center">
+                  <input class="form-check-input" type="checkbox" name="rows" value="{{ index }}" id="row-{{ index }}"
+                         {% if not duplicate %}checked{% endif %}>
+                </td>
+                <td class="text-nowrap"><label for="row-{{ index }}">{{ record.depart_date|day }}</label>
+                  {% if record.return_date %}<div class="small text-body-secondary">{{ _("retour le %(date)s", date=record.return_date|day) }}</div>{% endif %}</td>
+                <td>{{ record.origin_name }} → {{ record.dest_name }}
+                  {% if duplicate %}<span class="badge rounded-pill text-bg-secondary ms-1">{{ _("Déjà présent") }}</span>
+                  {% elif record.return_date %}<span class="badge rounded-pill text-bg-primary-subtle ms-1">{{ _("Aller-retour") }}</span>{% endif %}</td>
+                <td>{{ mode_badge(record.transport_mode) }}</td>
+                <td class="small">{{ [record.service_number, record.carrier, record.vehicle]|select|join(' · ') }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="d-flex flex-wrap gap-2 align-items-center">
+        <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Import…') }}">
+          <i class="fa-solid fa-file-import me-1" aria-hidden="true"></i>{{ form.submit.label.text }}
+          (<span id="selectedCount" aria-live="polite">{{ rows|length - duplicate_total }}</span>)</button>
+        <a class="btn btn-link" href="{{ url_for('transfer.index') }}">{{ _("Annuler") }}</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/import-preview.js') }}"></script>
+{% endblock %}

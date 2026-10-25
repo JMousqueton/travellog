@@ -31,6 +31,7 @@ def compiled_translations():
 def app(tmp_path):
     app = create_app("testing")
     app.config["UPLOAD_FOLDER"] = str(tmp_path / "uploads")
+    app.config["IMPORT_FOLDER"] = str(tmp_path / "imports")
     # Le contexte d'application reste actif pendant tout le test, et Flask-Babel garde la
     # locale en cache dans `g` : on l'invalide à chaque requête, comme en production.
     app.before_request(refresh)
@@ -92,3 +93,25 @@ def login(client, email="alice@example.com", password="password123"):
 def auth_client(client, user):
     login(client)
     return client
+
+
+def import_file(client, content, filename, rows=None):
+    """Envoie un fichier puis confirme l'aperçu (par défaut : les lignes cochées d'office, hors doublons).
+
+    Renvoie la réponse de l'aperçu si l'import échoue avant (erreurs), sinon celle de la confirmation.
+    """
+    import io
+    import re
+
+    data = content.encode() if isinstance(content, str) else content
+    preview = client.post("/import", data={"file": (io.BytesIO(data), filename)}, content_type="multipart/form-data")
+    if preview.status_code != 200 or 'id="importPreview"' not in preview.text:
+        return preview
+    token = re.search(r'name="token" type="hidden" value="([^"]+)"', preview.text).group(1)
+    csrf = re.search(r'name="csrf_token" type="hidden" value="([^"]+)"', preview.text)
+    if rows is None:
+        rows = re.findall(r'name="rows" value="(\d+)" id="row-\d+"\s+checked', preview.text)
+    data = {"token": token, "rows": [str(r) for r in rows]}
+    if csrf:
+        data["csrf_token"] = csrf.group(1)
+    return client.post("/import/confirm", data=data)

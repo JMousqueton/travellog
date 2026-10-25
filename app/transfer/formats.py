@@ -15,7 +15,7 @@ from datetime import date, datetime, timezone
 
 from flask_babel import gettext as _
 
-from ..airports import find_airport, place_name
+from ..airports import find_airline, find_airport, place_name
 from ..geo import haversine_km
 from ..transport import TRANSPORT_MODES
 
@@ -24,13 +24,16 @@ FIELDS = [
     "origin_name", "origin_lat", "origin_lon", "origin_country",
     "dest_name", "dest_lat", "dest_lon", "dest_country",
     "notes", "tags", "journey_key", "journey_name", "journey_notes",
+    "carrier", "service_number", "vehicle",
 ]
-TEXT_FIELDS = {"origin_name", "dest_name", "notes", "tags", "journey_key", "journey_name", "journey_notes"}
+SERVICE_KEYS = ("carrier", "service_number", "vehicle")
+TEXT_FIELDS = {"origin_name", "dest_name", "notes", "tags", "journey_key", "journey_name", "journey_notes",
+               *SERVICE_KEYS}
 FORMULA_PREFIXES = ("=", "+", "-", "@", "\t", "\r")
 GPX_NS = "http://www.topografix.com/GPX/1/1"
 EXT_NS = "urn:carnet-de-voyages:gpx:1"
 LIMITS = {"origin_name": 255, "dest_name": 255, "notes": 5000, "tags": 500, "journey_key": 64,
-          "journey_name": 120, "journey_notes": 5000}
+          "journey_name": 120, "journey_notes": 5000, "carrier": 80, "service_number": 40, "vehicle": 80}
 
 
 class FileFormatError(ValueError):
@@ -54,6 +57,7 @@ def trip_record(trip):
         "journey_key": f"J{journey.id}" if journey else "",
         "journey_name": (journey.name or "") if journey else "",
         "journey_notes": (journey.notes or "") if journey else "",
+        **{key: getattr(trip, key) or "" for key in SERVICE_KEYS},
     }
 
 
@@ -172,23 +176,30 @@ def flight_log_kind(fieldnames):
 
 
 def flight_row(row, kind, order="mdy"):
-    """Vol Flighty ou myFlightradar24 (clés en minuscules) → ligne au format de l'export ; None si annulé."""
+    """Vol Flighty ou myFlightradar24 (clés en minuscules) → ligne au format de l'export.
+
+    Un vol annulé est renvoyé marqué `_cancelled` (affiché dans l'aperçu, jamais importé).
+    """
     get = lambda key: row.get(key, "")  # noqa: E731
     dates = [get("date")]
     if kind == "flighty":
-        if get("canceled").lower() == "true":
-            return None
         dates = [get(key) for key in FLIGHTY_TIMES] + dates
-        number, airline = get("airline") + get("flight"), ""
+        airline = find_airline(get("airline"))  # Flighty ne donne que le code OACI (« AFR »)
+        carrier = airline["name"] if airline else get("airline")
+        prefix_code = (airline and airline["iata"]) or get("airline")
+        number = prefix_code + get("flight") if get("flight") else ""
         aircraft, note = get("aircraft type name"), get("notes")
         codes = (get("from"), get("diverted to") or get("to"))
     else:
-        number, airline = get("flight number"), TRAILING_CODES.sub("", get("airline"))
+        number, carrier = get("flight number"), TRAILING_CODES.sub("", get("airline"))
         aircraft, note = TRAILING_CODES.sub("", get("aircraft")), get("note")
         codes = tuple(m.group(1) or m.group(2) if (m := FR24_AIRPORT.search(v)) else v
                       for v in (get("from"), get("to")))
     depart = next((d for d in (flight_date(v, order) for v in dates if v) if d), get("date"))
-    out = {"depart_date": depart, "transport_mode": "plane", "_errors": []}
+    out = {"depart_date": depart, "transport_mode": "plane", "_errors": [], "carrier": carrier,
+           "service_number": number, "vehicle": aircraft, "notes": note}
+    if kind == "flighty" and get("canceled").lower() == "true":
+        return dict(out, _cancelled=True, origin_name=codes[0], dest_name=codes[1])
     for prefix, code in zip(("origin", "dest"), codes):
         airport = find_airport(code)
         if airport is None:
@@ -197,8 +208,6 @@ def flight_row(row, kind, order="mdy"):
             continue
         out.update({f"{prefix}_name": place_name(airport), f"{prefix}_lat": str(airport["lat"]),
                     f"{prefix}_lon": str(airport["lon"]), f"{prefix}_country": airport["country"] or ""})
-    details = " · ".join(p for p in (_("Vol %(number)s", number=number) if number else "", airline, aircraft) if p)
-    out["notes"] = "\n".join(p for p in (details, note) if p)
     return out
 
 
@@ -214,7 +223,8 @@ def pair_round_trips(rows):
     repart de la destination du dernier aller s'y empile (étape d'un circuit) ou le ferme s'il revient à
     son point de départ ; un vol qui part d'ailleurs (vol annulé ou absent de l'export) vide la pile.
     """
-    usable = sorted((i for i, (_line, f) in enumerate(rows) if not f["_errors"] and ISO_DAY.match(f["depart_date"])),
+    usable = sorted((i for i, (_line, f) in enumerate(rows)
+                     if not f["_errors"] and not f.get("_cancelled") and ISO_DAY.match(f["depart_date"])),
                     key=lambda i: (rows[i][1]["depart_date"], i))
     stack, merged, returns = [], {}, set()
     for i in usable:
@@ -228,7 +238,9 @@ def pair_round_trips(rows):
                 notes = "\n".join(n for n in (
                     _("Aller : %(notes)s", notes=out["notes"]) if out["notes"] else "",
                     _("Retour : %(notes)s", notes=flight["notes"]) if flight["notes"] else "") if n)
-                merged[stack.pop()] = dict(out, return_date=flight["depart_date"], notes=notes)
+                # « AF1148 / AF1549 » ; une valeur identique à l'aller et au retour n'est écrite qu'une fois.
+                both = {key: " / ".join(dict.fromkeys(v for v in (out[key], flight[key]) if v)) for key in SERVICE_KEYS}
+                merged[stack.pop()] = dict(out, return_date=flight["depart_date"], notes=notes, **both)
                 returns.add(i)
                 continue
         stack.append(i)
@@ -248,8 +260,7 @@ def parse_csv(data):
         flights = [(reader.line_num, {(k or "").strip().lower(): (v or "").strip() for k, v in row.items() if k})
                    for row in reader]
         order = slash_order(row.get("date", "") for _line, row in flights)
-        return pair_round_trips([(line, flight) for line, row in flights
-                                 if any(row.values()) and (flight := flight_row(row, kind, order)) is not None])
+        return pair_round_trips([(line, flight_row(row, kind, order)) for line, row in flights if any(row.values())])
     rows = []
     for row in reader:
         clean = {(k or "").strip(): (v or "").strip() for k, v in row.items() if k}
@@ -381,7 +392,7 @@ def validate_record(raw):
                 errors.append(_("coordonnées invalides pour « %(place)s »", place=name or prefix))
         code = raw.get(f"{prefix}_country", "").strip().upper()
         out[f"{prefix}_country"] = code if len(code) == 2 and code.isalpha() else None
-    for key in ("notes", "tags", "journey_key", "journey_name", "journey_notes"):
+    for key in ("notes", "tags", "journey_key", "journey_name", "journey_notes", *SERVICE_KEYS):
         out[key] = raw.get(key, "").strip() or None
     for key in ("photos", "journey_photos"):
         out[key] = [p for p in raw.get(key) or [] if isinstance(p, dict) and isinstance(p.get("file"), str)]

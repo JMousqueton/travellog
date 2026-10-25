@@ -9,7 +9,7 @@ from app import utils
 from app.models import Journey, Tag, Trip
 from app.tags import parse_tags
 
-from .conftest import make_trip
+from .conftest import import_file, make_trip
 
 
 def _form(**overrides):
@@ -98,7 +98,7 @@ def test_tags_survive_export_import(auth_client, db, user):
     assert row["tags"] == "Famille, Vacances"
     db.session.delete(db.session.execute(db.select(Trip)).scalar_one())
     db.session.commit()
-    auth_client.post("/import", data={"file": (io.BytesIO(exported), "t.csv")}, content_type="multipart/form-data")
+    import_file(auth_client, exported, "t.csv")
     assert [t.name for t in db.session.execute(db.select(Trip)).scalar_one().tags] == ["Famille", "Vacances"]
 
 

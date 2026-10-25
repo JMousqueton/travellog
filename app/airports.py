@@ -1,9 +1,10 @@
-"""Aéroports par code IATA ou OACI (OurAirports, domaine public ; voir scripts/make_airports.py)."""
+"""Aéroports par code IATA ou OACI et compagnies par code OACI (voir scripts/make_flight_data.py)."""
 import csv
 import os
 from functools import lru_cache
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), "data", "airports.csv")
+AIRLINES_FILE = os.path.join(os.path.dirname(__file__), "data", "airlines.csv")
 
 
 @lru_cache(maxsize=1)
@@ -26,3 +27,14 @@ def find_airport(code):
 
 def place_name(airport):
     return f"{airport['name']} ({airport['iata']})"
+
+
+@lru_cache(maxsize=1)
+def _airlines():
+    with open(AIRLINES_FILE, encoding="utf-8", newline="") as fh:
+        return {row["icao"]: row for row in csv.DictReader(fh)}
+
+
+def find_airline(icao):
+    """{icao, iata, name} d'une compagnie active, ou None."""
+    return _airlines().get((icao or "").strip().upper())

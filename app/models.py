@@ -231,6 +231,10 @@ class Trip(db.Model):
     origin_country = db.Column(db.String(2), nullable=True)
     dest_country = db.Column(db.String(2), nullable=True)
     notes = db.Column(db.Text, nullable=True)
+    # Vols et trains : compagnie ou opérateur, numéro (« AF1148 », « TGV 6201 »), appareil ou type de train.
+    carrier = db.Column(db.String(80), nullable=True)
+    service_number = db.Column(db.String(40), nullable=True)
+    vehicle = db.Column(db.String(80), nullable=True)
     # Distance d'itinéraire (OSRM) d'un trajet simple, si un service de calcul est configuré.
     route_distance_km = db.Column(db.Float, nullable=True)
     depart_date = db.Column(db.Date, nullable=False)

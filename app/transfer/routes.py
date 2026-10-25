@@ -1,16 +1,20 @@
 import io
 import json
+import os
+import re
+import secrets
+import time
 import zipfile
 from datetime import date
 
-from flask import Response, current_app, flash, redirect, render_template, url_for
+from flask import Response, current_app, flash, redirect, render_template, request, url_for
 from flask_babel import gettext as _
 from flask_babel import lazy_gettext as _l
 from flask_babel import ngettext
 from flask_login import current_user, login_required
 from flask_wtf import FlaskForm
 from flask_wtf.file import FileField, FileRequired
-from wtforms import SubmitField
+from wtforms import HiddenField, SubmitField
 
 from ..extensions import db
 from ..models import Journey, Trip
@@ -134,12 +138,72 @@ def _duplicate_key(name_o, name_d, depart, mode):
     return (name_o.casefold(), name_d.casefold(), depart, mode)
 
 
+# --- Aperçu avant import ---------------------------------------------------------------------
+# Les trajets lus attendent la confirmation dans IMPORT_FOLDER/<utilisateur>-<jeton>.json.
+
+PENDING_MAX_AGE = 3600  # secondes
+PENDING_TOKEN = re.compile(r"^[A-Za-z0-9_-]{16,64}$")
+
+
+class ConfirmImportForm(FlaskForm):
+    token = HiddenField()
+    submit = SubmitField(_l("Importer la sélection"))
+
+
+def _pending_path(token):
+    return os.path.join(current_app.config["IMPORT_FOLDER"], f"{current_user.id}-{token}.json")
+
+
+def _store_pending(records, filename):
+    folder = current_app.config["IMPORT_FOLDER"]
+    os.makedirs(folder, exist_ok=True)
+    now = time.time()
+    for name in os.listdir(folder):  # aperçus abandonnés
+        path = os.path.join(folder, name)
+        if now - os.path.getmtime(path) > PENDING_MAX_AGE:
+            os.remove(path)
+    token = secrets.token_urlsafe(16)
+    with open(_pending_path(token), "w", encoding="utf-8") as fh:
+        json.dump({"filename": filename, "records": records}, fh, default=date.isoformat)
+    return token
+
+
+def _load_pending(token):
+    """Trajets en attente de confirmation (dates reconstituées), ou None si l'aperçu a expiré."""
+    if not PENDING_TOKEN.match(token or ""):
+        return None
+    try:
+        with open(_pending_path(token), encoding="utf-8") as fh:
+            pending = json.load(fh)
+    except (OSError, ValueError):
+        return None
+    if time.time() - os.path.getmtime(_pending_path(token)) > PENDING_MAX_AGE:
+        return None
+    for record in pending["records"]:
+        for key in ("depart_date", "return_date"):
+            record[key] = date.fromisoformat(record[key]) if record[key] else None
+    return pending
+
+
+def _existing_keys():
+    return {_duplicate_key(t.origin_name, t.dest_name, t.depart_date, t.transport_mode) for t in current_user.trips}
+
+
+def _record_key(record):
+    return _duplicate_key(record["origin_name"], record["dest_name"], record["depart_date"], record["transport_mode"])
+
+
+def _render_index(form, errors=None, status=400, **extra):
+    return render_template("transfer/index.html", form=form, trip_total=current_user.trips.count(), errors=errors,
+                           **extra), status
+
+
 @bp.route("/import", methods=["POST"])
 @login_required
 def import_file():
     form = ImportForm()
     if not form.validate_on_submit():
-        return render_template("transfer/index.html", form=form, trip_total=current_user.trips.count()), 400
+        return _render_index(form)
     storage = form.file.data
     is_archive = (storage.filename or "").lower().endswith(".zip")
     limit = current_app.config["MAX_CONTENT_LENGTH"] if is_archive else current_app.config["MAX_IMPORT_BYTES"]
@@ -164,23 +228,59 @@ def import_file():
                 errors.append(_("Trop de trajets dans ce fichier (%(max)s au maximum).",
                                 max=current_app.config["MAX_IMPORT_ROWS"]))
     if errors:
-        return render_template("transfer/index.html", form=form, trip_total=current_user.trips.count(),
-                               errors=errors), 400
+        return _render_index(form, errors)
 
+    cancelled = [raw for _line, raw in rows if raw.get("_cancelled")]  # vols annulés : montrés, jamais importés
     records = []
     for line, raw in rows:
+        if raw.get("_cancelled"):
+            continue
         record, problems = validate_record(raw)
         errors.extend(_("Ligne %(line)s : %(error)s", line=line, error=problem) for problem in problems)
         records.append(record)
     if errors:
         # Rien n'est importé tant que le fichier contient des erreurs.
-        return render_template("transfer/index.html", form=form, trip_total=current_user.trips.count(),
-                               errors=errors[:MAX_REPORTED_ERRORS], hidden_errors=max(0, len(errors) - MAX_REPORTED_ERRORS)), 400
+        return _render_index(form, errors[:MAX_REPORTED_ERRORS], hidden_errors=max(0, len(errors) - MAX_REPORTED_ERRORS))
+    if not records:
+        return _render_index(form, [_("Ce fichier ne contient aucun trajet.")])
+    if archive is not None:
+        # Sauvegarde complète : restauration directe, photos comprises.
+        _create(records, archive)
+        return redirect(url_for("trips.list_view"))
 
-    existing = {_duplicate_key(t.origin_name, t.dest_name, t.depart_date, t.transport_mode) for t in current_user.trips}
+    existing = _existing_keys()
+    duplicates = [_record_key(r) in existing for r in records]
+    token = _store_pending(records, storage.filename or "")
+    years = sorted({r["depart_date"].year for r in records}, reverse=True)
+    return render_template("transfer/preview.html", form=ConfirmImportForm(token=token), filename=storage.filename,
+                           rows=list(enumerate(zip(records, duplicates))), years=years, cancelled=cancelled,
+                           duplicate_total=sum(duplicates))
+
+
+@bp.route("/import/confirm", methods=["POST"])
+@login_required
+def confirm_import():
+    form = ConfirmImportForm()
+    pending = _load_pending(form.token.data) if form.validate_on_submit() else None
+    if pending is None:
+        flash(_("Cet aperçu a expiré : importez le fichier à nouveau."), "warning")
+        return redirect(url_for("transfer.index"))
+    os.remove(_pending_path(form.token.data))
+    records = pending["records"]
+    selected = {int(i) for i in request.form.getlist("rows") if i.isdigit() and int(i) < len(records)}
+    if not selected:
+        flash(_("Aucun trajet sélectionné : rien n'a été importé."), "info")
+        return redirect(url_for("transfer.index"))
+    _create([r for i, r in enumerate(records) if i in selected])
+    return redirect(url_for("trips.list_view"))
+
+
+def _create(records, archive=None):
+    """Crée les trajets (sauf doublons), regroupe les voyages, restaure les photos d'une archive."""
+    existing = _existing_keys()
     created, created_records, skipped, groups = [], [], 0, {}
     for record in records:
-        key = _duplicate_key(record["origin_name"], record["dest_name"], record["depart_date"], record["transport_mode"])
+        key = _record_key(record)
         if key in existing:
             skipped += 1
             continue
@@ -194,6 +294,7 @@ def import_file():
             depart_date=record["depart_date"], transport_mode=record["transport_mode"],
             is_round_trip=record["return_date"] is not None, return_date=record["return_date"],
             notes=record["notes"],
+            carrier=record["carrier"], service_number=record["service_number"], vehicle=record["vehicle"],
         )
         trip.fill_missing_countries()
         trip.tags = resolve(current_user, parse_tags(record["tags"])[:MAX_TAGS])
@@ -235,4 +336,3 @@ def import_file():
     if photos_failed:
         message += " " + ngettext("%(num)s photo illisible ignorée.", "%(num)s photos illisibles ignorées.", photos_failed)
     flash(message, "success" if created else "info")
-    return redirect(url_for("trips.list_view"))

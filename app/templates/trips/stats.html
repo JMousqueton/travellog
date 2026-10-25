@@ -245,6 +245,45 @@
     </div>
   </section>
 
+  {% if services %}
+  <section aria-labelledby="servicesTitle" class="mb-5">
+    <h2 class="h5 fw-semibold mb-3" id="servicesTitle">{{ _("Avion et train") }}</h2>
+    <div class="row g-4">
+      {% for row in services %}
+      {% set labels = SERVICE_FIELDS[row.mode] %}
+      <div class="col-lg-6">
+        <div class="card shadow-soft h-100">
+          <div class="card-body p-4">
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+              {{ mode_badge(row.mode) }}
+              <span class="fw-semibold">{% if row.mode == 'plane' %}{{ ngettext("%(num)s vol", "%(num)s vols", row.legs) }}
+                {% else %}{{ ngettext("%(num)s trajet", "%(num)s trajets", row.legs) }}{% endif %}</span>
+              <span class="text-body-secondary small">· {{ row.distance_km|distance }}</span>
+            </div>
+            <div class="row g-3 small">
+              {% for title, items in [(labels.carrier[0], row.carriers), (labels.vehicle[0], row.vehicles),
+                                      (_("Aéroports") if row.mode == 'plane' else _("Gares"), row.places)] %}
+              <div class="col-sm-4">
+                <h3 class="h6 fw-semibold mb-2">{{ title }}</h3>
+                {% if items %}
+                <ol class="list-unstyled mb-0 service-top">
+                  {% for name, count in items %}
+                  <li class="d-flex justify-content-between gap-2"><span class="text-truncate" title="{{ name }}">{{ name }}</span>
+                    <span class="text-body-secondary">{{ count|number }}</span></li>
+                  {% endfor %}
+                </ol>
+                {% else %}<p class="text-body-secondary mb-0">{{ _("À renseigner dans la fiche du trajet.") }}</p>{% endif %}
+              </div>
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+
   {% if tags %}
   <section aria-labelledby="tagsTitle" class="mb-5">
     <h2 class="h5 fw-semibold mb-3" id="tagsTitle">{{ _("Par étiquette") }}</h2>

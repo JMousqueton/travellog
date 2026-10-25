@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="{{ current_locale }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>{{ _("Hors ligne") }} · {{ _("Carnet de voyages") }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+  <link rel="icon" href="{{ url_for('static', filename='img/favicon.svg') }}" type="image/svg+xml">
+  <style>
+    body { min-height: 100vh; display: grid; place-items: center; margin: 0; padding: 16px;
+           font-family: system-ui, sans-serif; text-align: center; }
+    .offline { max-width: 28rem; }
+    .offline img { width: 64px; height: 64px; }
+  </style>
+</head>
+<body>
+  <main class="offline">
+    <img src="{{ url_for('static', filename='img/favicon.svg') }}" alt="">
+    <h1>{{ _("Vous êtes hors ligne") }}</h1>
+    <p>{{ _("Cette page n'a pas encore été consultée sur cet appareil. Les pages déjà ouvertes (carte, liste, statistiques) restent disponibles sans connexion.") }}</p>
+    <p><a href="{{ url_for('trips.index') }}">{{ _("Retour à la carte") }}</a></p>
+  </main>
+</body>
+</html>

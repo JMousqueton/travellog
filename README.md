@@ -56,14 +56,21 @@ available in French, English, Spanish, German and Italian.
   shows them.
 - Import / export (`/import-export`) as CSV, GeoJSON and GPX. All three formats carry the same fields
   (including notes and journey groupings) and can be imported back without loss: they also serve as a
-  backup, photos excepted. On import, trips already present are skipped, and a file containing an error
-  imports nothing (errors are listed with their line number).
+  backup, photos excepted. On import, a preview lists the trips read: untick the ones to leave out (all /
+  none / per-year buttons) before confirming; trips already present are unticked and skipped. A file
+  containing an error imports nothing (errors are listed with their line number). A full backup (.zip) is
+  restored directly, photos included.
 - Flight history import: CSV exports from Flighty and myFlightradar24 are recognised automatically. Each
   flight becomes a plane trip between the two airports (cancelled flights skipped, diversion airport used as
-  the arrival, US M/D/YY or DD/MM/YYYY dates detected from the file), with the flight number, airline and
-  aircraft in the notes.
+  the arrival, US M/D/YY or DD/MM/YYYY dates detected from the file). The airline (name looked up from its
+  ICAO code), flight number ("AF1148") and aircraft go into the trip's fields; cancelled flights are listed in
+  the preview.
   A flight followed by its return flight (within 50 km: CDG out, ORY back) becomes a round trip; multi-stop
   itineraries stay as one-way flights, and a cancelled or missing return does not throw off later ones.
+- Plane and train: airline or operator, flight or train number and aircraft or train type, entered in the
+  form (labels follow the mode) or filled by the flight import. The statistics derive, per mode, the number of
+  flights or trips and the most frequent airlines, aircraft and airports or stations (a round trip
+  "AF1148 / AF1549" counts twice).
 - Trips: origin, destination, date, mode of transport (plane, train, car, bus, boat, bike, on foot), round
   trip option with a mandatory return date on or after the departure date.
 - Form with place autocompletion (Nominatim, server-side geocoding with a database cache).
@@ -71,6 +78,10 @@ available in French, English, Spanish, German and Italian.
 - Side panel (drawer on mobile): dashboard for the current year (the period filter does not apply to it),
   filters (period, modes, type), sortable list kept in sync with the map. Filters are kept in the URL.
 - Light/dark theme (saved preference and `prefers-color-scheme` detection).
+- Installable app that works offline: a service worker (`/sw.js`, `app/pwa.py`) caches static files and
+  libraries, plus the latest version of pages and data already opened (map, list, statistics, trip pages).
+  Map tiles are not kept: offline, the map shows the trips without a base map. Account pages are removed from
+  the cache on logout.
 - Full internationalisation with Flask-Babel. Dates, numbers and distances are formatted for each language.
 
 ## Requirements
@@ -247,7 +258,8 @@ app/
   i18n.py            language selection, formatting, JS strings
   geo.py             haversine, Nominatim client and cache
   security.py        security headers (CSP with nonce, HSTS…)
-  airports.py        airports by IATA or ICAO code (flight history import)
+  airports.py        airports by IATA or ICAO code, airlines by ICAO code (flight import)
+  pwa.py             service worker and offline page
   assets.py          versioned static files (?v=fingerprint) and import map for JS modules
   countries.py       countries: offline lookup, localised names, flags, areas
   photos.py          photos: validation and re-encoding (Pillow), thumbnails, files
@@ -293,8 +305,10 @@ Share links have the equivalents `/api/shared/<token>/trips`, `/stats` and `/cou
   [OurAirports](https://ourairports.com/data/) (public domain), supplemented by
   [OpenFlights](https://openflights.org/data.php) ([ODbL](https://opendatacommons.org/licenses/odbl/1-0/)) for 174
   closed airports whose code OurAirports removed (Berlin-Tegel, Schönefeld…) but which still appear in flight
-  histories. That file is therefore distributed under the ODbL. To refresh it:
-  `.venv/bin/python scripts/make_airports.py`.
+  histories. That file is therefore distributed under the ODbL. Airlines (1,026 active ones: ICAO code, IATA
+  code and name) also come from OpenFlights, in `app/data/airlines.csv` (ODbL); a defunct airline keeps its
+  code, since its ICAO code may have been reassigned. To refresh both files:
+  `.venv/bin/python scripts/make_flight_data.py`.
 - CO₂ is an estimate per traveller: straight-line distance × an average factor from ADEME (Base Carbone),
   defined in `app/transport.py` (`CO2_KG_PER_KM`, `PLANE_CO2_BANDS`). Plane: 258, 187 or 152 g/km depending
   on flight distance, contrails included; train and coach 30 g/km; car 218 g/km (one person on board);

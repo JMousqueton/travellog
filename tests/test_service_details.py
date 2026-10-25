@@ -1,0 +1,54 @@
+"""Compagnie, numéro et appareil des vols et des trains : formulaire, fiche, export et statistiques."""
+from datetime import date
+
+from app.models import Trip
+from app.trips.stats import service_stats
+
+from .conftest import make_trip
+from .test_trips import post_trip
+
+
+def test_train_details_saved_and_shown(auth_client, db):
+    post_trip(auth_client, transport_mode="train", carrier=" SNCF ", service_number="TGV 6201", vehicle="TGV inOui")
+    trip = db.session.execute(db.select(Trip)).scalar_one()
+    assert (trip.carrier, trip.service_number, trip.vehicle) == ("SNCF", "TGV 6201", "TGV inOui")
+    html = auth_client.get(f"/trips/{trip.id}").text
+    assert "Numéro de train" in html and "TGV 6201" in html
+
+
+def test_details_cleared_for_other_modes(auth_client, db):
+    post_trip(auth_client, transport_mode="car", carrier="Air France", service_number="AF1")
+    trip = db.session.execute(db.select(Trip)).scalar_one()
+    assert trip.carrier is None and trip.service_number is None
+
+
+def test_form_labels_follow_mode(auth_client):
+    html = auth_client.get("/trips/new").text
+    assert 'data-label-plane="Compagnie aérienne"' in html and 'data-label-train="Opérateur"' in html
+
+
+def test_details_survive_export_and_import(auth_client, db, user):
+    make_trip(user, transport_mode="plane", carrier="Air France", service_number="AF1148", vehicle="Airbus A321")
+    csv_text = auth_client.get("/export.csv").data.decode("utf-8-sig")
+    assert "carrier,service_number,vehicle" in csv_text.splitlines()[0]
+    assert "Air France,AF1148,Airbus A321" in csv_text
+
+
+def test_service_stats_split_round_trips(app, user):
+    make_trip(user, transport_mode="plane", carrier="Air France", service_number="AF1 / AF2",
+              vehicle="Airbus A321 / Airbus A320", is_round_trip=True, return_date=date(2025, 5, 3),
+              dest_name="Rome, Italie")
+    make_trip(user, transport_mode="plane", carrier="KLM", vehicle="Airbus A321", dest_name="Rome, Italie")
+    make_trip(user, transport_mode="train", carrier="SNCF")
+    rows = {r["mode"]: r for r in service_stats(user.trips.all())}
+    assert rows["plane"]["legs"] == 3
+    assert rows["plane"]["carriers"] == [("Air France", 2), ("KLM", 1)]
+    assert rows["plane"]["vehicles"] == [("Airbus A321", 2), ("Airbus A320", 1)]
+    assert rows["plane"]["places"][0] == ("Paris, France", 3)
+    assert rows["train"]["carriers"] == [("SNCF", 1)]
+
+
+def test_stats_page_shows_services(auth_client, user):
+    make_trip(user, transport_mode="plane", carrier="Air France")
+    html = auth_client.get("/stats").text
+    assert "Avion et train" in html and "Air France" in html and "Aéroports" in html

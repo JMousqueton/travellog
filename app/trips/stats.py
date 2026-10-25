@@ -1,11 +1,11 @@
 import unicodedata
-from collections import defaultdict
+from collections import Counter, defaultdict
 
 from flask_babel import format_percent, ngettext
 
 from .. import countries as geo_countries
 from ..i18n import current_locale, format_co2, format_countdown, format_distance, format_number, format_share
-from ..transport import TRANSPORT_MODES
+from ..transport import SERVICE_FIELDS, TRANSPORT_MODES
 from .. import utils
 
 
@@ -165,6 +165,43 @@ def tag_stats(trips):
         })
     # Étiquettes par émissions décroissantes, « sans étiquette » en dernier.
     return sorted(rows, key=lambda r: (r["tag"] is None, -r["co2_kg"], _sort_key(r["name"] or "")))
+
+
+SERVICE_TOP = 8
+
+
+def _per_leg(trip, value):
+    """Valeur d'un champ pour chaque sens effectué : « AF1148 / AF1549 » sur un aller-retour → une par sens."""
+    if not value:
+        return []
+    legs = 2 if trip.is_round_trip else 1
+    parts = [part.strip() for part in value.split(" / ") if part.strip()]
+    return parts if len(parts) == legs else [value] * legs
+
+
+def service_stats(trips):
+    """Avion et train : nombre de vols ou de trajets, compagnies, appareils et aéroports ou gares les plus fréquents."""
+    rows = []
+    for mode in SERVICE_FIELDS:
+        items = [t for t in trips if t.transport_mode == mode]
+        if not items:
+            continue
+        carriers, vehicles, places = Counter(), Counter(), Counter()
+        for trip in items:
+            carriers.update(_per_leg(trip, trip.carrier))
+            vehicles.update(_per_leg(trip, trip.vehicle))
+            legs = 2 if trip.is_round_trip else 1
+            places.update({trip.origin_name: legs})
+            places.update({trip.dest_name: legs})
+        rows.append({
+            "mode": mode,
+            "legs": sum(2 if t.is_round_trip else 1 for t in items),
+            "distance_km": sum(t.total_distance_km for t in items),
+            "carriers": carriers.most_common(SERVICE_TOP),
+            "vehicles": vehicles.most_common(SERVICE_TOP),
+            "places": places.most_common(SERVICE_TOP),
+        })
+    return rows
 
 
 EARTH_CIRCUMFERENCE_KM = 40_075

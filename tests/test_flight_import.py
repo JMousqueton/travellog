@@ -4,6 +4,8 @@ from datetime import date
 from app.airports import find_airport
 from app.models import Trip
 
+from .conftest import import_file
+
 # Format réel d'un export Flighty : date américaine M/J/AA, horaires ISO, TRUE/FALSE en majuscules.
 FLIGHTY_HEADER = ("Date,Airline,Flight,From,To,Dep Terminal,Dep Gate,Arr Terminal,Arr Gate,Canceled,Diverted To,"
                   "Gate Departure (Scheduled),Gate Departure (Actual),Take off (Scheduled),Take off (Actual),"
@@ -24,8 +26,7 @@ FLIGHTRADAR24 = """Date,Flight number,From,To,Dep time,Arr time,Duration,Airline
 
 
 def _import(client, content, filename="flights.csv"):
-    return client.post("/import", data={"file": (io.BytesIO(content.encode()), filename)},
-                       content_type="multipart/form-data")
+    return import_file(client, content, filename)
 
 
 def _trips(db):
@@ -49,8 +50,10 @@ def test_import_flighty(auth_client, db):
         (date(2023, 5, 25), "John F. Kennedy International Airport (JFK)", "Manchester Airport (MAN)", "plane"),
     ]  # le vol annulé (TRUE) est ignoré
     assert (trips[0].origin_country, trips[0].dest_country, trips[1].dest_country) == ("FR", "ES", "DE")
-    assert trips[0].notes == "Vol AFR1148 · Airbus A321"
-    assert trips[2].notes == "Vol AFR23 · Boeing 777-300 ER\nOrage"
+    # Compagnie (nom d'après le code OACI), numéro IATA et appareil dans leurs champs ; la note reste la vôtre.
+    assert (trips[0].carrier, trips[0].service_number, trips[0].vehicle) == ("Air France", "AF1148", "Airbus A321")
+    assert trips[0].notes is None and trips[2].notes == "Orage"
+    assert (trips[1].carrier, trips[1].service_number) == ("JON", "JON1434")  # compagnie disparue (Joon) : code
     # Réimporter le même fichier n'ajoute rien.
     _import(auth_client, FLIGHTY)
     assert len(_trips(db)) == 3
@@ -63,7 +66,8 @@ def test_import_flightradar24(auth_client, db):
         ("Amsterdam Airport Schiphol (AMS)", "John F. Kennedy International Airport (JFK)"),
         ("Paris-Orly Airport (ORY)", "Nice-Côte d'Azur Airport (NCE)"),  # code OACI ou IATA seul
     ]
-    assert trips[0].notes == "Vol DL49 · Delta Air Lines · Airbus A330-900neo"
+    assert (trips[0].carrier, trips[0].service_number, trips[0].vehicle) == (
+        "Delta Air Lines", "DL49", "Airbus A330-900neo")
     assert trips[0].dest_lat == find_airport("JFK")["lat"]
 
 
@@ -100,7 +104,8 @@ def test_flighty_round_trips_are_paired(auth_client, db):
         ("2025-01-03", "2025-01-05", "JFK", "MIA"),
     ]
     paris_barcelona = next(t for t in _trips(db) if t.dest_name.endswith("(BCN)"))
-    assert paris_barcelona.is_round_trip and paris_barcelona.notes == "Aller : Vol AFR1\nRetour : Vol AFR2"
+    assert paris_barcelona.is_round_trip and paris_barcelona.service_number == "AF1 / AF2"
+    assert paris_barcelona.carrier == "Air France" and paris_barcelona.notes is None
 
 
 def test_flight_dates():

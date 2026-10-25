@@ -12,7 +12,7 @@ from app.models import Journey, Photo, ShareLink, Trip
 from app.trips.stats import compute_stats, yearly_stats
 from app.transport import co2_kg
 
-from .conftest import login, make_trip, make_user
+from .conftest import import_file, login, make_trip, make_user
 
 PARIS = dict(origin_name="Paris, France", origin_lat=48.8566, origin_lon=2.3522)
 TOKYO = dict(dest_name="Tokyo, Japon", dest_lat=35.6762, dest_lon=139.6503)
@@ -160,8 +160,7 @@ def _sample_data(db, user):
 
 
 def _import(client, content, filename):
-    data = content.encode() if isinstance(content, str) else content
-    return client.post("/import", data={"file": (io.BytesIO(data), filename)}, content_type="multipart/form-data")
+    return import_file(client, content, filename)
 
 
 @pytest.mark.parametrize("fmt", ["csv", "geojson", "gpx"])
@@ -191,10 +190,12 @@ def test_export_then_import_roundtrip(app, client, db, user, fmt):
     assert (carol_trips[1].journey.name, carol_trips[1].journey.notes) == ("Hiver", "Neige")
     assert carol_trips[0].dest_country == "JP"  # déduit des coordonnées
 
-    # Réimporter le même fichier n'ajoute rien.
-    response = _import(client, exported, f"backup.{fmt}")
+    # Réimporter le même fichier n'ajoute rien : l'aperçu montre les doublons, décochés.
+    preview = client.post("/import", data={"file": (io.BytesIO(exported), f"backup.{fmt}")},
+                          content_type="multipart/form-data")
+    assert "3 sont déjà dans votre carnet (décochés)." in preview.text
+    _import(client, exported, f"backup.{fmt}")
     assert len(db.session.execute(db.select(Trip).join(Trip.user).filter_by(email="carol@example.com")).all()) == 3
-    assert "3 doublons ignorés" in client.get("/trips").text
 
 
 def test_csv_export_neutralizes_formulas(auth_client, db, user):

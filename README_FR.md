@@ -59,14 +59,21 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   une option par lien permet de les montrer.
 - Import / export (`/import-export`) en CSV, GeoJSON et GPX. Les trois formats contiennent les mêmes champs
   (dont notes et regroupements en voyages) et se réimportent sans perte : c'est aussi une sauvegarde, hors
-  photos. À l'import, les trajets déjà présents sont ignorés, et un fichier contenant une erreur n'importe
-  rien (les erreurs sont listées avec leur numéro de ligne).
+  photos. À l'import, un aperçu liste les trajets lus : décochez ceux à écarter (boutons tout / rien / par
+  année) avant de confirmer ; les trajets déjà présents sont décochés et ignorés. Un fichier contenant une
+  erreur n'importe rien (les erreurs sont listées avec leur numéro de ligne). Une sauvegarde complète (.zip)
+  est restaurée directement, photos comprises.
 - Import d'historiques de vols : les exports CSV de Flighty et de myFlightradar24 sont reconnus
   automatiquement. Chaque vol devient un trajet en avion entre les deux aéroports (vols annulés ignorés,
   aéroport de déroutement pris comme arrivée, date américaine M/J/AA ou
-  JJ/MM/AAAA reconnue d'après le fichier), avec le numéro de vol, la compagnie et l'avion en note.
+  JJ/MM/AAAA reconnue d'après le fichier). La compagnie (nom retrouvé d'après son code OACI), le numéro de vol
+  (« AF1148 ») et l'appareil vont dans les champs du trajet ; les vols annulés sont listés dans l'aperçu.
   Un vol suivi de son vol retour (à 50 km près : CDG à l'aller, ORY au retour) devient un trajet
   aller-retour ; les circuits restent en vols simples, et un retour annulé ou absent ne fausse pas les suivants.
+- Avion et train : compagnie ou opérateur, numéro de vol ou de train et appareil ou type de train, saisis
+  dans le formulaire (libellés selon le mode) ou remplis par l'import des vols. Les statistiques en tirent,
+  pour chaque mode, le nombre de vols ou de trajets et les compagnies, appareils et aéroports ou gares les
+  plus fréquents (un aller-retour « AF1148 / AF1549 » compte pour deux).
 - Voyages : origine, destination, date, mode de transport (avion, train, voiture, bus, bateau, vélo, à pied),
   option aller-retour avec date de retour obligatoire et postérieure ou égale au départ.
 - Formulaire avec autocomplétion des lieux (Nominatim, géocodage côté serveur avec cache en base).
@@ -74,6 +81,10 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
 - Panneau latéral (tiroir sur mobile) : tableau de bord de l'année en cours (la période filtrée ne s'y
   applique pas), filtres (période, modes, type), liste triable synchronisée avec la carte. Les filtres sont conservés dans l'URL.
 - Thème clair/sombre (préférence enregistrée et détection de `prefers-color-scheme`).
+- Application installable et consultable hors ligne : un service worker (`/sw.js`, `app/pwa.py`) garde les
+  fichiers statiques et les bibliothèques en cache, et la dernière version des pages et des données déjà
+  ouvertes (carte, liste, statistiques, fiches). Les tuiles de la carte ne sont pas gardées : hors ligne, la
+  carte montre les trajets sans fond de carte. Les pages du compte sont effacées du cache à la déconnexion.
 - Internationalisation complète avec Flask-Babel. Dates, nombres et distances sont formatés selon la langue.
 
 ## Prérequis
@@ -250,7 +261,8 @@ app/
   i18n.py            sélection de la langue, formatage, chaînes JS
   geo.py             haversine, client Nominatim et cache
   security.py        en-têtes de sécurité (CSP avec nonce, HSTS…)
-  airports.py        aéroports par code IATA ou OACI (import des historiques de vols)
+  airports.py        aéroports par code IATA ou OACI, compagnies par code OACI (import des vols)
+  pwa.py             service worker et page hors ligne
   assets.py          fichiers statiques versionnés (?v=empreinte) et import map des modules JS
   countries.py       pays : recherche hors ligne, noms localisés, drapeaux, surfaces
   photos.py          photos : validation et ré-encodage (Pillow), miniatures, fichiers
@@ -296,8 +308,10 @@ Les liens de partage ont les équivalents `/api/shared/<jeton>/trips`, `/stats` 
   d'[OurAirports](https://ourairports.com/data/) (domaine public), complété par
   [OpenFlights](https://openflights.org/data.php) (licence [ODbL](https://opendatacommons.org/licenses/odbl/1-0/))
   pour 174 aéroports fermés dont OurAirports a retiré le code (Berlin-Tegel, Schönefeld…), qui figurent pourtant
-  dans les historiques de vols. Ce fichier est donc diffusé sous ODbL. Mise à jour :
-  `.venv/bin/python scripts/make_airports.py`.
+  dans les historiques de vols. Ce fichier est donc diffusé sous ODbL. Les compagnies (1 026 en activité,
+  code OACI, code IATA et nom) viennent aussi d'OpenFlights, dans `app/data/airlines.csv` (ODbL) ; une
+  compagnie disparue garde son code, son code OACI ayant pu être réattribué. Mise à jour des deux fichiers :
+  `.venv/bin/python scripts/make_flight_data.py`.
 - Le CO₂ est une estimation par voyageur : distance à vol d'oiseau × facteur moyen de l'ADEME (Base Carbone),
   défini dans `app/transport.py` (`CO2_KG_PER_KM`, `PLANE_CO2_BANDS`). Avion : 258, 187 ou 152 g/km selon
   la distance du vol, traînées comprises ; train et autocar 30 g/km ; voiture 218 g/km (une personne à bord) ;

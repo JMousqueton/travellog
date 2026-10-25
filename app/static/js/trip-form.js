@@ -37,6 +37,25 @@ function clearError(input) {
   }
 }
 
+/* --- Compagnie, numéro et appareil (avion et train) --------------------- */
+
+const serviceWrapper = document.getElementById("serviceWrapper");
+
+function syncService() {
+  const mode = form.elements.transport_mode.value;
+  const open = serviceWrapper.querySelector(`label[data-label-${mode}]`) !== null;
+  serviceWrapper.classList.toggle("is-open", open);
+  serviceWrapper.toggleAttribute("inert", !open);
+  serviceWrapper.setAttribute("aria-hidden", String(!open));
+  if (!open) return;
+  serviceWrapper.querySelectorAll("label").forEach((label) => {
+    label.textContent = label.dataset[`label${mode[0].toUpperCase()}${mode.slice(1)}`];
+    document.getElementById(label.htmlFor).placeholder = label.dataset[`example${mode[0].toUpperCase()}${mode.slice(1)}`];
+  });
+}
+
+form.querySelectorAll('input[name="transport_mode"]').forEach((input) => input.addEventListener("change", syncService));
+
 /* --- Aller-retour ------------------------------------------------------- */
 
 const roundTrip = form.elements.is_round_trip;
@@ -115,6 +134,9 @@ document.addEventListener("languagechange", () => {
     round: roundTrip.checked,
     ret: returnInput.value,
     notes: form.elements.notes.value,
+    carrier: form.elements.carrier.value,
+    service_number: form.elements.service_number.value,
+    vehicle: form.elements.vehicle.value,
   };
   try { sessionStorage.setItem(draftKey, JSON.stringify(draft)); } catch { /* ignoré */ }
 });
@@ -134,7 +156,11 @@ document.addEventListener("languagechange", () => {
   roundTrip.checked = draft.round;
   returnInput.value = draft.ret;
   if (draft.notes !== undefined) form.elements.notes.value = draft.notes;
+  for (const key of ["carrier", "service_number", "vehicle"]) {
+    if (draft[key] !== undefined) form.elements[key].value = draft[key];
+  }
 })();
 
 syncRoundTrip();
 syncMinReturn();
+syncService();

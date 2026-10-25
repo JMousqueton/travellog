@@ -63,6 +63,7 @@ class Config:
 
     # Photos (dossier par défaut : instance/uploads) et taille maximale des requêtes.
     UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER", "")
+    IMPORT_FOLDER = os.environ.get("IMPORT_FOLDER", "")  # aperçus d'import en attente (défaut : instance/imports)
     MAX_PHOTO_BYTES = int(os.environ.get("MAX_PHOTO_MB", "15")) * 1024 * 1024
     MAX_PHOTOS_PER_ITEM = int(os.environ.get("MAX_PHOTOS_PER_ITEM", "30"))
     MAX_CONTENT_LENGTH = int(os.environ.get("MAX_UPLOAD_MB", "64")) * 1024 * 1024
