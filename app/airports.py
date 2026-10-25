@@ -38,3 +38,17 @@ def _airlines():
 def find_airline(icao):
     """{icao, iata, name} d'une compagnie active, ou None."""
     return _airlines().get((icao or "").strip().upper())
+
+
+@lru_cache(maxsize=1)
+def _airlines_by_iata():
+    index = {}
+    for row in _airlines().values():
+        if row["iata"]:
+            index.setdefault(row["iata"], row)  # code IATA partagé : la première compagnie active
+    return index
+
+
+def find_airline_by_iata(iata):
+    """Compagnie active d'un code IATA (« AF »), ou None."""
+    return _airlines_by_iata().get((iata or "").strip().upper())

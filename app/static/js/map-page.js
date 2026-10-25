@@ -87,7 +87,37 @@ function writeUrl(params) {
   history.replaceState(null, "", window.location.pathname + (query ? `?${query}` : ""));
 }
 
+/* --- Filtre rapide par année ------------------------------------------- */
+
+const yearButtons = [...document.querySelectorAll(".year-filter [data-year]")];
+
+/** Année dont la période filtrée couvre exactement le 1er janvier - 31 décembre, sinon "". */
+function selectedYear() {
+  const { from, to } = filtersForm.elements;
+  const year = from.value.slice(0, 4);
+  return from.value === `${year}-01-01` && to.value === `${year}-12-31` ? year : "";
+}
+
+function syncYearButtons() {
+  const { from, to } = filtersForm.elements;
+  const current = selectedYear() || (!from.value && !to.value ? "" : null);  // null : période libre
+  yearButtons.forEach((button) => {
+    const active = button.dataset.year === current;
+    button.classList.toggle("btn-primary", active);
+    button.classList.toggle("btn-outline-secondary", !active);
+    button.setAttribute("aria-pressed", String(active));
+  });
+}
+
+yearButtons.forEach((button) => button.addEventListener("click", () => {
+  const { year } = button.dataset;
+  filtersForm.elements.from.value = year ? `${year}-01-01` : "";
+  filtersForm.elements.to.value = year ? `${year}-12-31` : "";
+  load();
+}));
+
 function updateFilterBadge(params) {
+  syncYearButtons();
   const count = ["from", "to", "modes", "tags", "kind", "when"].filter((key) => params.has(key)).length;
   $("activeFilters").hidden = count === 0;
   $("activeFilters").textContent = count;
@@ -137,7 +167,10 @@ async function load() {
     const yearQuery = new URLSearchParams(params);
     yearQuery.delete("from");
     yearQuery.delete("to");
-    yearQuery.set("year", mapEl.dataset.year);
+    // Année choisie avec les boutons d'année, sinon l'année en cours.
+    const dashboardYear = selectedYear() || mapEl.dataset.year;
+    yearQuery.set("year", dashboardYear);
+    if ($("dashboardYear")) $("dashboardYear").textContent = dashboardYear;
     const optional = (url) => fetchJson(url, controller.signal).catch((error) => {
       if (error.name === "AbortError") throw error;
       return null; // couches facultatives

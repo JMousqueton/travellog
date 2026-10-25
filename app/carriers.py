@@ -1,6 +1,6 @@
-"""Suggestions pour le champ compagnie / opérateur : principales compagnies aériennes et ferroviaires.
+"""Suggestions des champs compagnie / opérateur et appareil : principales compagnies et principaux avions.
 
-Le formulaire propose d'abord celles déjà saisies par l'utilisateur, puis ces listes (sans doublon).
+Le formulaire propose d'abord les valeurs déjà saisies par l'utilisateur, puis ces listes (sans doublon).
 """
 AIRLINES = [
     "Air France", "KLM", "Transavia", "HOP!", "Air Corsica", "Corsair", "Air Caraïbes", "French bee",
@@ -26,17 +26,36 @@ RAIL_OPERATORS = [
     "JR East", "JR Central", "JR West", "Korail", "China Railway", "Indian Railways",
 ]
 
-SUGGESTIONS = {"plane": AIRLINES, "train": RAIL_OPERATORS}
+AIRCRAFT = [
+    "Airbus A220-100", "Airbus A220-300", "Airbus A318", "Airbus A319", "Airbus A319neo", "Airbus A320",
+    "Airbus A320neo", "Airbus A321", "Airbus A321neo", "Airbus A321XLR", "Airbus A330-200", "Airbus A330-300",
+    "Airbus A330-900neo", "Airbus A340-300", "Airbus A350-900", "Airbus A350-1000", "Airbus A380-800",
+    "Boeing 717-200", "Boeing 737-700", "Boeing 737-800", "Boeing 737-900", "Boeing 737 MAX 8", "Boeing 737 MAX 9",
+    "Boeing 747-400", "Boeing 747-8", "Boeing 757-200", "Boeing 767-300ER", "Boeing 777-200ER", "Boeing 777-300ER",
+    "Boeing 787-8", "Boeing 787-9", "Boeing 787-10", "Embraer 170", "Embraer 175", "Embraer 190", "Embraer 195",
+    "Embraer 190-E2", "Embraer 195-E2", "ATR 42-600", "ATR 72-600", "De Havilland Canada Dash 8-400",
+    "Bombardier CRJ700", "Bombardier CRJ900", "Bombardier CRJ1000", "Comac C919",
+]
+
+SUGGESTIONS = {"carrier": {"plane": AIRLINES, "train": RAIL_OPERATORS}, "vehicle": {"plane": AIRCRAFT}}
 
 
-def carrier_suggestions(user, mode):
-    """Compagnies déjà saisies par l'utilisateur pour ce mode (les plus fréquentes d'abord), puis la liste."""
+def _suggestions(user, mode, field):
+    """Valeurs déjà saisies par l'utilisateur pour ce mode (les plus fréquentes d'abord), puis la liste."""
     from collections import Counter
 
     used = Counter()
     for trip in user.trips.filter_by(transport_mode=mode):
-        for name in (trip.carrier or "").split(" / "):
+        for name in (getattr(trip, field) or "").split(" / "):  # « A321 / A320 » : aller et retour
             if name.strip():
                 used[name.strip()] += 1
-    names = [name for name, _count in used.most_common()] + SUGGESTIONS.get(mode, [])
+    names = [name for name, _count in used.most_common()] + SUGGESTIONS[field].get(mode, [])
     return list(dict.fromkeys(names))
+
+
+def carrier_suggestions(user, mode):
+    return _suggestions(user, mode, "carrier")
+
+
+def vehicle_suggestions(user, mode):
+    return _suggestions(user, mode, "vehicle")

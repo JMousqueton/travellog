@@ -1,12 +1,17 @@
 {# Éléments communs à la vue d'ensemble des statistiques et aux pages d'année. #}
 {% from "partials/macros.html" import mode_badge, badge_tile with context %}
 
+{# Tuiles de chiffres : (icône, valeur, libellé) ou (icône, valeur, libellé, évolution) — voir year_comparison. #}
 {% macro tiles(items) %}
 <div class="stats-grid">
-  {% for icon, value, label in items %}
+  {% for item in items %}
+  {% set delta = item[3] if item|length > 3 else None %}
   <div class="stat-card">
-    <span class="stat-icon" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></span>
-    <div><div class="stat-value">{{ value }}</div><div class="stat-label">{{ label }}</div></div>
+    <span class="stat-icon" aria-hidden="true"><i class="fa-solid {{ item[0] }}"></i></span>
+    <div><div class="stat-value">{{ item[1] }}</div><div class="stat-label">{{ item[2] }}</div>
+      {% if delta %}<div class="stat-delta tone-{{ delta.tone }}">
+        <i class="fa-solid {{ {'up': 'fa-arrow-trend-up', 'down': 'fa-arrow-trend-down', 'flat': 'fa-equals'}[delta.trend] }} me-1" aria-hidden="true"></i>{{ delta.text }}</div>{% endif %}
+    </div>
   </div>
   {% endfor %}
 </div>
@@ -89,17 +94,23 @@
 {% set review = d.review %}
 <section aria-labelledby="yearTotals{{ y }}" class="mb-4">
   <h2 class="visually-hidden" id="yearTotals{{ y }}">{{ _("Chiffres de %(year)s", year=y) }}</h2>
+  {% set cmp = d.comparison or {} %}
   {% set items = [
-    ('fa-suitcase', d.totals.count_fmt, _("Voyages")),
-    ('fa-route', d.totals.total_distance_fmt, _("Distance estimée")),
+    ('fa-suitcase', d.totals.count_fmt, _("Voyages"), cmp.count),
+    ('fa-route', d.totals.total_distance_fmt, _("Distance estimée"), cmp.distance),
     ('fa-earth-europe', d.totals.countries_fmt,
      ngettext("pays, dont %(num)s nouveau", "pays, dont %(num)s nouveaux", review.new_countries|length)
-     if review.new_countries else _("Pays et territoires")),
+     if review.new_countries else _("Pays et territoires"), cmp.countries),
     ('fa-location-dot', d.places|length|number, _("Lieux visités")),
-    ('fa-smog', d.totals.co2_fmt, _("CO₂ estimé")),
+    ('fa-smog', d.totals.co2_fmt, _("CO₂ estimé"), cmp.co2),
   ] %}
   {% if d.away %}{% set items = items + [('fa-calendar-days', d.away.days|number, ngettext("jour loin de chez moi", "jours loin de chez moi", d.away.days))] %}{% endif %}
   {{ tiles(items) }}
+  {% if d.comparison %}
+  <p class="small text-body-secondary mt-2 mb-0"><i class="fa-solid fa-scale-balanced me-1" aria-hidden="true"></i>
+    {% if d.comparison.same_date %}{{ _("Évolution par rapport à %(year)s à la même date.", year=d.comparison.year) }}
+    {% else %}{{ _("Évolution par rapport à %(year)s.", year=d.comparison.year) }}{% endif %}</p>
+  {% endif %}
 </section>
 
 <div class="row g-4 mb-5">

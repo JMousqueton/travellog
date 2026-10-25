@@ -14,6 +14,7 @@
 {% if has_trips %}
 <form method="get" action="{{ url_for('trips.list_view') }}" class="search-form mb-3" role="search">
   {% if sort != 'date_desc' %}<input type="hidden" name="sort" value="{{ sort }}">{% endif %}
+  {% if year %}<input type="hidden" name="year" value="{{ year }}">{% endif %}
   <label class="visually-hidden" for="tripSearch">{{ _("Rechercher") }}</label>
   <div class="input-icon flex-grow-1">
     <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
@@ -22,10 +23,18 @@
   </div>
   <button type="submit" class="btn btn-outline-primary rounded-pill px-3">{{ _("Rechercher") }}</button>
 </form>
+{# Filtre rapide par année ; la recherche et le tri sont conservés. #}
+<nav class="year-filter mb-3" aria-label="{{ _('Année') }}">
+  {% for y in [None] + years %}
+  <a class="btn btn-sm rounded-pill {{ 'btn-primary' if y == year else 'btn-outline-secondary' }}"
+     href="{{ url_for('trips.list_view', year=y, q=q or None, sort=sort if sort != 'date_desc' else None) }}"
+     {% if y == year %}aria-current="page"{% endif %}>{{ y or _("Tout") }}</a>
+  {% endfor %}
+</nav>
 {% if q %}
 <p class="small text-body-secondary" role="status">
   {{ ngettext("%(num)s trajet trouvé pour « %(query)s ».", "%(num)s trajets trouvés pour « %(query)s ».", match_count, query=q) }}
-  <a href="{{ url_for('trips.list_view', sort=sort if sort != 'date_desc' else None) }}">{{ _("Effacer la recherche") }}</a>
+  <a href="{{ url_for('trips.list_view', sort=sort if sort != 'date_desc' else None, year=year) }}">{{ _("Effacer la recherche") }}</a>
 </p>
 {% endif %}
 {% endif %}
@@ -95,7 +104,7 @@
           {% set active = sort == key or (key == 'date_desc' and sort == 'date_asc') %}
           {% set next_sort = 'date_asc' if sort == 'date_desc' and key == 'date_desc' else key %}
           <th scope="col" {% if active %}aria-sort="{{ 'ascending' if sort in ('date_asc', 'origin') else 'descending' }}"{% endif %}>
-            <a class="sort-link" href="{{ url_for('trips.list_view', sort=next_sort, q=q or None) }}">{{ label }}
+            <a class="sort-link" href="{{ url_for('trips.list_view', sort=next_sort, q=q or None, year=year) }}">{{ label }}
               {% if active %}<i class="fa-solid {{ 'fa-arrow-up' if sort in ('date_asc', 'origin') else 'fa-arrow-down' }} ms-1" aria-hidden="true"></i>{% endif %}
             </a>
           </th>

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-25 15:17+0000\n"
+"POT-Creation-Date: 2026-10-25 15:38+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -100,10 +100,10 @@ msgstr "La cuenta %(email)s se ha eliminado."
 msgid "Paramètres enregistrés."
 msgstr "Ajustes guardados."
 
-#: app/api/routes.py:124 app/api/routes.py:136
+#: app/api/routes.py:126 app/api/routes.py:138
 #: app/templates/admin/users.html:34 app/templates/share/trips.html:52
-#: app/templates/trips/_stats_parts.html:55
-#: app/templates/trips/_stats_parts.html:142 app/templates/trips/list.html:126
+#: app/templates/trips/_stats_parts.html:60
+#: app/templates/trips/_stats_parts.html:153 app/templates/trips/list.html:135
 #: app/templates/trips/stats.html:67 app/templates/trips/stats.html:84
 #, python-format
 msgid "%(num)s trajet"
@@ -111,7 +111,11 @@ msgid_plural "%(num)s trajets"
 msgstr[0] "%(num)s trayecto"
 msgstr[1] "%(num)s trayectos"
 
-#: app/api/routes.py:178
+#: app/api/routes.py:179
+msgid "Numéro de vol inconnu."
+msgstr "Número de vuelo desconocido."
+
+#: app/api/routes.py:191
 msgid "Recherche trop longue."
 msgstr "La búsqueda es demasiado larga."
 
@@ -358,7 +362,7 @@ msgid "Mot de passe modifié. Vous pouvez vous connecter."
 msgstr "Contraseña cambiada. Ya puedes iniciar sesión."
 
 #: app/i18n.py:66 app/i18n.py:135 app/templates/partials/macros.html:38
-#: app/templates/trips/_stats_parts.html:267
+#: app/templates/trips/_stats_parts.html:278
 msgid "En cours"
 msgstr "En curso"
 
@@ -373,7 +377,7 @@ msgid_plural "Dans %(num)s jours"
 msgstr[0] "En %(num)s día"
 msgstr[1] "En %(num)s días"
 
-#: app/i18n.py:86 app/templates/map.html:167
+#: app/i18n.py:86 app/templates/map.html:178
 msgid "Chargement…"
 msgstr "Cargando…"
 
@@ -385,12 +389,12 @@ msgstr "No se han podido cargar los viajes. Inténtalo de nuevo."
 msgid "Réessayer"
 msgstr "Reintentar"
 
-#: app/i18n.py:89 app/templates/trips/list.html:168
+#: app/i18n.py:89 app/templates/trips/list.html:177
 #: app/templates/trips/stats.html:45
 msgid "Aucun voyage pour l'instant"
 msgstr "Todavía no hay viajes"
 
-#: app/i18n.py:90 app/templates/trips/list.html:169
+#: app/i18n.py:90 app/templates/trips/list.html:178
 #: app/templates/trips/stats.html:46
 msgid "Ajoutez votre premier voyage pour le voir apparaître sur la carte."
 msgstr "Añade tu primer viaje para verlo en el mapa."
@@ -408,18 +412,18 @@ msgid "Réinitialiser les filtres"
 msgstr "Restablecer filtros"
 
 #: app/i18n.py:94 app/templates/base.html:157 app/templates/base.html:158
-#: app/templates/map.html:176 app/templates/trips/list.html:11
-#: app/templates/trips/list.html:171
+#: app/templates/map.html:187 app/templates/trips/list.html:11
+#: app/templates/trips/list.html:180
 msgid "Ajouter un voyage"
 msgstr "Añadir un viaje"
 
 #: app/i18n.py:95 app/templates/trips/detail.html:31
-#: app/templates/trips/list.html:136
+#: app/templates/trips/list.html:145
 msgid "Modifier"
 msgstr "Editar"
 
 #: app/i18n.py:96 app/templates/base.html:235
-#: app/templates/trips/detail.html:111 app/templates/trips/form.html:142
+#: app/templates/trips/detail.html:111 app/templates/trips/form.html:143
 msgid "Supprimer"
 msgstr "Eliminar"
 
@@ -428,12 +432,12 @@ msgstr "Eliminar"
 msgid "Afficher %(route)s sur la carte"
 msgstr "Mostrar %(route)s en el mapa"
 
-#: app/i18n.py:98 app/templates/trips/list.html:72
+#: app/i18n.py:98 app/templates/trips/list.html:81
 #, python-format
 msgid "Modifier le voyage %(route)s"
 msgstr "Editar el viaje %(route)s"
 
-#: app/i18n.py:99 app/templates/trips/list.html:77
+#: app/i18n.py:99 app/templates/trips/list.html:86
 #, python-format
 msgid "Supprimer le voyage %(route)s"
 msgstr "Eliminar el viaje %(route)s"
@@ -449,20 +453,20 @@ msgid "Retour"
 msgstr "Regreso"
 
 #: app/i18n.py:102 app/templates/share/trips.html:38
-#: app/templates/trips/_stats_parts.html:191 app/templates/trips/detail.html:50
-#: app/templates/trips/list.html:107
+#: app/templates/trips/_stats_parts.html:202 app/templates/trips/detail.html:50
+#: app/templates/trips/list.html:116
 #: app/templates/trips/transport_stats.html:16
 msgid "Distance"
 msgstr "Distancia"
 
-#: app/i18n.py:103 app/templates/map.html:118 app/templates/share/trips.html:17
-#: app/templates/transfer/preview.html:59 app/templates/trips/list.html:50
+#: app/i18n.py:103 app/templates/map.html:129 app/templates/share/trips.html:17
+#: app/templates/transfer/preview.html:59 app/templates/trips/list.html:59
 #: app/trips/forms.py:58
 msgid "Aller-retour"
 msgstr "Ida y vuelta"
 
-#: app/i18n.py:104 app/templates/map.html:118 app/templates/share/trips.html:17
-#: app/templates/trips/list.html:50 app/templates/trips/stats.html:31
+#: app/i18n.py:104 app/templates/map.html:129 app/templates/share/trips.html:17
+#: app/templates/trips/list.html:59 app/templates/trips/stats.html:31
 msgid "Aller simple"
 msgstr "Solo ida"
 
@@ -490,7 +494,7 @@ msgstr "Vuelta (punteado)"
 msgid "Voyages passant par ce lieu"
 msgstr "Viajes por este lugar"
 
-#: app/i18n.py:111 app/templates/map.html:160
+#: app/i18n.py:111 app/templates/map.html:171
 msgid "Carte des voyages"
 msgstr "Mapa de viajes"
 
@@ -502,7 +506,7 @@ msgstr "colaboradores de OpenStreetMap"
 msgid "Aucun lieu trouvé"
 msgstr "No se ha encontrado ningún lugar"
 
-#: app/api/routes.py:183 app/i18n.py:114 app/trips/routes.py:114
+#: app/api/routes.py:196 app/i18n.py:114 app/trips/routes.py:116
 msgid "La recherche de lieux est momentanément indisponible."
 msgstr "La búsqueda de lugares no está disponible temporalmente."
 
@@ -574,7 +578,7 @@ msgstr "Este campo es obligatorio."
 msgid "La date de début doit précéder la date de fin."
 msgstr "La fecha de inicio debe ser anterior a la de fin."
 
-#: app/i18n.py:131 app/templates/trips/_stats_parts.html:133
+#: app/i18n.py:131 app/templates/trips/_stats_parts.html:144
 #: app/templates/trips/stats.html:60
 msgid "Pays visités"
 msgstr "Países visitados"
@@ -583,12 +587,12 @@ msgstr "Países visitados"
 msgid "Fiche"
 msgstr "Ficha"
 
-#: app/i18n.py:133 app/templates/trips/list.html:69
+#: app/i18n.py:133 app/templates/trips/list.html:78
 #, python-format
 msgid "Fiche du trajet %(route)s"
 msgstr "Ficha del trayecto %(route)s"
 
-#: app/i18n.py:134 app/templates/map.html:109 app/templates/trips/stats.html:19
+#: app/i18n.py:134 app/templates/map.html:120 app/templates/trips/stats.html:19
 msgid "À venir"
 msgstr "Próximos"
 
@@ -596,7 +600,7 @@ msgstr "Próximos"
 msgid "À venir (estompé)"
 msgstr "Próximos (atenuados)"
 
-#: app/i18n.py:137 app/templates/trips/_stats_parts.html:98
+#: app/i18n.py:137 app/templates/trips/_stats_parts.html:104
 #: app/templates/trips/stats.html:76
 msgid "Lieux visités"
 msgstr "Lugares visitados"
@@ -636,6 +640,32 @@ msgstr "Sin conexión: ves los datos de tu última visita."
 #: app/i18n.py:146
 msgid "Connexion rétablie."
 msgstr "Conexión restablecida."
+
+#: app/i18n.py:147
+msgid "Recherche du vol…"
+msgstr "Buscando el vuelo…"
+
+#: app/i18n.py:148
+msgid "Vol inconnu : renseignez la compagnie et les lieux vous-même."
+msgstr "Vuelo desconocido: indica tú la aerolínea y los lugares."
+
+#: app/i18n.py:149
+msgid ""
+"Compagnie, départ et arrivée remplis d'après le numéro de vol : vérifiez-"
+"les."
+msgstr ""
+"Aerolínea, salida y llegada completadas a partir del número de vuelo: "
+"compruébalas."
+
+#: app/i18n.py:150
+msgid "Compagnie complétée ; départ et arrivée déjà saisis, conservés."
+msgstr ""
+"Aerolínea completada; la salida y la llegada ya estaban indicadas y se "
+"conservan."
+
+#: app/i18n.py:151
+msgid "Compagnie trouvée ; itinéraire inconnu pour ce numéro."
+msgstr "Aerolínea encontrada; ruta desconocida para este número."
 
 #: app/photos.py:50
 #, python-format
@@ -707,7 +737,7 @@ msgstr "Nuevos países"
 #: app/templates/base.html:19 app/templates/base.html:20
 #: app/templates/base.html:84 app/templates/landing.html:7
 #: app/templates/pwa/offline.html:7 app/transfer/routes.py:57
-#: app/trips/routes.py:463 app/trips/routes.py:479 app/trips/routes.py:524
+#: app/trips/routes.py:476 app/trips/routes.py:492 app/trips/routes.py:537
 msgid "Carnet de voyages"
 msgstr "Cuaderno de viajes"
 
@@ -815,7 +845,7 @@ msgstr "Lista de usuarios"
 msgid "Inscription"
 msgstr "Registro"
 
-#: app/templates/admin/users.html:16 app/templates/trips/list.html:108
+#: app/templates/admin/users.html:16 app/templates/trips/list.html:117
 msgid "Actions"
 msgstr "Acciones"
 
@@ -933,7 +963,7 @@ msgstr "El modo automático sigue la configuración de tu dispositivo."
 
 #: app/templates/auth/profile.html:24 app/templates/auth/profile.html:56
 #: app/templates/auth/profile.html:79 app/templates/auth/reset.html:12
-#: app/templates/trips/form.html:147
+#: app/templates/trips/form.html:148
 msgid "Enregistrement…"
 msgstr "Guardando…"
 
@@ -1156,10 +1186,10 @@ msgid "Statistiques"
 msgstr "Estadísticas"
 
 #: app/templates/admin/users.html:15 app/templates/base.html:125
-#: app/templates/map.html:34 app/templates/map.html:129
-#: app/templates/trips/_stats_parts.html:93
-#: app/templates/trips/_stats_parts.html:190
-#: app/templates/trips/_stats_parts.html:219
+#: app/templates/map.html:45 app/templates/map.html:140
+#: app/templates/trips/_stats_parts.html:99
+#: app/templates/trips/_stats_parts.html:201
+#: app/templates/trips/_stats_parts.html:230
 msgid "Voyages"
 msgstr "Viajes"
 
@@ -1221,7 +1251,7 @@ msgid "Cette action est définitive."
 msgstr "Esta acción es definitiva."
 
 #: app/templates/base.html:233 app/templates/transfer/preview.html:73
-#: app/templates/trips/form.html:146 app/templates/trips/journey.html:29
+#: app/templates/trips/form.html:147 app/templates/trips/journey.html:29
 msgid "Annuler"
 msgstr "Cancelar"
 
@@ -1408,7 +1438,7 @@ msgstr "Alojamiento"
 msgid "Téléphone : %(phone)s"
 msgstr "Teléfono: %(phone)s"
 
-#: app/templates/legal/notice.html:17 app/templates/legal/privacy.html:54
+#: app/templates/legal/notice.html:17 app/templates/legal/privacy.html:55
 #, python-format
 msgid "Le site et ses données sont hébergés à %(location)s."
 msgstr "El sitio y sus datos están alojados en %(location)s."
@@ -1476,7 +1506,7 @@ msgstr ""
 "indicativo. El editor procura que el servicio esté disponible, sin poder "
 "garantizarlo; descarga tu copia de seguridad con regularidad."
 
-#: app/templates/legal/notice.html:44 app/templates/legal/privacy.html:104
+#: app/templates/legal/notice.html:44 app/templates/legal/privacy.html:105
 #, python-format
 msgid "Dernière mise à jour : %(date)s"
 msgstr "Última actualización: %(date)s"
@@ -1653,6 +1683,18 @@ msgstr ""
 "le transmite."
 
 #: app/templates/legal/privacy.html:47
+msgid ""
+"Numéro de vol : quand vous saisissez un numéro de vol, notre serveur "
+"demande son itinéraire habituel au service adsbdb (adsbdb.com) pour "
+"pré-remplir la compagnie et les lieux. Seul le numéro de vol est "
+"transmis, sans votre adresse IP ni votre compte."
+msgstr ""
+"Número de vuelo: cuando indicas un número de vuelo, nuestro servidor pide"
+" su ruta habitual al servicio adsbdb (adsbdb.com) para completar la "
+"aerolínea y los lugares. Solo se transmite el número de vuelo, sin tu "
+"dirección IP ni tu cuenta."
+
+#: app/templates/legal/privacy.html:48
 #, python-format
 msgid ""
 "Fonds de carte : votre navigateur télécharge les tuiles de la carte "
@@ -1661,7 +1703,7 @@ msgstr ""
 "Mapas base: tu navegador descarga las teselas del mapa desde %(host)s, "
 "que recibe por tanto tu dirección IP."
 
-#: app/templates/legal/privacy.html:48
+#: app/templates/legal/privacy.html:49
 msgid ""
 "Mesure d'audience : votre navigateur envoie les pages consultées à "
 "l'outil Matomo de l'éditeur (stats.mousqueton.io), qui reçoit donc votre "
@@ -1677,7 +1719,7 @@ msgstr ""
 "antes del envío. Estas estadísticas no se cruzan con tu cuenta ni se "
 "comparten con nadie."
 
-#: app/templates/legal/privacy.html:49
+#: app/templates/legal/privacy.html:50
 msgid ""
 "Bibliothèques et polices de caractères : votre navigateur les télécharge "
 "depuis jsDelivr, cdnjs (Cloudflare) et Google Fonts, qui reçoivent votre "
@@ -1686,7 +1728,7 @@ msgstr ""
 "Bibliotecas y fuentes: tu navegador las descarga desde jsDelivr, cdnjs "
 "(Cloudflare) y Google Fonts, que reciben tu dirección IP."
 
-#: app/templates/legal/privacy.html:50
+#: app/templates/legal/privacy.html:51
 msgid ""
 "Distances routières : les coordonnées de départ et d'arrivée des trajets "
 "en voiture ou en bus sont envoyées par notre serveur à un service de "
@@ -1696,7 +1738,7 @@ msgstr ""
 "salida y llegada de los trayectos en coche o autobús a un servicio de "
 "cálculo de rutas (OSRM)."
 
-#: app/templates/legal/privacy.html:51
+#: app/templates/legal/privacy.html:52
 msgid ""
 "Agenda : si vous activez l'abonnement, votre service d'agenda récupère "
 "vos dates et lieux de voyage (sans les notes) à l'adresse secrète que "
@@ -1706,7 +1748,7 @@ msgstr ""
 "tus fechas y lugares de viaje (sin las notas) en la dirección secreta que"
 " le das."
 
-#: app/templates/legal/privacy.html:52
+#: app/templates/legal/privacy.html:53
 msgid ""
 "Liens de partage : toute personne qui possède un de vos liens voit les "
 "voyages qu'il montre. Vous pouvez révoquer un lien à tout moment."
@@ -1714,15 +1756,15 @@ msgstr ""
 "Enlaces para compartir: cualquiera que tenga uno de tus enlaces ve los "
 "viajes que muestra. Puedes revocar un enlace en cualquier momento."
 
-#: app/templates/legal/privacy.html:54
+#: app/templates/legal/privacy.html:55
 msgid "Les e-mails sont envoyés directement par notre serveur."
 msgstr "Los correos se envían directamente desde nuestro servidor."
 
-#: app/templates/legal/privacy.html:58
+#: app/templates/legal/privacy.html:59
 msgid "Durées de conservation"
 msgstr "Plazos de conservación"
 
-#: app/templates/legal/privacy.html:60
+#: app/templates/legal/privacy.html:61
 msgid ""
 "Compte et contenus : tant que votre compte existe. Supprimer votre compte"
 " efface immédiatement vos données et vos photos du site."
@@ -1730,7 +1772,7 @@ msgstr ""
 "Cuenta y contenidos: mientras exista tu cuenta. Eliminar tu cuenta borra "
 "inmediatamente tus datos y fotos del sitio."
 
-#: app/templates/legal/privacy.html:61
+#: app/templates/legal/privacy.html:62
 #, python-format
 msgid ""
 "Sauvegardes : des copies de sécurité sont faites chaque nuit et "
@@ -1741,23 +1783,23 @@ msgstr ""
 "como máximo; tus datos desaparecen de ellas como tarde %(days)s días "
 "después de borrarlos."
 
-#: app/templates/legal/privacy.html:62
+#: app/templates/legal/privacy.html:63
 #, python-format
 msgid "Journaux du serveur web : %(days)s jours."
 msgstr "Registros del servidor web: %(days)s días."
 
-#: app/templates/legal/privacy.html:63
+#: app/templates/legal/privacy.html:64
 msgid "Mesure d'audience : 25 mois au plus."
 msgstr "Medición de audiencia: 25 meses como máximo."
 
-#: app/templates/legal/privacy.html:64
+#: app/templates/legal/privacy.html:65
 #, python-format
 msgid ""
 "Cache des recherches de lieux (sans lien avec votre compte) : %(days)s "
 "jours."
 msgstr "Caché de búsquedas de lugares (sin relación con tu cuenta): %(days)s días."
 
-#: app/templates/legal/privacy.html:65
+#: app/templates/legal/privacy.html:66
 #, python-format
 msgid ""
 "Liens envoyés par e-mail : %(signup)s minutes pour l'inscription, "
@@ -1766,11 +1808,11 @@ msgstr ""
 "Enlaces enviados por correo: %(signup)s minutos para el registro, "
 "%(reset)s minutos para restablecer la contraseña."
 
-#: app/templates/legal/privacy.html:70
+#: app/templates/legal/privacy.html:71
 msgid "Cookies et stockage local"
 msgstr "Cookies y almacenamiento local"
 
-#: app/templates/legal/privacy.html:71
+#: app/templates/legal/privacy.html:72
 msgid ""
 "Le site n'utilise aucun cookie publicitaire. Les éléments déposés sont "
 "nécessaires à son fonctionnement, mémorisent vos choix ou servent à une "
@@ -1783,11 +1825,11 @@ msgstr ""
 "sitio, conforme a las condiciones de exención de la CNIL; por eso no "
 "requieren consentimiento:"
 
-#: app/templates/legal/privacy.html:73
+#: app/templates/legal/privacy.html:74
 msgid "maintient votre connexion et protège les formulaires (cookie de session)."
 msgstr "mantiene tu sesión y protege los formularios (cookie de sesión)."
 
-#: app/templates/legal/privacy.html:74
+#: app/templates/legal/privacy.html:75
 msgid ""
 "uniquement si vous cochez « Rester connecté » : vous reconnecte "
 "automatiquement (365 jours)."
@@ -1795,11 +1837,11 @@ msgstr ""
 "solo si marcas «Mantener la sesión iniciada»: te vuelve a conectar "
 "automáticamente (365 días)."
 
-#: app/templates/legal/privacy.html:75
+#: app/templates/legal/privacy.html:76
 msgid "mémorise la langue choisie (1 an)."
 msgstr "recuerda el idioma elegido (1 año)."
 
-#: app/templates/legal/privacy.html:76
+#: app/templates/legal/privacy.html:77
 msgid ""
 "mesure d'audience Matomo : distinguent les visites sans vous identifier "
 "(13 mois et 30 minutes)."
@@ -1807,7 +1849,7 @@ msgstr ""
 "medición de audiencia Matomo: distinguen las visitas sin identificarte "
 "(13 meses y 30 minutos)."
 
-#: app/templates/legal/privacy.html:77
+#: app/templates/legal/privacy.html:78
 msgid ""
 "Stockage local du navigateur : thème clair ou sombre, couches de carte "
 "affichées, brouillon d'un trajet en cours de saisie. Ces données ne "
@@ -1817,7 +1859,7 @@ msgstr ""
 "mostradas, borrador de un trayecto en curso. Estos datos no salen de tu "
 "dispositivo."
 
-#: app/templates/legal/privacy.html:79
+#: app/templates/legal/privacy.html:80
 msgid ""
 "Vous pouvez refuser la mesure d'audience : le site cessera alors de vous "
 "compter sur ce navigateur (un cookie mémorise ce choix)."
@@ -1825,27 +1867,27 @@ msgstr ""
 "Puedes rechazar la medición de audiencia: el sitio dejará de contarte en "
 "este navegador (una cookie recuerda esta elección)."
 
-#: app/templates/legal/privacy.html:81
+#: app/templates/legal/privacy.html:82
 msgid "Accepter à nouveau d'être compté"
 msgstr "Volver a contarme"
 
-#: app/templates/legal/privacy.html:81 app/templates/legal/privacy.html:83
+#: app/templates/legal/privacy.html:82 app/templates/legal/privacy.html:84
 msgid "Ne plus être compté"
 msgstr "No contarme más"
 
-#: app/templates/legal/privacy.html:82
+#: app/templates/legal/privacy.html:83
 msgid "Vous n'êtes plus compté dans les statistiques."
 msgstr "Ya no se te cuenta en las estadísticas."
 
-#: app/templates/legal/privacy.html:82
+#: app/templates/legal/privacy.html:83
 msgid "Vous êtes compté dans les statistiques anonymes."
 msgstr "Se te cuenta en las estadísticas anónimas."
 
-#: app/templates/legal/privacy.html:88
+#: app/templates/legal/privacy.html:89
 msgid "Sécurité"
 msgstr "Seguridad"
 
-#: app/templates/legal/privacy.html:89
+#: app/templates/legal/privacy.html:90
 msgid ""
 "Connexion chiffrée (HTTPS), mots de passe hachés, limitation des "
 "tentatives de connexion, déconnexion des autres sessions au changement de"
@@ -1855,11 +1897,11 @@ msgstr ""
 "inicio de sesión, cierre de las demás sesiones al cambiar la contraseña, "
 "copias de seguridad diarias."
 
-#: app/templates/legal/privacy.html:93
+#: app/templates/legal/privacy.html:94
 msgid "Vos droits"
 msgstr "Tus derechos"
 
-#: app/templates/legal/privacy.html:94
+#: app/templates/legal/privacy.html:95
 msgid ""
 "Vous disposez des droits d'accès, de rectification, d'effacement, de "
 "limitation, d'opposition et de portabilité de vos données. La plupart "
@@ -1869,7 +1911,7 @@ msgstr ""
 " y portabilidad de tus datos. La mayoría se ejercen directamente en la "
 "aplicación:"
 
-#: app/templates/legal/privacy.html:96
+#: app/templates/legal/privacy.html:97
 msgid ""
 "Accès et portabilité : page Importer / exporter (CSV, GeoJSON, GPX) ou "
 "sauvegarde complète avec vos photos (.zip)."
@@ -1877,7 +1919,7 @@ msgstr ""
 "Acceso y portabilidad: página Importar / exportar (CSV, GeoJSON, GPX) o "
 "copia completa con tus fotos (.zip)."
 
-#: app/templates/legal/privacy.html:97
+#: app/templates/legal/privacy.html:98
 msgid ""
 "Rectification : modifiez vos trajets, voyages et préférences à tout "
 "moment."
@@ -1885,11 +1927,11 @@ msgstr ""
 "Rectificación: modifica tus trayectos, viajes y preferencias en cualquier"
 " momento."
 
-#: app/templates/legal/privacy.html:98
+#: app/templates/legal/privacy.html:99
 msgid "Effacement : Préférences, puis « Supprimer mon compte »."
 msgstr "Supresión: Preferencias y luego «Eliminar mi cuenta»."
 
-#: app/templates/legal/privacy.html:100
+#: app/templates/legal/privacy.html:101
 msgid ""
 "Pour toute autre demande, écrivez à l'adresse de contact ci-dessus. Vous "
 "pouvez aussi adresser une réclamation à la CNIL :"
@@ -1903,7 +1945,7 @@ msgstr ""
 msgid "Carte partagée"
 msgstr "Mapa compartido"
 
-#: app/templates/map.html:14 app/templates/map.html:171
+#: app/templates/map.html:14 app/templates/map.html:182
 msgid "Voyages et filtres"
 msgstr "Viajes y filtros"
 
@@ -1912,106 +1954,115 @@ msgstr "Viajes y filtros"
 msgid "Vous consultez ces voyages en lecture seule."
 msgstr "Estás viendo estos viajes en modo de solo lectura."
 
-#: app/templates/map.html:29
+#: app/templates/map.html:30 app/templates/trips/list.html:27
+#: app/templates/trips/stats.html:145
+msgid "Année"
+msgstr "Año"
+
+#: app/templates/map.html:31 app/templates/trips/list.html:31
+msgid "Tout"
+msgstr "Todo"
+
+#: app/templates/map.html:39
 #, python-format
 msgid "Tableau de bord %(year)s"
 msgstr "Panel %(year)s"
 
-#: app/templates/map.html:39 app/templates/trips/_stats_parts.html:94
-#: app/templates/trips/_stats_parts.html:220
+#: app/templates/map.html:50 app/templates/trips/_stats_parts.html:100
+#: app/templates/trips/_stats_parts.html:231
 #: app/templates/trips/transport_stats.html:72
 msgid "Distance estimée"
 msgstr "Distancia estimada"
 
-#: app/templates/map.html:44 app/templates/trips/_stats_parts.html:97
-#: app/templates/trips/_stats_parts.html:221
+#: app/templates/map.html:55 app/templates/trips/_stats_parts.html:103
+#: app/templates/trips/_stats_parts.html:232
 msgid "Pays et territoires"
 msgstr "Países y territorios"
 
-#: app/templates/map.html:49 app/templates/trips/_stats_parts.html:99
-#: app/templates/trips/_stats_parts.html:192
-#: app/templates/trips/_stats_parts.html:224 app/templates/trips/detail.html:56
+#: app/templates/map.html:60 app/templates/trips/_stats_parts.html:105
+#: app/templates/trips/_stats_parts.html:203
+#: app/templates/trips/_stats_parts.html:235 app/templates/trips/detail.html:56
 msgid "CO₂ estimé"
 msgstr "CO₂ estimado"
 
-#: app/templates/map.html:54
+#: app/templates/map.html:65
 msgid "Prochain départ"
 msgstr "Próxima salida"
 
-#: app/templates/map.html:58
+#: app/templates/map.html:69
 msgid "Répartition par mode de transport"
 msgstr "Reparto por medio de transporte"
 
-#: app/templates/map.html:63
+#: app/templates/map.html:74
 msgid "Filtres"
 msgstr "Filtros"
 
-#: app/templates/map.html:66
+#: app/templates/map.html:77
 msgid "Réinitialiser"
 msgstr "Restablecer"
 
-#: app/templates/map.html:70
+#: app/templates/map.html:81
 msgid "Période de départ"
 msgstr "Periodo de salida"
 
-#: app/templates/map.html:73
+#: app/templates/map.html:84
 msgid "Du"
 msgstr "Desde"
 
-#: app/templates/map.html:77
+#: app/templates/map.html:88
 msgid "Au"
 msgstr "Hasta"
 
-#: app/templates/map.html:84
+#: app/templates/map.html:95
 msgid "Modes de transport"
 msgstr "Medios de transporte"
 
-#: app/templates/map.html:97 app/templates/trips/detail.html:59
+#: app/templates/map.html:108 app/templates/trips/detail.html:59
 #: app/trips/forms.py:30
 msgid "Étiquettes"
 msgstr "Etiquetas"
 
-#: app/templates/map.html:107
+#: app/templates/map.html:118
 msgid "Voyages passés ou à venir"
 msgstr "Viajes pasados o próximos"
 
-#: app/templates/map.html:109
+#: app/templates/map.html:120
 msgid "Passés"
 msgstr "Pasados"
 
-#: app/templates/map.html:109 app/templates/map.html:118
+#: app/templates/map.html:120 app/templates/map.html:129
 msgid "Tous"
 msgstr "Todos"
 
-#: app/templates/map.html:116
+#: app/templates/map.html:127
 msgid "Type de voyage"
 msgstr "Tipo de viaje"
 
-#: app/templates/map.html:132
+#: app/templates/map.html:143
 msgid "Trier par"
 msgstr "Ordenar por"
 
-#: app/templates/map.html:135
+#: app/templates/map.html:146
 msgid "Plus récents"
 msgstr "Más recientes"
 
-#: app/templates/map.html:136
+#: app/templates/map.html:147
 msgid "Plus anciens"
 msgstr "Más antiguos"
 
-#: app/templates/map.html:137
+#: app/templates/map.html:148
 msgid "Plus longs"
 msgstr "Más largos"
 
-#: app/templates/map.html:138
+#: app/templates/map.html:149
 msgid "Plus courts"
 msgstr "Más cortos"
 
-#: app/templates/map.html:139
+#: app/templates/map.html:150
 msgid "Origine (A → Z)"
 msgstr "Origen (A → Z)"
 
-#: app/templates/map.html:140
+#: app/templates/map.html:151
 msgid "Destination (A → Z)"
 msgstr "Destino (A → Z)"
 
@@ -2196,7 +2247,7 @@ msgid "Voyages partagés"
 msgstr "Viajes compartidos"
 
 #: app/templates/share/trips.html:35 app/templates/transfer/preview.html:43
-#: app/templates/trips/list.html:104
+#: app/templates/trips/list.html:113
 msgid "Date"
 msgstr "Fecha"
 
@@ -2205,7 +2256,7 @@ msgid "Trajet"
 msgstr "Trayecto"
 
 #: app/templates/share/trips.html:37 app/templates/transfer/preview.html:45
-#: app/templates/trips/detail.html:39 app/templates/trips/list.html:106
+#: app/templates/trips/detail.html:39 app/templates/trips/list.html:115
 msgid "Mode"
 msgstr "Medio"
 
@@ -2366,139 +2417,149 @@ msgstr "regreso el %(date)s"
 msgid "Déjà présent"
 msgstr "Ya existe"
 
-#: app/templates/trips/_stats_parts.html:35
+#: app/templates/trips/_stats_parts.html:40
 #, python-format
 msgid "%(num)s badge à obtenir"
 msgid_plural "%(num)s badges à obtenir"
 msgstr[0] "%(num)s insignia por conseguir"
 msgstr[1] "%(num)s insignias por conseguir"
 
-#: app/templates/trips/_stats_parts.html:45
+#: app/templates/trips/_stats_parts.html:50
 msgid "Avion et train"
 msgstr "Avión y tren"
 
-#: app/templates/trips/_stats_parts.html:54
+#: app/templates/trips/_stats_parts.html:59
 #, python-format
 msgid "%(num)s vol"
 msgid_plural "%(num)s vols"
 msgstr[0] "%(num)s vuelo"
 msgstr[1] "%(num)s vuelos"
 
-#: app/templates/trips/_stats_parts.html:58
+#: app/templates/trips/_stats_parts.html:63
 msgid "Voir le détail"
 msgstr "Ver el detalle"
 
-#: app/templates/trips/_stats_parts.html:62
+#: app/templates/trips/_stats_parts.html:67
 #: app/templates/trips/transport_stats.html:119
 msgid "Aéroports"
 msgstr "Aeropuertos"
 
-#: app/templates/trips/_stats_parts.html:62
+#: app/templates/trips/_stats_parts.html:67
 #: app/templates/trips/transport_stats.html:119
 msgid "Gares"
 msgstr "Estaciones"
 
-#: app/templates/trips/_stats_parts.html:73
+#: app/templates/trips/_stats_parts.html:78
 #: app/templates/trips/transport_stats.html:88
 #: app/templates/trips/transport_stats.html:95
 #: app/templates/trips/transport_stats.html:102
 msgid "À renseigner dans la fiche du trajet."
 msgstr "Complétalo en la ficha del trayecto."
 
-#: app/templates/trips/_stats_parts.html:91
+#: app/templates/trips/_stats_parts.html:96
 #, python-format
 msgid "Chiffres de %(year)s"
 msgstr "Cifras de %(year)s"
 
-#: app/templates/trips/_stats_parts.html:96
+#: app/templates/trips/_stats_parts.html:102
 #, python-format
 msgid "pays, dont %(num)s nouveau"
 msgid_plural "pays, dont %(num)s nouveaux"
 msgstr[0] "países, %(num)s nuevo"
 msgstr[1] "países, %(num)s nuevos"
 
-#: app/templates/trips/_stats_parts.html:101 app/templates/trips/stats.html:131
+#: app/templates/trips/_stats_parts.html:107 app/templates/trips/stats.html:131
 msgid "jour loin de chez moi"
 msgid_plural "jours loin de chez moi"
 msgstr[0] "día fuera de casa"
 msgstr[1] "días fuera de casa"
 
-#: app/templates/trips/_stats_parts.html:108 app/templates/trips/review.html:99
+#: app/templates/trips/_stats_parts.html:111
+#, python-format
+msgid "Évolution par rapport à %(year)s à la même date."
+msgstr "Evolución respecto a %(year)s en la misma fecha."
+
+#: app/templates/trips/_stats_parts.html:112
+#, python-format
+msgid "Évolution par rapport à %(year)s."
+msgstr "Evolución respecto a %(year)s."
+
+#: app/templates/trips/_stats_parts.html:119 app/templates/trips/review.html:99
 msgid "Départs par mois"
 msgstr "Salidas por mes"
 
-#: app/templates/trips/_stats_parts.html:110
+#: app/templates/trips/_stats_parts.html:121
 #, python-format
 msgid "Départs par mois et par mode en %(year)s"
 msgstr "Salidas por mes y medio en %(year)s"
 
-#: app/templates/trips/_stats_parts.html:115 app/templates/trips/review.html:93
+#: app/templates/trips/_stats_parts.html:126 app/templates/trips/review.html:93
 msgid "Distance par mode"
 msgstr "Distancia por modo"
 
-#: app/templates/trips/_stats_parts.html:118
+#: app/templates/trips/_stats_parts.html:129
 #, python-format
 msgid "Distance par mode de transport en %(year)s"
 msgstr "Distancia por medio de transporte en %(year)s"
 
-#: app/templates/trips/_stats_parts.html:141
+#: app/templates/trips/_stats_parts.html:152
 msgid "Nouveau"
 msgstr "Nuevo"
 
-#: app/templates/trips/_stats_parts.html:145 app/templates/trips/stats.html:71
+#: app/templates/trips/_stats_parts.html:156 app/templates/trips/stats.html:71
 msgid "Aucun pays identifié."
 msgstr "Ningún país identificado."
 
-#: app/templates/trips/_stats_parts.html:150
+#: app/templates/trips/_stats_parts.html:161
 msgid "Faits marquants"
 msgstr "Destacados"
 
-#: app/templates/trips/_stats_parts.html:153
+#: app/templates/trips/_stats_parts.html:164
 msgid "Trajet le plus long"
 msgstr "Trayecto más largo"
 
-#: app/templates/trips/_stats_parts.html:160 app/templates/trips/review.html:87
+#: app/templates/trips/_stats_parts.html:171 app/templates/trips/review.html:87
 msgid "Destinations favorites"
 msgstr "Destinos favoritos"
 
-#: app/templates/trips/_stats_parts.html:165
+#: app/templates/trips/_stats_parts.html:176
 msgid "Premier et dernier départ"
 msgstr "Primera y última salida"
 
-#: app/templates/trips/_stats_parts.html:171
+#: app/templates/trips/_stats_parts.html:182
 msgid "Tours de la Terre"
 msgstr "Vueltas a la Tierra"
 
-#: app/templates/trips/_stats_parts.html:179
+#: app/templates/trips/_stats_parts.html:190
 #, python-format
 msgid "Badges de l'année %(year)s"
 msgstr "Insignias de %(year)s"
 
-#: app/templates/trips/_stats_parts.html:185
+#: app/templates/trips/_stats_parts.html:196
 msgid "Par étiquette"
 msgstr "Por etiqueta"
 
-#: app/templates/trips/_stats_parts.html:189
+#: app/templates/trips/_stats_parts.html:200
 msgid "Étiquette"
 msgstr "Etiqueta"
 
-#: app/templates/trips/_stats_parts.html:198
+#: app/templates/trips/_stats_parts.html:209
 msgid "Sans étiquette"
 msgstr "Sin etiqueta"
 
-#: app/templates/trips/_stats_parts.html:216
+#: app/templates/trips/_stats_parts.html:227
 msgid "Depuis le début"
 msgstr "Desde el principio"
 
-#: app/templates/trips/_stats_parts.html:222 app/templates/trips/stats.html:103
+#: app/templates/trips/_stats_parts.html:233 app/templates/trips/stats.html:103
 msgid "Continents"
 msgstr "Continentes"
 
-#: app/templates/trips/_stats_parts.html:223
+#: app/templates/trips/_stats_parts.html:234
 msgid "des terres émergées"
 msgstr "de las tierras emergidas"
 
-#: app/templates/trips/_stats_parts.html:229
+#: app/templates/trips/_stats_parts.html:240
 #, python-format
 msgid ""
 "%(num)s trajet n'a pas de pays identifié (point en mer ou hors des "
@@ -2513,42 +2574,42 @@ msgstr[1] ""
 "%(num)s trayectos no tienen país identificado (punto en el mar o fuera de"
 " las fronteras conocidas)."
 
-#: app/templates/trips/_stats_parts.html:242
+#: app/templates/trips/_stats_parts.html:253
 msgid "Trajets par année"
 msgstr "Trayectos por año"
 
-#: app/templates/trips/_stats_parts.html:244
+#: app/templates/trips/_stats_parts.html:255
 msgid "Trajets par année et par mode"
 msgstr "Trayectos por año y medio"
 
-#: app/templates/trips/_stats_parts.html:247
+#: app/templates/trips/_stats_parts.html:258
 msgid "Distance par année"
 msgstr "Distancia por año"
 
-#: app/templates/trips/_stats_parts.html:249
+#: app/templates/trips/_stats_parts.html:260
 msgid "Distance par année et par mode"
 msgstr "Distancia por año y medio"
 
-#: app/templates/trips/_stats_parts.html:258
+#: app/templates/trips/_stats_parts.html:269
 #: app/templates/trips/year_stats.html:18
 msgid "Années"
 msgstr "Años"
 
-#: app/templates/trips/_stats_parts.html:268
+#: app/templates/trips/_stats_parts.html:279
 #, python-format
 msgid "%(num)s voyage"
 msgid_plural "%(num)s voyages"
 msgstr[0] "%(num)s viaje"
 msgstr[1] "%(num)s viajes"
 
-#: app/templates/trips/_stats_parts.html:272 app/templates/trips/stats.html:110
+#: app/templates/trips/_stats_parts.html:283 app/templates/trips/stats.html:110
 #, python-format
 msgid "%(num)s pays"
 msgid_plural "%(num)s pays"
 msgstr[0] "%(num)s país"
 msgstr[1] "%(num)s países"
 
-#: app/templates/trips/_stats_parts.html:273
+#: app/templates/trips/_stats_parts.html:284
 #, python-format
 msgid "Nouveaux : %(list)s"
 msgstr "Nuevos: %(list)s"
@@ -2565,7 +2626,7 @@ msgstr "Ver en el mapa"
 msgid "Ajouter à l'agenda"
 msgstr "Añadir al calendario"
 
-#: app/templates/trips/detail.html:47 app/templates/trips/form.html:101
+#: app/templates/trips/detail.html:47 app/templates/trips/form.html:102
 msgid "Dates"
 msgstr "Fechas"
 
@@ -2604,7 +2665,7 @@ msgstr "Fotos"
 msgid "Fait partie du voyage"
 msgstr "Forma parte del viaje"
 
-#: app/templates/trips/detail.html:86 app/templates/trips/list.html:53
+#: app/templates/trips/detail.html:86 app/templates/trips/list.html:62
 #: app/trips/forms.py:14
 msgid "Notes"
 msgstr "Notas"
@@ -2644,7 +2705,7 @@ msgstr "Nuevo viaje"
 msgid "Modifier le voyage"
 msgstr "Editar viaje"
 
-#: app/templates/trips/form.html:20 app/templates/trips/list.html:105
+#: app/templates/trips/form.html:20 app/templates/trips/list.html:114
 msgid "Itinéraire"
 msgstr "Itinerario"
 
@@ -2656,23 +2717,23 @@ msgstr "Intercambiar origen y destino"
 msgid "Détails du trajet"
 msgstr "Detalles del trayecto"
 
-#: app/templates/trips/form.html:119
+#: app/templates/trips/form.html:120
 msgid "Le retour reprend le même itinéraire et le même mode, en sens inverse."
 msgstr "La vuelta sigue el mismo itinerario y medio, en sentido inverso."
 
-#: app/templates/trips/form.html:126
+#: app/templates/trips/form.html:127
 msgid "Étiquettes et notes"
 msgstr "Etiquetas y notas"
 
-#: app/templates/trips/form.html:130 app/templates/trips/journey.html:24
+#: app/templates/trips/form.html:131 app/templates/trips/journey.html:24
 msgid "Souvenirs, adresses, conseils…"
 msgstr "Recuerdos, direcciones, consejos…"
 
-#: app/templates/trips/form.html:132
+#: app/templates/trips/form.html:133
 msgid "Pour ajouter des photos, ouvrez la fiche du trajet."
 msgstr "Para añadir fotos, abre la ficha del trayecto."
 
-#: app/templates/trips/form.html:133
+#: app/templates/trips/form.html:134
 msgid "Ouvrir la fiche"
 msgstr "Abrir la ficha"
 
@@ -2685,48 +2746,48 @@ msgstr "Déjalo vacío para mostrar el itinerario: %(route)s"
 msgid "Les étiquettes s'appliquent à tous les trajets du voyage."
 msgstr "Las etiquetas se aplican a todos los trayectos del viaje."
 
-#: app/templates/trips/list.html:17 app/templates/trips/list.html:23
+#: app/templates/trips/list.html:18 app/templates/trips/list.html:24
 msgid "Rechercher"
 msgstr "Buscar"
 
-#: app/templates/trips/list.html:21
+#: app/templates/trips/list.html:22
 msgid "Lieu, pays, note, étiquette, nom de voyage…"
 msgstr "Lugar, país, nota, etiqueta, nombre del viaje…"
 
-#: app/templates/trips/list.html:27
+#: app/templates/trips/list.html:36
 #, python-format
 msgid "%(num)s trajet trouvé pour « %(query)s »."
 msgid_plural "%(num)s trajets trouvés pour « %(query)s »."
 msgstr[0] "%(num)s trayecto encontrado para «%(query)s»."
 msgstr[1] "%(num)s trayectos encontrados para «%(query)s»."
 
-#: app/templates/trips/list.html:28
+#: app/templates/trips/list.html:37
 msgid "Effacer la recherche"
 msgstr "Borrar la búsqueda"
 
-#: app/templates/trips/list.html:37
+#: app/templates/trips/list.html:46
 #, python-format
 msgid "Sélectionner le trajet %(route)s"
 msgstr "Seleccionar el trayecto %(route)s"
 
-#: app/templates/trips/list.html:63
+#: app/templates/trips/list.html:72
 msgid "Retirer du voyage"
 msgstr "Quitar del viaje"
 
-#: app/templates/trips/list.html:64
+#: app/templates/trips/list.html:73
 #, python-format
 msgid "Retirer le trajet %(route)s du voyage"
 msgstr "Quitar el trayecto %(route)s del viaje"
 
-#: app/templates/trips/list.html:68 app/templates/trips/list.html:133
+#: app/templates/trips/list.html:77 app/templates/trips/list.html:142
 msgid "Fiche, notes et photos"
 msgstr "Ficha, notas y fotos"
 
-#: app/templates/trips/list.html:85
+#: app/templates/trips/list.html:94
 msgid "Regrouper en un voyage"
 msgstr "Agrupar en un viaje"
 
-#: app/templates/trips/list.html:86
+#: app/templates/trips/list.html:95
 msgid ""
 "Cochez au moins deux trajets d'un même voyage, par exemple l'aller, les "
 "étapes et le retour."
@@ -2734,43 +2795,43 @@ msgstr ""
 "Marca al menos dos trayectos de un mismo viaje, por ejemplo la ida, las "
 "etapas y la vuelta."
 
-#: app/templates/trips/list.html:91
+#: app/templates/trips/list.html:100
 msgid "Liste de vos voyages"
 msgstr "Lista de tus viajes"
 
-#: app/templates/trips/list.html:103
+#: app/templates/trips/list.html:112
 msgid "Sélection"
 msgstr "Selección"
 
-#: app/templates/trips/list.html:133
+#: app/templates/trips/list.html:142
 #, python-format
 msgid "Fiche du voyage %(name)s"
 msgstr "Ficha del viaje %(name)s"
 
-#: app/templates/trips/list.html:136
+#: app/templates/trips/list.html:145
 #, python-format
 msgid "Modifier le voyage %(name)s"
 msgstr "Editar el viaje %(name)s"
 
-#: app/templates/trips/list.html:140
+#: app/templates/trips/list.html:149
 msgid "Dégrouper"
 msgstr "Desagrupar"
 
-#: app/templates/trips/list.html:141
+#: app/templates/trips/list.html:150
 #, python-format
 msgid "Dégrouper le voyage %(name)s"
 msgstr "Desagrupar el viaje %(name)s"
 
-#: app/templates/trips/list.html:162
+#: app/templates/trips/list.html:171
 msgid "Aucun résultat"
 msgstr "Sin resultados"
 
-#: app/templates/trips/list.html:163
+#: app/templates/trips/list.html:172
 msgid "Essayez un autre mot, ou une partie du nom d'un lieu."
 msgstr "Prueba otra palabra o parte del nombre de un lugar."
 
 #: app/templates/trips/review.html:3 app/templates/trips/review.html:9
-#: app/templates/trips/review.html:128 app/templates/trips/year_stats.html:14
+#: app/templates/trips/review.html:129 app/templates/trips/year_stats.html:14
 #, python-format
 msgid "Bilan %(year)s"
 msgstr "Resumen de %(year)s"
@@ -2841,11 +2902,11 @@ msgstr[1] "%(num)s fotos añadidas ese año."
 msgid "Image du bilan %(year)s"
 msgstr "Imagen del resumen de %(year)s"
 
-#: app/templates/trips/review.html:126
+#: app/templates/trips/review.html:127
 msgid "Télécharger l'image"
 msgstr "Descargar la imagen"
 
-#: app/templates/trips/review.html:129
+#: app/templates/trips/review.html:130
 msgid "Partager"
 msgstr "Compartir"
 
@@ -2947,10 +3008,6 @@ msgstr[0] ""
 msgstr[1] ""
 "%(num)s ausencias no tienen regreso registrado: terminan en el último "
 "trayecto conocido."
-
-#: app/templates/trips/stats.html:145
-msgid "Année"
-msgstr "Año"
 
 #: app/templates/trips/stats.html:147
 msgid "Part de l'année"
@@ -3672,50 +3729,50 @@ msgstr "Etiquetas no válidas."
 msgid "Période inconnue : %(when)s"
 msgstr "Periodo desconocido: %(when)s"
 
-#: app/trips/routes.py:117
+#: app/trips/routes.py:119
 msgid "Lieu introuvable : choisissez une suggestion de la liste."
 msgstr "Lugar no encontrado: elige una sugerencia de la lista."
 
-#: app/trips/routes.py:185
+#: app/trips/routes.py:197
 msgid "Voyage ajouté."
 msgstr "Viaje añadido."
 
-#: app/trips/routes.py:200
+#: app/trips/routes.py:212
 msgid "Voyage modifié."
 msgstr "Viaje actualizado."
 
-#: app/trips/routes.py:215
+#: app/trips/routes.py:227
 msgid "Voyage supprimé."
 msgstr "Viaje eliminado."
 
-#: app/trips/routes.py:229
+#: app/trips/routes.py:241
 msgid "Sélectionnez au moins deux trajets à regrouper."
 msgstr "Selecciona al menos dos trayectos para agrupar."
 
-#: app/trips/routes.py:243
+#: app/trips/routes.py:255
 msgid "Trajets regroupés en un voyage."
 msgstr "Trayectos agrupados en un viaje."
 
-#: app/trips/routes.py:267
+#: app/trips/routes.py:279
 msgid "Voyage enregistré."
 msgstr "Viaje guardado."
 
-#: app/trips/routes.py:278
+#: app/trips/routes.py:290
 msgid "Voyage dégroupé : ses trajets sont de nouveau indépendants."
 msgstr "Viaje desagrupado: sus trayectos vuelven a ser independientes."
 
-#: app/trips/routes.py:291
+#: app/trips/routes.py:303
 msgid "Trajet retiré du voyage."
 msgstr "Trayecto quitado del viaje."
 
-#: app/trips/routes.py:331
+#: app/trips/routes.py:343
 #, python-format
 msgid "%(num)s photo ajoutée."
 msgid_plural "%(num)s photos ajoutées."
 msgstr[0] "%(num)s foto añadida."
 msgstr[1] "%(num)s fotos añadidas."
 
-#: app/trips/routes.py:379
+#: app/trips/routes.py:391
 msgid "Photo supprimée."
 msgstr "Foto eliminada."
 

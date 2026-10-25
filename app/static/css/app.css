@@ -626,3 +626,14 @@ details.history > summary { cursor: pointer; list-style-position: outside; }
 /* Liste partagée : voyages à venir estompés (comme sur la carte) */
 .trips-table tr.trip-upcoming > * { color: var(--text-muted); }
 .trips-table tr.trip-upcoming > td:first-child { border-left: 3px dashed var(--brand); }
+
+/* Carte : filtre rapide par année */
+.year-filter { display: flex; flex-wrap: wrap; gap: .35rem; }
+.year-filter .btn { padding: .2rem .7rem; font-weight: 600; }
+
+/* Statistiques : évolution par rapport à l'année précédente */
+.stat-delta { font-size: .78rem; font-weight: 600; margin-top: .15rem; color: var(--text-muted); }
+.stat-delta.tone-good { color: #15803d; }
+.stat-delta.tone-bad { color: #b45309; }
+[data-bs-theme="dark"] .stat-delta.tone-good { color: #4ade80; }
+[data-bs-theme="dark"] .stat-delta.tone-bad { color: #fbbf24; }

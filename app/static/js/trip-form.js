@@ -120,6 +120,41 @@ form.addEventListener("submit", (event) => {
 const [origin, dest] = [...form.querySelectorAll("[data-autocomplete]")]
   .map((el) => new PlaceAutocomplete(el, { scope: form, onEdit: clearError }));
 const swapButton = document.getElementById("swapPlaces");
+
+/* --- Numéro de vol : compagnie, départ et arrivée pré-remplis ------------- */
+
+const flightStatus = document.getElementById("flightLookupStatus");
+let flightRequest = null;
+
+async function lookupFlight() {
+  const number = form.elements.service_number.value.trim();
+  if (form.elements.transport_mode.value !== "plane" || number.length < 3 || !form.dataset.flightUrl) return;
+  flightRequest?.abort();
+  flightRequest = new AbortController();
+  flightStatus.textContent = t("flight_searching");
+  try {
+    const response = await fetch(`${form.dataset.flightUrl}?number=${encodeURIComponent(number)}`,
+      { signal: flightRequest.signal, headers: { Accept: "application/json" } });
+    if (!response.ok) {
+      flightStatus.textContent = response.status === 404 ? t("flight_unknown") : "";
+      return;
+    }
+    const flight = await response.json();
+    // Ne remplit que ce qui est vide : une saisie n'est jamais écrasée.
+    form.elements.service_number.value = flight.service_number;
+    if (flight.carrier && !form.elements.carrier.value.trim()) form.elements.carrier.value = flight.carrier;
+    const places = flight.origin && flight.dest && !origin.snapshot().name.trim() && !dest.snapshot().name.trim();
+    if (places) {
+      origin.restore({ name: flight.origin.name, lat: flight.origin.lat, lon: flight.origin.lon, country: flight.origin.country });
+      dest.restore({ name: flight.dest.name, lat: flight.dest.lat, lon: flight.dest.lon, country: flight.dest.country });
+    }
+    flightStatus.textContent = places ? t("flight_found_route") : (flight.origin ? t("flight_found_kept") : t("flight_found_airline"));
+  } catch (error) {
+    if (error.name !== "AbortError") flightStatus.textContent = "";
+  }
+}
+
+form.elements.service_number.addEventListener("change", lookupFlight);
 swapButton?.addEventListener("click", () => {
   const a = origin.snapshot();
   origin.restore(dest.snapshot());

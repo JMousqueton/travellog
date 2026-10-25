@@ -113,6 +113,9 @@ class Config:
     ROUTING_PROFILES = os.environ.get("ROUTING_PROFILES", "car:driving,bus:driving")
     ROUTING_TIMEOUT = float(os.environ.get("ROUTING_TIMEOUT", "6"))
     GEOCODE_CACHE_DAYS = int(os.environ.get("GEOCODE_CACHE_DAYS", "30"))
+    # Itinéraire d'un vol d'après son numéro (adsbdb) ; vide pour désactiver.
+    FLIGHT_LOOKUP_URL = os.environ.get("FLIGHT_LOOKUP_URL", "https://api.adsbdb.com/v0/callsign/")
+    FLIGHT_LOOKUP_TIMEOUT = float(os.environ.get("FLIGHT_LOOKUP_TIMEOUT", "8"))
 
     # Fond de carte. Sans URL sombre dédiée, le mode sombre applique un filtre CSS aux tuiles claires.
     MAP_TILE_URL = os.environ.get("MAP_TILE_URL", "https://tile.openstreetmap.org/{z}/{x}/{y}.png")
@@ -134,6 +137,7 @@ class TestingConfig(Config):
     NOMINATIM_MIN_INTERVAL = 0.0
     NOMINATIM_LOCK_FILE = "none"
     ROUTING_URL = ""
+    FLIGHT_LOOKUP_URL = ""  # pas d'appel réseau en test
     # Limiteur actif mais avec des plafonds hors d'atteinte ; les tests de limitation les abaissent.
     RATELIMIT_STORAGE_URI = "memory://"
     LOGIN_RATE_LIMIT = REGISTER_RATE_LIMIT = PASSWORD_RESET_RATE_LIMIT = "10000 per minute"

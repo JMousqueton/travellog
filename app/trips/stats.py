@@ -295,6 +295,49 @@ def open_review_years(trips):
     return [year for year in review_years(trips) if year in allowed]
 
 
+def _change(current, previous, percent, lower_is_better=False):
+    """Évolution affichable : {"text": "+12 %" ou "−3", "trend": "up" | "down" | "flat",
+    "tone": "good" | "bad" | "neutral"} ; None sans base de comparaison. Pour le CO₂, une baisse est favorable."""
+    if percent and not previous:
+        return None
+    diff = (current - previous) / previous if percent else current - previous
+    trend = "up" if diff > 0 else "down" if diff < 0 else "flat"
+    sign = {"up": "+", "down": "−", "flat": "±"}[trend]
+    tone = "neutral" if trend == "flat" else "good" if (trend == "down") == lower_is_better else "bad"
+    return {"text": sign + (format_percent(abs(diff)) if percent else format_number(abs(diff))), "trend": trend,
+            "tone": tone}
+
+
+def year_comparison(trips, year):
+    """Évolution d'une année par rapport à la précédente : voyages, distance, pays, CO₂.
+
+    L'année en cours n'étant pas finie, elle est comparée à la précédente à la même date. None si l'année
+    précédente n'a aucun voyage sur la période.
+    """
+    today = utils.today()
+    same_date = year == today.year
+    current = [t for t in trips if t.depart_date.year == year]
+    previous = [t for t in trips if t.depart_date.year == year - 1
+                and (not same_date or (t.depart_date.month, t.depart_date.day) <= (today.month, today.day))]
+    if not previous:
+        return None
+
+    def km(items):
+        return sum(t.total_distance_km for t in items)
+
+    def co2(items):
+        return sum(t.co2_kg for t in items)
+
+    return {
+        "year": year - 1,
+        "same_date": same_date,
+        "count": _change(trip_count(current), trip_count(previous), percent=False),
+        "distance": _change(km(current), km(previous), percent=True),
+        "countries": _change(len(visited_countries(current)), len(visited_countries(previous)), percent=False),
+        "co2": _change(co2(current), co2(previous), percent=True, lower_is_better=True),
+    }
+
+
 def review_years(trips):
     """Années ayant au moins un trajet déjà commencé, de la plus récente à la plus ancienne."""
     return sorted({t.depart_date.year for t in happened(trips)}, reverse=True)

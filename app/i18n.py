@@ -144,6 +144,11 @@ def js_strings():
         "share_failed": _("Impossible de partager l'image : téléchargez-la puis partagez-la."),
         "offline": _("Hors ligne : vous voyez les données de votre dernière visite."),
         "online": _("Connexion rétablie."),
+        "flight_searching": _("Recherche du vol…"),
+        "flight_unknown": _("Vol inconnu : renseignez la compagnie et les lieux vous-même."),
+        "flight_found_route": _("Compagnie, départ et arrivée remplis d'après le numéro de vol : vérifiez-les."),
+        "flight_found_kept": _("Compagnie complétée ; départ et arrivée déjà saisis, conservés."),
+        "flight_found_airline": _("Compagnie trouvée ; itinéraire inconnu pour ce numéro."),
     }
 
 

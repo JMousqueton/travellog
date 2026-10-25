@@ -44,6 +44,7 @@
     <p>{{ _("Seul l'éditeur, en tant qu'administrateur technique du serveur, peut y accéder. Elles ne sont ni vendues, ni louées, ni cédées. Certains services tiers interviennent toutefois dans le fonctionnement du site :") }}</p>
     <ul>
       <li>{{ _("Recherche de lieux : le texte que vous tapez est transmis par notre serveur au service Nominatim de la fondation OpenStreetMap. Votre adresse IP ne lui est pas transmise.") }}</li>
+      <li>{{ _("Numéro de vol : quand vous saisissez un numéro de vol, notre serveur demande son itinéraire habituel au service adsbdb (adsbdb.com) pour pré-remplir la compagnie et les lieux. Seul le numéro de vol est transmis, sans votre adresse IP ni votre compte.") }}</li>
       <li>{{ _("Fonds de carte : votre navigateur télécharge les tuiles de la carte depuis %(host)s, qui reçoit donc votre adresse IP.", host=tile_host) }}</li>
       <li>{{ _("Mesure d'audience : votre navigateur envoie les pages consultées à l'outil Matomo de l'éditeur (stats.mousqueton.io), qui reçoit donc votre adresse IP et la tronque avant de l'enregistrer. Les jetons secrets des liens de partage, d'inscription et de réinitialisation sont masqués avant l'envoi. Ces statistiques ne sont ni croisées avec votre compte, ni partagées avec qui que ce soit.") }}</li>
       <li>{{ _("Bibliothèques et polices de caractères : votre navigateur les télécharge depuis jsDelivr, cdnjs (Cloudflare) et Google Fonts, qui reçoivent votre adresse IP.") }}</li>

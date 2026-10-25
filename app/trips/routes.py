@@ -1,3 +1,5 @@
+from datetime import date
+
 from babel.dates import get_month_names
 from flask import Response, abort, current_app, flash, redirect, render_template, request, send_file, url_for
 from flask_babel import gettext as _
@@ -12,7 +14,7 @@ from ..models import Journey, Photo, Trip, User
 from ..photos import PhotoError, merge_notes, move_photos, photo_path, save_upload
 from ..routing import update_route
 from ..tags import parse_tags, prune_unused, resolve, tags_text
-from ..carriers import carrier_suggestions
+from ..carriers import carrier_suggestions, vehicle_suggestions
 from ..transport import CO2_KG_PER_KM, DETOUR_FACTORS, PLANE_CO2_BANDS, SERVICE_FIELDS, TRANSPORT_MODES
 from .. import utils
 from ..utils import is_safe_redirect
@@ -23,9 +25,10 @@ from .absences import absence_summary
 from .badges import compute_badges, compute_year_badges, continent_summary
 from .places import visited_places
 from .stats import (compute_stats, country_summary, happened, open_review_years, review_years, service_stats, tag_stats,
-                    transport_details, upcoming_trips, year_review, yearly_stats)
+                    transport_details, upcoming_trips, year_comparison, year_review, yearly_stats)
 
-bp.add_app_template_global(carrier_suggestions)  # suggestions du champ compagnie / opérateur
+bp.add_app_template_global(carrier_suggestions)  # suggestions des champs compagnie et appareil
+bp.add_app_template_global(vehicle_suggestions)
 
 # Clés de tri d'une ligne de la liste : un trajet isolé ou un voyage (trié selon son premier trajet).
 SORTS = {
@@ -156,8 +159,10 @@ def _handle_form(form, trip):
 def index():
     if not current_user.is_authenticated:
         return render_template("landing.html")
+    years = db.session.execute(db.select(Trip.depart_date).filter_by(user_id=current_user.id)).scalars()
     return render_template("map.html", focus=request.args.get("focus", type=int), tiles=map_tiles(),
-                           user_tags=current_user.tags, current_year=utils.today().year)
+                           user_tags=current_user.tags, current_year=utils.today().year,
+                           map_years=sorted({d.year for d in years}, reverse=True))
 
 
 @bp.route("/trips")
@@ -167,10 +172,18 @@ def list_view():
     if sort not in SORTS:
         sort = "date_desc"
     query = " ".join(request.args.get("q", "").split())[:200]
-    trips = list_trips(current_user, {"q": query})
+    years = sorted({d.year for d in db.session.execute(
+        db.select(Trip.depart_date).filter_by(user_id=current_user.id)).scalars()}, reverse=True)
+    year = request.args.get("year", type=int)
+    if year not in years:
+        year = None  # année inconnue : tous les voyages
+    filters = {"q": query}
+    if year:
+        filters.update(start=date(year, 1, 1), end=date(year, 12, 31))
+    trips = list_trips(current_user, filters)
     rows = sorted(list_rows(trips), key=SORTS[sort], reverse=sort == "date_desc")
     return render_template("trips/list.html", rows=rows, sort=sort, q=query, match_count=len(trips),
-                           has_trips=bool(rows) or current_user.trips.first() is not None)
+                           year=year, years=years, has_trips=bool(years))
 
 
 @bp.route("/trips/new", methods=["GET", "POST"])
@@ -404,6 +417,7 @@ def _year_details(everything, year, away):
         "countries": country_summary(items),
         "places": visited_places(items, current_user),
         "away": away["by_year"].get(year) if away else None,
+        "comparison": year_comparison(happened(everything), year),
         # Graphique des départs par mois, empilés par mode.
         "month_labels": [name for _number, name in sorted(get_month_names("abbreviated", locale=current_locale()).items())],
         "month_modes": {mode: [sum(1 for t in items if t.transport_mode == mode and t.depart_date.month == m)

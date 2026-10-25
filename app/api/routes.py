@@ -4,6 +4,8 @@ from flask_babel import ngettext
 from flask_login import current_user, login_required
 
 from .. import countries as geo_countries
+from ..extensions import limiter
+from ..flights import lookup_flight
 from ..geo import GeocodingError, geocode
 from ..i18n import LANGUAGES, current_locale, format_countdown, format_day, format_distance
 from ..models import ShareLink
@@ -165,6 +167,17 @@ def countries():
 @bp.route("/shared/<token>/countries")
 def shared_countries(token):
     return _countries_geojson(_shared_trips_or_404(token))
+
+
+@bp.route("/flight")
+@login_required
+@limiter.limit("60 per minute")
+def flight_view():
+    """Compagnie et itinéraire d'un numéro de vol, pour pré-remplir le formulaire."""
+    flight = lookup_flight(request.args.get("number", "")[:20])
+    if flight is None or not (flight["carrier"] or flight["origin"]):
+        return jsonify(error=_("Numéro de vol inconnu.")), 404
+    return jsonify(flight)
 
 
 @bp.route("/geocode")
