@@ -49,6 +49,13 @@ def test_cdn_assets_have_integrity(auth_client):
         assert 'integrity="sha384-' in tag, tag
 
 
+def test_leaflet_is_self_hosted(auth_client):
+    html = auth_client.get("/").text
+    assert "/static/vendor/leaflet-1.9.4/leaflet.js" in html and "unpkg" not in html
+    assert "unpkg" not in auth_client.get("/").headers["Content-Security-Policy"]
+    assert auth_client.get("/static/vendor/leaflet-1.9.4/images/layers-2x.png").status_code == 200
+
+
 def test_hsts_on_https(app, client):
     app.config["HSTS_MAX_AGE"] = 600
     response = client.get("/", base_url="https://localhost")

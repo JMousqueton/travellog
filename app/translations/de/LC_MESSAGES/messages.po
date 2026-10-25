@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-25 12:16+0000\n"
+"POT-Creation-Date: 2026-10-25 12:34+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -373,7 +373,7 @@ msgid_plural "Dans %(num)s jours"
 msgstr[0] "In %(num)s Tag"
 msgstr[1] "In %(num)s Tagen"
 
-#: app/i18n.py:86 app/templates/map.html:170
+#: app/i18n.py:86 app/templates/map.html:168
 msgid "Chargement…"
 msgstr "Wird geladen…"
 
@@ -408,7 +408,7 @@ msgid "Réinitialiser les filtres"
 msgstr "Filter zurücksetzen"
 
 #: app/i18n.py:94 app/templates/base.html:137 app/templates/base.html:138
-#: app/templates/map.html:179 app/templates/trips/list.html:11
+#: app/templates/map.html:177 app/templates/trips/list.html:11
 #: app/templates/trips/list.html:171
 msgid "Ajouter un voyage"
 msgstr "Reise hinzufügen"
@@ -454,12 +454,12 @@ msgstr "Rückfahrt"
 msgid "Distance"
 msgstr "Entfernung"
 
-#: app/i18n.py:103 app/templates/map.html:121 app/templates/trips/list.html:50
+#: app/i18n.py:103 app/templates/map.html:119 app/templates/trips/list.html:50
 #: app/trips/forms.py:58
 msgid "Aller-retour"
 msgstr "Hin- und Rückfahrt"
 
-#: app/i18n.py:104 app/templates/map.html:121 app/templates/trips/list.html:50
+#: app/i18n.py:104 app/templates/map.html:119 app/templates/trips/list.html:50
 #: app/templates/trips/stats.html:30
 msgid "Aller simple"
 msgstr "Einfache Fahrt"
@@ -488,7 +488,7 @@ msgstr "Rückfahrt (gepunktet)"
 msgid "Voyages passant par ce lieu"
 msgstr "Reisen über diesen Ort"
 
-#: app/i18n.py:111 app/templates/map.html:163
+#: app/i18n.py:111 app/templates/map.html:161
 msgid "Carte des voyages"
 msgstr "Reisekarte"
 
@@ -586,7 +586,7 @@ msgstr "Details"
 msgid "Fiche du trajet %(route)s"
 msgstr "Details der Strecke %(route)s"
 
-#: app/i18n.py:134 app/templates/map.html:112 app/templates/trips/stats.html:18
+#: app/i18n.py:134 app/templates/map.html:110 app/templates/trips/stats.html:18
 msgid "À venir"
 msgstr "Geplant"
 
@@ -1169,7 +1169,7 @@ msgstr "Anmelden"
 msgid "Créer un compte"
 msgstr "Konto erstellen"
 
-#: app/templates/base.html:191 app/templates/map.html:17
+#: app/templates/base.html:191 app/templates/map.html:15
 msgid "Fermer"
 msgstr "Schließen"
 
@@ -1425,9 +1425,9 @@ msgid ""
 " visites. Vous pouvez tout exporter ou tout supprimer vous-même, à tout "
 "moment."
 msgstr ""
-"Kurz gesagt: Ihre Reisen bleiben privat, nichts wird verkauft, keine "
+"Kurz gesagt: Deine Reisen bleiben privat, nichts wird verkauft, keine "
 "Werbung; nur eine anonyme, vom Betreiber selbst gehostete "
-"Reichweitenmessung zählt die Besuche. Sie können jederzeit selbst alles "
+"Reichweitenmessung zählt die Besuche. Du kannst jederzeit selbst alles "
 "exportieren oder löschen."
 
 #: app/templates/legal/privacy.html:10
@@ -1595,21 +1595,21 @@ msgid ""
 " l'envoi. Ces statistiques ne sont ni croisées avec votre compte, ni "
 "partagées avec qui que ce soit."
 msgstr ""
-"Reichweitenmessung: Ihr Browser übermittelt die aufgerufenen Seiten an "
-"die Matomo-Instanz des Betreibers (stats.mousqueton.io), die dadurch Ihre"
-" IP-Adresse erhält und sie vor dem Speichern kürzt. Geheime Token in "
-"Freigabe-, Registrierungs- und Passwort-Links werden vor dem Senden "
-"maskiert. Diese Statistiken werden weder mit Ihrem Konto verknüpft noch "
+"Reichweitenmessung: Dein Browser übermittelt die aufgerufenen Seiten an "
+"die Matomo-Instanz des Betreibers (stats.mousqueton.io), die dadurch "
+"deine IP-Adresse erhält und sie vor dem Speichern kürzt. Geheime Token in"
+" Freigabe-, Registrierungs- und Passwort-Links werden vor dem Senden "
+"maskiert. Diese Statistiken werden weder mit deinem Konto verknüpft noch "
 "an Dritte weitergegeben."
 
 #: app/templates/legal/privacy.html:49
 msgid ""
 "Bibliothèques et polices de caractères : votre navigateur les télécharge "
-"depuis jsDelivr, unpkg, cdnjs (Cloudflare) et Google Fonts, qui reçoivent"
-" votre adresse IP."
+"depuis jsDelivr, cdnjs (Cloudflare) et Google Fonts, qui reçoivent votre "
+"adresse IP."
 msgstr ""
-"Bibliotheken und Schriften: Dein Browser lädt sie von jsDelivr, unpkg, "
-"cdnjs (Cloudflare) und Google Fonts, die deine IP-Adresse erhalten."
+"Bibliotheken und Schriften: Dein Browser lädt sie von jsDelivr, cdnjs "
+"(Cloudflare) und Google Fonts, die deine IP-Adresse erhalten."
 
 #: app/templates/legal/privacy.html:50
 msgid ""
@@ -1704,7 +1704,7 @@ msgid ""
 "d'exemption de la CNIL ; ils ne demandent donc pas de consentement :"
 msgstr ""
 "Die Website verwendet keine Werbe-Cookies. Die gespeicherten Elemente "
-"sind für den Betrieb erforderlich, merken sich Ihre Einstellungen oder "
+"sind für den Betrieb erforderlich, merken sich deine Einstellungen oder "
 "dienen einer anonymen, auf diese Website beschränkten Reichweitenmessung "
 "gemäß den Ausnahmebedingungen der CNIL; sie erfordern daher keine "
 "Einwilligung:"
@@ -1730,7 +1730,7 @@ msgid ""
 "mesure d'audience Matomo : distinguent les visites sans vous identifier "
 "(13 mois et 30 minutes)."
 msgstr ""
-"Matomo-Reichweitenmessung: unterscheidet Besuche, ohne Sie zu "
+"Matomo-Reichweitenmessung: unterscheidet Besuche, ohne dich zu "
 "identifizieren (13 Monate bzw. 30 Minuten)."
 
 #: app/templates/legal/privacy.html:77
@@ -1748,7 +1748,7 @@ msgid ""
 "Vous pouvez refuser la mesure d'audience : le site cessera alors de vous "
 "compter sur ce navigateur (un cookie mémorise ce choix)."
 msgstr ""
-"Sie können der Reichweitenmessung widersprechen: Die Website zählt Sie "
+"Du kannst der Reichweitenmessung widersprechen: Die Website zählt dich "
 "dann in diesem Browser nicht mehr (ein Cookie merkt sich diese Wahl)."
 
 #: app/templates/legal/privacy.html:81
@@ -1761,11 +1761,11 @@ msgstr "Nicht mehr gezählt werden"
 
 #: app/templates/legal/privacy.html:82
 msgid "Vous n'êtes plus compté dans les statistiques."
-msgstr "Sie werden nicht mehr in den Statistiken gezählt."
+msgstr "Du wirst nicht mehr in den Statistiken gezählt."
 
 #: app/templates/legal/privacy.html:82
 msgid "Vous êtes compté dans les statistiques anonymes."
-msgstr "Sie werden in den anonymen Statistiken gezählt."
+msgstr "Du wirst in den anonymen Statistiken gezählt."
 
 #: app/templates/legal/privacy.html:88
 msgid "Sécurité"
@@ -1824,125 +1824,125 @@ msgstr ""
 "Du kannst dich auch bei der CNIL (französische Datenschutzbehörde) "
 "beschweren:"
 
-#: app/templates/map.html:2 app/templates/map.html:24
+#: app/templates/map.html:2 app/templates/map.html:22
 #: app/templates/trips/review.html:10
 msgid "Carte partagée"
 msgstr "Geteilte Karte"
 
-#: app/templates/map.html:16 app/templates/map.html:174
+#: app/templates/map.html:14 app/templates/map.html:172
 msgid "Voyages et filtres"
 msgstr "Reisen & Filter"
 
-#: app/templates/map.html:25
+#: app/templates/map.html:23
 msgid "Vous consultez ces voyages en lecture seule."
 msgstr "Du siehst diese Reisen im Nur-Lese-Modus."
 
-#: app/templates/map.html:26
+#: app/templates/map.html:24
 msgid "Voir le bilan de l'année"
 msgstr "Jahresrückblick ansehen"
 
-#: app/templates/map.html:32
+#: app/templates/map.html:30
 msgid "Tableau de bord"
 msgstr "Übersicht"
 
-#: app/templates/admin/users.html:15 app/templates/map.html:37
-#: app/templates/map.html:132 app/templates/trips/stats.html:52
+#: app/templates/admin/users.html:15 app/templates/map.html:35
+#: app/templates/map.html:130 app/templates/trips/stats.html:52
 #: app/templates/trips/stats.html:200 app/templates/trips/stats.html:254
 msgid "Voyages"
 msgstr "Reisen"
 
-#: app/templates/map.html:42 app/templates/trips/stats.html:53
+#: app/templates/map.html:40 app/templates/trips/stats.html:53
 msgid "Distance estimée"
 msgstr "Geschätzte Strecke"
 
-#: app/templates/map.html:47 app/templates/trips/stats.html:54
+#: app/templates/map.html:45 app/templates/trips/stats.html:54
 msgid "Pays et territoires"
 msgstr "Länder und Gebiete"
 
-#: app/templates/map.html:52 app/templates/trips/detail.html:52
+#: app/templates/map.html:50 app/templates/trips/detail.html:52
 #: app/templates/trips/stats.html:57 app/templates/trips/stats.html:204
 #: app/templates/trips/stats.html:256
 msgid "CO₂ estimé"
 msgstr "Geschätztes CO₂"
 
-#: app/templates/map.html:57
+#: app/templates/map.html:55
 msgid "Prochain départ"
 msgstr "Nächste Abfahrt"
 
-#: app/templates/map.html:61
+#: app/templates/map.html:59
 msgid "Répartition par mode de transport"
 msgstr "Aufteilung nach Verkehrsmittel"
 
-#: app/templates/map.html:66
+#: app/templates/map.html:64
 msgid "Filtres"
 msgstr "Filter"
 
-#: app/templates/map.html:69
+#: app/templates/map.html:67
 msgid "Réinitialiser"
 msgstr "Zurücksetzen"
 
-#: app/templates/map.html:73
+#: app/templates/map.html:71
 msgid "Période de départ"
 msgstr "Abreisezeitraum"
 
-#: app/templates/map.html:76
+#: app/templates/map.html:74
 msgid "Du"
 msgstr "Von"
 
-#: app/templates/map.html:80
+#: app/templates/map.html:78
 msgid "Au"
 msgstr "Bis"
 
-#: app/templates/map.html:87
+#: app/templates/map.html:85
 msgid "Modes de transport"
 msgstr "Verkehrsmittel"
 
-#: app/templates/map.html:100 app/templates/trips/detail.html:55
+#: app/templates/map.html:98 app/templates/trips/detail.html:55
 #: app/trips/forms.py:30
 msgid "Étiquettes"
 msgstr "Schlagwörter"
 
-#: app/templates/map.html:110
+#: app/templates/map.html:108
 msgid "Voyages passés ou à venir"
 msgstr "Vergangene oder geplante Reisen"
 
-#: app/templates/map.html:112
+#: app/templates/map.html:110
 msgid "Passés"
 msgstr "Vergangen"
 
-#: app/templates/map.html:112 app/templates/map.html:121
+#: app/templates/map.html:110 app/templates/map.html:119
 msgid "Tous"
 msgstr "Alle"
 
-#: app/templates/map.html:119
+#: app/templates/map.html:117
 msgid "Type de voyage"
 msgstr "Reiseart"
 
-#: app/templates/map.html:135
+#: app/templates/map.html:133
 msgid "Trier par"
 msgstr "Sortieren nach"
 
-#: app/templates/map.html:138
+#: app/templates/map.html:136
 msgid "Plus récents"
 msgstr "Neueste zuerst"
 
-#: app/templates/map.html:139
+#: app/templates/map.html:137
 msgid "Plus anciens"
 msgstr "Älteste zuerst"
 
-#: app/templates/map.html:140
+#: app/templates/map.html:138
 msgid "Plus longs"
 msgstr "Längste"
 
-#: app/templates/map.html:141
+#: app/templates/map.html:139
 msgid "Plus courts"
 msgstr "Kürzeste"
 
-#: app/templates/map.html:142
+#: app/templates/map.html:140
 msgid "Origine (A → Z)"
 msgstr "Start (A → Z)"
 
-#: app/templates/map.html:143
+#: app/templates/map.html:141
 msgid "Destination (A → Z)"
 msgstr "Ziel (A → Z)"
 

@@ -5,8 +5,8 @@ from flask import g, request
 
 # Origines externes autorisées : CDN des bibliothèques, Google Fonts et mesure d'audience (Matomo).
 ANALYTICS_ORIGIN = "https://stats.mousqueton.io"
-SCRIPT_SOURCES = ("https://cdn.jsdelivr.net", "https://unpkg.com", ANALYTICS_ORIGIN)
-STYLE_SOURCES = ("https://cdn.jsdelivr.net", "https://unpkg.com", "https://cdnjs.cloudflare.com",
+SCRIPT_SOURCES = ("https://cdn.jsdelivr.net", ANALYTICS_ORIGIN)
+STYLE_SOURCES = ("https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com",
                  "https://fonts.googleapis.com")
 FONT_SOURCES = ("https://cdnjs.cloudflare.com", "https://fonts.gstatic.com")
 

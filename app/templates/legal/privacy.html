@@ -46,7 +46,7 @@
       <li>{{ _("Recherche de lieux : le texte que vous tapez est transmis par notre serveur au service Nominatim de la fondation OpenStreetMap. Votre adresse IP ne lui est pas transmise.") }}</li>
       <li>{{ _("Fonds de carte : votre navigateur télécharge les tuiles de la carte depuis %(host)s, qui reçoit donc votre adresse IP.", host=tile_host) }}</li>
       <li>{{ _("Mesure d'audience : votre navigateur envoie les pages consultées à l'outil Matomo de l'éditeur (stats.mousqueton.io), qui reçoit donc votre adresse IP et la tronque avant de l'enregistrer. Les jetons secrets des liens de partage, d'inscription et de réinitialisation sont masqués avant l'envoi. Ces statistiques ne sont ni croisées avec votre compte, ni partagées avec qui que ce soit.") }}</li>
-      <li>{{ _("Bibliothèques et polices de caractères : votre navigateur les télécharge depuis jsDelivr, unpkg, cdnjs (Cloudflare) et Google Fonts, qui reçoivent votre adresse IP.") }}</li>
+      <li>{{ _("Bibliothèques et polices de caractères : votre navigateur les télécharge depuis jsDelivr, cdnjs (Cloudflare) et Google Fonts, qui reçoivent votre adresse IP.") }}</li>
       {% if routing %}<li>{{ _("Distances routières : les coordonnées de départ et d'arrivée des trajets en voiture ou en bus sont envoyées par notre serveur à un service de calcul d'itinéraire (OSRM).") }}</li>{% endif %}
       <li>{{ _("Agenda : si vous activez l'abonnement, votre service d'agenda récupère vos dates et lieux de voyage (sans les notes) à l'adresse secrète que vous lui donnez.") }}</li>
       <li>{{ _("Liens de partage : toute personne qui possède un de vos liens voit les voyages qu'il montre. Vous pouvez révoquer un lien à tout moment.") }}</li>
