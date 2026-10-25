@@ -16,11 +16,17 @@ available in French, English, Spanish, German and Italian.
   stays direct, with a password.
   From their preferences, users can change their password (which signs out their other sessions) or delete
   their account. Forgotten password: single-use reset link by email.
-- Read-only share links, with optional expiry and the date they were last viewed.
+- Read-only share links, with optional expiry and the date they were last viewed. Visitors get their own
+  menu: Map, Statistics (since the beginning, one card per year, badges), Trips (list grouped by journey, if
+  the link allows it) and Review. Upcoming trips are hidden by default (they reveal when you're away); an
+  option per link shows them, faded and flagged. No notes, photos or home.
 - Countries: each trip knows its departure and arrival country (ISO code returned by Nominatim, or derived
   offline from the coordinates). "Countries visited" layer on the map, flags in the list and detail pages.
-- Statistics (`/stats`): totals, year by year (distance, modes, countries discovered), estimated CO₂
-  emissions by mode, share of the world's land covered, list of countries visited.
+- Statistics (`/stats`): overview of all trips (key figures, Chart.js charts of trips and distance per year
+  and mode, one card per year, badges, plane and train, countries, places, continents, days away, CO₂ by
+  mode). Each year has its own page (`/stats/<year>`): figures and change from the previous year (at the same
+  date for the current year), departures per month, distance by mode, countries visited (new ones flagged),
+  highlights, the year's badges, plane and train, tags.
 - Notes and photos on every trip and journey (detail page). Photos are re-encoded as JPEG, without EXIF
   metadata (so without GPS location), with a thumbnail. They stay private: share links show neither notes
   nor photos.
@@ -37,23 +43,23 @@ available in French, English, Spanish, German and Italian.
   current year), included in exports. A journey's tags apply to all its legs; a tag that is no longer used
   disappears.
 - Search in "My trips", ignoring case and accents: places, countries, notes, tags, journey name and notes.
+  Year buttons (All, 2026, 2025…), kept along with the search and sort order.
 - Year in review (`/review`): key figures, countries discovered, longest trip, favourite destinations,
   departures by month, and a 1080 × 1350 PNG image to download or share (system share sheet on mobile).
-  People with a share link can see the review too (`/s/<token>/review`).
+  People with a share link only see the current year's review (and the past year's in January and February),
+  without download or share buttons (`/s/<token>/review`).
 - Days away (home city to set in the preferences): days spent away from home (30 km radius), nights abroad,
   share of the year, longest time away. One-way trips are chained; an absence that started elsewhere ends on
   returning to that city; a trip that doesn't leave from the last place reached closes the current absence
   (unrecorded travel). Home is never shown on share links.
 - Continents and badges (countries, continents, distance, number of trips, modes…), dated by the trip that
-  crossed the threshold, with progress towards the remaining badges. The Statistics page shows two sets: badges
-  for all your trips, and badges for the current year, with thresholds suited to a single year (12 trips,
-  10,000 km, 3 continents…) that reset every 1 January. Badges earned during a year appear in its review.
+  crossed the threshold, with progress towards the remaining badges. Two sets: badges for all your trips
+  (statistics overview), and badges for each year (year page), with thresholds suited to a single year
+  (12 trips, 10,000 km, 3 continents…). Badges earned during a year appear in its review.
 - Places visited: trip endpoints grouped within a 15 km radius, a list and a "Places visited" layer on the
   map (circles sized by the number of trips).
 - Replay: on the map, trips are drawn in chronological order (outbound leg on the departure date, return leg
   on the return date); a slider with the years lets you jump to any date.
-- Share links: upcoming trips are hidden by default (they reveal when you're away); an option per link
-  shows them.
 - Import / export (`/import-export`) as CSV, GeoJSON and GPX. All three formats carry the same fields
   (including notes and journey groupings) and can be imported back without loss: they also serve as a
   backup, photos excepted. On import, a preview lists the trips read: untick the ones to leave out (all /
@@ -70,26 +76,35 @@ available in French, English, Spanish, German and Italian.
 - Plane and train: airline, flight number and aircraft for planes, operator for trains, entered in the
   form (labels follow the mode; the airline or operator field autocompletes, first with the ones already
   entered, then with the main airlines or rail operators from `app/carriers.py`) or filled by the flight
-  import. The statistics derive, per mode, the number of
-  flights or trips and the most frequent airlines, aircraft and airports or stations (a round trip
-  "AF1148 / AF1549" counts twice).
+  import. The aircraft field autocompletes too (aircraft already entered, then the main models). Entering a
+  flight number ("AF1148") fills in the airline, departure and arrival when they're empty: the airline from
+  the prefix (offline), the number's usual route from the free [adsbdb](https://www.adsbdb.com) service,
+  queried by the server and cached (`/api/flight`, `app/flights.py`; empty `FLIGHT_LOOKUP_URL` disables it).
+  It's today's route: check it for an old flight. The statistics derive, per mode, the number of flights or
+  trips and the most frequent airlines, aircraft and airports or stations (a round trip "AF1148 / AF1549"
+  counts twice), with a detail page (`/stats/plane`, `/stats/train`, filterable by year): each airline's
+  share, first and last flight, manufacturers, most frequent routes.
 - Trips: origin, destination, date, mode of transport (plane, train, car, bus, boat, bike, on foot), round
   trip option with a mandatory return date on or after the departure date.
 - Form with place autocompletion (Nominatim, server-side geocoding with a database cache).
 - Full-screen Leaflet map: clustered markers (markercluster), localised popups, legend.
-- Side panel (drawer on mobile): dashboard for the current year (the period filter does not apply to it),
-  filters (period, modes, type), sortable list kept in sync with the map. Filters are kept in the URL.
+- Side panel (drawer on mobile): year buttons (All, 2026, 2025…) that fill in the period, dashboard for the
+  chosen year (the current year with "All"), filters (period, modes, type), sortable list kept in sync with
+  the map. Filters are kept in the URL.
 - Light/dark theme (saved preference and `prefers-color-scheme` detection).
 - Installable app that works offline: a service worker (`/sw.js`, `app/pwa.py`) caches static files and
   libraries, plus the latest version of pages and data already opened (map, list, statistics, trip pages).
   Map tiles are not kept: offline, the map shows the trips without a base map. Account pages are removed from
   the cache on logout.
+- Passport-style 404 page: marble cover, world map (generated from the Natural Earth outlines by
+  `scripts/make_world_svg.py`), plane and a "404 · Destination not found" stamp.
 - Full internationalisation with Flask-Babel. Dates, numbers and distances are formatted for each language.
 
 ## Requirements
 
 - Python 3.11 or later
-- Network access to the CDNs (Bootstrap, Font Awesome, Google Fonts), the map tiles and Nominatim.
+- Network access to the CDNs (Bootstrap, Font Awesome, Chart.js, Google Fonts), the map tiles, Nominatim
+  and, for flight number lookup, adsbdb.
   Leaflet and MarkerCluster are bundled in `app/static/vendor/`.
 
 ## Installation
@@ -212,7 +227,8 @@ the database.
 | `NOMINATIM_EMAIL` | Optional contact address (`email=` parameter) |
 | `NOMINATIM_MIN_INTERVAL` | Minimum delay between two requests, in seconds (1 by default) |
 | `NOMINATIM_LOCK_FILE` | Lock file shared between workers (default `instance/nominatim.lock`) |
-| `GEOCODE_CACHE_DAYS` | How long the geocoding cache stays valid |
+| `GEOCODE_CACHE_DAYS` | How long the geocoding and flight lookup cache stays valid |
+| `FLIGHT_LOOKUP_URL`, `FLIGHT_LOOKUP_TIMEOUT` | Route lookup for a flight number (adsbdb by default; empty to disable) |
 | `MAP_TILE_URL`, `MAP_TILE_URL_DARK` | Light and dark tiles (see below) |
 | `MAP_TILE_SUBDOMAINS`, `MAP_TILE_ATTRIBUTION`, `MAP_TILE_MAX_ZOOM` | Tile provider options |
 | `APP_BASE_URL` | Public address, used in links sent by email |
@@ -226,6 +242,7 @@ the database.
 | `LOG_LEVEL` | Logging level (`INFO` by default) |
 | `SENTRY_DSN`, `SENTRY_TRACES_SAMPLE_RATE` | Sentry error tracking (requires `sentry-sdk[flask]`) |
 | `UPLOAD_FOLDER` | Photo folder (default `instance/uploads`) |
+| `IMPORT_FOLDER` | Import previews awaiting confirmation (default `instance/imports`, one hour) |
 | `BACKUP_DIR`, `BACKUP_KEEP` | Backup folder (default `instance/backups`) and number of archives kept (14) |
 | `ROUTING_URL`, `ROUTING_PROFILES`, `ROUTING_TIMEOUT` | OSRM server and routed modes (default `car:driving,bus:driving`) |
 | `MAX_PHOTO_MB`, `MAX_UPLOAD_MB`, `MAX_PHOTOS_PER_ITEM` | Photo limits (15 MB per photo, 64 MB per upload, 30 per trip or journey) |
@@ -260,7 +277,9 @@ app/
   i18n.py            language selection, formatting, JS strings
   geo.py             haversine, Nominatim client and cache
   security.py        security headers (CSP with nonce, HSTS…)
-  airports.py        airports by IATA or ICAO code, airlines by ICAO code (flight import)
+  airports.py        airports by IATA or ICAO code, airlines by ICAO or IATA code
+  flights.py         route of a flight number (adsbdb, cached)
+  carriers.py        airline, operator and aircraft suggestions
   pwa.py             service worker and offline page
   assets.py          versioned static files (?v=fingerprint) and import map for JS modules
   countries.py       countries: offline lookup, localised names, flags, areas

@@ -16,11 +16,19 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   l'inscription reste directe avec mot de passe.
   Depuis ses préférences, chacun peut changer son mot de passe (ce qui déconnecte ses autres sessions)
   ou supprimer son compte. Mot de passe oublié : lien de réinitialisation par e-mail, à usage unique.
-- Liens de partage en lecture seule, avec expiration facultative et date de dernière consultation.
+- Liens de partage en lecture seule, avec expiration facultative et date de dernière consultation. Le
+  visiteur a son propre menu : Carte, Statistiques (depuis le début, une carte par année, badges), Voyages
+  (liste regroupée par voyage, si le lien le prévoit) et Bilan. Les voyages à venir sont masqués par défaut
+  (ils révèlent quand vous êtes absent) ; une option par lien les montre, estompés et signalés. Ni notes, ni
+  photos, ni domicile.
 - Pays : chaque trajet connaît son pays de départ et d'arrivée (code ISO renvoyé par Nominatim, ou déduit
   des coordonnées hors ligne). Couche « Pays visités » sur la carte, drapeaux dans la liste et les fiches.
-- Statistiques (`/stats`) : totaux, année par année (distance, modes, pays découverts), émissions de CO₂
-  estimées par mode, part des terres émergées couverte, liste des pays visités.
+- Statistiques (`/stats`) : vue d'ensemble de tous les voyages (chiffres clés, graphiques des trajets et de la
+  distance par année et par mode avec Chart.js, une carte par année, badges, avion et train, pays, lieux,
+  continents, jours d'absence, émissions de CO₂ par mode). Chaque année a sa page (`/stats/<année>`) :
+  chiffres et évolution par rapport à l'année précédente (à la même date pour l'année en cours), départs par
+  mois, distance par mode, pays visités (nouveaux signalés), faits marquants, badges de l'année, avion et
+  train, étiquettes.
 - Notes et photos sur chaque trajet et chaque voyage (fiche détaillée). Les photos sont ré-encodées en JPEG,
   sans métadonnées EXIF (donc sans position GPS), avec une miniature. Elles restent privées : les liens de
   partage n'affichent ni notes ni photos.
@@ -38,25 +46,25 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   étiquette (dont le CO₂ de l'année en cours), incluses dans les exports. Les étiquettes d'un voyage
   s'appliquent à tous ses trajets ; une étiquette qui n'est plus utilisée disparaît.
 - Recherche dans « Mes voyages », insensible à la casse et aux accents : lieux, pays, notes, étiquettes,
-  nom et notes du voyage.
+  nom et notes du voyage. Boutons d'année (Tout, 2026, 2025…), conservés avec la recherche et le tri.
 - Bilan de l'année (`/review`) : chiffres clés, pays découverts, trajet le plus long, destinations favorites,
   départs par mois, et image PNG 1080 × 1350 à télécharger ou partager (feuille de partage du système sur
-  mobile). Les détenteurs d'un lien de partage voient aussi le bilan (`/s/<jeton>/review`).
+  mobile). Les détenteurs d'un lien de partage voient le bilan de l'année en cours seulement (et celui de
+  l'année écoulée en janvier et février), sans bouton de téléchargement ni de partage
+  (`/s/<jeton>/review`).
 - Jours d'absence (domicile à définir dans les préférences) : jours passés hors du domicile (rayon de 30 km),
   nuits à l'étranger, part de l'année, plus longue absence. Les allers simples s'enchaînent ; une absence
   commencée ailleurs s'arrête au retour dans cette ville ; un trajet qui ne part pas du dernier lieu atteint
   clôt l'absence en cours (déplacement non saisi). Le domicile n'apparaît jamais sur les liens de partage.
 - Continents et badges (pays, continents, distance, nombre de voyages, modes…), datés du trajet qui a fait
-  franchir le palier, avec la progression des badges restants. Deux séries sur la page Statistiques : les
-  badges de tous vos voyages, et ceux de l'année en cours, aux paliers adaptés à une année (12 voyages,
-  10 000 km, 3 continents…) et remis à zéro chaque 1er janvier. Les badges obtenus dans l'année figurent dans
+  franchir le palier, avec la progression des badges restants. Deux séries : les badges de tous vos voyages
+  (vue d'ensemble des statistiques), et ceux de chaque année (page de l'année), aux paliers adaptés à une
+  année (12 voyages, 10 000 km, 3 continents…). Les badges obtenus dans l'année figurent dans
   le bilan.
 - Lieux visités : extrémités des trajets regroupées dans un rayon de 15 km, liste et couche « Lieux visités »
   sur la carte (cercles proportionnels au nombre de trajets).
 - Rejouer : sur la carte, les trajets se dessinent dans l'ordre chronologique (aller à la date de départ,
   retour à la date de retour) ; un curseur avec les années permet de se placer à n'importe quelle date.
-- Liens de partage : les voyages à venir sont masqués par défaut (ils révèlent quand vous êtes absent) ;
-  une option par lien permet de les montrer.
 - Import / export (`/import-export`) en CSV, GeoJSON et GPX. Les trois formats contiennent les mêmes champs
   (dont notes et regroupements en voyages) et se réimportent sans perte : c'est aussi une sauvegarde, hors
   photos. À l'import, un aperçu liste les trajets lus : décochez ceux à écarter (boutons tout / rien / par
@@ -73,27 +81,36 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
 - Avion et train : compagnie, numéro de vol et appareil pour l'avion, opérateur pour le train, saisis
   dans le formulaire (libellés selon le mode ; la compagnie se complète automatiquement, avec d'abord celles
   déjà saisies puis les principales compagnies aériennes ou ferroviaires de `app/carriers.py`) ou remplis par
-  l'import des vols. Les statistiques en tirent,
-  pour chaque mode, le nombre de vols ou de trajets et les compagnies, appareils et aéroports ou gares les
-  plus fréquents (un aller-retour « AF1148 / AF1549 » compte pour deux).
+  l'import des vols. L'appareil se complète aussi (appareils déjà saisis, puis principaux modèles). Saisir un
+  numéro de vol (« AF1148 ») remplit la compagnie, le départ et l'arrivée s'ils sont vides : la compagnie
+  d'après le préfixe (hors ligne), l'itinéraire habituel du numéro d'après le service gratuit
+  [adsbdb](https://www.adsbdb.com), interrogé par le serveur et gardé en cache (`/api/flight`,
+  `app/flights.py` ; `FLIGHT_LOOKUP_URL` vide pour désactiver). C'est l'itinéraire d'aujourd'hui : à vérifier
+  pour un vol ancien. Les statistiques en tirent, pour chaque mode, le nombre de vols ou de trajets et les
+  compagnies, appareils et aéroports ou gares les plus fréquents (un aller-retour « AF1148 / AF1549 » compte
+  pour deux), avec une page de détail (`/stats/plane`, `/stats/train`, filtrable par année) : part de chaque
+  compagnie, premier et dernier vol, constructeurs, lignes les plus fréquentes.
 - Voyages : origine, destination, date, mode de transport (avion, train, voiture, bus, bateau, vélo, à pied),
   option aller-retour avec date de retour obligatoire et postérieure ou égale au départ.
 - Formulaire avec autocomplétion des lieux (Nominatim, géocodage côté serveur avec cache en base).
 - Carte Leaflet plein écran : marqueurs regroupés (markercluster), popups localisées, légende.
-- Panneau latéral (tiroir sur mobile) : tableau de bord de l'année en cours (la période filtrée ne s'y
-  applique pas), filtres (période, modes, type), liste triable synchronisée avec la carte. Les filtres sont conservés dans l'URL.
+- Panneau latéral (tiroir sur mobile) : boutons d'année (Tout, 2026, 2025…) qui remplissent la période,
+  tableau de bord de l'année choisie (l'année en cours avec « Tout »), filtres (période, modes, type), liste
+  triable synchronisée avec la carte. Les filtres sont conservés dans l'URL.
 - Thème clair/sombre (préférence enregistrée et détection de `prefers-color-scheme`).
 - Application installable et consultable hors ligne : un service worker (`/sw.js`, `app/pwa.py`) garde les
   fichiers statiques et les bibliothèques en cache, et la dernière version des pages et des données déjà
   ouvertes (carte, liste, statistiques, fiches). Les tuiles de la carte ne sont pas gardées : hors ligne, la
   carte montre les trajets sans fond de carte. Les pages du compte sont effacées du cache à la déconnexion.
+- Page 404 en forme de passeport : couverture en marbre, carte du monde (générée depuis les contours Natural
+  Earth par `scripts/make_world_svg.py`), avion et tampon « 404 · Destination introuvable ».
 - Internationalisation complète avec Flask-Babel. Dates, nombres et distances sont formatés selon la langue.
 
 ## Prérequis
 
 - Python 3.11 ou plus récent
-- Un accès réseau aux CDN (Bootstrap, Font Awesome, Google Fonts), aux tuiles de carte
-  et à Nominatim. Leaflet et MarkerCluster sont fournis dans `app/static/vendor/`.
+- Un accès réseau aux CDN (Bootstrap, Font Awesome, Chart.js, Google Fonts), aux tuiles de carte, à Nominatim
+  et, pour la recherche par numéro de vol, à adsbdb. Leaflet et MarkerCluster sont fournis dans `app/static/vendor/`.
 
 ## Installation
 
@@ -214,7 +231,8 @@ sauvegardes, avec la base de données.
 | `NOMINATIM_EMAIL` | Adresse de contact optionnelle (paramètre `email=`) |
 | `NOMINATIM_MIN_INTERVAL` | Délai minimal entre deux requêtes, en secondes (1 par défaut) |
 | `NOMINATIM_LOCK_FILE` | Fichier verrou partagé entre workers (par défaut `instance/nominatim.lock`) |
-| `GEOCODE_CACHE_DAYS` | Durée de validité du cache de géocodage |
+| `GEOCODE_CACHE_DAYS` | Durée de validité du cache de géocodage et de la recherche de vols |
+| `FLIGHT_LOOKUP_URL`, `FLIGHT_LOOKUP_TIMEOUT` | Recherche de l'itinéraire d'un numéro de vol (adsbdb par défaut ; vide pour désactiver) |
 | `MAP_TILE_URL`, `MAP_TILE_URL_DARK` | Tuiles claires et sombres (voir ci-dessous) |
 | `MAP_TILE_SUBDOMAINS`, `MAP_TILE_ATTRIBUTION`, `MAP_TILE_MAX_ZOOM` | Options du fournisseur de tuiles |
 | `APP_BASE_URL` | Adresse publique, utilisée dans les liens envoyés par e-mail |
@@ -228,6 +246,7 @@ sauvegardes, avec la base de données.
 | `LOG_LEVEL` | Niveau de journalisation (`INFO` par défaut) |
 | `SENTRY_DSN`, `SENTRY_TRACES_SAMPLE_RATE` | Suivi des erreurs Sentry (nécessite `sentry-sdk[flask]`) |
 | `UPLOAD_FOLDER` | Dossier des photos (par défaut `instance/uploads`) |
+| `IMPORT_FOLDER` | Aperçus d'import en attente de confirmation (par défaut `instance/imports`, une heure) |
 | `BACKUP_DIR`, `BACKUP_KEEP` | Dossier des sauvegardes (par défaut `instance/backups`) et nombre d'archives conservées (14) |
 | `ROUTING_URL`, `ROUTING_PROFILES`, `ROUTING_TIMEOUT` | Serveur OSRM et modes routés (par défaut `car:driving,bus:driving`) |
 | `MAX_PHOTO_MB`, `MAX_UPLOAD_MB`, `MAX_PHOTOS_PER_ITEM` | Limites des photos (15 Mo par photo, 64 Mo par envoi, 30 par trajet ou voyage) |
@@ -263,7 +282,9 @@ app/
   i18n.py            sélection de la langue, formatage, chaînes JS
   geo.py             haversine, client Nominatim et cache
   security.py        en-têtes de sécurité (CSP avec nonce, HSTS…)
-  airports.py        aéroports par code IATA ou OACI, compagnies par code OACI (import des vols)
+  airports.py        aéroports par code IATA ou OACI, compagnies par code OACI ou IATA
+  flights.py         itinéraire d'un numéro de vol (adsbdb, en cache)
+  carriers.py        suggestions de compagnies, d'opérateurs et d'appareils
   pwa.py             service worker et page hors ligne
   assets.py          fichiers statiques versionnés (?v=empreinte) et import map des modules JS
   countries.py       pays : recherche hors ligne, noms localisés, drapeaux, surfaces
