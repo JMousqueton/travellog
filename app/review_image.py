@@ -46,7 +46,7 @@ def _background():
     return image
 
 
-def render(review, title):
+def render(review, title, url=""):
     image = _background()
     # Mode RGBA : les remplissages semi-transparents se mélangent au fond, dans l'ordre du dessin.
     draw = ImageDraw.Draw(image, "RGBA")
@@ -101,7 +101,7 @@ def render(review, title):
     months, peak = review["months"], max(review["months"]) or 1
     labels = get_month_names("narrow", locale=current_locale())
     chart_h = 110
-    chart_top = HEIGHT - 70 - 36 - chart_h
+    chart_top = HEIGHT - 95 - 36 - chart_h
     bar_gap = 14
     bar_w = (inner - 11 * bar_gap) / 12
     for m, count in enumerate(months):
@@ -112,6 +112,12 @@ def render(review, title):
         letter = labels[m + 1]
         lw = draw.textlength(letter, font=_font(24, "Medium"))
         draw.text((x + (bar_w - lw) / 2, chart_top + chart_h + 12), letter, font=_font(24, "Medium"), fill=SOFT)
+
+    # Adresse du site (APP_BASE_URL), centrée en bas, sans le protocole.
+    site = url.split("://", 1)[-1].rstrip("/")
+    if site:
+        text, font = _fit(draw, site, inner, 28, "Medium")
+        draw.text((WIDTH / 2, HEIGHT - 50), text, font=font, fill=SOFT, anchor="ms")
 
     out = io.BytesIO()
     image.save(out, "PNG", optimize=True)

@@ -59,3 +59,18 @@ def carrier_suggestions(user, mode):
 
 def vehicle_suggestions(user, mode):
     return _suggestions(user, mode, "vehicle")
+
+
+# --- Logos (logo.dev) ------------------------------------------------------------------------------------------
+
+def logo_url(name):
+    """Logo de la compagnie ou de l'opérateur, cherché par son nom (CDN logo.dev, clé publiable LOGO_DEV_TOKEN) ;
+    None sans clé."""
+    from urllib.parse import quote
+
+    from flask import current_app
+
+    token = current_app.config.get("LOGO_DEV_TOKEN")
+    if not token or not name or not name.strip():
+        return None
+    return f"https://img.logo.dev/name/{quote(name.strip(), safe='')}?token={quote(token)}&size=64&format=webp&retina=true"

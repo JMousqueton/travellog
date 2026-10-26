@@ -124,6 +124,9 @@ class Config:
     MAP_TILE_ATTRIBUTION = os.environ.get("MAP_TILE_ATTRIBUTION", "")
     MAP_TILE_MAX_ZOOM = int(os.environ.get("MAP_TILE_MAX_ZOOM", "19"))
 
+    # Logos des compagnies et opérateurs (logo.dev, clé publiable pk_…) ; sans clé, pas de logo.
+    LOGO_DEV_TOKEN = os.environ.get("LOGO_DEV_TOKEN", "")
+
 
 class DevelopmentConfig(Config):
     DEBUG = True
@@ -132,6 +135,7 @@ class DevelopmentConfig(Config):
 class TestingConfig(Config):
     TESTING = True
     SECRET_KEY = "test-secret"
+    LOGO_DEV_TOKEN = ""
     SQLALCHEMY_DATABASE_URI = "sqlite://"
     WTF_CSRF_ENABLED = False
     NOMINATIM_MIN_INTERVAL = 0.0

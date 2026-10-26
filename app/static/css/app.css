@@ -506,6 +506,11 @@ body.app-layout { height: 100dvh; display: flex; flex-direction: column; overflo
 }
 .next-trip[href]:hover { background: var(--brand-soft); }
 .next-trip > i { color: var(--brand); }
+.carrier-name { display: inline-flex; align-items: center; gap: .6rem; }
+.carrier-logo { width: 32px; height: 32px; flex: none; border-radius: 8px; object-fit: contain; background: #fff;
+  box-shadow: 0 0 0 1px var(--bs-border-color); }
+.next-trip.is-today { border: 1px solid var(--brand); background: var(--brand-soft); }
+.next-trip.is-today .next-trip-label { color: var(--brand); font-weight: 600; }
 .next-trip-label { display: block; font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
 .next-trip-route { display: block; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 210px; }
 .legend-line.faded { opacity: .45; }

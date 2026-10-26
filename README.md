@@ -243,6 +243,7 @@ the database.
 | `FLIGHT_LOOKUP_URL`, `FLIGHT_LOOKUP_TIMEOUT` | Route lookup for a flight number (adsbdb by default; empty to disable) |
 | `MAP_TILE_URL`, `MAP_TILE_URL_DARK` | Light and dark tiles (see below) |
 | `MAP_TILE_SUBDOMAINS`, `MAP_TILE_ATTRIBUTION`, `MAP_TILE_MAX_ZOOM` | Tile provider options |
+| `LOGO_DEV_TOKEN` | logo.dev publishable key (`pk_…`): shows airline and rail operator logos, looked up by name, on `/stats/plane` and `/stats/train`; none without it |
 | `APP_BASE_URL` | Public address, used in links sent by email |
 | `PROXY_FIX_COUNT` | Number of trusted reverse proxies (`X-Forwarded-*`) |
 | `RATELIMIT_STORAGE_URI` | Rate limiting storage (`memory://`, `redis://…`) |

@@ -75,9 +75,12 @@ def view(token):
     link = ShareLink.active(token)
     if link is None:
         abort(404)
+    from ..trips.queries import shared_trips_for
+
     link.mark_used()
     return render_template(
         "map.html", tiles=map_tiles(), focus=None, shared=link,
+        map_years=sorted({t.depart_date.year for t in shared_trips_for(link)}, reverse=True),
         trips_url=url_for("api.shared_trips", token=token), stats_url=url_for("api.shared_stats", token=token),
         countries_url=url_for("api.shared_countries", token=token),
         places_url=url_for("api.shared_places", token=token), current_year=utils.today().year,

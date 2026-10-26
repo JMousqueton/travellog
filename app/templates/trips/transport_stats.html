@@ -6,7 +6,7 @@
 {% if year %}{% set page_title = page_title ~ " · " ~ year %}{% endif %}
 {% block title %}{{ page_title }}{% endblock %}
 
-{% macro ranking_table(rows, label, dates=True) %}
+{% macro ranking_table(rows, label, dates=True, logos=False) %}
 <div class="card shadow-soft">
   <div class="table-responsive">
     <table class="table align-middle mb-0 trips-table">
@@ -22,7 +22,12 @@
       <tbody>
         {% for row in rows %}
         <tr>
-          <th scope="row" class="fw-medium">{{ row.name }}</th>
+          <th scope="row" class="fw-medium">
+            {%- set logo = carrier_logo(row.name) if logos else None -%}
+            {%- if logo %}<span class="carrier-name"><img class="carrier-logo" src="{{ logo }}" alt="" width="32" height="32"
+              loading="lazy" decoding="async" referrerpolicy="no-referrer">{{ row.name }}</span>
+            {%- else %}{{ row.name }}{% endif -%}
+          </th>
           <td class="text-end">{{ row.count|number }}</td>
           <td class="text-end text-nowrap">{{ row.km|distance }}</td>
           <td class="d-none d-md-table-cell">
@@ -91,7 +96,9 @@
 
   <section aria-labelledby="carriersTitle" class="mb-5">
     <h2 class="h5 fw-semibold mb-3" id="carriersTitle">{{ labels.carrier[0] }}</h2>
-    {% if details.carriers %}{{ ranking_table(details.carriers, labels.carrier[0]) }}
+    {% if details.carriers %}{{ ranking_table(details.carriers, labels.carrier[0], logos=True) }}
+    {% if config.LOGO_DEV_TOKEN %}<p class="small text-body-secondary mt-2 mb-0">
+      <a class="link-secondary" href="https://logo.dev" rel="noopener" target="_blank">{{ _("Logos fournis par Logo.dev") }}</a></p>{% endif %}
     {% else %}<p class="text-body-secondary">{{ _("À renseigner dans la fiche du trajet.") }}</p>{% endif %}
   </section>
 

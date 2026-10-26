@@ -541,7 +541,8 @@ def review_png_response(user, year, shared=False):
     if review is None:
         abort(404)
     add_absences(review, user, trips)
-    response = Response(review_image.render(review, _("Carnet de voyages")), mimetype="image/png")
+    image = review_image.render(review, _("Carnet de voyages"), current_app.config["APP_BASE_URL"])
+    response = Response(image, mimetype="image/png")
     response.headers["Content-Disposition"] = f'inline; filename="bilan-{year}.png"'
     response.cache_control.private = True
     response.cache_control.max_age = 300

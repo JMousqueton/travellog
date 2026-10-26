@@ -2,7 +2,7 @@ import re
 import unicodedata
 from collections import Counter, defaultdict
 
-from flask_babel import format_percent, ngettext
+from flask_babel import format_percent, gettext as _, ngettext
 
 from .. import countries as geo_countries
 from .. import regions as geo_regions
@@ -90,11 +90,18 @@ def happened(trips):
 
 
 def next_trip(trips):
+    """Trajet du jour s'il y en a un (« Voyage aujourd'hui »), sinon le prochain départ."""
+    todays = sorted((t for t in trips if t.depart_date == utils.today()), key=lambda t: t.id)
+    if todays:
+        trip = todays[0]
+        return {"id": trip.id, "destination": trip.dest_name, "mode": trip.transport_mode,
+                "today": True, "label": _("Voyage aujourd'hui"), "countdown": ""}
     upcoming = upcoming_trips(trips)
     if not upcoming:
         return None
     trip = upcoming[0]
     return {"id": trip.id, "destination": trip.dest_name, "mode": trip.transport_mode,
+            "today": False, "label": _("Prochain départ"),
             "countdown": format_countdown(trip.depart_date, trip.end_date)}
 
 

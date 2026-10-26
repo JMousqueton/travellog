@@ -378,8 +378,13 @@ function renderNextTrip(next) {
   const card = $("nextTrip");
   card.hidden = !next;
   if (!next) return;
+  card.classList.toggle("is-today", next.today);
+  card.querySelector(":scope > i").className = next.today ? "fa-solid fa-suitcase-rolling" : "fa-regular fa-clock";
+  card.querySelector(".next-trip-label").textContent = next.label;
   card.querySelector("[data-next-route]").textContent = next.destination;
-  card.querySelector("[data-next-countdown]").textContent = next.countdown;
+  const countdown = card.querySelector("[data-next-countdown]");
+  countdown.textContent = next.countdown;
+  countdown.hidden = !next.countdown;
   card.dataset.tripId = next.id;
   card.href = "#";
 }

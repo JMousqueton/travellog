@@ -250,6 +250,7 @@ sauvegardes, avec la base de données.
 | `FLIGHT_LOOKUP_URL`, `FLIGHT_LOOKUP_TIMEOUT` | Recherche de l'itinéraire d'un numéro de vol (adsbdb par défaut ; vide pour désactiver) |
 | `MAP_TILE_URL`, `MAP_TILE_URL_DARK` | Tuiles claires et sombres (voir ci-dessous) |
 | `MAP_TILE_SUBDOMAINS`, `MAP_TILE_ATTRIBUTION`, `MAP_TILE_MAX_ZOOM` | Options du fournisseur de tuiles |
+| `LOGO_DEV_TOKEN` | Clé publiable logo.dev (`pk_…`) : logos des compagnies et opérateurs, cherchés par leur nom, sur `/stats/plane` et `/stats/train` ; aucun logo sans elle |
 | `APP_BASE_URL` | Adresse publique, utilisée dans les liens envoyés par e-mail |
 | `PROXY_FIX_COUNT` | Nombre de proxys inverses de confiance (`X-Forwarded-*`) |
 | `RATELIMIT_STORAGE_URI` | Stockage de la limitation de débit (`memory://`, `redis://…`) |

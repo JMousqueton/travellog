@@ -78,6 +78,10 @@ def create_app(config_name=None):
 
     _register_error_handlers(app)
 
+    from .carriers import logo_url
+
+    app.jinja_env.globals["carrier_logo"] = logo_url
+
     @app.context_processor
     def inject_settings():
         return {"registration_open": models.registration_open, "password_reset_enabled": mail_enabled,

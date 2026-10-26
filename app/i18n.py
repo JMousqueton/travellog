@@ -58,9 +58,11 @@ def format_co2(kg):
 
 
 def format_countdown(start, end=None):
-    """« Dans 12 jours », « Demain », « En cours »… ; chaîne vide pour un voyage passé."""
+    """« Dans 12 jours », « Demain », « Aujourd'hui », « En cours »… ; chaîne vide pour un voyage passé."""
     from . import utils
 
+    if start == utils.today():
+        return _("Aujourd'hui")
     status = utils.trip_status(start, end or start)
     if status == "ongoing":
         return _("En cours")
