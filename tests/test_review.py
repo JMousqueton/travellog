@@ -2,7 +2,7 @@ import io
 from datetime import date
 
 import pytest
-from PIL import Image
+from PIL import Image, ImageChops
 
 from app import utils
 from app.models import ShareLink
@@ -99,3 +99,17 @@ def test_image_content_stays_inside_canvas(app, user):
         image = Image.open(io.BytesIO(render(year_review(user.trips.all(), 2025), "Carnet de voyages")))
     bottom = image.crop((0, HEIGHT - 40, image.width, HEIGHT)).convert("RGB")
     assert len(bottom.getcolors(maxcolors=100_000)) < 40  # uniquement le fond : aucun texte ne déborde
+
+
+def test_image_shows_site_address(app, user):
+    """L'adresse APP_BASE_URL est écrite, centrée, sous le graphique des mois."""
+    from app.review_image import HEIGHT, WIDTH, render
+
+    make_trip(user, depart_date=date(2025, 3, 2), origin_country="FR", dest_country="IT")
+    with app.test_request_context():
+        review = year_review(user.trips.all(), 2025)
+        plain = Image.open(io.BytesIO(render(review, "Carnet de voyages"))).convert("RGB")
+        signed = Image.open(io.BytesIO(render(review, "Carnet de voyages", "https://travellog.example.org/")))
+    box = (0, HEIGHT - 90, WIDTH, HEIGHT - 40)
+    diff = ImageChops.difference(plain.crop(box), signed.convert("RGB").crop(box)).getbbox()
+    assert diff and abs((diff[0] + diff[2]) / 2 - WIDTH / 2) < 4  # texte centré

@@ -1,3 +1,5 @@
+from datetime import date
+
 from app.models import ShareLink
 
 from .conftest import login, make_trip
@@ -27,6 +29,20 @@ def test_create_link_and_view_anonymously(client, db, user):
     assert data["count"] == 1
     assert data["trips"][0]["edit_url"] is None and data["trips"][0]["delete_url"] is None
     assert client.get(f"/api/shared/{link.token}/stats").get_json()["count"] == 1
+
+
+def test_shared_map_has_year_filter(client, db, user):
+    make_trip(user, depart_date=date(2023, 3, 1))
+    make_trip(user, depart_date=date(2025, 5, 1))
+    make_trip(user, depart_date=date(2099, 1, 1))
+    login(client)
+    link = create_link(client, db)
+    html = client.get(f"/s/{link.token}").text
+    assert 'data-year=""' in html and 'data-year="2025"' in html and 'data-year="2023"' in html
+    assert 'data-year="2099"' not in html
+    link.include_upcoming = True
+    db.session.commit()
+    assert 'data-year="2099"' in client.get(f"/s/{link.token}").text
 
 
 def test_shared_view_respects_filters(client, db, user):

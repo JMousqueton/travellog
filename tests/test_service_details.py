@@ -111,3 +111,19 @@ def test_transport_stats_pages(auth_client, user):
     assert "Trains : opérateurs" in train and "Constructeurs" not in train
     assert auth_client.get("/stats/car").status_code == 404
     assert 'href="/stats/plane"' in auth_client.get("/stats").text
+
+
+def test_carrier_logos(app, auth_client, user):
+    from app.carriers import logo_url
+
+    make_trip(user, transport_mode="train", carrier="SNCF")
+    make_trip(user, transport_mode="train", carrier="Petit Train d'Artouste")
+    assert "img.logo.dev" not in auth_client.get("/stats/train").text  # sans clé : pas de logo
+    app.config["LOGO_DEV_TOKEN"] = "pk_test"
+    with app.app_context():
+        assert logo_url(" SNCF ") == "https://img.logo.dev/name/SNCF?token=pk_test&size=64&format=webp&retina=true"
+        assert logo_url("Petit Train d'Artouste").startswith("https://img.logo.dev/name/Petit%20Train%20d%27Artouste?")
+    html = auth_client.get("/stats/train").text
+    assert 'src="https://img.logo.dev/name/SNCF?token=pk_test&amp;size=64&amp;format=webp&amp;retina=true"' in html
+    assert "Logos fournis par Logo.dev" in html
+    assert "img.logo.dev" in auth_client.get("/privacy").text

@@ -28,11 +28,13 @@ def test_trip_status(start, end, status):
 def test_api_status_and_countdown(auth_client, user):
     make_trip(user, depart_date=date(2025, 6, 22))
     make_trip(user, depart_date=date(2025, 6, 11))
+    make_trip(user, depart_date=TODAY)
     make_trip(user, depart_date=date(2025, 6, 5), is_round_trip=True, return_date=date(2025, 6, 15))
     make_trip(user, depart_date=date(2025, 1, 1))
     trips = auth_client.get("/api/trips").get_json()["trips"]
     assert [(t["status"], t["countdown"]) for t in trips] == [
-        ("upcoming", "Dans 12 jours"), ("upcoming", "Demain"), ("ongoing", "En cours"), ("past", "")]
+        ("upcoming", "Dans 12 jours"), ("upcoming", "Demain"), ("ongoing", "Aujourd'hui"), ("ongoing", "En cours"),
+        ("past", "")]
 
 
 def test_countdown_is_translated(client, db, user):
@@ -123,3 +125,11 @@ def test_stats_upcoming_shows_departure_and_return(auth_client, user):
     section = auth_client.get("/stats").text.split('id="upcomingTitle"')[1].split("</section>")[0]
     assert "1 juil. 2025" in section and "9 juil. 2025" in section  # départ et retour
     assert "2 août 2025" in section and "Aller simple" in section
+
+
+def test_next_trip_prefers_todays_trip(auth_client, user):
+    make_trip(user, depart_date=date(2025, 6, 20), dest_name="Nantes, France")
+    today = make_trip(user, depart_date=date(2025, 6, 10), dest_name="Lille, France")
+    stats = auth_client.get("/api/stats").get_json()["next_trip"]
+    assert stats["id"] == today.id and stats["today"] and stats["label"] == "Voyage aujourd'hui"
+    assert stats["destination"] == "Lille, France" and stats["countdown"] == ""
