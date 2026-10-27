@@ -1,0 +1,8 @@
+{% if new %}{{ _("Nouveau ticket de %(email)s :", email=ticket.user.email) }}{% else %}{{ _("Nouveau message de %(email)s :", email=ticket.user.email) }}{% endif %}
+
+{{ ticket.subject }}
+--
+{{ message.body }}
+--
+
+{{ _("Répondre :") }} {{ url }}

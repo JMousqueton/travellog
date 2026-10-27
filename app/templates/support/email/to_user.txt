@@ -1,0 +1,8 @@
+{{ _("Bonjour,") }}
+
+{{ _("Le support de %(site)s a répondu à votre demande « %(subject)s » :", site=site, subject=ticket.subject) }}
+
+{{ message.body }}
+
+{{ _("Pour répondre ou fermer la demande, ouvrez ce lien :") }}
+{{ url }}

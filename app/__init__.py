@@ -66,6 +66,7 @@ def create_app(config_name=None):
     from .main import bp as main_bp
     from .share import bp as share_bp
     from .transfer import bp as transfer_bp
+    from .support import bp as support_bp
     from .trips import bp as trips_bp
 
     app.register_blueprint(main_bp)
@@ -75,6 +76,7 @@ def create_app(config_name=None):
     app.register_blueprint(admin_bp, url_prefix="/admin")
     app.register_blueprint(share_bp)
     app.register_blueprint(transfer_bp)
+    app.register_blueprint(support_bp)
 
     _register_error_handlers(app)
 

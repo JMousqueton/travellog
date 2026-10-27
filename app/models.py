@@ -41,6 +41,8 @@ class User(UserMixin, db.Model):
     home_country = db.Column(db.String(2), nullable=True)
     # Jeton secret de l'abonnement agenda (.ics) ; NULL si l'abonnement est désactivé.
     calendar_token = db.Column(db.String(64), nullable=True, unique=True)
+    # Administrateurs : e-mail à chaque nouveau message d'utilisateur sur un ticket.
+    ticket_emails = db.Column(db.Boolean, nullable=False, default=True, server_default="1")
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
 
     trips = db.relationship("Trip", back_populates="user", cascade="all, delete-orphan", lazy="dynamic")
@@ -50,6 +52,7 @@ class User(UserMixin, db.Model):
     tags = db.relationship("Tag", cascade="all, delete-orphan", order_by="Tag.name")
     # Passe par l'ORM pour que les fichiers des photos soient supprimés avec le compte.
     photos = db.relationship("Photo", cascade="all", lazy="dynamic", overlaps="user")
+    tickets = db.relationship("Ticket", back_populates="user", cascade="all, delete-orphan", lazy="dynamic")
 
     __table_args__ = (
         CheckConstraint("theme IS NULL OR theme IN ('light', 'dark')", name="theme_valid"),
@@ -437,3 +440,52 @@ class Photo(db.Model):
     __table_args__ = (
         CheckConstraint("(trip_id IS NULL) <> (journey_id IS NULL)", name="single_owner"),
     )
+
+
+class Ticket(db.Model):
+    """Demande de support d'un utilisateur : un sujet et un échange de messages avec les administrateurs."""
+
+    __tablename__ = "tickets"
+
+    # open : en attente du support ; answered : le support a répondu ; closed : fermé.
+    STATUSES = ("open", "answered", "closed")
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    subject = db.Column(db.String(200), nullable=False)
+    status = db.Column(db.String(10), nullable=False, default="open", server_default="open", index=True)
+    # L'utilisateur reçoit les réponses du support par e-mail (réglable pour chaque ticket).
+    notify = db.Column(db.Boolean, nullable=False, default=True, server_default="1")
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
+    updated_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
+
+    user = db.relationship("User", back_populates="tickets")
+    messages = db.relationship("TicketMessage", back_populates="ticket", cascade="all, delete-orphan",
+                               order_by="TicketMessage.created_at, TicketMessage.id")
+
+    __table_args__ = (
+        CheckConstraint("status IN ('open', 'answered', 'closed')", name="ticket_status_valid"),
+    )
+
+    def add_message(self, author, body, from_staff):
+        """Ajoute un message ; le statut suit le dernier à avoir écrit."""
+        message = TicketMessage(author_id=author.id, body=body, from_staff=from_staff)
+        self.messages.append(message)
+        self.status = "answered" if from_staff else "open"
+        self.updated_at = utcnow()
+        return message
+
+
+class TicketMessage(db.Model):
+    __tablename__ = "ticket_messages"
+
+    id = db.Column(db.Integer, primary_key=True)
+    ticket_id = db.Column(db.Integer, db.ForeignKey("tickets.id", ondelete="CASCADE"), nullable=False, index=True)
+    # NULL si l'auteur (un administrateur) a supprimé son compte : le message reste dans l'échange.
+    author_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
+    from_staff = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
+    body = db.Column(db.Text, nullable=False)
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
+
+    ticket = db.relationship("Ticket", back_populates="messages")
+    author = db.relationship("User")

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% from "support/_macros.html" import ticket_status, thread, reply_form %}
+{% block title %}{{ ticket.subject }} · {{ _("Support") }}{% endblock %}
+{% block content %}
+<div class="ticket-page mx-auto">
+  <a class="small" href="{{ url_for('support.index') }}"><i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>{{ _("Mes demandes") }}</a>
+  <div class="d-flex flex-wrap align-items-center gap-2 mt-2 mb-4">
+    <h1 class="h4 fw-bold mb-0 me-auto">{{ ticket.subject }} <span class="text-body-secondary fw-normal">#{{ ticket.id }}</span></h1>
+    {{ ticket_status(ticket.status) }}
+  </div>
+  {{ thread(ticket) }}
+  {% if ticket.status == 'closed' %}
+  <p class="text-body-secondary small">{{ _("Cette demande est fermée. Répondre la rouvrira.") }}</p>
+  {% endif %}
+  {{ reply_form(form, url_for('support.ticket', ticket_id=ticket.id)) }}
+  <div class="d-flex flex-wrap gap-3 mt-3">
+  <form method="post" action="{{ url_for('support.notify', ticket_id=ticket.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    {% if ticket.notify %}
+    <button type="submit" name="notify" value="0" class="btn btn-link px-0 text-body-secondary">
+      <i class="fa-solid fa-bell-slash me-1" aria-hidden="true"></i>{{ _("Ne plus recevoir les réponses par e-mail") }}</button>
+    {% else %}
+    <button type="submit" name="notify" value="1" class="btn btn-link px-0 text-body-secondary">
+      <i class="fa-solid fa-bell me-1" aria-hidden="true"></i>{{ _("Recevoir les réponses par e-mail") }}</button>
+    {% endif %}
+  </form>
+  {% if ticket.status != 'closed' %}
+  <form method="post" action="{{ url_for('support.close', ticket_id=ticket.id) }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <button type="submit" class="btn btn-link px-0 text-body-secondary">
+      <i class="fa-solid fa-circle-check me-1" aria-hidden="true"></i>{{ _("Problème résolu : fermer la demande") }}</button>
+  </form>
+  {% endif %}
+  </div>
+</div>
+{% endblock %}

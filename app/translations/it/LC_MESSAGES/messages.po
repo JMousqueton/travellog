@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-27 08:09+0000\n"
+"POT-Creation-Date: 2026-10-27 08:49+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -26,53 +26,53 @@ msgstr "Accedi per visualizzare questa pagina."
 msgid "Authentification requise."
 msgstr "Autenticazione richiesta."
 
-#: app/__init__.py:109
+#: app/__init__.py:111
 msgid "Requête invalide"
 msgstr "Richiesta non valida"
 
-#: app/__init__.py:109
+#: app/__init__.py:111
 msgid "La requête envoyée n'a pas pu être traitée."
 msgstr "Non è stato possibile elaborare la richiesta."
 
-#: app/__init__.py:110
+#: app/__init__.py:112
 msgid "Accès refusé"
 msgstr "Accesso negato"
 
-#: app/__init__.py:110
+#: app/__init__.py:112
 msgid "Vous n'avez pas l'autorisation d'accéder à cette page."
 msgstr "Non hai l'autorizzazione per accedere a questa pagina."
 
-#: app/__init__.py:111
+#: app/__init__.py:113
 msgid "Page introuvable"
 msgstr "Pagina non trovata"
 
-#: app/__init__.py:111
+#: app/__init__.py:113
 msgid "La page demandée n'existe pas ou a été déplacée."
 msgstr "La pagina richiesta non esiste o è stata spostata."
 
-#: app/__init__.py:112
+#: app/__init__.py:114
 msgid "Fichier trop volumineux"
 msgstr "File troppo grande"
 
-#: app/__init__.py:112
+#: app/__init__.py:114
 msgid "Le fichier envoyé dépasse la taille autorisée."
 msgstr "Il file inviato supera la dimensione consentita."
 
-#: app/__init__.py:113
+#: app/__init__.py:115
 msgid "Trop de tentatives"
 msgstr "Troppi tentativi"
 
-#: app/__init__.py:113
+#: app/__init__.py:115
 msgid ""
 "Vous avez effectué trop de demandes. Patientez quelques minutes puis "
 "réessayez."
 msgstr "Hai effettuato troppe richieste. Attendi qualche minuto e riprova."
 
-#: app/__init__.py:114
+#: app/__init__.py:116
 msgid "Erreur interne"
 msgstr "Errore interno"
 
-#: app/__init__.py:114
+#: app/__init__.py:116
 msgid "Une erreur inattendue s'est produite. Réessayez plus tard."
 msgstr "Si è verificato un errore imprevisto. Riprova più tardi."
 
@@ -85,18 +85,39 @@ msgstr "Consenti le registrazioni"
 msgid "Enregistrer"
 msgstr "Salva"
 
-#: app/admin/routes.py:29
+#: app/admin/routes.py:31
 msgid "Vous ne pouvez pas supprimer votre propre compte."
 msgstr "Non puoi eliminare il tuo account."
 
-#: app/admin/routes.py:34
+#: app/admin/routes.py:36
 #, python-format
 msgid "Le compte %(email)s a été supprimé."
 msgstr "L'account %(email)s è stato eliminato."
 
-#: app/admin/routes.py:47
+#: app/admin/routes.py:49
 msgid "Paramètres enregistrés."
 msgstr "Impostazioni salvate."
+
+#: app/admin/routes.py:95
+#, python-format
+msgid "Réponse envoyée à %(email)s."
+msgstr "Risposta inviata a %(email)s."
+
+#: app/admin/routes.py:111
+msgid "Ticket fermé."
+msgstr "Ticket chiuso."
+
+#: app/admin/routes.py:111
+msgid "Ticket rouvert."
+msgstr "Ticket riaperto."
+
+#: app/admin/routes.py:121
+msgid "Vous recevrez un e-mail à chaque nouveau message de ticket."
+msgstr "Riceverai un'e-mail a ogni nuovo messaggio di ticket."
+
+#: app/admin/routes.py:122
+msgid "Vous ne recevrez plus d'e-mail pour les tickets."
+msgstr "Non riceverai più e-mail per i ticket."
 
 #: app/api/routes.py:126 app/api/routes.py:138
 #: app/templates/admin/users.html:34 app/templates/share/trips.html:52
@@ -367,7 +388,7 @@ msgstr "Password modificata. Ora puoi accedere."
 msgid "Aujourd'hui"
 msgstr "Oggi"
 
-#: app/i18n.py:68 app/i18n.py:137 app/templates/partials/macros.html:38
+#: app/i18n.py:68 app/i18n.py:144 app/templates/partials/macros.html:38
 #: app/templates/trips/_stats_parts.html:315
 msgid "En cours"
 msgstr "In corso"
@@ -383,320 +404,320 @@ msgid_plural "Dans %(num)s jours"
 msgstr[0] "Tra %(num)s giorno"
 msgstr[1] "Tra %(num)s giorni"
 
-#: app/i18n.py:88 app/templates/map.html:179
+#: app/i18n.py:95 app/templates/map.html:179
 msgid "Chargement…"
 msgstr "Caricamento…"
 
-#: app/i18n.py:89
+#: app/i18n.py:96
 msgid "Impossible de charger les voyages. Réessayez."
 msgstr "Impossibile caricare i viaggi. Riprova."
 
-#: app/i18n.py:90
+#: app/i18n.py:97
 msgid "Réessayer"
 msgstr "Riprova"
 
-#: app/i18n.py:91 app/templates/trips/list.html:177
+#: app/i18n.py:98 app/templates/trips/list.html:177
 #: app/templates/trips/stats.html:45
 msgid "Aucun voyage pour l'instant"
 msgstr "Ancora nessun viaggio"
 
-#: app/i18n.py:92 app/templates/trips/list.html:178
+#: app/i18n.py:99 app/templates/trips/list.html:178
 #: app/templates/trips/stats.html:46
 msgid "Ajoutez votre premier voyage pour le voir apparaître sur la carte."
 msgstr "Aggiungi il tuo primo viaggio per vederlo sulla mappa."
 
-#: app/i18n.py:93
+#: app/i18n.py:100
 msgid "Aucun voyage ne correspond aux filtres"
 msgstr "Nessun viaggio corrisponde ai filtri"
 
-#: app/i18n.py:94
+#: app/i18n.py:101
 msgid "Modifiez ou réinitialisez les filtres pour afficher vos voyages."
 msgstr "Modifica o reimposta i filtri per vedere i tuoi viaggi."
 
-#: app/i18n.py:95
+#: app/i18n.py:102
 msgid "Réinitialiser les filtres"
 msgstr "Reimposta filtri"
 
-#: app/i18n.py:96 app/templates/base.html:160 app/templates/base.html:161
+#: app/i18n.py:103 app/templates/base.html:160 app/templates/base.html:161
 #: app/templates/map.html:188 app/templates/trips/list.html:11
 #: app/templates/trips/list.html:180
 msgid "Ajouter un voyage"
 msgstr "Aggiungi un viaggio"
 
-#: app/i18n.py:97 app/templates/trips/detail.html:31
+#: app/i18n.py:104 app/templates/trips/detail.html:31
 #: app/templates/trips/list.html:145
 msgid "Modifier"
 msgstr "Modifica"
 
-#: app/i18n.py:98 app/templates/base.html:238
+#: app/i18n.py:105 app/templates/base.html:240
 #: app/templates/trips/detail.html:111 app/templates/trips/form.html:148
 msgid "Supprimer"
 msgstr "Elimina"
 
-#: app/i18n.py:99
+#: app/i18n.py:106
 #, python-format
 msgid "Afficher %(route)s sur la carte"
 msgstr "Mostra %(route)s sulla mappa"
 
-#: app/i18n.py:100 app/templates/trips/list.html:81
+#: app/i18n.py:107 app/templates/trips/list.html:81
 #, python-format
 msgid "Modifier le voyage %(route)s"
 msgstr "Modifica il viaggio %(route)s"
 
-#: app/i18n.py:101 app/templates/trips/list.html:86
+#: app/i18n.py:108 app/templates/trips/list.html:86
 #, python-format
 msgid "Supprimer le voyage %(route)s"
 msgstr "Elimina il viaggio %(route)s"
 
-#: app/i18n.py:102 app/templates/trips/detail.html:40
+#: app/i18n.py:109 app/templates/trips/detail.html:40
 #: app/templates/trips/stats.html:28
 msgid "Départ"
 msgstr "Partenza"
 
-#: app/i18n.py:103 app/templates/trips/detail.html:41
+#: app/i18n.py:110 app/templates/trips/detail.html:41
 #: app/templates/trips/stats.html:30
 msgid "Retour"
 msgstr "Ritorno"
 
-#: app/i18n.py:104 app/templates/share/trips.html:38
+#: app/i18n.py:111 app/templates/share/trips.html:38
 #: app/templates/trips/_stats_parts.html:239 app/templates/trips/detail.html:50
 #: app/templates/trips/list.html:116
 #: app/templates/trips/transport_stats.html:16
 msgid "Distance"
 msgstr "Distanza"
 
-#: app/i18n.py:105 app/templates/map.html:129 app/templates/share/trips.html:17
+#: app/i18n.py:112 app/templates/map.html:129 app/templates/share/trips.html:17
 #: app/templates/transfer/preview.html:59 app/templates/trips/list.html:59
 #: app/trips/forms.py:58
 msgid "Aller-retour"
 msgstr "Andata e ritorno"
 
-#: app/i18n.py:106 app/templates/map.html:129 app/templates/share/trips.html:17
+#: app/i18n.py:113 app/templates/map.html:129 app/templates/share/trips.html:17
 #: app/templates/trips/list.html:59 app/templates/trips/stats.html:31
 msgid "Aller simple"
 msgstr "Solo andata"
 
-#: app/i18n.py:107
+#: app/i18n.py:114
 msgid "Trajet aller"
 msgstr "Viaggio di andata"
 
-#: app/i18n.py:108
+#: app/i18n.py:115
 msgid "Trajet retour"
 msgstr "Viaggio di ritorno"
 
-#: app/i18n.py:109
+#: app/i18n.py:116
 msgid "Légende"
 msgstr "Legenda"
 
-#: app/i18n.py:110
+#: app/i18n.py:117
 msgid "Aller"
 msgstr "Andata"
 
-#: app/i18n.py:111
+#: app/i18n.py:118
 msgid "Retour (pointillés)"
 msgstr "Ritorno (tratteggiato)"
 
-#: app/i18n.py:112
+#: app/i18n.py:119
 msgid "Voyages passant par ce lieu"
 msgstr "Viaggi da questo luogo"
 
-#: app/i18n.py:113 app/templates/map.html:171
+#: app/i18n.py:120 app/templates/map.html:171
 msgid "Carte des voyages"
 msgstr "Mappa dei viaggi"
 
-#: app/i18n.py:114
+#: app/i18n.py:121
 msgid "contributeurs OpenStreetMap"
 msgstr "contributori di OpenStreetMap"
 
-#: app/i18n.py:115
+#: app/i18n.py:122
 msgid "Aucun lieu trouvé"
 msgstr "Nessun luogo trovato"
 
-#: app/api/routes.py:196 app/i18n.py:116 app/trips/routes.py:120
+#: app/api/routes.py:196 app/i18n.py:123 app/trips/routes.py:120
 msgid "La recherche de lieux est momentanément indisponible."
 msgstr "La ricerca dei luoghi non è al momento disponibile."
 
-#: app/i18n.py:117
+#: app/i18n.py:124
 msgid "Recherche…"
 msgstr "Ricerca in corso…"
 
-#: app/i18n.py:118
+#: app/i18n.py:125
 msgid "Saisissez au moins 3 caractères"
 msgstr "Digita almeno 3 caratteri"
 
-#: app/i18n.py:119
+#: app/i18n.py:126
 #, python-format
 msgid "%(count)s suggestions disponibles, utilisez les flèches haut et bas"
 msgstr "%(count)s suggerimenti disponibili, usa le frecce su e giù"
 
-#: app/i18n.py:120 app/trips/forms.py:81
+#: app/i18n.py:127 app/trips/forms.py:81
 msgid "La date de retour doit être postérieure ou égale à la date de départ."
 msgstr "La data di ritorno deve essere uguale o successiva a quella di partenza."
 
-#: app/i18n.py:121 app/trips/forms.py:77
+#: app/i18n.py:128 app/trips/forms.py:77
 msgid "La date de retour est obligatoire pour un aller-retour."
 msgstr "La data di ritorno è obbligatoria per un viaggio di andata e ritorno."
 
-#: app/i18n.py:122
+#: app/i18n.py:129
 msgid "Passer en mode clair"
 msgstr "Passa alla modalità chiara"
 
-#: app/i18n.py:123
+#: app/i18n.py:130
 msgid "Passer en mode sombre"
 msgstr "Passa alla modalità scura"
 
-#: app/i18n.py:124
+#: app/i18n.py:131
 msgid "Impossible d'enregistrer la préférence de thème."
 msgstr "Impossibile salvare la preferenza del tema."
 
-#: app/i18n.py:125
+#: app/i18n.py:132
 #, python-format
 msgid "Voyage sélectionné : %(route)s"
 msgstr "Viaggio selezionato: %(route)s"
 
-#: app/i18n.py:126
+#: app/i18n.py:133
 #, python-format
 msgid "Voyage : %(name)s"
 msgstr "Viaggio: %(name)s"
 
-#: app/i18n.py:127 app/templates/share/stats.html:17
+#: app/i18n.py:134 app/templates/share/stats.html:17
 #: app/templates/share/trips.html:71
 msgid "Aucun voyage à afficher"
 msgstr "Nessun viaggio da mostrare"
 
-#: app/i18n.py:128
+#: app/i18n.py:135
 msgid "Lien copié dans le presse-papiers."
 msgstr "Link copiato negli appunti."
 
-#: app/i18n.py:129
+#: app/i18n.py:136
 msgid "Impossible de copier le lien : sélectionnez-le et copiez-le manuellement."
 msgstr "Impossibile copiare il link: selezionalo e copialo manualmente."
 
-#: app/i18n.py:130
+#: app/i18n.py:137
 msgid "Liste mise à jour"
 msgstr "Elenco aggiornato"
 
-#: app/i18n.py:131
+#: app/i18n.py:138
 msgid "Ce champ est obligatoire."
 msgstr "Questo campo è obbligatorio."
 
-#: app/i18n.py:132 app/trips/queries.py:35
+#: app/i18n.py:139 app/trips/queries.py:35
 msgid "La date de début doit précéder la date de fin."
 msgstr "La data di inizio deve precedere quella di fine."
 
-#: app/i18n.py:133 app/templates/trips/_stats_parts.html:181
+#: app/i18n.py:140 app/templates/trips/_stats_parts.html:181
 #: app/templates/trips/stats.html:60
 msgid "Pays visités"
 msgstr "Paesi visitati"
 
-#: app/i18n.py:134
+#: app/i18n.py:141
 msgid "Fiche"
 msgstr "Scheda"
 
-#: app/i18n.py:135 app/templates/trips/list.html:78
+#: app/i18n.py:142 app/templates/trips/list.html:78
 #, python-format
 msgid "Fiche du trajet %(route)s"
 msgstr "Scheda del tragitto %(route)s"
 
-#: app/i18n.py:136 app/templates/map.html:120 app/templates/trips/stats.html:19
+#: app/i18n.py:143 app/templates/map.html:120 app/templates/trips/stats.html:19
 msgid "À venir"
 msgstr "In arrivo"
 
-#: app/i18n.py:138
+#: app/i18n.py:145
 msgid "À venir (estompé)"
 msgstr "In arrivo (sbiadito)"
 
-#: app/i18n.py:139 app/templates/trips/_stats_parts.html:139
+#: app/i18n.py:146 app/templates/trips/_stats_parts.html:139
 #: app/templates/trips/stats.html:76
 msgid "Lieux visités"
 msgstr "Luoghi visitati"
 
-#: app/i18n.py:140
+#: app/i18n.py:147
 msgid "Rejouer"
 msgstr "Riproduci"
 
-#: app/i18n.py:141
+#: app/i18n.py:148
 msgid "Rejouer mes voyages dans l'ordre chronologique"
 msgstr "Riproduci i miei viaggi in ordine cronologico"
 
-#: app/i18n.py:142
+#: app/i18n.py:149
 msgid "Lecture"
 msgstr "Riproduci"
 
-#: app/i18n.py:143
+#: app/i18n.py:150
 msgid "Pause"
 msgstr "Pausa"
 
-#: app/i18n.py:144
+#: app/i18n.py:151
 msgid "Fermer la relecture"
 msgstr "Chiudi la riproduzione"
 
-#: app/i18n.py:145
+#: app/i18n.py:152
 msgid "Date de la relecture"
 msgstr "Data della riproduzione"
 
-#: app/i18n.py:146
+#: app/i18n.py:153
 msgid "Affichage des voyages"
 msgstr "Vista dei viaggi"
 
-#: app/i18n.py:147 app/templates/base.html:126 app/templates/base.html:143
+#: app/i18n.py:154 app/templates/base.html:126 app/templates/base.html:143
 #: app/templates/base.html:145 app/templates/map.html:2
 msgid "Carte"
 msgstr "Mappa"
 
-#: app/i18n.py:148
+#: app/i18n.py:155
 msgid "Globe"
 msgstr "Globo"
 
-#: app/i18n.py:149
+#: app/i18n.py:156
 msgid ""
 "Globe des voyages : faites-le tourner en le glissant ou avec les flèches "
 "du clavier"
 msgstr "Globo dei viaggi: trascinalo o usa le frecce della tastiera per ruotarlo"
 
-#: app/i18n.py:150
+#: app/i18n.py:157
 msgid "Zoomer"
 msgstr "Ingrandisci"
 
-#: app/i18n.py:151
+#: app/i18n.py:158
 msgid "Dézoomer"
 msgstr "Riduci"
 
-#: app/i18n.py:152 app/templates/base.html:214 app/templates/map.html:15
+#: app/i18n.py:159 app/templates/base.html:216 app/templates/map.html:15
 msgid "Fermer"
 msgstr "Chiudi"
 
-#: app/i18n.py:153
+#: app/i18n.py:160
 msgid "Impossible de partager l'image : téléchargez-la puis partagez-la."
 msgstr "Impossibile condividere l'immagine: scaricala e poi condividila."
 
-#: app/i18n.py:154
+#: app/i18n.py:161
 msgid "Hors ligne : vous voyez les données de votre dernière visite."
 msgstr "Offline: stai vedendo i dati della tua ultima visita."
 
-#: app/i18n.py:155
+#: app/i18n.py:162
 msgid "Connexion rétablie."
 msgstr "Connessione ripristinata."
 
-#: app/i18n.py:156
+#: app/i18n.py:163
 msgid "Recherche du vol…"
 msgstr "Ricerca del volo…"
 
-#: app/i18n.py:157
+#: app/i18n.py:164
 msgid "Vol inconnu : renseignez la compagnie et les lieux vous-même."
 msgstr "Volo sconosciuto: inserisci tu la compagnia e i luoghi."
 
-#: app/i18n.py:158
+#: app/i18n.py:165
 msgid ""
 "Compagnie, départ et arrivée remplis d'après le numéro de vol : vérifiez-"
 "les."
 msgstr "Compagnia, partenza e arrivo compilati dal numero di volo: verificali."
 
-#: app/i18n.py:159
+#: app/i18n.py:166
 msgid "Compagnie complétée ; départ et arrivée déjà saisis, conservés."
 msgstr "Compagnia completata; partenza e arrivo già inseriti, mantenuti."
 
-#: app/i18n.py:160
+#: app/i18n.py:167
 msgid "Compagnie trouvée ; itinéraire inconnu pour ce numéro."
 msgstr "Compagnia trovata; rotta sconosciuta per questo numero."
 
@@ -896,6 +917,82 @@ msgstr "Questo link ora mostra l'elenco dei tuoi tragitti."
 #: app/share/routes.py:69
 msgid "Ce lien ne montre plus la liste de vos trajets."
 msgstr "Questo link non mostra più l'elenco dei tuoi tragitti."
+
+#: app/support/forms.py:12
+msgid "Le message est obligatoire."
+msgstr "Il messaggio è obbligatorio."
+
+#: app/support/forms.py:13
+#, python-format
+msgid "Le message est limité à %(max)d caractères."
+msgstr "Il messaggio è limitato a %(max)d caratteri."
+
+#: app/support/forms.py:18 app/templates/admin/tickets.html:35
+msgid "Sujet"
+msgstr "Oggetto"
+
+#: app/support/forms.py:19
+msgid "Le sujet est obligatoire."
+msgstr "L'oggetto è obbligatorio."
+
+#: app/support/forms.py:20
+#, python-format
+msgid "Le sujet est limité à %(max)d caractères."
+msgstr "L'oggetto è limitato a %(max)d caratteri."
+
+#: app/support/forms.py:22
+msgid "Votre message"
+msgstr "Il tuo messaggio"
+
+#: app/support/forms.py:23
+msgid "M'informer par e-mail des réponses"
+msgstr "Avvisami delle risposte via e-mail"
+
+#: app/support/forms.py:24
+msgid "Envoyer la demande"
+msgstr "Invia la richiesta"
+
+#: app/support/forms.py:28
+msgid "Réponse"
+msgstr "Risposta"
+
+#: app/support/forms.py:29 app/trips/forms.py:103
+msgid "Envoyer"
+msgstr "Carica"
+
+#: app/support/notify.py:21
+#, python-format
+msgid "[Support] Ticket n° %(id)s : %(subject)s"
+msgstr "[Supporto] Ticket n. %(id)s: %(subject)s"
+
+#: app/support/notify.py:33
+#, python-format
+msgid "Réponse du support : %(subject)s"
+msgstr "Risposta del supporto: %(subject)s"
+
+#: app/support/routes.py:34
+msgid "Votre demande a été envoyée. Vous recevrez la réponse par e-mail."
+msgstr "La tua richiesta è stata inviata. Riceverai la risposta via e-mail."
+
+#: app/support/routes.py:35
+msgid "Votre demande a été envoyée. La réponse apparaîtra sur cette page."
+msgstr "La tua richiesta è stata inviata. La risposta apparirà su questa pagina."
+
+#: app/support/routes.py:51
+msgid "Message envoyé."
+msgstr "Messaggio inviato."
+
+#: app/support/routes.py:63
+msgid "Demande fermée. Vous pouvez la rouvrir en y répondant."
+msgstr "Richiesta chiusa. Puoi riaprirla rispondendo."
+
+#: app/support/routes.py:74
+msgid "Vous recevrez les réponses à cette demande par e-mail."
+msgstr "Riceverai le risposte a questa richiesta via e-mail."
+
+#: app/support/routes.py:75
+msgid "Vous ne recevrez plus d'e-mail pour cette demande."
+msgstr "Non riceverai più e-mail per questa richiesta."
 
 #: app/templates/about.html:2 app/templates/partials/footer.html:7
 msgid "À propos"
@@ -1278,13 +1375,24 @@ msgstr "Inizia gratis"
 msgid "J'ai déjà un compte"
 msgstr "Ho già un account"
 
-#: app/templates/admin/_nav.html:3 app/templates/admin/settings.html:2
-msgid "Paramètres"
-msgstr "Impostazioni"
-
 #: app/templates/admin/_nav.html:3 app/templates/admin/users.html:5
 msgid "Utilisateurs"
 msgstr "Utenti"
+
+#: app/templates/admin/_nav.html:4 app/templates/admin/ticket.html:7
+#: app/templates/admin/tickets.html:3 app/templates/admin/tickets.html:6
+msgid "Tickets"
+msgstr "Ticket"
+
+#: app/templates/admin/_nav.html:5 app/templates/admin/settings.html:2
+msgid "Paramètres"
+msgstr "Impostazioni"
+
+#: app/templates/admin/_nav.html:11
+msgid "ticket en attente"
+msgid_plural "tickets en attente"
+msgstr[0] "ticket in attesa"
+msgstr[1] "ticket in attesa"
 
 #: app/templates/admin/settings.html:9
 msgid "Inscriptions"
@@ -1298,6 +1406,88 @@ msgid ""
 msgstr ""
 "Disattivato: la pagina di registrazione è chiusa e i link «Crea un "
 "account» sono nascosti. Gli account esistenti possono comunque accedere."
+
+#: app/templates/admin/ticket.html:3
+#, python-format
+msgid "Ticket n° %(id)s"
+msgstr "Ticket n. %(id)s"
+
+#: app/templates/admin/ticket.html:13
+#, python-format
+msgid "Ouvert par %(email)s le %(date)s · langue : %(lang)s"
+msgstr "Aperto da %(email)s il %(date)s · lingua: %(lang)s"
+
+#: app/templates/admin/ticket.html:18
+msgid "L'utilisateur reçoit la réponse par e-mail, dans sa langue."
+msgstr "L'utente riceve la risposta via e-mail, nella sua lingua."
+
+#: app/templates/admin/ticket.html:19
+msgid ""
+"L'utilisateur a désactivé les e-mails pour ce ticket : la réponse "
+"n'apparaîtra que sur le site."
+msgstr ""
+"L'utente ha disattivato le e-mail per questo ticket: la risposta apparirà"
+" solo sul sito."
+
+#: app/templates/admin/ticket.html:25
+msgid "Rouvrir"
+msgstr "Riapri"
+
+#: app/templates/admin/ticket.html:28
+msgid "Fermer le ticket"
+msgstr "Chiudi il ticket"
+
+#: app/templates/admin/tickets.html:8
+msgid "Filtrer par statut"
+msgstr "Filtra per stato"
+
+#: app/templates/admin/tickets.html:10
+msgid "À traiter"
+msgstr "Da gestire"
+
+#: app/templates/admin/tickets.html:10
+msgid "Répondus"
+msgstr "Con risposta"
+
+#: app/templates/admin/tickets.html:10
+msgid "Fermés"
+msgstr "Chiusi"
+
+#: app/templates/admin/tickets.html:19
+msgid "Vous recevez un e-mail à chaque nouveau message de ticket."
+msgstr "Ricevi un'e-mail a ogni nuovo messaggio di ticket."
+
+#: app/templates/admin/tickets.html:20
+msgid "Couper les e-mails"
+msgstr "Disattiva le e-mail"
+
+#: app/templates/admin/tickets.html:23
+msgid "M'informer par e-mail"
+msgstr "Avvisami via e-mail"
+
+#: app/templates/admin/tickets.html:31
+msgid "Liste des tickets"
+msgstr "Elenco dei ticket"
+
+#: app/templates/admin/tickets.html:36
+msgid "Utilisateur"
+msgstr "Utente"
+
+#: app/templates/admin/tickets.html:37
+msgid "Messages"
+msgstr "Messaggi"
+
+#: app/templates/admin/tickets.html:38
+msgid "Mis à jour"
+msgstr "Aggiornato"
+
+#: app/templates/admin/tickets.html:39
+msgid "Statut"
+msgstr "Stato"
+
+#: app/templates/admin/tickets.html:58
+msgid "Aucun ticket."
+msgstr "Nessun ticket."
 
 #: app/templates/admin/users.html:9
 msgid "Liste des utilisateurs"
@@ -1327,6 +1517,7 @@ msgstr "Elimina l'account %(email)s"
 #: app/templates/auth/email/reset_password.txt:1
 #: app/templates/auth/email/signup.txt:1
 #: app/templates/auth/email/signup_existing.txt:1
+#: app/templates/support/email/to_user.txt:1
 msgid "Bonjour,"
 msgstr "Buongiorno,"
 
@@ -1395,6 +1586,7 @@ msgid "Indiquez votre adresse e-mail pour recevoir un lien de réinitialisation.
 msgstr "Inserisci il tuo indirizzo e-mail per ricevere un link di reimpostazione."
 
 #: app/templates/auth/forgot.html:10 app/templates/auth/register.html:12
+#: app/templates/support/_macros.html:40 app/templates/support/index.html:19
 #: app/templates/trips/detail.html:129
 msgid "Envoi…"
 msgstr "Invio…"
@@ -1673,34 +1865,41 @@ msgstr "Condividi i miei viaggi"
 msgid "Importer / exporter"
 msgstr "Importa / esporta"
 
+#: app/templates/base.html:175 app/templates/support/_macros.html:19
+#: app/templates/support/index.html:4 app/templates/support/index.html:6
+#: app/templates/support/ticket.html:3
+msgid "Support"
+msgstr "Supporto"
+
 #: app/templates/admin/_nav.html:1 app/templates/admin/settings.html:2
-#: app/templates/admin/users.html:2 app/templates/base.html:176
+#: app/templates/admin/ticket.html:3 app/templates/admin/tickets.html:3
+#: app/templates/admin/users.html:2 app/templates/base.html:178
 msgid "Administration"
 msgstr "Amministrazione"
 
-#: app/templates/base.html:183
+#: app/templates/base.html:185
 msgid "Déconnexion"
 msgstr "Esci"
 
 #: app/templates/auth/login.html:3 app/templates/auth/login.html:4
-#: app/templates/base.html:191
+#: app/templates/base.html:193
 msgid "Connexion"
 msgstr "Accedi"
 
 #: app/templates/auth/login.html:25 app/templates/auth/register.html:3
-#: app/templates/auth/register.html:4 app/templates/base.html:193
+#: app/templates/auth/register.html:4 app/templates/base.html:195
 msgid "Créer un compte"
 msgstr "Crea un account"
 
-#: app/templates/base.html:229
+#: app/templates/base.html:231
 msgid "Supprimer ce voyage ?"
 msgstr "Eliminare questo viaggio?"
 
-#: app/templates/base.html:232
+#: app/templates/base.html:234
 msgid "Cette action est définitive."
 msgstr "Questa azione è definitiva."
 
-#: app/templates/base.html:236 app/templates/transfer/preview.html:73
+#: app/templates/base.html:238 app/templates/transfer/preview.html:73
 #: app/templates/trips/form.html:152 app/templates/trips/journey.html:29
 msgid "Annuler"
 msgstr "Annulla"
@@ -2473,7 +2672,8 @@ msgstr "Viaggi passati o in arrivo"
 msgid "Passés"
 msgstr "Passati"
 
-#: app/templates/map.html:120 app/templates/map.html:129
+#: app/templates/admin/tickets.html:10 app/templates/map.html:120
+#: app/templates/map.html:129
 msgid "Tous"
 msgstr "Tutti"
 
@@ -2704,6 +2904,86 @@ msgstr "Tragitto"
 #: app/templates/trips/detail.html:39 app/templates/trips/list.html:115
 msgid "Mode"
 msgstr "Mezzo"
+
+#: app/templates/support/_macros.html:3
+msgid "En attente du support"
+msgstr "In attesa del supporto"
+
+#: app/templates/support/_macros.html:4
+msgid "Répondu"
+msgstr "Con risposta"
+
+#: app/templates/support/_macros.html:5
+msgid "Fermé"
+msgstr "Chiuso"
+
+#: app/templates/support/_macros.html:22
+msgid "Vous"
+msgstr "Tu"
+
+#: app/templates/support/email/to_staff.txt:1
+#, python-format
+msgid "Nouveau ticket de %(email)s :"
+msgstr "Nuovo ticket da %(email)s:"
+
+#: app/templates/support/email/to_staff.txt:1
+#, python-format
+msgid "Nouveau message de %(email)s :"
+msgstr "Nuovo messaggio da %(email)s:"
+
+#: app/templates/support/email/to_staff.txt:8
+msgid "Répondre :"
+msgstr "Rispondi:"
+
+#: app/templates/support/email/to_user.txt:3
+#, python-format
+msgid "Le support de %(site)s a répondu à votre demande « %(subject)s » :"
+msgstr "Il supporto di %(site)s ha risposto alla tua richiesta «%(subject)s»:"
+
+#: app/templates/support/email/to_user.txt:7
+msgid "Pour répondre ou fermer la demande, ouvrez ce lien :"
+msgstr "Per rispondere o chiudere la richiesta, apri questo link:"
+
+#: app/templates/support/index.html:7
+msgid ""
+"Une question, un problème, une idée ? Écrivez-nous : la réponse arrive "
+"ici et, si vous le souhaitez, par e-mail."
+msgstr ""
+"Una domanda, un problema, un'idea? Scrivici: la risposta arriva qui e, se"
+" lo desideri, via e-mail."
+
+#: app/templates/support/index.html:11
+msgid "Nouvelle demande"
+msgstr "Nuova richiesta"
+
+#: app/templates/support/index.html:24 app/templates/support/ticket.html:6
+msgid "Mes demandes"
+msgstr "Le mie richieste"
+
+#: app/templates/support/index.html:32
+#, python-format
+msgid "N° %(id)s · mis à jour le %(date)s"
+msgstr "N. %(id)s · aggiornato il %(date)s"
+
+#: app/templates/support/index.html:39
+msgid "Vous n'avez encore envoyé aucune demande."
+msgstr "Non hai ancora inviato nessuna richiesta."
+
+#: app/templates/support/ticket.html:13
+msgid "Cette demande est fermée. Répondre la rouvrira."
+msgstr "Questa richiesta è chiusa. Rispondere la riaprirà."
+
+#: app/templates/support/ticket.html:21
+msgid "Ne plus recevoir les réponses par e-mail"
+msgstr "Non ricevere più le risposte via e-mail"
+
+#: app/templates/support/ticket.html:24
+msgid "Recevoir les réponses par e-mail"
+msgstr "Ricevi le risposte via e-mail"
+
+#: app/templates/support/ticket.html:31
+msgid "Problème résolu : fermer la demande"
+msgstr "Problema risolto: chiudi la richiesta"
 
 #: app/templates/transfer/index.html:8
 msgid ""
@@ -4212,10 +4492,6 @@ msgstr "Aggiungi foto"
 #: app/trips/forms.py:99
 msgid "Choisissez au moins une photo."
 msgstr "Scegli almeno una foto."
-
-#: app/trips/forms.py:103
-msgid "Envoyer"
-msgstr "Carica"
 
 #: app/trips/queries.py:32
 msgid "Date de début invalide (format attendu : AAAA-MM-JJ)."

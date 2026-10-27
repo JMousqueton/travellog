@@ -3,7 +3,7 @@ from babel import Locale
 from babel.numbers import format_percent as babel_format_percent
 from babel.units import format_unit
 from flask import current_app, has_request_context, request
-from flask_babel import format_date, format_decimal, format_percent, get_locale
+from flask_babel import format_date, format_datetime, format_decimal, format_percent, get_locale
 from flask_babel import gettext as _
 from flask_babel import ngettext
 from flask_login import current_user
@@ -76,6 +76,13 @@ def format_countdown(start, end=None):
 
 def format_day(value, fmt="medium"):
     return format_date(value, fmt) if value else ""
+
+
+def format_moment(value):
+    """Date et heure courtes (heure UTC : BABEL_DEFAULT_TIMEZONE)."""
+    from .models import as_utc
+
+    return format_datetime(as_utc(value), "short") if value else ""
 
 
 def format_number(value):
@@ -182,6 +189,7 @@ def init_app(app):
     app.jinja_env.filters["country_name"] = lambda code: country_name(code, current_locale())
     app.jinja_env.filters["flag"] = flag
     app.jinja_env.filters["day"] = format_day
+    app.jinja_env.filters["moment"] = format_moment
     app.jinja_env.filters["number"] = format_number
     app.jinja_env.filters["percent"] = format_percent
 

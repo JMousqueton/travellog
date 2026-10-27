@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% from "support/_macros.html" import ticket_status, thread, reply_form %}
+{% block title %}{{ _("Ticket n° %(id)s", id=ticket.id) }} · {{ _("Administration") }}{% endblock %}
+{% block content %}
+{% include "admin/_nav.html" %}
+<div class="ticket-page">
+  <a class="small" href="{{ url_for('admin.tickets') }}"><i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>{{ _("Tickets") }}</a>
+  <div class="d-flex flex-wrap align-items-center gap-2 mt-2 mb-1">
+    <h2 class="h4 fw-bold mb-0 me-auto">{{ ticket.subject }} <span class="text-body-secondary fw-normal">#{{ ticket.id }}</span></h2>
+    {{ ticket_status(ticket.status) }}
+  </div>
+  <p class="small text-body-secondary mb-4">
+    {{ _("Ouvert par %(email)s le %(date)s · langue : %(lang)s", email=ticket.user.email, date=ticket.created_at|moment, lang=ticket.user.locale) }}
+  </p>
+  {{ thread(ticket, staff_view=True) }}
+  {{ reply_form(form, url_for('admin.ticket', ticket_id=ticket.id)) }}
+  <p class="small text-body-secondary mt-2">
+    {%- if ticket.notify %}{{ _("L'utilisateur reçoit la réponse par e-mail, dans sa langue.") }}
+    {%- else %}{{ _("L'utilisateur a désactivé les e-mails pour ce ticket : la réponse n'apparaîtra que sur le site.") }}{% endif -%}
+  </p>
+  <form method="post" action="{{ url_for('admin.ticket_status', ticket_id=ticket.id) }}" class="mt-2">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    {% if ticket.status == 'closed' %}
+    <button type="submit" name="status" value="open" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+      <i class="fa-solid fa-lock-open me-1" aria-hidden="true"></i>{{ _("Rouvrir") }}</button>
+    {% else %}
+    <button type="submit" name="status" value="closed" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+      <i class="fa-solid fa-lock me-1" aria-hidden="true"></i>{{ _("Fermer le ticket") }}</button>
+    {% endif %}
+  </form>
+</div>
+{% endblock %}

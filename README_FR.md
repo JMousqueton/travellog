@@ -8,6 +8,13 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
 
 ## Fonctionnalités
 
+- Support (`/support`, dans le menu du compte) : les utilisateurs connectés ouvrent un ticket (sujet et message)
+  et suivent l'échange, qui peut compter autant d'allers-retours que nécessaire ; ils peuvent le fermer, et
+  y répondre le rouvre. Les administrateurs ont un onglet « Tickets » (`/admin/tickets` : à traiter / répondus /
+  fermés, avec un compteur des tickets en attente), répondent, ferment ou rouvrent. Chaque message d'un
+  utilisateur part par e-mail aux administrateurs, chaque réponse à l'utilisateur, dans sa langue. Les e-mails sont facultatifs :
+  l'utilisateur choisit pour chaque ticket (à l'ouverture, puis sur sa page), et chaque administrateur peut couper
+  les e-mails des tickets depuis l'onglet Tickets.
 - Page À propos (`/about`, en lien depuis l'accueil et le pied de page) : pourquoi le site s'appelle Voyage Voyage
   (clin d'œil à la chanson de Desireless, merci à Mallorie pour l'idée) et le détail de toutes les fonctionnalités.
 - Comptes utilisateurs (inscription, connexion, mots de passe hachés). Chacun ne voit que ses voyages.
@@ -318,7 +325,7 @@ app/
   mail.py            envoi d'e-mails SMTP
   transport.py       modes de transport (libellé, icône, couleurs)
   cli.py             flask seed, flask translate …
-  auth/ trips/ api/ main/ share/ admin/ transfer/   blueprints (transfer : import / export)
+  auth/ trips/ api/ main/ share/ admin/ transfer/ support/   blueprints (transfer : import / export) ; support : tickets
   templates/  static/  translations/
 migrations/          Alembic (Flask-Migrate)
 tests/               pytest

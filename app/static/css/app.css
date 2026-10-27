@@ -716,3 +716,11 @@ details.history > summary { cursor: pointer; list-style-position: outside; }
 .about-section li { margin-bottom: .4rem; }
 .brand-text { line-height: 1.1; }
 .brand-tagline { font-size: .72rem; font-weight: 500; color: var(--text-muted); letter-spacing: .02em; }
+
+/* Support : échange de messages d'un ticket */
+.ticket-page { max-width: 820px; }
+.ticket-thread { display: flex; flex-direction: column; gap: .9rem; }
+.ticket-message { max-width: 88%; padding: .8rem 1rem; border-radius: 14px; background: var(--bs-body-bg); border: 1px solid var(--bs-border-color); }
+.ticket-message-staff { background: var(--brand-soft); border-color: transparent; }
+.ticket-message-mine { align-self: flex-end; }
+.ticket-status { white-space: nowrap; }

@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% from "support/_macros.html" import ticket_status %}
+{% block title %}{{ _("Tickets") }} · {{ _("Administration") }}{% endblock %}
+{% block content %}
+{% include "admin/_nav.html" %}
+<h2 class="visually-hidden">{{ _("Tickets") }}</h2>
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+<div class="btn-group flex-wrap" role="group" aria-label="{{ _('Filtrer par statut') }}">
+  {% for key in filters %}
+  {% set label = {'open': _("À traiter"), 'answered': _("Répondus"), 'closed': _("Fermés"), 'all': _("Tous")}[key] %}
+  <a class="btn btn-sm {{ 'btn-primary' if key == status else 'btn-outline-secondary' }}"
+     href="{{ url_for('admin.tickets', status=key) }}" {% if key == status %}aria-current="page"{% endif %}>{{ label }}</a>
+  {% endfor %}
+</div>
+<form method="post" action="{{ url_for('admin.ticket_notifications') }}">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  {% if current_user.ticket_emails %}
+  <button type="submit" name="enabled" value="0" class="btn btn-sm btn-outline-secondary rounded-pill px-3"
+          title="{{ _('Vous recevez un e-mail à chaque nouveau message de ticket.') }}">
+    <i class="fa-solid fa-bell-slash me-1" aria-hidden="true"></i>{{ _("Couper les e-mails") }}</button>
+  {% else %}
+  <button type="submit" name="enabled" value="1" class="btn btn-sm btn-outline-primary rounded-pill px-3">
+    <i class="fa-solid fa-bell me-1" aria-hidden="true"></i>{{ _("M'informer par e-mail") }}</button>
+  {% endif %}
+</form>
+</div>
+{% if tickets %}
+<div class="card shadow-soft">
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <caption class="visually-hidden">{{ _("Liste des tickets") }}</caption>
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">{{ _("Sujet") }}</th>
+          <th scope="col">{{ _("Utilisateur") }}</th>
+          <th scope="col" class="text-end">{{ _("Messages") }}</th>
+          <th scope="col">{{ _("Mis à jour") }}</th>
+          <th scope="col">{{ _("Statut") }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for ticket in tickets %}
+        <tr>
+          <td class="text-body-secondary">{{ ticket.id }}</td>
+          <td><a class="fw-semibold" href="{{ url_for('admin.ticket', ticket_id=ticket.id) }}">{{ ticket.subject }}</a></td>
+          <td>{{ ticket.user.email }}</td>
+          <td class="text-end">{{ ticket.messages|length }}</td>
+          <td class="text-nowrap">{{ ticket.updated_at|moment }}</td>
+          <td>{{ ticket_status(ticket.status) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<p class="text-body-secondary">{{ _("Aucun ticket.") }}</p>
+{% endif %}
+{% endblock %}

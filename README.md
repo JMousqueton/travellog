@@ -8,6 +8,12 @@ available in French, English, Spanish, German and Italian.
 
 ## Features
 
+- Support (`/support`, in the account menu): signed-in users open a ticket (subject and message) and follow the
+  conversation, which can have as many exchanges as needed; they can close it, and replying reopens it.
+  Administrators get a "Tickets" tab (`/admin/tickets`: to handle / answered / closed, with a counter of
+  tickets waiting), reply, close or reopen. Each user message is emailed to the administrators, each reply to
+  the user, in their own language. Emails are optional: the user chooses for each ticket (when opening it, then
+  on its page), and each administrator can turn ticket emails off from the Tickets tab.
 - About page (`/about`, linked from the home page and the footer): why the site is called Voyage Voyage
   (a nod to Desireless's song, thanks to Mallorie for the idea) and every feature in detail.
 - User accounts (sign-up, sign-in, hashed passwords). Each user only sees their own trips.
@@ -310,7 +316,7 @@ app/
   mail.py            SMTP email sending
   transport.py       modes of transport (label, icon, colours)
   cli.py             flask seed, flask translate …
-  auth/ trips/ api/ main/ share/ admin/ transfer/   blueprints (transfer: import / export)
+  auth/ trips/ api/ main/ share/ admin/ transfer/ support/   blueprints (transfer: import / export; support: tickets)
   templates/  static/  translations/
 migrations/          Alembic (Flask-Migrate)
 tests/               pytest

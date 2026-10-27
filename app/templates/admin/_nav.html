@@ -1,10 +1,15 @@
 <h1 class="h3 fw-bold mb-3">{{ _("Administration") }}</h1>
 <ul class="nav nav-pills mb-4">
-  {% for endpoint, icon, label in [('admin.users', 'fa-users', _("Utilisateurs")), ('admin.settings', 'fa-gear', _("Paramètres"))] %}
+  {% for endpoint, active, icon, label in [('admin.users', ['admin.users'], 'fa-users', _("Utilisateurs")),
+                                          ('admin.tickets', ['admin.tickets', 'admin.ticket'], 'fa-life-ring', _("Tickets")),
+                                          ('admin.settings', ['admin.settings'], 'fa-gear', _("Paramètres"))] %}
   <li class="nav-item">
-    <a class="nav-link {% if request.endpoint == endpoint %}active{% endif %}" href="{{ url_for(endpoint) }}"
-       {% if request.endpoint == endpoint %}aria-current="page"{% endif %}>
-      <i class="fa-solid {{ icon }} me-1" aria-hidden="true"></i>{{ label }}</a>
+    <a class="nav-link {% if request.endpoint in active %}active{% endif %}" href="{{ url_for(endpoint) }}"
+       {% if request.endpoint in active %}aria-current="page"{% endif %}>
+      <i class="fa-solid {{ icon }} me-1" aria-hidden="true"></i>{{ label }}
+      {%- if endpoint == 'admin.tickets' %}{% set waiting = open_ticket_count() %}{% if waiting %}
+      <span class="badge rounded-pill text-bg-danger ms-1">{{ waiting }}<span class="visually-hidden"> {{ ngettext("ticket en attente", "tickets en attente", waiting) }}</span></span>
+      {%- endif %}{% endif %}</a>
   </li>
   {% endfor %}
 </ul>

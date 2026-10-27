@@ -171,6 +171,8 @@
                 <i class="fa-solid fa-share-nodes me-2" aria-hidden="true"></i>{{ _("Partager mes voyages") }}</a></li>
               <li><a class="dropdown-item" href="{{ url_for('transfer.index') }}">
                 <i class="fa-solid fa-file-export me-2" aria-hidden="true"></i>{{ _("Importer / exporter") }}</a></li>
+              <li><a class="dropdown-item" href="{{ url_for('support.index') }}">
+                <i class="fa-solid fa-life-ring me-2" aria-hidden="true"></i>{{ _("Support") }}</a></li>
               {% if current_user.is_admin %}
               <li><a class="dropdown-item" href="{{ url_for('admin.users') }}">
                 <i class="fa-solid fa-user-shield me-2" aria-hidden="true"></i>{{ _("Administration") }}</a></li>

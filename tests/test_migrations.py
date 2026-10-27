@@ -34,3 +34,4 @@ def test_migrations_keep_existing_trips(tmp_path, monkeypatch):
     counts = {t: db.execute(f"SELECT count(*) FROM {t}").fetchone()[0] for t in ("users", "trips", "journeys", "share_links")}
     assert counts == {"users": 1, "trips": 1, "journeys": 1, "share_links": 1}
     assert db.execute("PRAGMA foreign_key_check").fetchall() == []
+    assert {"tickets", "ticket_messages"} <= {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}

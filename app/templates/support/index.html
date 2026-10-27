@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import field %}
+{% from "support/_macros.html" import ticket_status %}
+{% block title %}{{ _("Support") }}{% endblock %}
+{% block content %}
+<h1 class="h3 fw-bold mb-1">{{ _("Support") }}</h1>
+<p class="text-body-secondary mb-4">{{ _("Une question, un problème, une idée ? Écrivez-nous : la réponse arrive ici et, si vous le souhaitez, par e-mail.") }}</p>
+<div class="row g-4">
+  <div class="col-lg-5 order-lg-2">
+    <form method="post" novalidate class="card shadow-soft p-4">
+      <h2 class="h5 fw-semibold mb-3">{{ _("Nouvelle demande") }}</h2>
+      {{ form.hidden_tag() }}
+      {{ field(form.subject, attrs={'required': True, 'maxlength': 200}) }}
+      {{ field(form.body, attrs={'required': True, 'rows': 6}) }}
+      <div class="form-check form-switch mb-3">
+        {{ form.notify(class_='form-check-input', role='switch') }}
+        {{ form.notify.label(class_='form-check-label') }}
+      </div>
+      <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Envoi…') }}">
+        <i class="fa-solid fa-paper-plane me-1" aria-hidden="true"></i>{{ form.submit.label.text }}</button>
+    </form>
+  </div>
+  <div class="col-lg-7 order-lg-1">
+    <h2 class="h5 fw-semibold mb-3">{{ _("Mes demandes") }}</h2>
+    {% if tickets %}
+    <div class="list-group shadow-soft">
+      {% for ticket in tickets %}
+      <a class="list-group-item list-group-item-action d-flex justify-content-between align-items-start gap-3 py-3"
+         href="{{ url_for('support.ticket', ticket_id=ticket.id) }}">
+        <span class="text-truncate">
+          <span class="fw-semibold d-block text-truncate">{{ ticket.subject }}</span>
+          <span class="small text-body-secondary">{{ _("N° %(id)s · mis à jour le %(date)s", id=ticket.id, date=ticket.updated_at|moment) }}</span>
+        </span>
+        {{ ticket_status(ticket.status) }}
+      </a>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-body-secondary">{{ _("Vous n'avez encore envoyé aucune demande.") }}</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

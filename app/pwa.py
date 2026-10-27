@@ -11,8 +11,8 @@ from flask import current_app, render_template, url_for
 # Bibliothèques et polices chargées depuis ces CDN : gardées en cache pour l'affichage hors ligne.
 CDN_ORIGINS = ("https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com",
                "https://fonts.gstatic.com")
-# Jamais mis en cache : authentification, fichiers téléchargés, import, agenda, photos.
-NETWORK_ONLY = ("/auth/", "/export", "/import", "/calendar/", "/photos/", "/sw.js")
+# Jamais mis en cache : authentification, fichiers téléchargés, import, agenda, photos, support.
+NETWORK_ONLY = ("/auth/", "/export", "/import", "/calendar/", "/photos/", "/support", "/admin/", "/sw.js")
 
 
 def static_urls():
