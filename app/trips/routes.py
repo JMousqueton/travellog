@@ -480,7 +480,7 @@ def _ics_response(trips, filename, name):
 @login_required
 def trip_ics(trip_id):
     trip = get_own_trip_or_404(trip_id)
-    return _ics_response([trip], f"trajet-{trip.id}.ics", _("Carnet de voyages"))
+    return _ics_response([trip], f"trajet-{trip.id}.ics", current_app.config["SITE_NAME"])
 
 
 @bp.route("/journeys/<int:journey_id>.ics")
@@ -496,7 +496,7 @@ def calendar_feed(token):
     user = db.session.execute(db.select(User).filter_by(calendar_token=token)).scalar_one_or_none() if token else None
     if user is None:
         abort(404)
-    response = _ics_response(list_trips(user), "voyages.ics", _("Carnet de voyages"))
+    response = _ics_response(list_trips(user), "voyages.ics", current_app.config["SITE_NAME"])
     response.headers["Content-Disposition"] = 'inline; filename="voyages.ics"'
     return response
 
@@ -541,7 +541,7 @@ def review_png_response(user, year, shared=False):
     if review is None:
         abort(404)
     add_absences(review, user, trips)
-    image = review_image.render(review, _("Carnet de voyages"), current_app.config["APP_BASE_URL"])
+    image = review_image.render(review, current_app.config["SITE_NAME"], current_app.config["APP_BASE_URL"])
     response = Response(image, mimetype="image/png")
     response.headers["Content-Disposition"] = f'inline; filename="bilan-{year}.png"'
     response.cache_control.private = True

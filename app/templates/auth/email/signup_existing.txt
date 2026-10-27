@@ -1,6 +1,6 @@
 {{ _("Bonjour,") }}
 
-{{ _("Une inscription au Carnet de voyages a été demandée avec cette adresse, mais vous avez déjà un compte. Connectez-vous ici :") }}
+{{ _("Une inscription à Voyage Voyage a été demandée avec cette adresse, mais vous avez déjà un compte. Connectez-vous ici :") }}
 
 {{ login_url }}
 

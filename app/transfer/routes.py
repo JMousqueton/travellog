@@ -54,7 +54,7 @@ def export(fmt):
     elif fmt == "geojson":
         body = to_geojson(records)
     else:
-        body = to_gpx(records, _("Carnet de voyages"))
+        body = to_gpx(records, current_app.config["SITE_NAME"])
     mimetype, ext = EXPORTS[fmt]
     response = Response(body, mimetype=mimetype)
     response.headers["Content-Disposition"] = f'attachment; filename="voyages-{date.today().isoformat()}.{ext}"'
@@ -91,10 +91,10 @@ def export_archive():
                 record["journey_photos"] = add_photos(trip.journey.photos)
             records.append(record)
         archive.writestr("trips.geojson", to_geojson(records))
-        archive.writestr("LISEZMOI.txt", _("Sauvegarde complète de votre Carnet de voyages. Pour la restaurer, "
+        archive.writestr("LISEZMOI.txt", _("Sauvegarde complète de votre compte Voyage Voyage. Pour la restaurer, "
                                            "importez ce fichier .zip depuis la page Importer / exporter."))
     response = Response(out.getvalue(), mimetype="application/zip")
-    response.headers["Content-Disposition"] = f'attachment; filename="carnet-de-voyages-{date.today().isoformat()}.zip"'
+    response.headers["Content-Disposition"] = f'attachment; filename="voyage-voyage-{date.today().isoformat()}.zip"'
     response.cache_control.no_store = True
     return response
 

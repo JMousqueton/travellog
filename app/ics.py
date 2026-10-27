@@ -58,7 +58,7 @@ def trip_event(trip, stamp):
 
 def calendar(trips, name):
     stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
-    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Carnet de voyages//FR", "CALSCALE:GREGORIAN",
+    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Voyage Voyage//FR", "CALSCALE:GREGORIAN",
              "METHOD:PUBLISH", f"X-WR-CALNAME:{_escape(name)}", "REFRESH-INTERVAL;VALUE=DURATION:PT6H"]
     for trip in trips:
         lines.extend(trip_event(trip, stamp))

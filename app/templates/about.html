@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% block title %}{{ _("À propos") }}{% endblock %}
+{% block meta_description %}{{ _("Pourquoi le site s'appelle Voyage Voyage, et tout ce qu'il sait faire : carte, globe, statistiques, bilan de l'année, import de vos vols, partage.") }}{% endblock %}
+{% block main_class %}landing{% endblock %}
+{% block content %}
+<article class="about-page container py-5 mx-auto">
+  <h1 class="display-6 fw-bold mb-3">{{ _("À propos de Voyage Voyage") }}</h1>
+  <p class="lead text-body-secondary mb-5">{{ _("Un carnet de voyages personnel, gratuit et open source : chaque trajet que vous notez prend place sur une carte du monde, et vos années de voyage deviennent des chiffres, des badges et des souvenirs.") }}</p>
+
+  <section class="about-song card shadow-soft p-4 p-md-5 mb-5" aria-labelledby="why-name">
+    <div class="d-flex align-items-center gap-3 mb-3">
+      <span class="feature-icon" aria-hidden="true"><i class="fa-solid fa-music"></i></span>
+      <h2 id="why-name" class="h3 fw-bold mb-0">{{ _("Pourquoi « Voyage Voyage » ?") }}</h2>
+    </div>
+    <p>{{ _("Le nom est un clin d'œil à « Voyage, voyage », la chanson de Desireless sortie en 1986, écrite par Jean-Michel Rivat et composée par Dominique Dubois. Portée par sa voix grave et sa coupe en brosse inoubliable, elle a fait danser toute l'Europe à la fin des années 1980 et reste l'un des titres français les plus connus à l'étranger.") }}</p>
+    <p>{{ _("Une chanson qui donne envie de partir loin, encore et encore : c'est exactement ce que ce site garde en mémoire, un trajet après l'autre.") }}</p>
+    <p class="mb-0 fw-semibold"><i class="fa-solid fa-heart text-danger me-1" aria-hidden="true"></i>{{ _("Merci à Mallorie pour l'idée !") }}</p>
+  </section>
+
+  <h2 class="h3 fw-bold mb-4">{{ _("Toutes les fonctionnalités") }}</h2>
+  {% for icon, title, items in [
+    ('fa-pen-to-square', _("Noter vos trajets"), [
+      _("Sept modes de transport : avion, train, voiture, bus, bateau, vélo et à pied, chacun avec sa couleur."),
+      _("Aller simple ou aller-retour, avec une date de retour ; plusieurs trajets se regroupent en un voyage (escales, tour d'Europe…)."),
+      _("Lieux saisis avec autocomplétion ; le pays de départ et d'arrivée est retrouvé automatiquement."),
+      _("Compagnie, numéro de vol et appareil pour l'avion, opérateur pour le train. Saisir un numéro de vol (« AF1148 ») remplit la compagnie, le départ et l'arrivée."),
+      _("Étiquettes (vacances, travail…), notes et photos sur chaque trajet et chaque voyage. Les photos sont débarrassées de leurs métadonnées, dont la position GPS."),
+      _("Distances réalistes : itinéraire routier quand il est disponible, sinon ligne droite corrigée selon le mode."),
+    ]),
+    ('fa-file-import', _("Importer et exporter"), [
+      _("Import de votre historique de vols depuis Flighty ou myFlightradar24 : chaque vol devient un trajet, les allers-retours sont reconnus."),
+      _("Import et export en CSV, GeoJSON et GPX, sans perte : notes et regroupements en voyages compris."),
+      _("Aperçu avant chaque import : décochez les trajets à laisser de côté ; les doublons sont repérés."),
+      _("Sauvegarde complète (.zip, photos comprises) à télécharger et à réimporter à tout moment."),
+    ]),
+    ('fa-map-location-dot', _("Carte et globe"), [
+      _("Carte plein écran : trajets colorés par mode, arcs géodésiques pour l'avion, retours en pointillés, marqueurs regroupés."),
+      _("Couches « Pays visités » et « Lieux visités » (cercles proportionnels au nombre de passages)."),
+      _("Filtres par année, période, mode, type de trajet, étiquette et recherche, conservés dans l'adresse de la page."),
+      _("Globe 3D qui tourne tout seul, à faire pivoter et zoomer, avec les vols en arc au-dessus de la surface."),
+      _("Rejeu : vos trajets se dessinent dans l'ordre chronologique, avec une frise pour sauter à n'importe quelle date."),
+    ]),
+    ('fa-chart-simple', _("Statistiques"), [
+      _("Chiffres clés et graphiques des trajets et des distances par année et par mode."),
+      _("Une page par année : comparaison avec l'année précédente, calendrier jour par jour, départs par mois, pays découverts, temps forts."),
+      _("Pages avion et train : compagnies (avec leur logo), appareils, aéroports ou gares, lignes les plus fréquentes."),
+      _("CO₂ estimé pour chaque mode, d'après les facteurs de l'ADEME."),
+      _("Jours loin de la maison, nuits à l'étranger et plus longue absence, à partir de votre ville de domicile."),
+    ]),
+    ('fa-earth-americas', _("Le monde, pays par pays"), [
+      _("Pays et territoires visités sur 237, et part des terres émergées que vous avez foulées."),
+      _("Progression par continent, et régions visitées dans 14 grands pays (États américains, Länder, régions françaises, préfectures japonaises…)."),
+      _("Badges pour l'ensemble de vos voyages et badges propres à chaque année, datés par le trajet qui les a débloqués."),
+    ]),
+    ('fa-calendar-check', _("Bilan de l'année"), [
+      _("Votre année en chiffres : pays découverts, plus long trajet, destinations préférées, départs par mois, badges gagnés."),
+      _("Une image prête à partager sur les réseaux sociaux ou à garder en souvenir."),
+    ]),
+    ('fa-share-nodes', _("Partager et anticiper"), [
+      _("Liens de partage en lecture seule, avec date d'expiration : carte, statistiques, liste des voyages et bilan. Jamais vos notes, vos photos ni votre domicile."),
+      _("Voyages à venir : compte à rebours, carte « Prochain départ », masqués par défaut sur les liens de partage."),
+      _("Export vers votre agenda (.ics) ou abonnement à une adresse secrète (Google Agenda, Apple Calendrier, Outlook)."),
+    ]),
+    ('fa-mobile-screen', _("Partout, dans votre langue"), [
+      _("Interface en français, anglais, espagnol, allemand et italien ; dates, nombres et distances au format de chaque langue."),
+      _("Thème clair ou sombre, sur ordinateur comme sur téléphone."),
+      _("Application installable sur l'écran d'accueil, qui reste consultable hors ligne."),
+    ]),
+    ('fa-shield-halved', _("Vos données vous appartiennent"), [
+      _("Gratuit, sans publicité, et open source sous licence MIT."),
+      _("Vos trajets restent privés ; la mesure d'audience est auto-hébergée et vous pouvez la refuser."),
+      _("Export complet à tout moment, et suppression de votre compte depuis vos préférences."),
+    ]),
+  ] %}
+  <section class="about-section card shadow-soft p-4 mb-4">
+    <div class="d-flex align-items-center gap-3 mb-3">
+      <span class="feature-icon" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></span>
+      <h3 class="h5 fw-semibold mb-0">{{ title }}</h3>
+    </div>
+    <ul class="mb-0">
+      {% for item in items %}<li>{{ item }}</li>{% endfor %}
+    </ul>
+  </section>
+  {% endfor %}
+
+  <p class="text-body-secondary mt-4">
+    {{ _("Le code source est disponible sur") }} <a href="{{ source_url }}" rel="noopener">{{ source_url|replace('https://', '') }}</a>.
+    <a href="{{ url_for('main.privacy') }}">{{ _("Politique de confidentialité") }}</a>
+  </p>
+
+  {% if not current_user.is_authenticated %}
+  <div class="d-flex flex-wrap gap-2 mt-4">
+    {% if registration_open() %}
+    <a class="btn btn-primary btn-lg rounded-pill px-4" href="{{ url_for('auth.register') }}">{{ _("Commencer gratuitement") }}</a>
+    <a class="btn btn-outline-secondary btn-lg rounded-pill px-4" href="{{ url_for('auth.login') }}">{{ _("J'ai déjà un compte") }}</a>
+    {% else %}
+    <a class="btn btn-primary btn-lg rounded-pill px-4" href="{{ url_for('auth.login') }}">{{ _("Se connecter") }}</a>
+    {% endif %}
+  </div>
+  {% endif %}
+</article>
+{% endblock %}

@@ -55,9 +55,9 @@ def og_image():
             d.ellipse([cx - 11, cy - 11, cx + 11, cy + 11], fill=WHITE)
     d.rounded_rectangle([74, 84, 206, 216], radius=36, outline=(255, 255, 255, 120), width=3)  # détache l'icône du fond
     im.paste(icon(120), (80, 90), icon(120))
-    d.text((80, 250), "Carnet de voyages", font=font(76, "Black"), fill=WHITE)
-    d.text((80, 345), "Travel Log", font=font(48, "SemiBold"), fill=(224, 231, 255))
-    d.text((80, 470), "travellog.julien.io", font=font(30, "Medium"), fill=(224, 231, 255))
+    d.text((80, 250), "Voyage Voyage", font=font(76, "Black"), fill=WHITE)
+    d.text((80, 345), "le carnet de voyages", font=font(48, "SemiBold"), fill=(224, 231, 255))
+    d.text((80, 470), "voyage-voyage.app", font=font(30, "Medium"), fill=(224, 231, 255))
     return im
 
 

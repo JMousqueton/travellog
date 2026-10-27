@@ -4,10 +4,9 @@
 <script type="application/ld+json" nonce="{{ csp_nonce() }}">{{ {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": _("Carnet de voyages"),
-  "alternateName": "Travel Log",
+  "name": config.SITE_NAME,
   "url": seo.base_url ~ "/",
-  "description": _("Carnet de voyages gratuit et open source : notez vos trajets en avion, train, voiture ou à vélo, voyez-les sur une carte, suivez pays visités, kilomètres et CO₂."),
+  "description": _("Voyage Voyage, le carnet de voyages gratuit et open source : notez vos trajets en avion, train, voiture ou à vélo, voyez-les sur une carte, suivez pays visités, kilomètres et CO₂."),
   "applicationCategory": "TravelApplication",
   "operatingSystem": "Web",
   "inLanguage": LANGUAGES|list,
@@ -37,6 +36,8 @@
         <a class="btn btn-primary btn-lg rounded-pill px-4" href="{{ url_for('auth.login') }}">{{ _("Se connecter") }}</a>
         {% endif %}
       </div>
+      <a class="d-inline-block mt-3 link-secondary" href="{{ url_for('main.about') }}">
+        <i class="fa-solid fa-music me-1" aria-hidden="true"></i>{{ _("Pourquoi « Voyage Voyage » ? Toutes les fonctionnalités en détail") }}</a>
     </div>
     <div class="col-lg-6">
       <div class="hero-visual card shadow-soft p-4" aria-hidden="true">
@@ -86,6 +87,10 @@
           </p>
         </div>
       </div>
+    </div>
+    <div class="col-12 text-center">
+      <a class="btn btn-outline-primary rounded-pill px-4" href="{{ url_for('main.about') }}">{{ _("Découvrir toutes les fonctionnalités") }}
+        <i class="fa-solid fa-arrow-right ms-1" aria-hidden="true"></i></a>
     </div>
   </div>
 </section>

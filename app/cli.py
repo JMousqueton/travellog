@@ -237,8 +237,8 @@ def register_cli(app):
 
         if not app.config["MAIL_SERVER"]:
             raise click.ClickException("MAIL_SERVER n'est pas configuré.")
-        ok = send_email(to, "Carnet de voyages : e-mail de test",
-                        "Si vous lisez ce message, l'envoi d'e-mails du Carnet de voyages fonctionne.")
+        ok = send_email(to, "Voyage Voyage : e-mail de test",
+                        "Si vous lisez ce message, l'envoi d'e-mails de Voyage Voyage fonctionne.")
         if not ok:
             raise click.ClickException("Échec de l'envoi (voir le journal ci-dessus).")
         click.echo(f"E-mail de test remis au serveur {app.config['MAIL_SERVER']}:{app.config['MAIL_PORT']} pour {to}.")

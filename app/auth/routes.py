@@ -91,7 +91,7 @@ def _register_with_magic_link():
                 body = render_template("auth/email/signup.txt",
                                        url=_external_url("auth.signup", token=signup_token(email, locale)),
                                        minutes=current_app.config["SIGNUP_LINK_MAX_AGE"] // 60)
-            subject = _("Votre inscription au Carnet de voyages")
+            subject = _("Votre inscription à Voyage Voyage")
         send_email(email, subject, body)
         return render_template("auth/register_sent.html", email=email,
                                minutes=current_app.config["SIGNUP_LINK_MAX_AGE"] // 60)

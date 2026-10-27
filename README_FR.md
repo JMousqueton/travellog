@@ -1,4 +1,4 @@
-# Carnet de voyages
+# Voyage Voyage
 
 *English version: [README.md](README.md)*
 
@@ -8,6 +8,8 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
 
 ## Fonctionnalités
 
+- Page À propos (`/about`, en lien depuis l'accueil et le pied de page) : pourquoi le site s'appelle Voyage Voyage
+  (clin d'œil à la chanson de Desireless, merci à Mallorie pour l'idée) et le détail de toutes les fonctionnalités.
 - Comptes utilisateurs (inscription, connexion, mots de passe hachés). Chacun ne voit que ses voyages.
   Inscription par lien magique quand l'envoi d'e-mails est configuré : la personne saisit son adresse, reçoit
   un lien valable 15 minutes (`SIGNUP_LINK_MAX_AGE`) et à usage unique, puis choisit son mot de passe ; le
@@ -156,17 +158,18 @@ En production, utilisez `FLASK_CONFIG=production`, une vraie `SECRET_KEY` et un 
 exemple `gunicorn "app:create_app()"`. Les cookies de session sont alors marqués `Secure`, et l'application
 refuse de démarrer si `SECRET_KEY` est absente ou vaut une valeur d'exemple.
 
-### Production sur ce serveur (travellog.julien.io)
+### Production sur ce serveur (voyage-voyage.app)
 
 - Service systemd `travellog` (copie dans `deploy/travellog.service`) : gunicorn, 1 worker et 8 fils
-  d'exécution sur `127.0.0.1:5012`, avec `FLASK_CONFIG=production`, `APP_BASE_URL=https://travellog.julien.io`
+  d'exécution sur `127.0.0.1:5012`, avec `FLASK_CONFIG=production`, `APP_BASE_URL=https://voyage-voyage.app`
   et `PROXY_FIX_COUNT=1` (le reste vient de `.env`). `sudo systemctl restart travellog` après une mise à jour
   du code ; journal : `journalctl -u travellog`.
-- nginx : `deploy/nginx/travellog.julien.io.conf` (HTTPS, fichiers statiques servis directement, 64 Mo par
-  envoi). Les adresses des fichiers statiques portent l'empreinte de leur contenu (`?v=…`, voir
+- nginx : `deploy/nginx/voyage-voyage.app.conf` (HTTPS, fichiers statiques servis directement, 64 Mo par
+  envoi) ; `www.voyage-voyage.app` et l'ancienne adresse `travellog.julien.io` redirigent vers
+  `https://voyage-voyage.app`. Les adresses des fichiers statiques portent l'empreinte de leur contenu (`?v=…`, voir
   `app/assets.py`) : nginx les met en cache un an, et un fichier modifié change d'adresse. Tant que le certificat n'existe pas, une configuration transitoire ne fait que la validation
   Let's Encrypt et la redirection vers HTTPS.
-- Certificat : une fois le DNS en place (A `213.32.17.149`, AAAA `2001:41d0:305:2100::1:1c4b`), lancer
+- Certificat (`voyage-voyage.app` et `www`) : une fois le DNS en place (A `213.32.17.149`, AAAA `2001:41d0:305:2100::1:1c4b`), lancer
   `deploy/enable-https.sh`. Le renouvellement est assuré par `certbot.timer`.
 - Mise à jour : `git pull`, `.venv/bin/pip install -r requirements.txt`, `flask backup create`,
   `flask db upgrade`, `flask translate compile`, puis `sudo systemctl restart travellog`.
@@ -201,8 +204,8 @@ Copiez régulièrement `instance/backups` sur une autre machine : une sauvegarde
 pas d'une panne de celui-ci. Chaque utilisateur peut aussi télécharger sa propre sauvegarde (trajets + photos,
 `.zip`) depuis ses préférences et la réimporter depuis la page Importer / exporter.
 
-Pour vérifier l'envoi d'e-mails : `flask mail-test vous@example.com`. Sur ce serveur, les e-mails partent par
-le Postfix local (`MAIL_SERVER=localhost`, port 25, sans authentification), comme pour Yet-Another-Blog.
+Pour vérifier l'envoi d'e-mails : `flask mail-test vous@example.com`. Sur ce serveur, les e-mails partent de
+`no-reply@voyage-voyage.app` par `mail.ransomware.live` (port 587, STARTTLS, authentifié ; mot de passe dans `.env`).
 
 Autres commandes de maintenance :
 

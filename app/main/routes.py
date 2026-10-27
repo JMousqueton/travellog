@@ -82,3 +82,9 @@ def legal():
 def privacy():
     """Politique de confidentialité (RGPD, art. 13)."""
     return render_template("legal/privacy.html", **_legal_context())
+
+
+@bp.route("/about")
+def about():
+    """À propos : l'origine du nom et le détail des fonctionnalités."""
+    return render_template("about.html", source_url=current_app.config["SOURCE_URL"])

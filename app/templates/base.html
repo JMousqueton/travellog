@@ -6,8 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="color-scheme" content="light dark">
-  <title>{% block title %}{{ _("Carnet de voyages") }}{% endblock %} · {{ _("Carnet de voyages") }}</title>
-  {%- set page_description %}{% block meta_description %}{{ _("Carnet de voyages gratuit et open source : notez vos trajets en avion, train, voiture ou à vélo, voyez-les sur une carte, suivez pays visités, kilomètres et CO₂.") }}{% endblock %}{% endset %}
+  <title>{% block title %}{{ config.SITE_NAME }}{% endblock %} · {{ config.SITE_NAME }}</title>
+  {%- set page_description %}{% block meta_description %}{{ _("Voyage Voyage, le carnet de voyages gratuit et open source : notez vos trajets en avion, train, voiture ou à vélo, voyez-les sur une carte, suivez pays visités, kilomètres et CO₂.") }}{% endblock %}{% endset %}
   <meta name="description" content="{{ page_description|trim }}">
   {%- if seo.indexable %}
   <link rel="canonical" href="{{ seo.canonical }}">
@@ -16,14 +16,14 @@
   {%- endfor %}
   {%- endif %}
   <meta property="og:type" content="website">
-  <meta property="og:site_name" content="{{ _('Carnet de voyages') }}">
-  <meta property="og:title" content="{{ self.title()|trim }} · {{ _('Carnet de voyages') }}">
+  <meta property="og:site_name" content="{{ config.SITE_NAME }}">
+  <meta property="og:title" content="{{ self.title()|trim }} · {{ config.SITE_NAME }}">
   <meta property="og:description" content="{{ page_description|trim }}">
   <meta property="og:url" content="{{ seo.canonical }}">
   <meta property="og:image" content="{{ seo.image }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="{{ _('Carnet de voyages : vos trajets sur une carte du monde') }}">
+  <meta property="og:image:alt" content="{{ _('Voyage Voyage : vos trajets sur une carte du monde') }}">
   <meta property="og:locale" content="{{ seo.og_locale }}">
   {%- for alt in seo.og_locale_alternates %}
   <meta property="og:locale:alternate" content="{{ alt }}">
@@ -81,7 +81,10 @@
     <div class="container-fluid px-3 px-lg-4">
       <a class="navbar-brand d-flex align-items-center gap-2" href="{{ url_for('trips.index') }}">
         <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-earth-europe"></i></span>
-        <span class="fw-semibold">{{ _("Carnet de voyages") }}</span>
+        <span class="brand-text d-flex flex-column">
+          <span class="fw-semibold">{{ config.SITE_NAME }}</span>
+          <span class="brand-tagline">{{ _("le carnet de voyages") }}</span>
+        </span>
       </a>
 
       <div class="d-flex align-items-center gap-1 order-lg-last ms-auto ms-lg-2">

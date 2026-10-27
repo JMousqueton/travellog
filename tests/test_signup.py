@@ -89,7 +89,7 @@ def test_signup_email_and_account_use_visitor_language(app, client, db):
     client.get("/lang/de")
     client.post("/auth/register", data={"email": "d@example.com"})
     message = _outbox(app)[0]
-    assert message["Subject"] == "Deine Registrierung beim Reisetagebuch"
+    assert message["Subject"] == "Deine Registrierung bei Voyage Voyage"
     client.post(_link(app), data={"password": "longpassword", "confirm": "longpassword"})
     assert db.session.execute(db.select(User)).scalar_one().locale == "de"
 

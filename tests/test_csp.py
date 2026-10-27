@@ -64,7 +64,7 @@ def check_page(client, path, status=200):
         assert attrs.get("nonce") == nonce, f"{path} : <script> en ligne sans nonce {attrs}"
 
 
-@pytest.mark.parametrize("path", ["/", "/auth/login", "/auth/register", "/auth/forgot", "/legal", "/privacy",
+@pytest.mark.parametrize("path", ["/", "/about", "/auth/login", "/auth/register", "/auth/forgot", "/legal", "/privacy",
                                   "/offline"])
 def test_public_pages_respect_csp(client, path):
     check_page(client, path)

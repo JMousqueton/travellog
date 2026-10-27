@@ -709,3 +709,10 @@ details.history > summary { cursor: pointer; list-style-position: outside; }
 .stat-delta.tone-bad { color: #b45309; }
 [data-bs-theme="dark"] .stat-delta.tone-good { color: #4ade80; }
 [data-bs-theme="dark"] .stat-delta.tone-bad { color: #fbbf24; }
+
+/* À propos */
+.about-page { max-width: 860px; }
+.about-song { border-left: 4px solid var(--brand) !important; }
+.about-section li { margin-bottom: .4rem; }
+.brand-text { line-height: 1.1; }
+.brand-tagline { font-size: .72rem; font-weight: 500; color: var(--text-muted); letter-spacing: .02em; }

@@ -88,6 +88,7 @@ class Config:
     LEGAL_DATA_COUNTRY = os.environ.get("LEGAL_DATA_COUNTRY", "")
     LEGAL_LOG_RETENTION_DAYS = int(os.environ.get("LEGAL_LOG_RETENTION_DAYS", "52"))
     LEGAL_UPDATED = os.environ.get("LEGAL_UPDATED", "2026-10-25")
+    SITE_NAME = os.environ.get("SITE_NAME", "Voyage Voyage")  # nom propre, non traduit
     SOURCE_URL = os.environ.get("SOURCE_URL", "https://github.com/JMousqueton/travellog")
 
     BABEL_DEFAULT_LOCALE = "fr"

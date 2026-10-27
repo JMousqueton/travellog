@@ -85,7 +85,7 @@ def test_long_names_are_truncated_in_image(app, user):
 
     make_trip(user, depart_date=date(2025, 1, 1), origin_name="A" * 200, dest_name="B" * 200)
     with app.test_request_context():
-        data = render(year_review(user.trips.all(), 2025), "Carnet de voyages")
+        data = render(year_review(user.trips.all(), 2025), "Voyage Voyage")
     assert data.startswith(b"\x89PNG")
 
 
@@ -96,7 +96,7 @@ def test_image_content_stays_inside_canvas(app, user):
     for month in (1, 6, 12):
         make_trip(user, depart_date=date(2025, month, 2), origin_country="FR", dest_country="IT")
     with app.test_request_context():
-        image = Image.open(io.BytesIO(render(year_review(user.trips.all(), 2025), "Carnet de voyages")))
+        image = Image.open(io.BytesIO(render(year_review(user.trips.all(), 2025), "Voyage Voyage")))
     bottom = image.crop((0, HEIGHT - 40, image.width, HEIGHT)).convert("RGB")
     assert len(bottom.getcolors(maxcolors=100_000)) < 40  # uniquement le fond : aucun texte ne déborde
 
@@ -108,8 +108,8 @@ def test_image_shows_site_address(app, user):
     make_trip(user, depart_date=date(2025, 3, 2), origin_country="FR", dest_country="IT")
     with app.test_request_context():
         review = year_review(user.trips.all(), 2025)
-        plain = Image.open(io.BytesIO(render(review, "Carnet de voyages"))).convert("RGB")
-        signed = Image.open(io.BytesIO(render(review, "Carnet de voyages", "https://travellog.example.org/")))
+        plain = Image.open(io.BytesIO(render(review, "Voyage Voyage"))).convert("RGB")
+        signed = Image.open(io.BytesIO(render(review, "Voyage Voyage", "https://travellog.example.org/")))
     box = (0, HEIGHT - 90, WIDTH, HEIGHT - 40)
     diff = ImageChops.difference(plain.crop(box), signed.convert("RGB").crop(box)).getbbox()
     assert diff and abs((diff[0] + diff[2]) / 2 - WIDTH / 2) < 4  # texte centré

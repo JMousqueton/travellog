@@ -1,4 +1,4 @@
-# Travel Log
+# Voyage Voyage
 
 *Version française : [README_FR.md](README_FR.md)*
 
@@ -8,6 +8,8 @@ available in French, English, Spanish, German and Italian.
 
 ## Features
 
+- About page (`/about`, linked from the home page and the footer): why the site is called Voyage Voyage
+  (a nod to Desireless's song, thanks to Mallorie for the idea) and every feature in detail.
 - User accounts (sign-up, sign-in, hashed passwords). Each user only sees their own trips.
   Sign-up by magic link when email sending is configured: the person enters their address, receives a
   single-use link valid for 15 minutes (`SIGNUP_LINK_MAX_AGE`), then chooses their password; the account is
@@ -148,18 +150,19 @@ In production, use `FLASK_CONFIG=production`, a real `SECRET_KEY` and a WSGI ser
 `gunicorn "app:create_app()"`. Session cookies are then marked `Secure`, and the application refuses to start
 if `SECRET_KEY` is missing or set to an example value.
 
-### Production on this server (travellog.julien.io)
+### Production on this server (voyage-voyage.app)
 
 - systemd service `travellog` (copy in `deploy/travellog.service`): gunicorn, 1 worker and 8 threads on
-  `127.0.0.1:5012`, with `FLASK_CONFIG=production`, `APP_BASE_URL=https://travellog.julien.io` and
+  `127.0.0.1:5012`, with `FLASK_CONFIG=production`, `APP_BASE_URL=https://voyage-voyage.app` and
   `PROXY_FIX_COUNT=1` (everything else comes from `.env`). `sudo systemctl restart travellog` after a code
   update; logs: `journalctl -u travellog`.
-- nginx: `deploy/nginx/travellog.julien.io.conf` (HTTPS, static files served directly, 64 MB per upload).
+- nginx: `deploy/nginx/voyage-voyage.app.conf` (HTTPS, static files served directly, 64 MB per upload);
+  `www.voyage-voyage.app` and the former address `travellog.julien.io` redirect to `https://voyage-voyage.app`.
   Static file URLs carry a fingerprint of their content (`?v=…`, see `app/assets.py`): nginx caches them
   for a year, and a modified file gets a new URL.
   Until the certificate exists, a temporary configuration only handles Let's Encrypt validation and the
   redirect to HTTPS.
-- Certificate: once DNS is in place (A `213.32.17.149`, AAAA `2001:41d0:305:2100::1:1c4b`), run
+- Certificate (`voyage-voyage.app` and `www`): once DNS is in place (A `213.32.17.149`, AAAA `2001:41d0:305:2100::1:1c4b`), run
   `deploy/enable-https.sh`. Renewal is handled by `certbot.timer`.
 - Updating: `git pull`, `.venv/bin/pip install -r requirements.txt`, `flask backup create`, `flask db upgrade`,
   `flask translate compile`, then `sudo systemctl restart travellog`.
@@ -194,8 +197,8 @@ Copy `instance/backups` to another machine regularly: a backup on the same disk 
 disk failing. Each user can also download their own backup (trips + photos, `.zip`) from their preferences and
 import it back from the Import / export page.
 
-To check email sending: `flask mail-test you@example.com`. On this server, emails go out through the local
-Postfix (`MAIL_SERVER=localhost`, port 25, no authentication), as for Yet-Another-Blog.
+To check email sending: `flask mail-test you@example.com`. On this server, emails go out from
+`no-reply@voyage-voyage.app` through `mail.ransomware.live` (port 587, STARTTLS, authenticated; password in `.env`).
 
 Other maintenance commands:
 

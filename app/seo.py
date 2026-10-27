@@ -12,8 +12,8 @@ from .i18n import LANGUAGES, current_locale
 
 # Pages publiques indexables. La page d'accueil ne l'est que pour les visiteurs non connectés
 # (connecté, la même adresse affiche la carte personnelle).
-INDEXABLE = {"trips.index", "auth.register", "main.legal", "main.privacy"}
-SITEMAP = ["trips.index", "auth.register", "main.legal", "main.privacy"]
+INDEXABLE = {"trips.index", "main.about", "auth.register", "main.legal", "main.privacy"}
+SITEMAP = ["trips.index", "main.about", "auth.register", "main.legal", "main.privacy"]
 OG_LOCALES = {"fr": "fr_FR", "en": "en_GB", "es": "es_ES", "de": "de_DE", "it": "it_IT"}
 
 
@@ -70,6 +70,7 @@ def init_app(app):
         lines = [
             "User-agent: *",
             "Allow: /$",
+            "Allow: /about",
             "Allow: /auth/register",
             "Allow: /legal",
             "Allow: /privacy",
@@ -100,8 +101,8 @@ def init_app(app):
     @app.route("/site.webmanifest")
     def webmanifest():
         response = jsonify({
-            "name": _("Carnet de voyages"),
-            "short_name": _("Carnet de voyages"),
+            "name": current_app.config["SITE_NAME"],
+            "short_name": current_app.config["SITE_NAME"],
             "description": _("Tous vos voyages, sur une seule carte."),
             "lang": current_locale(),
             "start_url": "/",

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-26 07:19+0000\n"
+"POT-Creation-Date: 2026-10-27 08:09+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -146,8 +146,8 @@ msgstr "La password è obbligatoria."
 msgid "Rester connecté"
 msgstr "Resta connesso"
 
-#: app/auth/forms.py:24 app/templates/auth/register.html:24
-#: app/templates/landing.html:37
+#: app/auth/forms.py:24 app/templates/about.html:97
+#: app/templates/auth/register.html:24 app/templates/landing.html:36
 msgid "Se connecter"
 msgstr "Accedi"
 
@@ -258,8 +258,8 @@ msgid "Bienvenue ! Votre compte a été créé."
 msgstr "Benvenuto! Il tuo account è stato creato."
 
 #: app/auth/routes.py:94
-msgid "Votre inscription au Carnet de voyages"
-msgstr "La tua iscrizione al Diario di viaggio"
+msgid "Votre inscription à Voyage Voyage"
+msgstr "La tua iscrizione a Voyage Voyage"
 
 #: app/auth/routes.py:110
 #, python-format
@@ -417,7 +417,7 @@ msgstr "Modifica o reimposta i filtri per vedere i tuoi viaggi."
 msgid "Réinitialiser les filtres"
 msgstr "Reimposta filtri"
 
-#: app/i18n.py:96 app/templates/base.html:157 app/templates/base.html:158
+#: app/i18n.py:96 app/templates/base.html:160 app/templates/base.html:161
 #: app/templates/map.html:188 app/templates/trips/list.html:11
 #: app/templates/trips/list.html:180
 msgid "Ajouter un voyage"
@@ -428,7 +428,7 @@ msgstr "Aggiungi un viaggio"
 msgid "Modifier"
 msgstr "Modifica"
 
-#: app/i18n.py:98 app/templates/base.html:235
+#: app/i18n.py:98 app/templates/base.html:238
 #: app/templates/trips/detail.html:111 app/templates/trips/form.html:148
 msgid "Supprimer"
 msgstr "Elimina"
@@ -639,8 +639,8 @@ msgstr "Data della riproduzione"
 msgid "Affichage des voyages"
 msgstr "Vista dei viaggi"
 
-#: app/i18n.py:147 app/templates/base.html:123 app/templates/base.html:140
-#: app/templates/base.html:142 app/templates/map.html:2
+#: app/i18n.py:147 app/templates/base.html:126 app/templates/base.html:143
+#: app/templates/base.html:145 app/templates/map.html:2
 msgid "Carte"
 msgstr "Mappa"
 
@@ -662,7 +662,7 @@ msgstr "Ingrandisci"
 msgid "Dézoomer"
 msgstr "Riduci"
 
-#: app/i18n.py:152 app/templates/base.html:211 app/templates/map.html:15
+#: app/i18n.py:152 app/templates/base.html:214 app/templates/map.html:15
 msgid "Fermer"
 msgstr "Chiudi"
 
@@ -823,15 +823,7 @@ msgstr "Il tragitto più lungo"
 msgid "Nouveaux pays"
 msgstr "Nuovi paesi"
 
-#: app/seo.py:103 app/seo.py:104 app/templates/base.html:9
-#: app/templates/base.html:19 app/templates/base.html:20
-#: app/templates/base.html:84 app/templates/landing.html:7
-#: app/templates/pwa/offline.html:7 app/transfer/routes.py:57
-#: app/trips/routes.py:483 app/trips/routes.py:499 app/trips/routes.py:544
-msgid "Carnet de voyages"
-msgstr "Diario di viaggio"
-
-#: app/seo.py:105 app/templates/landing.html:28
+#: app/seo.py:106 app/templates/landing.html:27
 msgid "Tous vos voyages, sur une seule carte."
 msgstr "Tutti i tuoi viaggi, su un'unica mappa."
 
@@ -905,6 +897,387 @@ msgstr "Questo link ora mostra l'elenco dei tuoi tragitti."
 msgid "Ce lien ne montre plus la liste de vos trajets."
 msgstr "Questo link non mostra più l'elenco dei tuoi tragitti."
 
+#: app/templates/about.html:2 app/templates/partials/footer.html:7
+msgid "À propos"
+msgstr "Informazioni"
+
+#: app/templates/about.html:3
+msgid ""
+"Pourquoi le site s'appelle Voyage Voyage, et tout ce qu'il sait faire : "
+"carte, globe, statistiques, bilan de l'année, import de vos vols, "
+"partage."
+msgstr ""
+"Perché il sito si chiama Voyage Voyage e tutto ciò che sa fare: mappa, "
+"globo, statistiche, riepilogo dell'anno, importazione dei voli, "
+"condivisione."
+
+#: app/templates/about.html:7
+msgid "À propos de Voyage Voyage"
+msgstr "Informazioni su Voyage Voyage"
+
+#: app/templates/about.html:8
+msgid ""
+"Un carnet de voyages personnel, gratuit et open source : chaque trajet "
+"que vous notez prend place sur une carte du monde, et vos années de "
+"voyage deviennent des chiffres, des badges et des souvenirs."
+msgstr ""
+"Un diario di viaggio personale, gratuito e open source: ogni tragitto che"
+" annoti trova posto su una mappa del mondo, e i tuoi anni di viaggio "
+"diventano numeri, badge e ricordi."
+
+#: app/templates/about.html:13
+msgid "Pourquoi « Voyage Voyage » ?"
+msgstr "Perché «Voyage Voyage»?"
+
+#: app/templates/about.html:15
+msgid ""
+"Le nom est un clin d'œil à « Voyage, voyage », la chanson de Desireless "
+"sortie en 1986, écrite par Jean-Michel Rivat et composée par Dominique "
+"Dubois. Portée par sa voix grave et sa coupe en brosse inoubliable, elle "
+"a fait danser toute l'Europe à la fin des années 1980 et reste l'un des "
+"titres français les plus connus à l'étranger."
+msgstr ""
+"Il nome è un omaggio a «Voyage, voyage», la canzone di Desireless uscita "
+"nel 1986, scritta da Jean-Michel Rivat e composta da Dominique Dubois. "
+"Con la sua voce profonda e l'indimenticabile taglio a spazzola, ha fatto "
+"ballare tutta l'Europa alla fine degli anni Ottanta e resta una delle "
+"canzoni francesi più conosciute all'estero."
+
+#: app/templates/about.html:16
+msgid ""
+"Une chanson qui donne envie de partir loin, encore et encore : c'est "
+"exactement ce que ce site garde en mémoire, un trajet après l'autre."
+msgstr ""
+"Una canzone che fa venire voglia di partire lontano, ancora e ancora: è "
+"proprio ciò che questo sito conserva, un tragitto dopo l'altro."
+
+#: app/templates/about.html:17
+msgid "Merci à Mallorie pour l'idée !"
+msgstr "Grazie a Mallorie per l'idea!"
+
+#: app/templates/about.html:20
+msgid "Toutes les fonctionnalités"
+msgstr "Tutte le funzionalità"
+
+#: app/templates/about.html:22
+msgid "Noter vos trajets"
+msgstr "Annotare i tuoi tragitti"
+
+#: app/templates/about.html:23
+msgid ""
+"Sept modes de transport : avion, train, voiture, bus, bateau, vélo et à "
+"pied, chacun avec sa couleur."
+msgstr ""
+"Sette mezzi di trasporto: aereo, treno, auto, autobus, nave, bici e a "
+"piedi, ognuno con il suo colore."
+
+#: app/templates/about.html:24
+msgid ""
+"Aller simple ou aller-retour, avec une date de retour ; plusieurs trajets"
+" se regroupent en un voyage (escales, tour d'Europe…)."
+msgstr ""
+"Solo andata o andata e ritorno, con data di rientro; più tragitti si "
+"raggruppano in un viaggio (scali, giro d'Europa…)."
+
+#: app/templates/about.html:25
+msgid ""
+"Lieux saisis avec autocomplétion ; le pays de départ et d'arrivée est "
+"retrouvé automatiquement."
+msgstr ""
+"Luoghi con completamento automatico; il paese di partenza e di arrivo "
+"viene trovato automaticamente."
+
+#: app/templates/about.html:26
+msgid ""
+"Compagnie, numéro de vol et appareil pour l'avion, opérateur pour le "
+"train. Saisir un numéro de vol (« AF1148 ») remplit la compagnie, le "
+"départ et l'arrivée."
+msgstr ""
+"Compagnia, numero di volo e aeromobile per l'aereo, operatore per il "
+"treno. Inserendo un numero di volo («AF1148») si compilano compagnia, "
+"partenza e arrivo."
+
+#: app/templates/about.html:27
+msgid ""
+"Étiquettes (vacances, travail…), notes et photos sur chaque trajet et "
+"chaque voyage. Les photos sont débarrassées de leurs métadonnées, dont la"
+" position GPS."
+msgstr ""
+"Etichette (vacanze, lavoro…), note e foto su ogni tragitto e ogni "
+"viaggio. Le foto vengono ripulite dai metadati, compresa la posizione "
+"GPS."
+
+#: app/templates/about.html:28
+msgid ""
+"Distances réalistes : itinéraire routier quand il est disponible, sinon "
+"ligne droite corrigée selon le mode."
+msgstr ""
+"Distanze realistiche: percorso stradale quando disponibile, altrimenti "
+"linea retta corretta in base al mezzo."
+
+#: app/templates/about.html:30
+msgid "Importer et exporter"
+msgstr "Importare ed esportare"
+
+#: app/templates/about.html:31
+msgid ""
+"Import de votre historique de vols depuis Flighty ou myFlightradar24 : "
+"chaque vol devient un trajet, les allers-retours sont reconnus."
+msgstr ""
+"Importa la tua cronologia di voli da Flighty o myFlightradar24: ogni volo"
+" diventa un tragitto e le andate e ritorno vengono riconosciute."
+
+#: app/templates/about.html:32
+msgid ""
+"Import et export en CSV, GeoJSON et GPX, sans perte : notes et "
+"regroupements en voyages compris."
+msgstr ""
+"Importazione ed esportazione senza perdite in CSV, GeoJSON e GPX, note e "
+"raggruppamenti in viaggi compresi."
+
+#: app/templates/about.html:33
+msgid ""
+"Aperçu avant chaque import : décochez les trajets à laisser de côté ; les"
+" doublons sont repérés."
+msgstr ""
+"Anteprima prima di ogni importazione: deseleziona i tragitti da "
+"escludere; i duplicati vengono individuati."
+
+#: app/templates/about.html:34
+msgid ""
+"Sauvegarde complète (.zip, photos comprises) à télécharger et à "
+"réimporter à tout moment."
+msgstr ""
+"Backup completo (.zip, foto comprese) da scaricare e reimportare in "
+"qualsiasi momento."
+
+#: app/templates/about.html:36
+msgid "Carte et globe"
+msgstr "Mappa e globo"
+
+#: app/templates/about.html:37
+msgid ""
+"Carte plein écran : trajets colorés par mode, arcs géodésiques pour "
+"l'avion, retours en pointillés, marqueurs regroupés."
+msgstr ""
+"Mappa a schermo intero: tragitti colorati per mezzo, archi geodetici per "
+"l'aereo, ritorni tratteggiati, indicatori raggruppati."
+
+#: app/templates/about.html:38
+msgid ""
+"Couches « Pays visités » et « Lieux visités » (cercles proportionnels au "
+"nombre de passages)."
+msgstr ""
+"Livelli «Paesi visitati» e «Luoghi visitati» (cerchi proporzionali al "
+"numero di visite)."
+
+#: app/templates/about.html:39
+msgid ""
+"Filtres par année, période, mode, type de trajet, étiquette et recherche,"
+" conservés dans l'adresse de la page."
+msgstr ""
+"Filtri per anno, periodo, mezzo, tipo di tragitto, etichetta e ricerca, "
+"conservati nell'indirizzo della pagina."
+
+#: app/templates/about.html:40
+msgid ""
+"Globe 3D qui tourne tout seul, à faire pivoter et zoomer, avec les vols "
+"en arc au-dessus de la surface."
+msgstr ""
+"Globo 3D che gira da solo, da ruotare e ingrandire, con i voli ad arco "
+"sopra la superficie."
+
+#: app/templates/about.html:41
+msgid ""
+"Rejeu : vos trajets se dessinent dans l'ordre chronologique, avec une "
+"frise pour sauter à n'importe quelle date."
+msgstr ""
+"Riproduzione: i tuoi tragitti si disegnano in ordine cronologico, con una"
+" linea del tempo per saltare a qualsiasi data."
+
+#: app/templates/about.html:43 app/templates/base.html:127
+#: app/templates/base.html:153 app/templates/base.html:155
+#: app/templates/trips/stats.html:4 app/templates/trips/stats.html:8
+#: app/templates/trips/transport_stats.html:55
+#: app/templates/trips/year_stats.html:9
+msgid "Statistiques"
+msgstr "Statistiche"
+
+#: app/templates/about.html:44
+msgid ""
+"Chiffres clés et graphiques des trajets et des distances par année et par"
+" mode."
+msgstr "Dati chiave e grafici di tragitti e distanze per anno e per mezzo."
+
+#: app/templates/about.html:45
+msgid ""
+"Une page par année : comparaison avec l'année précédente, calendrier jour"
+" par jour, départs par mois, pays découverts, temps forts."
+msgstr ""
+"Una pagina per anno: confronto con l'anno precedente, calendario giorno "
+"per giorno, partenze per mese, paesi scoperti, momenti salienti."
+
+#: app/templates/about.html:46
+msgid ""
+"Pages avion et train : compagnies (avec leur logo), appareils, aéroports "
+"ou gares, lignes les plus fréquentes."
+msgstr ""
+"Pagine aereo e treno: compagnie (con il loro logo), aeromobili, aeroporti"
+" o stazioni, tratte più frequenti."
+
+#: app/templates/about.html:47
+msgid "CO₂ estimé pour chaque mode, d'après les facteurs de l'ADEME."
+msgstr "CO₂ stimata per ogni mezzo, secondo i fattori dell'ADEME."
+
+#: app/templates/about.html:48
+msgid ""
+"Jours loin de la maison, nuits à l'étranger et plus longue absence, à "
+"partir de votre ville de domicile."
+msgstr ""
+"Giorni lontano da casa, notti all'estero e assenza più lunga, a partire "
+"dalla tua città di residenza."
+
+#: app/templates/about.html:50
+msgid "Le monde, pays par pays"
+msgstr "Il mondo, paese per paese"
+
+#: app/templates/about.html:51
+msgid ""
+"Pays et territoires visités sur 237, et part des terres émergées que vous"
+" avez foulées."
+msgstr ""
+"Paesi e territori visitati su 237, e quota delle terre emerse che hai "
+"calpestato."
+
+#: app/templates/about.html:52
+msgid ""
+"Progression par continent, et régions visitées dans 14 grands pays (États"
+" américains, Länder, régions françaises, préfectures japonaises…)."
+msgstr ""
+"Progressi per continente e regioni visitate in 14 grandi paesi (stati "
+"USA, Länder tedeschi, regioni francesi, prefetture giapponesi…)."
+
+#: app/templates/about.html:53
+msgid ""
+"Badges pour l'ensemble de vos voyages et badges propres à chaque année, "
+"datés par le trajet qui les a débloqués."
+msgstr ""
+"Badge per tutti i tuoi viaggi e badge specifici di ogni anno, datati dal "
+"tragitto che li ha sbloccati."
+
+#: app/templates/about.html:55 app/templates/landing.html:66
+#: app/templates/trips/review.html:3 app/templates/trips/review.html:9
+#: app/templates/trips/stats.html:11
+msgid "Bilan de l'année"
+msgstr "Bilancio dell'anno"
+
+#: app/templates/about.html:56
+msgid ""
+"Votre année en chiffres : pays découverts, plus long trajet, destinations"
+" préférées, départs par mois, badges gagnés."
+msgstr ""
+"Il tuo anno in numeri: paesi scoperti, tragitto più lungo, destinazioni "
+"preferite, partenze per mese, badge ottenuti."
+
+#: app/templates/about.html:57
+msgid ""
+"Une image prête à partager sur les réseaux sociaux ou à garder en "
+"souvenir."
+msgstr "Un'immagine pronta da condividere sui social o da conservare come ricordo."
+
+#: app/templates/about.html:59
+msgid "Partager et anticiper"
+msgstr "Condividere e pianificare"
+
+#: app/templates/about.html:60
+msgid ""
+"Liens de partage en lecture seule, avec date d'expiration : carte, "
+"statistiques, liste des voyages et bilan. Jamais vos notes, vos photos ni"
+" votre domicile."
+msgstr ""
+"Link di condivisione in sola lettura, con data di scadenza: mappa, "
+"statistiche, elenco dei viaggi e riepilogo. Mai le tue note, le tue foto "
+"o la tua casa."
+
+#: app/templates/about.html:61
+msgid ""
+"Voyages à venir : compte à rebours, carte « Prochain départ », masqués "
+"par défaut sur les liens de partage."
+msgstr ""
+"Viaggi in arrivo: conto alla rovescia, scheda «Prossima partenza», "
+"nascosti per impostazione predefinita nei link di condivisione."
+
+#: app/templates/about.html:62
+msgid ""
+"Export vers votre agenda (.ics) ou abonnement à une adresse secrète "
+"(Google Agenda, Apple Calendrier, Outlook)."
+msgstr ""
+"Esportazione nel tuo calendario (.ics) o abbonamento tramite un indirizzo"
+" segreto (Google Calendar, Calendario Apple, Outlook)."
+
+#: app/templates/about.html:64
+msgid "Partout, dans votre langue"
+msgstr "Ovunque, nella tua lingua"
+
+#: app/templates/about.html:65
+msgid ""
+"Interface en français, anglais, espagnol, allemand et italien ; dates, "
+"nombres et distances au format de chaque langue."
+msgstr ""
+"Interfaccia in francese, inglese, spagnolo, tedesco e italiano; date, "
+"numeri e distanze nel formato di ogni lingua."
+
+#: app/templates/about.html:66
+msgid "Thème clair ou sombre, sur ordinateur comme sur téléphone."
+msgstr "Tema chiaro o scuro, sia su computer sia su telefono."
+
+#: app/templates/about.html:67
+msgid ""
+"Application installable sur l'écran d'accueil, qui reste consultable hors"
+" ligne."
+msgstr "App installabile nella schermata Home, consultabile anche offline."
+
+#: app/templates/about.html:69 app/templates/landing.html:68
+msgid "Vos données vous appartiennent"
+msgstr "I tuoi dati ti appartengono"
+
+#: app/templates/about.html:70
+msgid "Gratuit, sans publicité, et open source sous licence MIT."
+msgstr "Gratuito, senza pubblicità e open source con licenza MIT."
+
+#: app/templates/about.html:71
+msgid ""
+"Vos trajets restent privés ; la mesure d'audience est auto-hébergée et "
+"vous pouvez la refuser."
+msgstr ""
+"I tuoi tragitti restano privati; la misurazione del pubblico è ospitata "
+"in proprio e puoi rifiutarla."
+
+#: app/templates/about.html:72
+msgid ""
+"Export complet à tout moment, et suppression de votre compte depuis vos "
+"préférences."
+msgstr ""
+"Esportazione completa in qualsiasi momento ed eliminazione del tuo "
+"account dalle preferenze."
+
+#: app/templates/about.html:87
+msgid "Le code source est disponible sur"
+msgstr "Il codice sorgente è disponibile su"
+
+#: app/templates/about.html:88 app/templates/legal/privacy.html:2
+#: app/templates/legal/privacy.html:6
+msgid "Politique de confidentialité"
+msgstr "Informativa sulla privacy"
+
+#: app/templates/about.html:94 app/templates/landing.html:33
+msgid "Commencer gratuitement"
+msgstr "Inizia gratis"
+
+#: app/templates/about.html:95 app/templates/landing.html:34
+msgid "J'ai déjà un compte"
+msgstr "Ho già un account"
+
 #: app/templates/admin/_nav.html:3 app/templates/admin/settings.html:2
 msgid "Paramètres"
 msgstr "Impostazioni"
@@ -959,11 +1332,11 @@ msgstr "Buongiorno,"
 
 #: app/templates/auth/email/reset_password.txt:3
 msgid ""
-"Une réinitialisation du mot de passe de votre compte Carnet de voyages a "
-"été demandée. Pour choisir un nouveau mot de passe, ouvrez ce lien :"
+"Une réinitialisation du mot de passe de votre compte Voyage Voyage a été "
+"demandée. Pour choisir un nouveau mot de passe, ouvrez ce lien :"
 msgstr ""
-"È stata richiesta la reimpostazione della password del tuo account Diario"
-" di viaggio. Per scegliere una nuova password, apri questo link:"
+"È stata richiesta la reimpostazione della password del tuo account Voyage"
+" Voyage. Per scegliere una nuova password, apri questo link:"
 
 #: app/templates/auth/email/reset_password.txt:7
 #: app/templates/auth/email/signup.txt:7
@@ -983,11 +1356,11 @@ msgstr ""
 
 #: app/templates/auth/email/signup.txt:3
 msgid ""
-"Pour terminer votre inscription au Carnet de voyages, ouvrez ce lien et "
+"Pour terminer votre inscription à Voyage Voyage, ouvrez ce lien et "
 "choisissez votre mot de passe :"
 msgstr ""
-"Per completare l'iscrizione al Diario di viaggio, apri questo link e "
-"scegli la tua password:"
+"Per completare l'iscrizione a Voyage Voyage, apri questo link e scegli la"
+" tua password:"
 
 #: app/templates/auth/email/signup.txt:9
 msgid ""
@@ -999,11 +1372,11 @@ msgstr ""
 
 #: app/templates/auth/email/signup_existing.txt:3
 msgid ""
-"Une inscription au Carnet de voyages a été demandée avec cette adresse, "
-"mais vous avez déjà un compte. Connectez-vous ici :"
+"Une inscription à Voyage Voyage a été demandée avec cette adresse, mais "
+"vous avez déjà un compte. Connectez-vous ici :"
 msgstr ""
-"È stata richiesta un'iscrizione al Diario di viaggio con questo "
-"indirizzo, ma hai già un account. Accedi qui:"
+"È stata richiesta un'iscrizione a Voyage Voyage con questo indirizzo, ma "
+"hai già un account. Accedi qui:"
 
 #: app/templates/auth/email/signup_existing.txt:7
 msgid "Mot de passe oublié ? Choisissez-en un nouveau ici :"
@@ -1223,19 +1596,19 @@ msgstr "Completa l'iscrizione"
 msgid "Adresse vérifiée : %(email)s"
 msgstr "Indirizzo verificato: %(email)s"
 
-#: app/templates/base.html:10 app/templates/landing.html:10
+#: app/templates/base.html:10 app/templates/landing.html:9
 msgid ""
-"Carnet de voyages gratuit et open source : notez vos trajets en avion, "
-"train, voiture ou à vélo, voyez-les sur une carte, suivez pays visités, "
-"kilomètres et CO₂."
+"Voyage Voyage, le carnet de voyages gratuit et open source : notez vos "
+"trajets en avion, train, voiture ou à vélo, voyez-les sur une carte, "
+"suivez pays visités, kilomètres et CO₂."
 msgstr ""
-"Diario di viaggio gratuito e open source: annota i tuoi tragitti in "
-"aereo, treno, auto o bici, vedili su una mappa e tieni traccia di paesi "
-"visitati, chilometri e CO₂."
+"Voyage Voyage, il diario di viaggio gratuito e open source: annota i tuoi"
+" tragitti in aereo, treno, auto o bici, vedili su una mappa e tieni "
+"traccia di paesi visitati, chilometri e CO₂."
 
 #: app/templates/base.html:26
-msgid "Carnet de voyages : vos trajets sur une carte du monde"
-msgstr "Diario di viaggio: i tuoi tragitti su una mappa del mondo"
+msgid "Voyage Voyage : vos trajets sur une carte du monde"
+msgstr "Voyage Voyage: i tuoi tragitti su una mappa del mondo"
 
 #: app/templates/base.html:78
 msgid "Aller au contenu principal"
@@ -1245,31 +1618,28 @@ msgstr "Vai al contenuto principale"
 msgid "Navigation principale"
 msgstr "Navigazione principale"
 
-#: app/templates/base.html:90
+#: app/templates/base.html:86
+msgid "le carnet de voyages"
+msgstr "il diario di viaggio"
+
+#: app/templates/base.html:93
 #, python-format
 msgid "Langue : %(lang)s"
 msgstr "Lingua: %(lang)s"
 
-#: app/templates/base.html:94
+#: app/templates/base.html:97
 msgid "Choisir la langue"
 msgstr "Scegli la lingua"
 
-#: app/templates/base.html:108
+#: app/templates/base.html:111
 msgid "Basculer le thème clair ou sombre"
 msgstr "Attiva/disattiva tema chiaro o scuro"
 
-#: app/templates/base.html:113
+#: app/templates/base.html:116
 msgid "Ouvrir le menu"
 msgstr "Apri menu"
 
-#: app/templates/base.html:124 app/templates/base.html:150
-#: app/templates/base.html:152 app/templates/trips/stats.html:4
-#: app/templates/trips/stats.html:8 app/templates/trips/transport_stats.html:55
-#: app/templates/trips/year_stats.html:9
-msgid "Statistiques"
-msgstr "Statistiche"
-
-#: app/templates/admin/users.html:15 app/templates/base.html:125
+#: app/templates/admin/users.html:15 app/templates/base.html:128
 #: app/templates/map.html:45 app/templates/map.html:140
 #: app/templates/trips/_stats_parts.html:134
 #: app/templates/trips/_stats_parts.html:238
@@ -1277,60 +1647,60 @@ msgstr "Statistiche"
 msgid "Voyages"
 msgstr "Viaggi"
 
-#: app/templates/base.html:126
+#: app/templates/base.html:129
 msgid "Bilan"
 msgstr "Bilancio"
 
-#: app/templates/base.html:145 app/templates/base.html:147
+#: app/templates/base.html:148 app/templates/base.html:150
 #: app/templates/errors/404.html:32 app/templates/trips/detail.html:11
 #: app/templates/trips/list.html:3 app/templates/trips/list.html:6
 msgid "Mes voyages"
 msgstr "I miei viaggi"
 
 #: app/templates/auth/profile.html:3 app/templates/auth/profile.html:7
-#: app/templates/base.html:166
+#: app/templates/base.html:169
 msgid "Préférences"
 msgstr "Preferenze"
 
-#: app/templates/base.html:168 app/templates/share/links.html:2
+#: app/templates/base.html:171 app/templates/share/links.html:2
 #: app/templates/share/links.html:6
 msgid "Partager mes voyages"
 msgstr "Condividi i miei viaggi"
 
-#: app/templates/base.html:170 app/templates/transfer/index.html:2
+#: app/templates/base.html:173 app/templates/transfer/index.html:2
 #: app/templates/transfer/index.html:6 app/templates/trips/list.html:9
 #: app/templates/trips/stats.html:13
 msgid "Importer / exporter"
 msgstr "Importa / esporta"
 
 #: app/templates/admin/_nav.html:1 app/templates/admin/settings.html:2
-#: app/templates/admin/users.html:2 app/templates/base.html:173
+#: app/templates/admin/users.html:2 app/templates/base.html:176
 msgid "Administration"
 msgstr "Amministrazione"
 
-#: app/templates/base.html:180
+#: app/templates/base.html:183
 msgid "Déconnexion"
 msgstr "Esci"
 
 #: app/templates/auth/login.html:3 app/templates/auth/login.html:4
-#: app/templates/base.html:188
+#: app/templates/base.html:191
 msgid "Connexion"
 msgstr "Accedi"
 
 #: app/templates/auth/login.html:25 app/templates/auth/register.html:3
-#: app/templates/auth/register.html:4 app/templates/base.html:190
+#: app/templates/auth/register.html:4 app/templates/base.html:193
 msgid "Créer un compte"
 msgstr "Crea un account"
 
-#: app/templates/base.html:226
+#: app/templates/base.html:229
 msgid "Supprimer ce voyage ?"
 msgstr "Eliminare questo viaggio?"
 
-#: app/templates/base.html:229
+#: app/templates/base.html:232
 msgid "Cette action est définitive."
 msgstr "Questa azione è definitiva."
 
-#: app/templates/base.html:233 app/templates/transfer/preview.html:73
+#: app/templates/base.html:236 app/templates/transfer/preview.html:73
 #: app/templates/trips/form.html:152 app/templates/trips/journey.html:29
 msgid "Annuler"
 msgstr "Annulla"
@@ -1369,11 +1739,11 @@ msgstr "Torna alla home"
 msgid "Vos voyages sur une carte"
 msgstr "I tuoi viaggi su una mappa"
 
-#: app/templates/landing.html:27
+#: app/templates/landing.html:26
 msgid "Votre carnet de route personnel"
 msgstr "Il tuo diario di viaggio personale"
 
-#: app/templates/landing.html:30
+#: app/templates/landing.html:29
 msgid ""
 "Notez vos trajets en avion, train, voiture ou à vélo, visualisez-les sur "
 "la carte et suivez les kilomètres parcourus."
@@ -1381,23 +1751,19 @@ msgstr ""
 "Annota i tuoi spostamenti in aereo, treno, auto o bici, visualizzali "
 "sulla mappa e tieni traccia dei chilometri percorsi."
 
-#: app/templates/landing.html:34
-msgid "Commencer gratuitement"
-msgstr "Inizia gratis"
+#: app/templates/landing.html:40
+msgid "Pourquoi « Voyage Voyage » ? Toutes les fonctionnalités en détail"
+msgstr "Perché «Voyage Voyage»? Tutte le funzionalità nel dettaglio"
 
-#: app/templates/landing.html:35
-msgid "J'ai déjà un compte"
-msgstr "Ho già un account"
-
-#: app/templates/landing.html:60
+#: app/templates/landing.html:61
 msgid "Fonctionnalités"
 msgstr "Funzionalità"
 
-#: app/templates/landing.html:62
+#: app/templates/landing.html:63
 msgid "Carte interactive"
 msgstr "Mappa interattiva"
 
-#: app/templates/landing.html:62
+#: app/templates/landing.html:63
 msgid ""
 "Trajets colorés par mode, arcs géodésiques pour l'avion et retours en "
 "pointillés."
@@ -1405,11 +1771,11 @@ msgstr ""
 "Percorsi colorati per mezzo, archi geodetici per gli aerei e ritorni "
 "tratteggiati."
 
-#: app/templates/landing.html:63
+#: app/templates/landing.html:64
 msgid "Pays et continents"
 msgstr "Paesi e continenti"
 
-#: app/templates/landing.html:63
+#: app/templates/landing.html:64
 msgid ""
 "Les pays visités s'affichent sur la carte, avec badges, continents et "
 "lieux visités."
@@ -1417,50 +1783,41 @@ msgstr ""
 "I paesi visitati compaiono sulla mappa, con badge, continenti e luoghi "
 "visitati."
 
-#: app/templates/landing.html:64
+#: app/templates/landing.html:65
 msgid "Statistiques et CO₂"
 msgstr "Statistiche e CO₂"
 
-#: app/templates/landing.html:64
+#: app/templates/landing.html:65
 msgid ""
 "Kilomètres, émissions de CO₂ estimées, jours passés en voyage, année par "
 "année."
 msgstr "Chilometri, emissioni di CO₂ stimate e giorni in viaggio, anno per anno."
 
-#: app/templates/landing.html:65
+#: app/templates/landing.html:66
 msgid ""
 "Votre année de voyages en chiffres et en image, à télécharger ou à "
 "partager."
 msgstr "Il tuo anno di viaggi in numeri e in immagine, da scaricare o condividere."
 
-#: app/templates/landing.html:65 app/templates/trips/review.html:3
-#: app/templates/trips/review.html:9 app/templates/trips/stats.html:11
-msgid "Bilan de l'année"
-msgstr "Bilancio dell'anno"
-
-#: app/templates/landing.html:66
+#: app/templates/landing.html:67
 msgid "Notes et photos"
 msgstr "Note e foto"
 
-#: app/templates/landing.html:66
+#: app/templates/landing.html:67
 msgid "Gardez vos souvenirs avec chaque trajet ; les photos restent privées."
 msgstr "Conserva i tuoi ricordi con ogni tragitto; le foto restano private."
 
-#: app/templates/landing.html:67
-msgid "Vos données vous appartiennent"
-msgstr "I tuoi dati ti appartengono"
-
-#: app/templates/landing.html:67
+#: app/templates/landing.html:68
 msgid "Gratuit, sans publicité, open source ; export complet à tout moment."
 msgstr ""
 "Gratuito, senza pubblicità, open source; esportazione completa in "
 "qualsiasi momento."
 
-#: app/templates/landing.html:81
+#: app/templates/landing.html:82
 msgid "Importez votre historique de vols"
 msgstr "Importa lo storico dei tuoi voli"
 
-#: app/templates/landing.html:83
+#: app/templates/landing.html:84
 #, python-format
 msgid ""
 "Vous suivez déjà vos vols avec %(flighty)s ou %(fr24)s ? Importez leur "
@@ -1471,6 +1828,10 @@ msgstr ""
 "export CSV: ogni volo diventa un tragitto sulla tua mappa, con numero, "
 "compagnia aerea e aereo."
 
+#: app/templates/landing.html:92
+msgid "Découvrir toutes les fonctionnalités"
+msgstr "Scopri tutte le funzionalità"
+
 #: app/templates/legal/_contact.html:2
 msgid "adresse de contact bientôt disponible"
 msgstr "indirizzo di contatto disponibile a breve"
@@ -1480,15 +1841,15 @@ msgid "Administrateur : renseignez LEGAL_CONTACT_EMAIL dans .env"
 msgstr "Amministratore: imposta LEGAL_CONTACT_EMAIL in .env"
 
 #: app/templates/legal/notice.html:2 app/templates/legal/notice.html:6
-#: app/templates/partials/footer.html:7
+#: app/templates/partials/footer.html:9
 msgid "Mentions légales"
 msgstr "Note legali"
 
 #: app/templates/legal/notice.html:3
 msgid ""
-"Mentions légales du Carnet de voyages : éditeur, hébergement, licences et"
-" crédits."
-msgstr "Note legali del Diario di viaggio: editore, hosting, licenze e crediti."
+"Mentions légales de Voyage Voyage : éditeur, hébergement, licences et "
+"crédits."
+msgstr "Note legali di Voyage Voyage: editore, hosting, licenze e crediti."
 
 #: app/templates/legal/notice.html:9
 msgid "Éditeur du site"
@@ -1589,17 +1950,13 @@ msgstr ""
 msgid "Dernière mise à jour : %(date)s"
 msgstr "Ultimo aggiornamento: %(date)s"
 
-#: app/templates/legal/privacy.html:2 app/templates/legal/privacy.html:6
-msgid "Politique de confidentialité"
-msgstr "Informativa sulla privacy"
-
 #: app/templates/legal/privacy.html:3
 msgid ""
-"Données collectées par le Carnet de voyages, finalités, durées de "
-"conservation, cookies et droits RGPD."
+"Données collectées par Voyage Voyage, finalités, durées de conservation, "
+"cookies et droits RGPD."
 msgstr ""
-"Dati raccolti dal Diario di viaggio, finalità, tempi di conservazione, "
-"cookie e diritti GDPR."
+"Dati raccolti da Voyage Voyage, finalità, tempi di conservazione, cookie "
+"e diritti GDPR."
 
 #: app/templates/legal/privacy.html:7
 msgid ""
@@ -2156,7 +2513,7 @@ msgstr "Destinazione (A → Z)"
 msgid "Open source"
 msgstr "Open source"
 
-#: app/templates/partials/footer.html:9
+#: app/templates/partials/footer.html:11
 msgid "Confidentialité"
 msgstr "Privacy"
 
@@ -3415,11 +3772,11 @@ msgstr "Scegli un file."
 
 #: app/transfer/routes.py:94
 msgid ""
-"Sauvegarde complète de votre Carnet de voyages. Pour la restaurer, "
+"Sauvegarde complète de votre compte Voyage Voyage. Pour la restaurer, "
 "importez ce fichier .zip depuis la page Importer / exporter."
 msgstr ""
-"Backup completo del tuo Diario di viaggio. Per ripristinarlo, importa "
-"questo file .zip dalla pagina Importa / esporta."
+"Backup completo del tuo account Voyage Voyage. Per ripristinarlo, importa"
+" questo file .zip dalla pagina Importa / esporta."
 
 #: app/transfer/routes.py:114
 msgid "Archive .zip invalide."

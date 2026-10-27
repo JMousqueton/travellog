@@ -99,7 +99,7 @@ def test_private_pages_are_noindex(auth_client, client, user, db):
 
 
 def test_public_pages_are_indexable(client):
-    for path in ("/", "/legal", "/privacy", "/auth/register"):
+    for path in ("/", "/about", "/legal", "/privacy", "/auth/register"):
         assert "X-Robots-Tag" not in client.get(path).headers, path
     assert client.get("/auth/login").headers.get("X-Robots-Tag") == "noindex"
 
@@ -114,6 +114,7 @@ def test_register_noindex_when_closed(client, db):
 def test_robots_txt(client, legal):
     text = client.get("/robots.txt").text
     assert "Disallow: /\n" in text and "Allow: /$" in text and "Allow: /privacy" in text
+    assert "Allow: /about" in text
     assert "Sitemap: https://travellog.example/sitemap.xml" in text
 
 
@@ -122,6 +123,7 @@ def test_sitemap(client, legal):
     assert response.mimetype == "application/xml"
     xml = response.text
     assert "<loc>https://travellog.example/</loc>" in xml and "<loc>https://travellog.example/legal</loc>" in xml
+    assert "<loc>https://travellog.example/about</loc>" in xml
     assert 'hreflang="it" href="https://travellog.example/privacy?lang=it"' in xml
     assert "/trips" not in xml and "/s/" not in xml
 
@@ -130,6 +132,6 @@ def test_webmanifest_and_images(client):
     manifest = client.get("/site.webmanifest")
     assert manifest.mimetype == "application/manifest+json"
     data = manifest.get_json()
-    assert data["name"] == "Carnet de voyages" and {i["sizes"] for i in data["icons"]} >= {"192x192", "512x512"}
+    assert data["name"] == "Voyage Voyage" and {i["sizes"] for i in data["icons"]} >= {"192x192", "512x512"}
     for name in ("og-image.png", "icon-192.png", "icon-512.png", "apple-touch-icon.png"):
         assert client.get(f"/static/img/{name}").status_code == 200

@@ -1,6 +1,6 @@
 {{ _("Bonjour,") }}
 
-{{ _("Pour terminer votre inscription au Carnet de voyages, ouvrez ce lien et choisissez votre mot de passe :") }}
+{{ _("Pour terminer votre inscription à Voyage Voyage, ouvrez ce lien et choisissez votre mot de passe :") }}
 
 {{ url }}
 

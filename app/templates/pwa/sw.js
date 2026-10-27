@@ -1,4 +1,4 @@
-/* Service worker du Carnet de voyages (généré par app/pwa.py). Version {{ version }}.
+/* Service worker de Voyage Voyage (généré par app/pwa.py). Version {{ version }}.
  *
  * - fichiers statiques et bibliothèques des CDN : cache d'abord (leurs URL changent avec leur contenu) ;
  * - pages et API : réseau d'abord, dernière réponse en cache si le réseau manque, sinon page hors ligne ;
