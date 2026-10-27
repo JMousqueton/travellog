@@ -2,6 +2,7 @@
 import smtplib
 import ssl
 from email.message import EmailMessage
+from email.utils import formatdate, make_msgid, parseaddr
 
 from flask import current_app
 
@@ -19,6 +20,10 @@ def send_email(to, subject, body):
     message["Subject"] = subject
     message["From"] = cfg["MAIL_FROM"] or cfg["MAIL_USERNAME"] or "no-reply@localhost"
     message["To"] = to
+    # Sans Date ni Message-ID (que le serveur de soumission n'ajoute pas toujours), les filtres
+    # anti-spam (rspamd…) rejettent le message.
+    message["Date"] = formatdate(localtime=False, usegmt=True)
+    message["Message-ID"] = make_msgid(domain=parseaddr(message["From"])[1].rpartition("@")[2] or "localhost")
     message.set_content(body)
 
     if not cfg["MAIL_SERVER"]:

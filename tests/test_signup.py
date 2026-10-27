@@ -103,3 +103,13 @@ def test_magic_link_requests_are_rate_limited(app, client):
         assert client.post("/auth/register", data={"email": "spam@example.com"}).status_code == 200
     assert client.post("/auth/register", data={"email": "spam@example.com"}).status_code == 429
     limiter.reset()
+
+
+def test_emails_carry_date_and_message_id(app):
+    from app.mail import send_email
+
+    with app.app_context():
+        app.config["MAIL_FROM"] = "Voyage Voyage <no-reply@voyage-voyage.app>"
+        send_email("someone@example.com", "Sujet", "Corps")
+        message = app.extensions["mail_outbox"][-1]
+    assert message["Date"] and message["Message-ID"].endswith("@voyage-voyage.app>")
