@@ -3,12 +3,10 @@ import secrets
 
 from flask import g, request
 
-# Origines externes autorisées : CDN des bibliothèques, Google Fonts et mesure d'audience (Matomo).
+# Seule origine externe de scripts : la mesure d'audience (Matomo). Bibliothèques et polices sont dans
+# app/static/vendor.
 ANALYTICS_ORIGIN = "https://stats.mousqueton.io"
-SCRIPT_SOURCES = ("https://cdn.jsdelivr.net", ANALYTICS_ORIGIN)
-STYLE_SOURCES = ("https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com",
-                 "https://fonts.googleapis.com")
-FONT_SOURCES = ("https://cdnjs.cloudflare.com", "https://fonts.gstatic.com")
+SCRIPT_SOURCES = (ANALYTICS_ORIGIN,)
 
 
 def csp_nonce():
@@ -24,8 +22,8 @@ def content_security_policy(nonce):
     directives = {
         "default-src": ["'self'"],
         "script-src": ["'self'", f"'nonce-{nonce}'", *SCRIPT_SOURCES],
-        "style-src": ["'self'", "'unsafe-inline'", *STYLE_SOURCES],
-        "font-src": ["'self'", *FONT_SOURCES],
+        "style-src": ["'self'", "'unsafe-inline'"],
+        "font-src": ["'self'"],
         "img-src": ["'self'", "data:", "https:"],
         "connect-src": ["'self'", ANALYTICS_ORIGIN],
         "object-src": ["'none'"],
@@ -50,7 +48,7 @@ def init_app(app):
         headers.setdefault("Content-Security-Policy", content_security_policy(csp_nonce()))
         headers.setdefault("X-Content-Type-Options", "nosniff")
         headers.setdefault("X-Frame-Options", "DENY")
-        # N'envoie que l'origine aux sites tiers (tuiles, CDN) : le jeton des liens de partage ne fuit pas.
+        # N'envoie que l'origine aux sites tiers (tuiles) : le jeton des liens de partage ne fuit pas.
         headers.setdefault("Referrer-Policy", "strict-origin-when-cross-origin")
         headers.setdefault("Permissions-Policy", "camera=(), microphone=(), geolocation=(), payment=()")
         headers.setdefault("Cross-Origin-Opener-Policy", "same-origin")

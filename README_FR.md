@@ -148,9 +148,10 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
 ## Prérequis
 
 - Python 3.11 ou plus récent
-- Un accès réseau aux CDN (Bootstrap, Font Awesome, Chart.js, Google Fonts), aux tuiles de carte, à Nominatim
-  et, pour la recherche par numéro de vol, à adsbdb. Leaflet, MarkerCluster, d3-geo et d3-array sont fournis dans
-  `app/static/vendor/`.
+- Un accès réseau aux tuiles de carte, à Nominatim
+  et, pour la recherche par numéro de vol, à adsbdb. Bootstrap, Font Awesome, Chart.js, la police Inter, Leaflet,
+  MarkerCluster, d3-geo et d3-array sont fournis dans `app/static/vendor/` : aucune page n'appelle de CDN, l'adresse IP
+  des visiteurs ne part donc que vers le serveur de tuiles.
 
 ## Installation
 

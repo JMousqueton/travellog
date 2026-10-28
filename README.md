@@ -137,9 +137,10 @@ available in French, English, Spanish, German and Italian.
 ## Requirements
 
 - Python 3.11 or later
-- Network access to the CDNs (Bootstrap, Font Awesome, Chart.js, Google Fonts), the map tiles, Nominatim
+- Network access to the map tiles, Nominatim
   and, for flight number lookup, adsbdb.
-  Leaflet, MarkerCluster, d3-geo and d3-array are bundled in `app/static/vendor/`.
+  Bootstrap, Font Awesome, Chart.js, the Inter font, Leaflet, MarkerCluster, d3-geo and d3-array are bundled in
+  `app/static/vendor/`: no page calls a CDN, so visitors' IP addresses only reach the map tile server.
 
 ## Installation
 

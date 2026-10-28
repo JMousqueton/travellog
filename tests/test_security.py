@@ -43,10 +43,17 @@ def test_matomo_masks_secret_tokens(client):
     assert "(s|signup|reset)" in client.get("/").text
 
 
-def test_cdn_assets_have_integrity(auth_client):
-    html = auth_client.get("/").text
-    for tag in re.findall(r"<(?:script|link)[^>]+(?:src|href)=\"https://(?:cdn\.jsdelivr|unpkg|cdnjs)[^>]+>", html):
-        assert 'integrity="sha384-' in tag, tag
+def test_no_cdn_or_google_fonts(auth_client, app):
+    """Bibliothèques et polices servies par le site : l'adresse IP des visiteurs ne part pas vers un CDN."""
+    for path in ("/", "/stats", "/about"):
+        response = auth_client.get(path)
+        external = re.findall(r"<(?:script|link)[^>]+(?:src|href)=\"https://[^>]+>", response.text)
+        assert all('rel="canonical"' in tag or 'rel="alternate"' in tag for tag in external), external
+        csp = response.headers["Content-Security-Policy"]
+        assert "jsdelivr" not in csp and "cdnjs" not in csp and "fonts.g" not in csp
+    for asset in ("vendor/bootstrap-5.3.3/bootstrap.min.css", "vendor/fontawesome-6.5.2/webfonts/fa-solid-900.woff2",
+                  "vendor/chart.js-4.4.4/chart.umd.min.js", "vendor/inter-4/inter-latin.woff2"):
+        assert auth_client.get(f"/static/{asset}").status_code == 200, asset
 
 
 def test_leaflet_is_self_hosted(auth_client):

@@ -1,16 +1,14 @@
 /* Service worker de Voyage Voyage (généré par app/pwa.py). Version {{ version }}.
  *
- * - fichiers statiques et bibliothèques des CDN : cache d'abord (leurs URL changent avec leur contenu) ;
+ * - fichiers statiques, bibliothèques comprises : cache d'abord (leurs URL changent avec leur contenu) ;
  * - pages et API : réseau d'abord, dernière réponse en cache si le réseau manque, sinon page hors ligne ;
  * - le cache des pages est vidé à la déconnexion (main.js), il ne survit pas à la session.
  */
 const VERSION = "{{ version }}";
 const STATIC_CACHE = `static-${VERSION}`;
 const PAGES_CACHE = "pages";
-const CDN_CACHE = "cdn";
 const PRECACHE = {{ precache|tojson }};
 const OFFLINE_URL = {{ offline_url|tojson }};
-const CDN_ORIGINS = {{ cdn_origins|tojson }};
 const NETWORK_ONLY = {{ network_only|tojson }};
 
 self.addEventListener("install", (event) => {
@@ -21,7 +19,8 @@ self.addEventListener("install", (event) => {
 self.addEventListener("activate", (event) => {
   event.waitUntil((async () => {
     const names = await caches.keys();
-    await Promise.all(names.filter((name) => name.startsWith("static-") && name !== STATIC_CACHE)
+    // Ancien cache des CDN (bibliothèques désormais servies par le site) supprimé aussi.
+    await Promise.all(names.filter((name) => (name.startsWith("static-") && name !== STATIC_CACHE) || name === "cdn")
       .map((name) => caches.delete(name)));
     await self.clients.claim();
   })());
@@ -66,8 +65,6 @@ self.addEventListener("fetch", (event) => {
     } else if (request.mode === "navigate" || url.pathname.startsWith("/api/")) {
       event.respondWith(networkFirst(request));
     }
-  } else if (CDN_ORIGINS.includes(url.origin)) {
-    event.respondWith(cacheFirst(request, CDN_CACHE));
   }
   // Tuiles de carte et autres origines : réseau seulement (réponses opaques, trop lourdes à garder).
 });

@@ -8,9 +8,6 @@ import os
 
 from flask import current_app, render_template, url_for
 
-# Bibliothèques et polices chargées depuis ces CDN : gardées en cache pour l'affichage hors ligne.
-CDN_ORIGINS = ("https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com", "https://fonts.googleapis.com",
-               "https://fonts.gstatic.com")
 # Jamais mis en cache : authentification, fichiers téléchargés, import, agenda, photos, support.
 NETWORK_ONLY = ("/auth/", "/export", "/import", "/calendar/", "/photos/", "/support", "/admin/", "/sw.js")
 
@@ -24,7 +21,12 @@ def static_urls():
             if name.startswith(".") or name in ("LICENSE",) or name.endswith(".map"):
                 continue
             relative = os.path.relpath(os.path.join(folder, name), root).replace(os.sep, "/")
-            urls.append(url_for("static", filename=relative))
+            if relative.startswith("vendor/") and not name.endswith((".js", ".css")):
+                # Polices et images des bibliothèques : demandées par leur CSS sans ?v= (le dossier porte
+                # déjà la version de la bibliothèque).
+                urls.append(f"{current_app.static_url_path}/{relative}")
+            else:
+                urls.append(url_for("static", filename=relative))
     return sorted(urls)
 
 
@@ -34,12 +36,11 @@ def init_app(app):
         precache = static_urls()
         version = hashlib.sha256("\n".join(precache).encode()).hexdigest()[:12]
         body = render_template("pwa/sw.js", version=version, precache=precache, offline_url=url_for("offline"),
-                               cdn_origins=CDN_ORIGINS, network_only=NETWORK_ONLY)
+                               network_only=NETWORK_ONLY)
         response = current_app.response_class(body, mimetype="application/javascript")
         response.headers["Cache-Control"] = "no-cache"
-        # La CSP d'un service worker régit ses propres fetch() : CDN en plus de l'origine.
-        response.headers["Content-Security-Policy"] = (
-            "default-src 'none'; connect-src 'self' " + " ".join(CDN_ORIGINS))
+        # La CSP d'un service worker régit ses propres fetch() : l'origine seulement.
+        response.headers["Content-Security-Policy"] = "default-src 'none'; connect-src 'self'"
         return response
 
     @app.route("/offline")
