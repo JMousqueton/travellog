@@ -135,3 +135,13 @@ def test_webmanifest_and_images(client):
     assert data["name"] == "Voyage Voyage" and {i["sizes"] for i in data["icons"]} >= {"192x192", "512x512"}
     for name in ("og-image.png", "icon-192.png", "icon-512.png", "apple-touch-icon.png"):
         assert client.get(f"/static/img/{name}").status_code == 200
+
+
+def test_privacy_and_about_mention_new_features(client, app):
+    app.config["IMPORT_ADDRESS"] = "addto@example.org"
+    privacy = client.get("/privacy").text
+    for text in ("Profil public", "adresse d'import", "aucun CDN", "90 jours", "cartes d'embarquement Wallet"):
+        assert text in privacy, text
+    about = client.get("/about").text
+    for text in ("Apple Wallet", "addto@example.org", "/u/votre-nom", "aucun CDN"):
+        assert text in about, text

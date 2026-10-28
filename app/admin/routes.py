@@ -5,6 +5,7 @@ from flask_babel import gettext as _
 from flask_login import current_user
 
 from ..extensions import db
+from ..mail_import.processing import forget_user
 from ..models import Setting, Ticket, Trip, User, registration_open, utcnow
 from ..support.forms import ReplyForm
 from ..support.notify import notify_user
@@ -33,6 +34,7 @@ def delete_user(user_id):
         flash(_("Vous ne pouvez pas supprimer votre propre compte."), "danger")
         return redirect(url_for("admin.users"))
     email = user.email
+    forget_user(user)
     db.session.delete(user)
     db.session.commit()
     flash(_("Le compte %(email)s a été supprimé.", email=email), "success")

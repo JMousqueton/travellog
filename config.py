@@ -73,6 +73,9 @@ class Config:
     MAX_IMPORT_ADDRESSES = int(os.environ.get("MAX_IMPORT_ADDRESSES", "10"))
     # Compte « Import Error » qui ouvre un ticket pour chaque e-mail sans trajet reconnu.
     MAIL_IMPORT_ERROR_EMAIL = os.environ.get("MAIL_IMPORT_ERROR_EMAIL", "import-error@voyage-voyage.invalid")
+    # Journal des e-mails importés ou ignorés (expéditeur, objet) : purgé après ce nombre de jours (tâche
+    # maintenance). Les échecs restent tant que leur e-mail est dans la boîte, sinon il rouvrirait un ticket.
+    MAIL_IMPORT_LOG_DAYS = int(os.environ.get("MAIL_IMPORT_LOG_DAYS", "90"))
 
     # Journalisation et suivi des erreurs (Sentry, facultatif : pip install "sentry-sdk[flask]").
     LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO").upper()

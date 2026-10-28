@@ -8,6 +8,7 @@ from flask_login import current_user, login_required, login_user, logout_user
 from ..extensions import db, limiter
 from ..i18n import LANGUAGES, current_locale
 from ..mail import mail_enabled, send_email
+from ..mail_import.processing import forget_user
 from ..models import (ImportAddress, User, import_address_token, is_import_address, read_import_address_token,
                       read_signup_token, registration_open, signup_token)
 from ..utils import is_safe_redirect
@@ -281,6 +282,7 @@ def delete_account():
             return redirect(url_for("auth.profile"))
         else:
             logout_user()
+            forget_user(user)
             db.session.delete(user)
             db.session.commit()
             flash(_("Votre compte et tous vos voyages ont été supprimés."), "success")

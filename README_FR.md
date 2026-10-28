@@ -104,6 +104,8 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   `mail_imports` : il n'est traité (et son ticket ouvert) qu'une fois. Les e-mails d'expéditeurs inconnus ou
   non authentifiés sont ignorés et laissés. `--dry-run` montre ce qui serait importé sans rien écrire ni
   supprimer.
+  Supprimer un compte supprime aussi ses entrées du journal d'import et les tickets d'erreur qui contiennent ses
+  e-mails bruts.
   Chaque utilisateur peut aussi autoriser d'autres adresses d'expédition (Préférences → Import par e-mail) :
   une adresse n'est ajoutée qu'après confirmation par un lien magique qui lui est envoyé, elle ne permet
   jamais de se connecter, et ne peut être ni l'adresse d'un compte ni l'adresse d'import d'un autre
@@ -221,7 +223,7 @@ qui note chaque exécution (début, fin, résultat, trace en cas d'échec) dans 
 |---|---|---|
 | `mail-import` | toutes les 5 minutes | import par e-mail (sans objet tant que `IMAP_SERVER` est vide) |
 | `backup` | chaque nuit à 3 h 15 | sauvegarde complète (`flask backup create`) |
-| `maintenance` | chaque nuit à 4 h 30 | purge le cache de géocodage expiré, les liens de partage expirés et l'historique des tâches de plus de 14 jours |
+| `maintenance` | chaque nuit à 4 h 30 | purge le cache de géocodage expiré, les liens de partage expirés, les entrées importées ou ignorées du journal de l'import par e-mail de plus de `MAIL_IMPORT_LOG_DAYS` jours (90) et l'historique des tâches de plus de 14 jours |
 
 ```bash
 sudo deploy/systemd/install.sh     # installe et démarre les timers, retire les lignes cron qu'ils remplacent

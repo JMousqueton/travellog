@@ -32,7 +32,10 @@
       _("Import et export en CSV, GeoJSON et GPX, sans perte : notes et regroupements en voyages compris."),
       _("Aperçu avant chaque import : décochez les trajets à laisser de côté ; les doublons sont repérés."),
       _("Sauvegarde complète (.zip, photos comprises) à télécharger et à réimporter à tout moment."),
-    ]),
+      _("Cartes d'embarquement Apple Wallet (.pkpass) : le vol est lu dans le code-barres, ou le trajet en train, en bus ou en bateau dans les données de la carte."),
+    ] + ([
+      _("Import par e-mail : transférez vos confirmations de vol ou de train (et leurs cartes Wallet) à %(address)s, les trajets s'ajoutent à votre compte en quelques minutes.", address=config.IMPORT_ADDRESS),
+    ] if config.IMPORT_ADDRESS else [])),
     ('fa-map-location-dot', _("Carte et globe"), [
       _("Carte plein écran : trajets colorés par mode, arcs géodésiques pour l'avion, retours en pointillés, marqueurs regroupés."),
       _("Couches « Pays visités » et « Lieux visités » (cercles proportionnels au nombre de passages)."),
@@ -58,6 +61,7 @@
     ]),
     ('fa-share-nodes', _("Partager et anticiper"), [
       _("Liens de partage en lecture seule, avec date d'expiration : carte, statistiques, liste des voyages et bilan. Jamais vos notes, vos photos ni votre domicile."),
+      _("Profil public facultatif (/u/votre-nom) : vos pays, vos distances par mode et vos badges, sans aucun trajet ni date."),
       _("Voyages à venir : compte à rebours, carte « Prochain départ », masqués par défaut sur les liens de partage."),
       _("Export vers votre agenda (.ics) ou abonnement à une adresse secrète (Google Agenda, Apple Calendrier, Outlook)."),
     ]),
@@ -69,6 +73,7 @@
     ('fa-shield-halved', _("Vos données vous appartiennent"), [
       _("Gratuit, sans publicité, et open source sous licence MIT."),
       _("Vos trajets restent privés ; la mesure d'audience est auto-hébergée et vous pouvez la refuser."),
+      _("Bibliothèques et polices servies par le site lui-même : aucun CDN ni Google Fonts ne voit passer vos visites."),
       _("Export complet à tout moment, et suppression de votre compte depuis vos préférences."),
     ]),
   ] %}

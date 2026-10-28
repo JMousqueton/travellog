@@ -426,3 +426,32 @@ def test_ignored_senders_get_no_reply(app, db, user):
     app.config["MAIL_IMPORT_REQUIRE_DKIM"] = True
     mail_import.process(make_mail(text=AIR_FRANCE_TEXT, message_id="<unsigned@x>").as_bytes())
     assert app.extensions.get("mail_outbox", []) == []
+
+
+def test_account_deletion_forgets_import_log_and_error_tickets(app, db, user, client):
+    from .conftest import login
+
+    mail_import.process(make_mail(text="rien à lire", message_id="<a@x>").as_bytes())  # échec : ticket
+    mail_import.process(make_mail(html=json_ld(flight("CDG", "BCN", "2026-03-12T10:05:00+01:00")),
+                                  message_id="<b@x>").as_bytes())
+    assert db.session.execute(db.select(db.func.count(MailImport.id))).scalar() == 2
+    assert db.session.execute(db.select(db.func.count(Ticket.id))).scalar() == 1
+    login(client)
+    client.post("/auth/delete", data={"del-delete_password": "password123"})
+    assert db.session.execute(db.select(db.func.count(MailImport.id))).scalar() == 0
+    assert db.session.execute(db.select(db.func.count(Ticket.id))).scalar() == 0
+
+
+def test_maintenance_purges_old_import_log_but_keeps_failures(app, db, user):
+    from datetime import timedelta
+
+    from app.jobs import run_job
+    from app.models import utcnow
+
+    old = utcnow() - timedelta(days=app.config["MAIL_IMPORT_LOG_DAYS"] + 1)
+    db.session.add_all([MailImport(message_key=k, status=s, created_at=old)
+                        for k, s in (("1", "imported"), ("2", "ignored"), ("3", "failed"))]
+                       + [MailImport(message_key="4", status="imported")])
+    db.session.commit()
+    assert "2 e-mail(s) d'import" in run_job("maintenance").summary
+    assert sorted(db.session.execute(db.select(MailImport.message_key)).scalars()) == ["3", "4"]

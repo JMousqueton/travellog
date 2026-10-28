@@ -97,6 +97,7 @@ available in French, English, Spanish, German and Italian.
   the mailbox. Every email is recorded in `mail_imports`, so it is processed, and its ticket opened, only
   once. Emails from unknown or unauthenticated senders are ignored and left. `--dry-run` shows what would be
   imported without writing or deleting anything.
+  Deleting an account also deletes its email import log entries and the error tickets holding its raw emails.
   Each user can also allow other sender addresses (Preferences → Import by email): an address is only added
   once confirmed through a magic link sent to it, it can never be used to sign in, and it can be neither
   an account's address nor another user's import address; signing up with an import address is refused.
@@ -212,7 +213,7 @@ every run (start, end, result, traceback on failure) in the database:
 |---|---|---|
 | `mail-import` | every 5 minutes | import by email (skipped while `IMAP_SERVER` is empty) |
 | `backup` | every night at 03:15 | full backup (`flask backup create`) |
-| `maintenance` | every night at 04:30 | purges the expired geocoding cache, expired share links and task history older than 14 days |
+| `maintenance` | every night at 04:30 | purges the expired geocoding cache, expired share links, imported or ignored entries of the email import log older than `MAIL_IMPORT_LOG_DAYS` (90 days) and task history older than 14 days |
 
 ```bash
 sudo deploy/systemd/install.sh     # installs and starts the timers, removes the cron lines they replace

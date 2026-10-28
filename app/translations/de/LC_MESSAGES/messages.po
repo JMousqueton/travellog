@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-28 08:41+0000\n"
+"POT-Creation-Date: 2026-10-28 09:06+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -87,37 +87,37 @@ msgstr "Registrierungen erlauben"
 msgid "Enregistrer"
 msgstr "Speichern"
 
-#: app/admin/routes.py:33
+#: app/admin/routes.py:34
 msgid "Vous ne pouvez pas supprimer votre propre compte."
 msgstr "Du kannst dein eigenes Konto nicht löschen."
 
-#: app/admin/routes.py:38
+#: app/admin/routes.py:40
 #, python-format
 msgid "Le compte %(email)s a été supprimé."
 msgstr "Das Konto %(email)s wurde gelöscht."
 
-#: app/admin/routes.py:51
+#: app/admin/routes.py:53
 msgid "Paramètres enregistrés."
 msgstr "Einstellungen gespeichert."
 
-#: app/admin/routes.py:114
+#: app/admin/routes.py:116
 #, python-format
 msgid "Réponse envoyée à %(email)s."
 msgstr "Antwort an %(email)s gesendet."
 
-#: app/admin/routes.py:130
+#: app/admin/routes.py:132
 msgid "Ticket fermé."
 msgstr "Ticket geschlossen."
 
-#: app/admin/routes.py:130
+#: app/admin/routes.py:132
 msgid "Ticket rouvert."
 msgstr "Ticket wieder geöffnet."
 
-#: app/admin/routes.py:140
+#: app/admin/routes.py:142
 msgid "Vous recevrez un e-mail à chaque nouveau message de ticket."
 msgstr "Du erhältst bei jeder neuen Ticket-Nachricht eine E-Mail."
 
-#: app/admin/routes.py:141
+#: app/admin/routes.py:143
 msgid "Vous ne recevrez plus d'e-mail pour les tickets."
 msgstr "Du erhältst keine E-Mails mehr zu Tickets."
 
@@ -170,7 +170,7 @@ msgstr "Passwort ist erforderlich."
 msgid "Rester connecté"
 msgstr "Angemeldet bleiben"
 
-#: app/auth/forms.py:24 app/templates/about.html:97
+#: app/auth/forms.py:24 app/templates/about.html:102
 #: app/templates/auth/register.html:24 app/templates/landing.html:36
 msgid "Se connecter"
 msgstr "Anmelden"
@@ -204,7 +204,7 @@ msgstr "Konto erstellen"
 msgid "Un compte existe déjà avec cette adresse e-mail."
 msgstr "Mit dieser E-Mail-Adresse existiert bereits ein Konto."
 
-#: app/auth/forms.py:51 app/auth/routes.py:122
+#: app/auth/forms.py:51 app/auth/routes.py:123
 msgid ""
 "Cette adresse sert à l'import par e-mail d'un compte : elle ne peut pas "
 "servir à s'inscrire."
@@ -301,7 +301,7 @@ msgstr "Öffentliches Profil speichern"
 msgid "Ce nom est déjà pris."
 msgstr "Dieser Name ist bereits vergeben."
 
-#: app/auth/routes.py:53
+#: app/auth/routes.py:54
 msgid ""
 "Les inscriptions sont fermées. Contactez un administrateur pour obtenir "
 "un compte."
@@ -309,15 +309,15 @@ msgstr ""
 "Registrierungen sind geschlossen. Wende dich an einen Administrator, um "
 "ein Konto zu erhalten."
 
-#: app/auth/routes.py:75 app/auth/routes.py:134
+#: app/auth/routes.py:76 app/auth/routes.py:135
 msgid "Bienvenue ! Votre compte a été créé."
 msgstr "Willkommen! Dein Konto wurde erstellt."
 
-#: app/auth/routes.py:98
+#: app/auth/routes.py:99
 msgid "Votre inscription à Voyage Voyage"
 msgstr "Deine Registrierung bei Voyage Voyage"
 
-#: app/auth/routes.py:114
+#: app/auth/routes.py:115
 #, python-format
 msgid ""
 "Ce lien d'inscription est invalide ou a expiré (il est valable "
@@ -326,40 +326,40 @@ msgstr ""
 "Dieser Registrierungslink ist ungültig oder abgelaufen (er gilt "
 "%(minutes)s Minuten). Fordere einen neuen an."
 
-#: app/auth/routes.py:119
+#: app/auth/routes.py:120
 msgid "Ce lien a déjà servi : le compte existe. Connectez-vous."
 msgstr ""
 "Dieser Link wurde bereits verwendet: Das Konto existiert. Bitte melde "
 "dich an."
 
-#: app/auth/routes.py:151
+#: app/auth/routes.py:152
 msgid "Adresse e-mail ou mot de passe incorrect."
 msgstr "E-Mail-Adresse oder Passwort ist falsch."
 
-#: app/auth/routes.py:157
+#: app/auth/routes.py:158
 msgid "Bon retour parmi nous !"
 msgstr "Willkommen zurück!"
 
-#: app/auth/routes.py:167
+#: app/auth/routes.py:168
 msgid "Vous êtes déconnecté."
 msgstr "Du wurdest abgemeldet."
 
-#: app/auth/routes.py:197
+#: app/auth/routes.py:198
 msgid "Préférences enregistrées."
 msgstr "Einstellungen gespeichert."
 
-#: app/auth/routes.py:215
+#: app/auth/routes.py:216
 #, python-format
 msgid ""
 "Domicile enregistré : les jours d'absence sont calculés à partir de "
 "%(place)s."
 msgstr "Wohnort gespeichert: Die Tage unterwegs werden ab %(place)s berechnet."
 
-#: app/auth/routes.py:226
+#: app/auth/routes.py:227
 msgid "Domicile supprimé."
 msgstr "Wohnort entfernt."
 
-#: app/auth/routes.py:239
+#: app/auth/routes.py:240
 msgid ""
 "Profil public activé : toute personne qui connaît son adresse voit le "
 "résumé de vos voyages."
@@ -367,23 +367,23 @@ msgstr ""
 "Öffentliches Profil aktiviert: Wer die Adresse kennt, sieht die "
 "Zusammenfassung Ihrer Reisen."
 
-#: app/auth/routes.py:242
+#: app/auth/routes.py:243
 msgid "Profil public désactivé."
 msgstr "Öffentliches Profil deaktiviert."
 
-#: app/auth/routes.py:254
+#: app/auth/routes.py:255
 msgid "Mot de passe actuel incorrect."
 msgstr "Das aktuelle Passwort ist falsch."
 
-#: app/auth/routes.py:262
+#: app/auth/routes.py:263
 msgid "Mot de passe modifié. Vos autres sessions ont été déconnectées."
 msgstr "Passwort geändert. Deine anderen Sitzungen wurden abgemeldet."
 
-#: app/auth/routes.py:275
+#: app/auth/routes.py:276
 msgid "Mot de passe incorrect."
 msgstr "Falsches Passwort."
 
-#: app/auth/routes.py:279
+#: app/auth/routes.py:280
 msgid ""
 "Vous êtes le seul administrateur : désignez-en un autre avant de "
 "supprimer votre compte."
@@ -391,38 +391,38 @@ msgstr ""
 "Du bist der einzige Administrator: Ernenne zuerst einen weiteren, bevor "
 "du dein Konto löschst."
 
-#: app/auth/routes.py:286
+#: app/auth/routes.py:288
 msgid "Votre compte et tous vos voyages ont été supprimés."
 msgstr "Dein Konto und alle deine Reisen wurden gelöscht."
 
-#: app/auth/routes.py:297
+#: app/auth/routes.py:299
 msgid ""
 "Nouvelle adresse d'abonnement créée. L'ancienne adresse ne fonctionne "
 "plus."
 msgstr "Neue Abo-Adresse erstellt. Die alte Adresse funktioniert nicht mehr."
 
-#: app/auth/routes.py:306
+#: app/auth/routes.py:308
 msgid "Abonnement agenda désactivé."
 msgstr "Kalender-Abo deaktiviert."
 
-#: app/auth/routes.py:330
+#: app/auth/routes.py:332
 msgid "Cette adresse est déjà autorisée pour votre compte."
 msgstr "Diese Adresse ist für Ihr Konto bereits zugelassen."
 
-#: app/auth/routes.py:332
+#: app/auth/routes.py:334
 #, python-format
 msgid "Vous avez atteint le nombre maximal d'adresses (%(max)s)."
 msgstr "Sie haben die maximale Anzahl an Adressen erreicht (%(max)s)."
 
-#: app/auth/routes.py:336 app/auth/routes.py:368
+#: app/auth/routes.py:338 app/auth/routes.py:370
 msgid "Cette adresse ne peut pas être ajoutée."
 msgstr "Diese Adresse kann nicht hinzugefügt werden."
 
-#: app/auth/routes.py:344
+#: app/auth/routes.py:346
 msgid "Confirmez votre adresse d'import pour Voyage Voyage"
 msgstr "Bestätigen Sie Ihre Importadresse für Voyage Voyage"
 
-#: app/auth/routes.py:346
+#: app/auth/routes.py:348
 #, python-format
 msgid ""
 "Un lien de confirmation a été envoyé à %(email)s (valable %(minutes)s "
@@ -431,7 +431,7 @@ msgstr ""
 "Ein Bestätigungslink wurde an %(email)s gesendet (%(minutes)s Minuten "
 "gültig)."
 
-#: app/auth/routes.py:359
+#: app/auth/routes.py:361
 msgid ""
 "Ce lien de confirmation est invalide ou a expiré. Demandez-en un nouveau "
 "depuis vos préférences."
@@ -439,12 +439,12 @@ msgstr ""
 "Dieser Bestätigungslink ist ungültig oder abgelaufen. Fordern Sie in "
 "Ihren Einstellungen einen neuen an."
 
-#: app/auth/routes.py:364
+#: app/auth/routes.py:366
 #, python-format
 msgid "Adresse %(email)s déjà confirmée."
 msgstr "Adresse %(email)s bereits bestätigt."
 
-#: app/auth/routes.py:372
+#: app/auth/routes.py:374
 #, python-format
 msgid ""
 "Adresse %(email)s confirmée : ses confirmations de voyage peuvent être "
@@ -453,16 +453,16 @@ msgstr ""
 "Adresse %(email)s bestätigt: Ihre Reisebestätigungen können an die "
 "Importadresse weitergeleitet werden."
 
-#: app/auth/routes.py:386
+#: app/auth/routes.py:388
 #, python-format
 msgid "Adresse %(email)s retirée."
 msgstr "Adresse %(email)s entfernt."
 
-#: app/auth/routes.py:413
+#: app/auth/routes.py:415
 msgid "Réinitialisation de votre mot de passe"
 msgstr "Passwort zurücksetzen"
 
-#: app/auth/routes.py:416
+#: app/auth/routes.py:418
 msgid ""
 "Si un compte correspond à cette adresse, un e-mail contenant un lien de "
 "réinitialisation vient d'être envoyé."
@@ -470,7 +470,7 @@ msgstr ""
 "Falls ein Konto mit dieser Adresse existiert, wurde gerade eine E-Mail "
 "mit einem Link zum Zurücksetzen gesendet."
 
-#: app/auth/routes.py:426
+#: app/auth/routes.py:428
 msgid ""
 "Ce lien de réinitialisation est invalide ou a expiré. Demandez-en un "
 "nouveau."
@@ -478,7 +478,7 @@ msgstr ""
 "Dieser Link zum Zurücksetzen ist ungültig oder abgelaufen. Fordere einen "
 "neuen an."
 
-#: app/auth/routes.py:434
+#: app/auth/routes.py:436
 msgid "Mot de passe modifié. Vous pouvez vous connecter."
 msgstr "Passwort geändert. Du kannst dich jetzt anmelden."
 
@@ -826,21 +826,21 @@ msgstr ""
 msgid "Compagnie trouvée ; itinéraire inconnu pour ce numéro."
 msgstr "Fluggesellschaft gefunden; Strecke für diese Nummer unbekannt."
 
-#: app/jobs.py:65
+#: app/jobs.py:69
 msgid "Import par e-mail (boîte IMAP)"
 msgstr "Import per E-Mail (IMAP-Postfach)"
 
-#: app/jobs.py:66
+#: app/jobs.py:70
 msgid "Sauvegarde complète (base + photos)"
 msgstr "Vollständige Sicherung (Datenbank + Fotos)"
 
-#: app/jobs.py:68
+#: app/jobs.py:72
 msgid ""
-"Purge du cache de géocodage, des liens de partage expirés et de "
-"l'historique des tâches"
+"Purge du cache de géocodage, des liens de partage expirés, du journal des"
+" imports par e-mail et de l'historique des tâches"
 msgstr ""
-"Bereinigung des Geocoding-Caches, abgelaufener Freigabelinks und des "
-"Aufgabenverlaufs"
+"Bereinigung des Geocoding-Caches, abgelaufener Freigabelinks, des E-Mail-"
+"Importprotokolls und des Aufgabenverlaufs"
 
 #: app/mail_import/processing.py:112
 #, python-format
@@ -1282,11 +1282,31 @@ msgstr ""
 "Vollständige Sicherung (.zip, inklusive Fotos) zum Herunterladen und "
 "jederzeit wieder Importieren."
 
-#: app/templates/about.html:36
+#: app/templates/about.html:35
+msgid ""
+"Cartes d'embarquement Apple Wallet (.pkpass) : le vol est lu dans le "
+"code-barres, ou le trajet en train, en bus ou en bateau dans les données "
+"de la carte."
+msgstr ""
+"Apple-Wallet-Bordkarten (.pkpass): Der Flug wird aus dem Barcode gelesen,"
+" Zug-, Bus- oder Schiffsfahrten aus den Daten der Karte."
+
+#: app/templates/about.html:37
+#, python-format
+msgid ""
+"Import par e-mail : transférez vos confirmations de vol ou de train (et "
+"leurs cartes Wallet) à %(address)s, les trajets s'ajoutent à votre compte"
+" en quelques minutes."
+msgstr ""
+"Import per E-Mail: Leiten Sie Ihre Flug- oder Zugbestätigungen (und ihre "
+"Wallet-Karten) an %(address)s weiter, die Strecken erscheinen nach "
+"wenigen Minuten in Ihrem Konto."
+
+#: app/templates/about.html:39
 msgid "Carte et globe"
 msgstr "Karte und Globus"
 
-#: app/templates/about.html:37
+#: app/templates/about.html:40
 msgid ""
 "Carte plein écran : trajets colorés par mode, arcs géodésiques pour "
 "l'avion, retours en pointillés, marqueurs regroupés."
@@ -1294,7 +1314,7 @@ msgstr ""
 "Vollbildkarte: Strecken nach Verkehrsmittel eingefärbt, geodätische Bögen"
 " für Flüge, gestrichelte Rückwege, gruppierte Markierungen."
 
-#: app/templates/about.html:38
+#: app/templates/about.html:41
 msgid ""
 "Couches « Pays visités » et « Lieux visités » (cercles proportionnels au "
 "nombre de passages)."
@@ -1302,7 +1322,7 @@ msgstr ""
 "Ebenen „Besuchte Länder“ und „Besuchte Orte“ (Kreise proportional zur "
 "Zahl der Besuche)."
 
-#: app/templates/about.html:39
+#: app/templates/about.html:42
 msgid ""
 "Filtres par année, période, mode, type de trajet, étiquette et recherche,"
 " conservés dans l'adresse de la page."
@@ -1310,7 +1330,7 @@ msgstr ""
 "Filter nach Jahr, Zeitraum, Verkehrsmittel, Streckenart, Schlagwort und "
 "Suche, gespeichert in der Seitenadresse."
 
-#: app/templates/about.html:40
+#: app/templates/about.html:43
 msgid ""
 "Globe 3D qui tourne tout seul, à faire pivoter et zoomer, avec les vols "
 "en arc au-dessus de la surface."
@@ -1318,7 +1338,7 @@ msgstr ""
 "Ein 3D-Globus, der sich von selbst dreht, den du drehen und zoomen "
 "kannst, mit Flügen als Bögen über der Oberfläche."
 
-#: app/templates/about.html:41
+#: app/templates/about.html:44
 msgid ""
 "Rejeu : vos trajets se dessinent dans l'ordre chronologique, avec une "
 "frise pour sauter à n'importe quelle date."
@@ -1326,7 +1346,7 @@ msgstr ""
 "Wiedergabe: Deine Strecken werden chronologisch gezeichnet, mit einer "
 "Zeitleiste, um zu jedem Datum zu springen."
 
-#: app/templates/about.html:43 app/templates/base.html:123
+#: app/templates/about.html:46 app/templates/base.html:123
 #: app/templates/base.html:149 app/templates/base.html:151
 #: app/templates/trips/stats.html:4 app/templates/trips/stats.html:8
 #: app/templates/trips/transport_stats.html:55
@@ -1334,7 +1354,7 @@ msgstr ""
 msgid "Statistiques"
 msgstr "Statistiken"
 
-#: app/templates/about.html:44
+#: app/templates/about.html:47
 msgid ""
 "Chiffres clés et graphiques des trajets et des distances par année et par"
 " mode."
@@ -1342,7 +1362,7 @@ msgstr ""
 "Kennzahlen und Diagramme der Strecken und Entfernungen nach Jahr und "
 "Verkehrsmittel."
 
-#: app/templates/about.html:45
+#: app/templates/about.html:48
 msgid ""
 "Une page par année : comparaison avec l'année précédente, calendrier jour"
 " par jour, départs par mois, pays découverts, temps forts."
@@ -1350,7 +1370,7 @@ msgstr ""
 "Eine Seite pro Jahr: Vergleich mit dem Vorjahr, Kalender Tag für Tag, "
 "Abreisen pro Monat, neu entdeckte Länder, Höhepunkte."
 
-#: app/templates/about.html:46
+#: app/templates/about.html:49
 msgid ""
 "Pages avion et train : compagnies (avec leur logo), appareils, aéroports "
 "ou gares, lignes les plus fréquentes."
@@ -1358,13 +1378,13 @@ msgstr ""
 "Seiten für Flugzeug und Zug: Fluggesellschaften (mit Logo), "
 "Flugzeugtypen, Flughäfen oder Bahnhöfe, häufigste Verbindungen."
 
-#: app/templates/about.html:47
+#: app/templates/about.html:50
 msgid "CO₂ estimé pour chaque mode, d'après les facteurs de l'ADEME."
 msgstr ""
 "Geschätztes CO₂ für jedes Verkehrsmittel, auf Grundlage der Faktoren der "
 "ADEME."
 
-#: app/templates/about.html:48
+#: app/templates/about.html:51
 msgid ""
 "Jours loin de la maison, nuits à l'étranger et plus longue absence, à "
 "partir de votre ville de domicile."
@@ -1372,11 +1392,11 @@ msgstr ""
 "Tage fern von zu Hause, Nächte im Ausland und längste Abwesenheit, "
 "ausgehend von deinem Wohnort."
 
-#: app/templates/about.html:50
+#: app/templates/about.html:53
 msgid "Le monde, pays par pays"
 msgstr "Die Welt, Land für Land"
 
-#: app/templates/about.html:51
+#: app/templates/about.html:54
 msgid ""
 "Pays et territoires visités sur 237, et part des terres émergées que vous"
 " avez foulées."
@@ -1384,7 +1404,7 @@ msgstr ""
 "Besuchte Länder und Gebiete von 237 und der Anteil der Landfläche der "
 "Erde, den du betreten hast."
 
-#: app/templates/about.html:52
+#: app/templates/about.html:55
 msgid ""
 "Progression par continent, et régions visitées dans 14 grands pays (États"
 " américains, Länder, régions françaises, préfectures japonaises…)."
@@ -1393,7 +1413,7 @@ msgstr ""
 "Bundesstaaten, deutsche Bundesländer, französische Regionen, japanische "
 "Präfekturen…)."
 
-#: app/templates/about.html:53
+#: app/templates/about.html:56
 msgid ""
 "Badges pour l'ensemble de vos voyages et badges propres à chaque année, "
 "datés par le trajet qui les a débloqués."
@@ -1401,13 +1421,13 @@ msgstr ""
 "Abzeichen für alle deine Reisen und eigene Abzeichen für jedes Jahr, "
 "datiert nach der Strecke, die sie freigeschaltet hat."
 
-#: app/templates/about.html:55 app/templates/landing.html:66
+#: app/templates/about.html:58 app/templates/landing.html:66
 #: app/templates/trips/review.html:3 app/templates/trips/review.html:9
 #: app/templates/trips/stats.html:11
 msgid "Bilan de l'année"
 msgstr "Jahresrückblick"
 
-#: app/templates/about.html:56
+#: app/templates/about.html:59
 msgid ""
 "Votre année en chiffres : pays découverts, plus long trajet, destinations"
 " préférées, départs par mois, badges gagnés."
@@ -1415,17 +1435,17 @@ msgstr ""
 "Dein Jahr in Zahlen: neu entdeckte Länder, längste Strecke, "
 "Lieblingsziele, Abreisen pro Monat, gewonnene Abzeichen."
 
-#: app/templates/about.html:57
+#: app/templates/about.html:60
 msgid ""
 "Une image prête à partager sur les réseaux sociaux ou à garder en "
 "souvenir."
 msgstr "Ein Bild, bereit zum Teilen in sozialen Netzwerken oder als Erinnerung."
 
-#: app/templates/about.html:59
+#: app/templates/about.html:62
 msgid "Partager et anticiper"
 msgstr "Teilen und vorausplanen"
 
-#: app/templates/about.html:60
+#: app/templates/about.html:63
 msgid ""
 "Liens de partage en lecture seule, avec date d'expiration : carte, "
 "statistiques, liste des voyages et bilan. Jamais vos notes, vos photos ni"
@@ -1435,7 +1455,15 @@ msgstr ""
 "Reiseliste und Jahresrückblick. Niemals deine Notizen, Fotos oder dein "
 "Zuhause."
 
-#: app/templates/about.html:61
+#: app/templates/about.html:64
+msgid ""
+"Profil public facultatif (/u/votre-nom) : vos pays, vos distances par "
+"mode et vos badges, sans aucun trajet ni date."
+msgstr ""
+"Optionales öffentliches Profil (/u/ihr-name): Ihre Länder, Entfernungen "
+"nach Verkehrsmittel und Abzeichen, ohne Strecken oder Daten."
+
+#: app/templates/about.html:65
 msgid ""
 "Voyages à venir : compte à rebours, carte « Prochain départ », masqués "
 "par défaut sur les liens de partage."
@@ -1443,7 +1471,7 @@ msgstr ""
 "Bevorstehende Reisen: Countdown, Karte „Nächste Abreise“, auf "
 "Freigabelinks standardmäßig ausgeblendet."
 
-#: app/templates/about.html:62
+#: app/templates/about.html:66
 msgid ""
 "Export vers votre agenda (.ics) ou abonnement à une adresse secrète "
 "(Google Agenda, Apple Calendrier, Outlook)."
@@ -1451,11 +1479,11 @@ msgstr ""
 "Export in deinen Kalender (.ics) oder Abonnement über eine geheime "
 "Adresse (Google Kalender, Apple Kalender, Outlook)."
 
-#: app/templates/about.html:64
+#: app/templates/about.html:68
 msgid "Partout, dans votre langue"
 msgstr "Überall, in deiner Sprache"
 
-#: app/templates/about.html:65
+#: app/templates/about.html:69
 msgid ""
 "Interface en français, anglais, espagnol, allemand et italien ; dates, "
 "nombres et distances au format de chaque langue."
@@ -1463,25 +1491,25 @@ msgstr ""
 "Oberfläche auf Französisch, Englisch, Spanisch, Deutsch und Italienisch; "
 "Daten, Zahlen und Entfernungen im Format der jeweiligen Sprache."
 
-#: app/templates/about.html:66
+#: app/templates/about.html:70
 msgid "Thème clair ou sombre, sur ordinateur comme sur téléphone."
 msgstr "Helles oder dunkles Design, am Computer wie auf dem Handy."
 
-#: app/templates/about.html:67
+#: app/templates/about.html:71
 msgid ""
 "Application installable sur l'écran d'accueil, qui reste consultable hors"
 " ligne."
 msgstr "Als App auf dem Startbildschirm installierbar und auch offline nutzbar."
 
-#: app/templates/about.html:69 app/templates/landing.html:68
+#: app/templates/about.html:73 app/templates/landing.html:68
 msgid "Vos données vous appartiennent"
 msgstr "Deine Daten gehören dir"
 
-#: app/templates/about.html:70
+#: app/templates/about.html:74
 msgid "Gratuit, sans publicité, et open source sous licence MIT."
 msgstr "Kostenlos, werbefrei und Open Source unter MIT-Lizenz."
 
-#: app/templates/about.html:71
+#: app/templates/about.html:75
 msgid ""
 "Vos trajets restent privés ; la mesure d'audience est auto-hébergée et "
 "vous pouvez la refuser."
@@ -1489,7 +1517,15 @@ msgstr ""
 "Deine Strecken bleiben privat; die Reichweitenmessung wird selbst "
 "gehostet und du kannst sie ablehnen."
 
-#: app/templates/about.html:72
+#: app/templates/about.html:76
+msgid ""
+"Bibliothèques et polices servies par le site lui-même : aucun CDN ni "
+"Google Fonts ne voit passer vos visites."
+msgstr ""
+"Bibliotheken und Schriften werden von der Website selbst ausgeliefert: "
+"Kein CDN und kein Google Fonts sieht Ihre Besuche."
+
+#: app/templates/about.html:77
 msgid ""
 "Export complet à tout moment, et suppression de votre compte depuis vos "
 "préférences."
@@ -1497,20 +1533,20 @@ msgstr ""
 "Vollständiger Export jederzeit und Löschen deines Kontos in deinen "
 "Einstellungen."
 
-#: app/templates/about.html:87
+#: app/templates/about.html:92
 msgid "Le code source est disponible sur"
 msgstr "Der Quellcode ist verfügbar unter"
 
-#: app/templates/about.html:88 app/templates/legal/privacy.html:2
+#: app/templates/about.html:93 app/templates/legal/privacy.html:2
 #: app/templates/legal/privacy.html:6
 msgid "Politique de confidentialité"
 msgstr "Datenschutzerklärung"
 
-#: app/templates/about.html:94 app/templates/landing.html:33
+#: app/templates/about.html:99 app/templates/landing.html:33
 msgid "Commencer gratuitement"
 msgstr "Kostenlos starten"
 
-#: app/templates/about.html:95 app/templates/landing.html:34
+#: app/templates/about.html:100 app/templates/landing.html:34
 msgid "J'ai déjà un compte"
 msgstr "Ich habe bereits ein Konto"
 
@@ -2430,7 +2466,7 @@ msgstr "Hosting"
 msgid "Téléphone : %(phone)s"
 msgstr "Telefon: %(phone)s"
 
-#: app/templates/legal/notice.html:17 app/templates/legal/privacy.html:55
+#: app/templates/legal/notice.html:17 app/templates/legal/privacy.html:69
 #, python-format
 msgid "Le site et ses données sont hébergés à %(location)s."
 msgstr "Die Website und ihre Daten werden in %(location)s gehostet."
@@ -2501,7 +2537,7 @@ msgstr ""
 "Verfügbarkeit des Dienstes, kann sie aber nicht garantieren; lade "
 "regelmäßig deine Sicherung herunter."
 
-#: app/templates/legal/notice.html:44 app/templates/legal/privacy.html:105
+#: app/templates/legal/notice.html:44 app/templates/legal/privacy.html:120
 #, python-format
 msgid "Dernière mise à jour : %(date)s"
 msgstr "Zuletzt aktualisiert: %(date)s"
@@ -2572,7 +2608,8 @@ msgstr ""
 "Zurücksetzungslinks senden, deine Tage unterwegs berechnen"
 
 #: app/templates/legal/privacy.html:23 app/templates/legal/privacy.html:26
-#: app/templates/legal/privacy.html:29
+#: app/templates/legal/privacy.html:29 app/templates/legal/privacy.html:32
+#: app/templates/legal/privacy.html:36
 msgid "Exécution du service que vous demandez"
 msgstr "Erbringung des von dir angeforderten Dienstes"
 
@@ -2605,18 +2642,49 @@ msgstr ""
 "Kalender eintragen"
 
 #: app/templates/legal/privacy.html:30
+msgid "Nom du profil public, si vous en choisissez un"
+msgstr "Name des öffentlichen Profils, falls Sie einen wählen"
+
+#: app/templates/legal/privacy.html:31
+msgid "Publier le résumé de vos voyages passés à l'adresse de votre choix"
+msgstr ""
+"Die Zusammenfassung Ihrer vergangenen Reisen unter der Adresse Ihrer Wahl"
+" veröffentlichen"
+
+#: app/templates/legal/privacy.html:34
+msgid ""
+"E-mails de confirmation que vous transférez à l'adresse d'import (avec "
+"leurs pièces jointes, dont les cartes d'embarquement Wallet), adresses "
+"d'import supplémentaires que vous confirmez, journal des e-mails reçus "
+"(expéditeur, objet, résultat)"
+msgstr ""
+"Bestätigungs-E-Mails, die Sie an die Importadresse weiterleiten (mit "
+"Anhängen, darunter Wallet-Bordkarten), zusätzliche Importadressen, die "
+"Sie bestätigen, Protokoll der empfangenen E-Mails (Absender, Betreff, "
+"Ergebnis)"
+
+#: app/templates/legal/privacy.html:35
+msgid ""
+"Ajouter les trajets de vos réservations à votre compte, ne traiter chaque"
+" e-mail qu'une fois, et transmettre à l'équipe ceux qui n'ont pas pu être"
+" lus"
+msgstr ""
+"Die Strecken Ihrer Buchungen Ihrem Konto hinzufügen, jede E-Mail nur "
+"einmal verarbeiten und nicht lesbare an das Team weiterleiten"
+
+#: app/templates/legal/privacy.html:38
 msgid "Journaux du serveur web : adresse IP, date, page demandée, navigateur"
 msgstr "Webserver-Protokolle: IP-Adresse, Datum, aufgerufene Seite, Browser"
 
-#: app/templates/legal/privacy.html:31
+#: app/templates/legal/privacy.html:39
 msgid "Sécurité du service, détection des abus et des pannes"
 msgstr "Sicherheit des Dienstes, Erkennung von Missbrauch und Störungen"
 
-#: app/templates/legal/privacy.html:32
+#: app/templates/legal/privacy.html:40
 msgid "Intérêt légitime (sécurité)"
 msgstr "Berechtigtes Interesse (Sicherheit)"
 
-#: app/templates/legal/privacy.html:33
+#: app/templates/legal/privacy.html:41
 msgid ""
 "Mesure d'audience (Matomo) : pages vues, page d'origine, navigateur, "
 "système, taille d'écran, adresse IP tronquée, pays approximatif"
@@ -2624,7 +2692,7 @@ msgstr ""
 "Reichweitenmessung (Matomo): aufgerufene Seiten, Herkunftsseite, Browser,"
 " Betriebssystem, Bildschirmgröße, gekürzte IP-Adresse, ungefähres Land"
 
-#: app/templates/legal/privacy.html:34
+#: app/templates/legal/privacy.html:42
 msgid ""
 "Compter les visites et savoir quelles pages sont utiles, pour améliorer "
 "le site"
@@ -2632,11 +2700,11 @@ msgstr ""
 "Besuche zählen und herausfinden, welche Seiten nützlich sind, um die "
 "Website zu verbessern"
 
-#: app/templates/legal/privacy.html:35
+#: app/templates/legal/privacy.html:43
 msgid "Intérêt légitime (statistiques anonymes, dispensées de consentement)"
 msgstr "Berechtigtes Interesse (anonyme Statistiken, von der Einwilligung befreit)"
 
-#: app/templates/legal/privacy.html:39
+#: app/templates/legal/privacy.html:47
 msgid ""
 "Les photos sont ré-enregistrées à l'envoi : leurs métadonnées (dont la "
 "position GPS et le modèle d'appareil) sont supprimées. Notes, photos, "
@@ -2649,11 +2717,38 @@ msgstr ""
 "Fotos, Wohnort und E-Mail-Adresse erscheinen nie in Freigabelinks; "
 "geplante Reisen nur, wenn du das für den Link gewählt hast."
 
-#: app/templates/legal/privacy.html:43
+#: app/templates/legal/privacy.html:48
+msgid ""
+"Le profil public ne montre que des totaux (voyages, distances par mode, "
+"pays, continents, badges) : ni trajets, ni dates, ni notes, ni photos, ni"
+" domicile, ni voyages à venir, ni adresse e-mail."
+msgstr ""
+"Das öffentliche Profil zeigt nur Summen (Reisen, Entfernungen nach "
+"Verkehrsmittel, Länder, Kontinente, Abzeichen): keine Strecken, Daten, "
+"Notizen, Fotos, keinen Wohnort, keine kommenden Reisen und keine E-Mail-"
+"Adresse."
+
+#: app/templates/legal/privacy.html:50
+msgid ""
+"Import par e-mail : un e-mail n'est accepté que s'il vient de l'adresse "
+"de votre compte ou d'une adresse d'import confirmée, avec une signature "
+"DKIM valide. Une fois ses trajets ajoutés, il est supprimé de la boîte de"
+" réception. S'il n'a pas pu être lu, il reste dans la boîte et son "
+"contenu complet est transmis à l'équipe dans un ticket de support, pour "
+"un import manuel."
+msgstr ""
+"Import per E-Mail: Eine E-Mail wird nur akzeptiert, wenn sie von der "
+"Adresse Ihres Kontos oder einer bestätigten Importadresse kommt und eine "
+"gültige DKIM-Signatur trägt. Sobald ihre Strecken hinzugefügt sind, wird "
+"sie aus dem Postfach gelöscht. Konnte sie nicht gelesen werden, bleibt "
+"sie im Postfach und ihr vollständiger Inhalt wird dem Team in einem "
+"Support-Ticket für einen manuellen Import übermittelt."
+
+#: app/templates/legal/privacy.html:55
 msgid "Qui a accès à vos données"
 msgstr "Wer Zugriff auf deine Daten hat"
 
-#: app/templates/legal/privacy.html:44
+#: app/templates/legal/privacy.html:56
 msgid ""
 "Seul l'éditeur, en tant qu'administrateur technique du serveur, peut y "
 "accéder. Elles ne sont ni vendues, ni louées, ni cédées. Certains "
@@ -2663,7 +2758,7 @@ msgstr ""
 " darauf. Sie werden weder verkauft noch vermietet noch weitergegeben. "
 "Einige Drittdienste sind jedoch am Betrieb der Website beteiligt:"
 
-#: app/templates/legal/privacy.html:46
+#: app/templates/legal/privacy.html:58
 msgid ""
 "Recherche de lieux : le texte que vous tapez est transmis par notre "
 "serveur au service Nominatim de la fondation OpenStreetMap. Votre adresse"
@@ -2673,7 +2768,7 @@ msgstr ""
 "Nominatim der OpenStreetMap Foundation übermittelt. Deine IP-Adresse wird"
 " nicht weitergegeben."
 
-#: app/templates/legal/privacy.html:47
+#: app/templates/legal/privacy.html:59
 msgid ""
 "Numéro de vol : quand vous saisissez un numéro de vol, notre serveur "
 "demande son itinéraire habituel au service adsbdb (adsbdb.com) pour "
@@ -2685,7 +2780,7 @@ msgstr ""
 "und Orte vorauszufüllen. Übermittelt wird nur die Flugnummer, ohne deine "
 "IP-Adresse und ohne dein Konto."
 
-#: app/templates/legal/privacy.html:48
+#: app/templates/legal/privacy.html:60
 #, python-format
 msgid ""
 "Fonds de carte : votre navigateur télécharge les tuiles de la carte "
@@ -2694,7 +2789,7 @@ msgstr ""
 "Kartengrundlage: Dein Browser lädt die Kartenkacheln von %(host)s, das "
 "dadurch deine IP-Adresse erhält."
 
-#: app/templates/legal/privacy.html:49
+#: app/templates/legal/privacy.html:61
 msgid ""
 "Mesure d'audience : votre navigateur envoie les pages consultées à "
 "l'outil Matomo de l'éditeur (stats.mousqueton.io), qui reçoit donc votre "
@@ -2710,7 +2805,7 @@ msgstr ""
 "maskiert. Diese Statistiken werden weder mit deinem Konto verknüpft noch "
 "an Dritte weitergegeben."
 
-#: app/templates/legal/privacy.html:50
+#: app/templates/legal/privacy.html:62
 msgid ""
 "Logos des compagnies et opérateurs : sur les pages de statistiques des "
 "vols et des trains, votre navigateur télécharge ces logos depuis Logo.dev"
@@ -2722,7 +2817,7 @@ msgstr ""
 "(img.logo.dev), das dadurch Ihre IP-Adresse und die Namen der angezeigten"
 " Unternehmen erhält."
 
-#: app/templates/legal/privacy.html:51
+#: app/templates/legal/privacy.html:63
 msgid ""
 "Distances routières : les coordonnées de départ et d'arrivée des trajets "
 "en voiture ou en bus sont envoyées par notre serveur à un service de "
@@ -2731,7 +2826,7 @@ msgstr ""
 "Straßenentfernungen: Start- und Zielkoordinaten von Auto- und Busstrecken"
 " werden von unserem Server an einen Routenplaner (OSRM) gesendet."
 
-#: app/templates/legal/privacy.html:52
+#: app/templates/legal/privacy.html:64
 msgid ""
 "Agenda : si vous activez l'abonnement, votre service d'agenda récupère "
 "vos dates et lieux de voyage (sans les notes) à l'adresse secrète que "
@@ -2741,7 +2836,7 @@ msgstr ""
 "Reisedaten und -orte (ohne Notizen) über die geheime Adresse ab, die du "
 "ihm gibst."
 
-#: app/templates/legal/privacy.html:53
+#: app/templates/legal/privacy.html:65
 msgid ""
 "Liens de partage : toute personne qui possède un de vos liens voit les "
 "voyages qu'il montre. Vous pouvez révoquer un lien à tout moment."
@@ -2749,15 +2844,35 @@ msgstr ""
 "Freigabelinks: Wer einen deiner Links hat, sieht die Reisen, die er "
 "zeigt. Du kannst einen Link jederzeit widerrufen."
 
-#: app/templates/legal/privacy.html:55
+#: app/templates/legal/privacy.html:66
+msgid ""
+"Profil public : si vous choisissez un nom de profil, toute personne qui "
+"connaît son adresse voit le résumé de vos voyages passés. Il n'est pas "
+"indexé par les moteurs de recherche, et vider le nom le désactive "
+"aussitôt."
+msgstr ""
+"Öffentliches Profil: Wenn Sie einen Profilnamen wählen, sieht jeder, der "
+"die Adresse kennt, die Zusammenfassung Ihrer vergangenen Reisen. Es wird "
+"nicht von Suchmaschinen indexiert, und wenn Sie den Namen leeren, wird es"
+" sofort deaktiviert."
+
+#: app/templates/legal/privacy.html:68
+msgid ""
+"Les bibliothèques et polices de caractères du site sont servies par notre"
+" serveur : aucun CDN ni Google Fonts ne reçoit votre adresse IP."
+msgstr ""
+"Die Bibliotheken und Schriftarten der Website werden von unserem Server "
+"ausgeliefert: Kein CDN und kein Google Fonts erhält Ihre IP-Adresse."
+
+#: app/templates/legal/privacy.html:69
 msgid "Les e-mails sont envoyés directement par notre serveur."
 msgstr "E-Mails werden direkt von unserem Server versendet."
 
-#: app/templates/legal/privacy.html:59
+#: app/templates/legal/privacy.html:73
 msgid "Durées de conservation"
 msgstr "Speicherdauer"
 
-#: app/templates/legal/privacy.html:61
+#: app/templates/legal/privacy.html:75
 msgid ""
 "Compte et contenus : tant que votre compte existe. Supprimer votre compte"
 " efface immédiatement vos données et vos photos du site."
@@ -2765,7 +2880,7 @@ msgstr ""
 "Konto und Inhalte: solange dein Konto besteht. Wenn du dein Konto "
 "löschst, werden deine Daten und Fotos sofort von der Website entfernt."
 
-#: app/templates/legal/privacy.html:62
+#: app/templates/legal/privacy.html:76
 #, python-format
 msgid ""
 "Sauvegardes : des copies de sécurité sont faites chaque nuit et "
@@ -2776,16 +2891,31 @@ msgstr ""
 "%(days)s Tage aufbewahrt; deine Daten verschwinden daraus also spätestens"
 " %(days)s Tage nach dem Löschen."
 
-#: app/templates/legal/privacy.html:63
+#: app/templates/legal/privacy.html:77
+#, python-format
+msgid ""
+"Import par e-mail : un e-mail importé est supprimé de la boîte aussitôt ;"
+" le journal des e-mails importés ou ignorés (expéditeur, objet) est "
+"conservé %(days)s jours. Un e-mail qui n'a pas pu être lu est conservé, "
+"avec son ticket, jusqu'à son traitement. Supprimer votre compte efface "
+"aussi ces journaux et ces tickets."
+msgstr ""
+"Import per E-Mail: Eine importierte E-Mail wird sofort aus dem Postfach "
+"gelöscht; das Protokoll importierter oder ignorierter E-Mails (Absender, "
+"Betreff) wird %(days)s Tage aufbewahrt. Eine nicht lesbare E-Mail wird "
+"mit ihrem Ticket bis zur Bearbeitung aufbewahrt. Wenn Sie Ihr Konto "
+"löschen, werden auch diese Protokolle und Tickets gelöscht."
+
+#: app/templates/legal/privacy.html:78
 #, python-format
 msgid "Journaux du serveur web : %(days)s jours."
 msgstr "Webserver-Protokolle: %(days)s Tage."
 
-#: app/templates/legal/privacy.html:64
+#: app/templates/legal/privacy.html:79
 msgid "Mesure d'audience : 25 mois au plus."
 msgstr "Reichweitenmessung: höchstens 25 Monate."
 
-#: app/templates/legal/privacy.html:65
+#: app/templates/legal/privacy.html:80
 #, python-format
 msgid ""
 "Cache des recherches de lieux (sans lien avec votre compte) : %(days)s "
@@ -2794,7 +2924,7 @@ msgstr ""
 "Zwischenspeicher der Ortssuche (nicht mit deinem Konto verknüpft): "
 "%(days)s Tage."
 
-#: app/templates/legal/privacy.html:66
+#: app/templates/legal/privacy.html:81
 #, python-format
 msgid ""
 "Liens envoyés par e-mail : %(signup)s minutes pour l'inscription, "
@@ -2803,11 +2933,11 @@ msgstr ""
 "Per E-Mail gesendete Links: %(signup)s Minuten für die Registrierung, "
 "%(reset)s Minuten für das Zurücksetzen des Passworts."
 
-#: app/templates/legal/privacy.html:71
+#: app/templates/legal/privacy.html:86
 msgid "Cookies et stockage local"
 msgstr "Cookies und lokaler Speicher"
 
-#: app/templates/legal/privacy.html:72
+#: app/templates/legal/privacy.html:87
 msgid ""
 "Le site n'utilise aucun cookie publicitaire. Les éléments déposés sont "
 "nécessaires à son fonctionnement, mémorisent vos choix ou servent à une "
@@ -2820,11 +2950,11 @@ msgstr ""
 "gemäß den Ausnahmebedingungen der CNIL; sie erfordern daher keine "
 "Einwilligung:"
 
-#: app/templates/legal/privacy.html:74
+#: app/templates/legal/privacy.html:89
 msgid "maintient votre connexion et protège les formulaires (cookie de session)."
 msgstr "hält dich angemeldet und schützt Formulare (Sitzungscookie)."
 
-#: app/templates/legal/privacy.html:75
+#: app/templates/legal/privacy.html:90
 msgid ""
 "uniquement si vous cochez « Rester connecté » : vous reconnecte "
 "automatiquement (365 jours)."
@@ -2832,11 +2962,11 @@ msgstr ""
 "nur wenn du „Angemeldet bleiben“ ankreuzt: meldet dich automatisch wieder"
 " an (365 Tage)."
 
-#: app/templates/legal/privacy.html:76
+#: app/templates/legal/privacy.html:91
 msgid "mémorise la langue choisie (1 an)."
 msgstr "merkt sich die gewählte Sprache (1 Jahr)."
 
-#: app/templates/legal/privacy.html:77
+#: app/templates/legal/privacy.html:92
 msgid ""
 "mesure d'audience Matomo : distinguent les visites sans vous identifier "
 "(13 mois et 30 minutes)."
@@ -2844,7 +2974,7 @@ msgstr ""
 "Matomo-Reichweitenmessung: unterscheidet Besuche, ohne dich zu "
 "identifizieren (13 Monate bzw. 30 Minuten)."
 
-#: app/templates/legal/privacy.html:78
+#: app/templates/legal/privacy.html:93
 msgid ""
 "Stockage local du navigateur : thème clair ou sombre, couches de carte "
 "affichées, brouillon d'un trajet en cours de saisie. Ces données ne "
@@ -2854,7 +2984,7 @@ msgstr ""
 "Kartenebenen, Entwurf einer gerade eingegebenen Strecke. Diese Daten "
 "verlassen dein Gerät nicht."
 
-#: app/templates/legal/privacy.html:80
+#: app/templates/legal/privacy.html:95
 msgid ""
 "Vous pouvez refuser la mesure d'audience : le site cessera alors de vous "
 "compter sur ce navigateur (un cookie mémorise ce choix)."
@@ -2862,27 +2992,27 @@ msgstr ""
 "Du kannst der Reichweitenmessung widersprechen: Die Website zählt dich "
 "dann in diesem Browser nicht mehr (ein Cookie merkt sich diese Wahl)."
 
-#: app/templates/legal/privacy.html:82
+#: app/templates/legal/privacy.html:97
 msgid "Accepter à nouveau d'être compté"
 msgstr "Wieder gezählt werden"
 
-#: app/templates/legal/privacy.html:82 app/templates/legal/privacy.html:84
+#: app/templates/legal/privacy.html:97 app/templates/legal/privacy.html:99
 msgid "Ne plus être compté"
 msgstr "Nicht mehr gezählt werden"
 
-#: app/templates/legal/privacy.html:83
+#: app/templates/legal/privacy.html:98
 msgid "Vous n'êtes plus compté dans les statistiques."
 msgstr "Du wirst nicht mehr in den Statistiken gezählt."
 
-#: app/templates/legal/privacy.html:83
+#: app/templates/legal/privacy.html:98
 msgid "Vous êtes compté dans les statistiques anonymes."
 msgstr "Du wirst in den anonymen Statistiken gezählt."
 
-#: app/templates/legal/privacy.html:89
+#: app/templates/legal/privacy.html:104
 msgid "Sécurité"
 msgstr "Sicherheit"
 
-#: app/templates/legal/privacy.html:90
+#: app/templates/legal/privacy.html:105
 msgid ""
 "Connexion chiffrée (HTTPS), mots de passe hachés, limitation des "
 "tentatives de connexion, déconnexion des autres sessions au changement de"
@@ -2892,11 +3022,11 @@ msgstr ""
 "Anmeldeversuche, Abmeldung anderer Sitzungen bei Passwortänderung, "
 "tägliche Sicherungen."
 
-#: app/templates/legal/privacy.html:94
+#: app/templates/legal/privacy.html:109
 msgid "Vos droits"
 msgstr "Deine Rechte"
 
-#: app/templates/legal/privacy.html:95
+#: app/templates/legal/privacy.html:110
 msgid ""
 "Vous disposez des droits d'accès, de rectification, d'effacement, de "
 "limitation, d'opposition et de portabilité de vos données. La plupart "
@@ -2906,7 +3036,7 @@ msgstr ""
 "Widerspruch und Datenübertragbarkeit. Die meisten Rechte kannst du direkt"
 " in der Anwendung ausüben:"
 
-#: app/templates/legal/privacy.html:97
+#: app/templates/legal/privacy.html:112
 msgid ""
 "Accès et portabilité : page Importer / exporter (CSV, GeoJSON, GPX) ou "
 "sauvegarde complète avec vos photos (.zip)."
@@ -2914,7 +3044,7 @@ msgstr ""
 "Auskunft und Übertragbarkeit: Seite Import / Export (CSV, GeoJSON, GPX) "
 "oder vollständige Sicherung mit deinen Fotos (.zip)."
 
-#: app/templates/legal/privacy.html:98
+#: app/templates/legal/privacy.html:113
 msgid ""
 "Rectification : modifiez vos trajets, voyages et préférences à tout "
 "moment."
@@ -2922,11 +3052,11 @@ msgstr ""
 "Berichtigung: Bearbeite deine Strecken, Reisen und Einstellungen "
 "jederzeit."
 
-#: app/templates/legal/privacy.html:99
+#: app/templates/legal/privacy.html:114
 msgid "Effacement : Préférences, puis « Supprimer mon compte »."
 msgstr "Löschung: Einstellungen, dann „Mein Konto löschen“."
 
-#: app/templates/legal/privacy.html:101
+#: app/templates/legal/privacy.html:116
 msgid ""
 "Pour toute autre demande, écrivez à l'adresse de contact ci-dessus. Vous "
 "pouvez aussi adresser une réclamation à la CNIL :"

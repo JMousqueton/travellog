@@ -193,3 +193,26 @@ def _open_ticket(raw, sender, subject, user, reason):
     ticket.add_message(account, body, from_staff=False)
     db.session.flush()
     return {"ticket": ticket}
+
+
+def forget_user(user):
+    """À la suppression d'un compte : ses entrées du journal d'import et les tickets d'échec qui contiennent
+    ses e-mails bruts sont supprimés aussi."""
+    entries = db.session.execute(db.select(MailImport).filter_by(user_id=user.id)).scalars().all()
+    for entry in entries:
+        if entry.ticket_id is not None:
+            ticket = db.session.get(Ticket, entry.ticket_id)
+            if ticket is not None:
+                db.session.delete(ticket)
+        db.session.delete(entry)
+
+
+def purge_log(days):
+    """Supprime les entrées « imported » et « ignored » de plus de `days` jours ; renvoie leur nombre."""
+    from datetime import timedelta
+
+    from ..models import utcnow
+
+    return db.session.execute(db.delete(MailImport).where(
+        MailImport.status.in_(("imported", "ignored")),
+        MailImport.created_at < utcnow() - timedelta(days=days))).rowcount

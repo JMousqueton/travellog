@@ -27,6 +27,14 @@
           <tr><td>{{ _("Liens de partage et adresse d'abonnement agenda (jetons secrets), date de dernière consultation d'un lien") }}</td>
               <td>{{ _("Partager vos voyages avec les personnes de votre choix, ajouter vos voyages à votre agenda") }}</td>
               <td>{{ _("Exécution du service que vous demandez") }}</td></tr>
+          <tr><td>{{ _("Nom du profil public, si vous en choisissez un") }}</td>
+              <td>{{ _("Publier le résumé de vos voyages passés à l'adresse de votre choix") }}</td>
+              <td>{{ _("Exécution du service que vous demandez") }}</td></tr>
+          {% if config.IMPORT_ADDRESS %}
+          <tr><td>{{ _("E-mails de confirmation que vous transférez à l'adresse d'import (avec leurs pièces jointes, dont les cartes d'embarquement Wallet), adresses d'import supplémentaires que vous confirmez, journal des e-mails reçus (expéditeur, objet, résultat)") }}</td>
+              <td>{{ _("Ajouter les trajets de vos réservations à votre compte, ne traiter chaque e-mail qu'une fois, et transmettre à l'équipe ceux qui n'ont pas pu être lus") }}</td>
+              <td>{{ _("Exécution du service que vous demandez") }}</td></tr>
+          {% endif %}
           <tr><td>{{ _("Journaux du serveur web : adresse IP, date, page demandée, navigateur") }}</td>
               <td>{{ _("Sécurité du service, détection des abus et des pannes") }}</td>
               <td>{{ _("Intérêt légitime (sécurité)") }}</td></tr>
@@ -36,7 +44,11 @@
         </tbody>
       </table>
     </div>
-    <p>{{ _("Les photos sont ré-enregistrées à l'envoi : leurs métadonnées (dont la position GPS et le modèle d'appareil) sont supprimées. Notes, photos, domicile et adresse e-mail n'apparaissent jamais sur les liens de partage ; les voyages à venir n'y apparaissent que si vous l'avez choisi pour ce lien.") }}</p>
+    <p>{{ _("Les photos sont ré-enregistrées à l'envoi : leurs métadonnées (dont la position GPS et le modèle d'appareil) sont supprimées. Notes, photos, domicile et adresse e-mail n'apparaissent jamais sur les liens de partage ; les voyages à venir n'y apparaissent que si vous l'avez choisi pour ce lien.") }}
+      {{ _("Le profil public ne montre que des totaux (voyages, distances par mode, pays, continents, badges) : ni trajets, ni dates, ni notes, ni photos, ni domicile, ni voyages à venir, ni adresse e-mail.") }}</p>
+    {% if config.IMPORT_ADDRESS %}
+    <p>{{ _("Import par e-mail : un e-mail n'est accepté que s'il vient de l'adresse de votre compte ou d'une adresse d'import confirmée, avec une signature DKIM valide. Une fois ses trajets ajoutés, il est supprimé de la boîte de réception. S'il n'a pas pu être lu, il reste dans la boîte et son contenu complet est transmis à l'équipe dans un ticket de support, pour un import manuel.") }}</p>
+    {% endif %}
   </section>
 
   <section>
@@ -51,8 +63,10 @@
       {% if routing %}<li>{{ _("Distances routières : les coordonnées de départ et d'arrivée des trajets en voiture ou en bus sont envoyées par notre serveur à un service de calcul d'itinéraire (OSRM).") }}</li>{% endif %}
       <li>{{ _("Agenda : si vous activez l'abonnement, votre service d'agenda récupère vos dates et lieux de voyage (sans les notes) à l'adresse secrète que vous lui donnez.") }}</li>
       <li>{{ _("Liens de partage : toute personne qui possède un de vos liens voit les voyages qu'il montre. Vous pouvez révoquer un lien à tout moment.") }}</li>
+      <li>{{ _("Profil public : si vous choisissez un nom de profil, toute personne qui connaît son adresse voit le résumé de vos voyages passés. Il n'est pas indexé par les moteurs de recherche, et vider le nom le désactive aussitôt.") }}</li>
     </ul>
-    <p>{{ _("Les e-mails sont envoyés directement par notre serveur.") }}{% if location %} {{ _("Le site et ses données sont hébergés à %(location)s.", location=location) }}{% endif %}</p>
+    <p>{{ _("Les bibliothèques et polices de caractères du site sont servies par notre serveur : aucun CDN ni Google Fonts ne reçoit votre adresse IP.") }}
+      {{ _("Les e-mails sont envoyés directement par notre serveur.") }}{% if location %} {{ _("Le site et ses données sont hébergés à %(location)s.", location=location) }}{% endif %}</p>
   </section>
 
   <section>
@@ -60,6 +74,7 @@
     <ul>
       <li>{{ _("Compte et contenus : tant que votre compte existe. Supprimer votre compte efface immédiatement vos données et vos photos du site.") }}</li>
       <li>{{ _("Sauvegardes : des copies de sécurité sont faites chaque nuit et conservées %(days)s jours au plus ; vos données y disparaissent donc au plus tard %(days)s jours après leur suppression.", days=backup_days) }}</li>
+      {% if config.IMPORT_ADDRESS %}<li>{{ _("Import par e-mail : un e-mail importé est supprimé de la boîte aussitôt ; le journal des e-mails importés ou ignorés (expéditeur, objet) est conservé %(days)s jours. Un e-mail qui n'a pas pu être lu est conservé, avec son ticket, jusqu'à son traitement. Supprimer votre compte efface aussi ces journaux et ces tickets.", days=config.MAIL_IMPORT_LOG_DAYS) }}</li>{% endif %}
       <li>{{ _("Journaux du serveur web : %(days)s jours.", days=log_days) }}</li>
       <li>{{ _("Mesure d'audience : 25 mois au plus.") }}</li>
       <li>{{ _("Cache des recherches de lieux (sans lien avec votre compte) : %(days)s jours.", days=geocode_days) }}</li>

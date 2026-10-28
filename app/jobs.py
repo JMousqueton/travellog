@@ -53,19 +53,23 @@ def _maintenance():
     from .geo import purge_geocode_cache
     from .models import ShareLink
 
+    from .mail_import.processing import purge_log
+
     geocode = purge_geocode_cache()
+    mails = purge_log(current_app.config["MAIL_IMPORT_LOG_DAYS"])
     links = db.session.execute(db.delete(ShareLink).where(ShareLink.expires_at <= utcnow())).rowcount
     history = db.session.execute(
         db.delete(JobRun).where(JobRun.started_at < utcnow() - timedelta(days=JOB_HISTORY_DAYS))).rowcount
     db.session.commit()
-    return f"{geocode} géocodage(s) expiré(s), {links} lien(s) de partage expiré(s), {history} exécution(s) anciennes"
+    return (f"{geocode} géocodage(s) expiré(s), {links} lien(s) de partage expiré(s), {mails} e-mail(s) d'import "
+            f"anciens, {history} exécution(s) anciennes")
 
 
 JOBS = {job.name: job for job in (
     Job("mail-import", timedelta(minutes=5), _mail_import, _l("Import par e-mail (boîte IMAP)")),
     Job("backup", timedelta(days=1), _backup, _l("Sauvegarde complète (base + photos)")),
     Job("maintenance", timedelta(days=1), _maintenance,
-        _l("Purge du cache de géocodage, des liens de partage expirés et de l'historique des tâches")),
+        _l("Purge du cache de géocodage, des liens de partage expirés, du journal des imports par e-mail et de l'historique des tâches")),
 )}
 
 
