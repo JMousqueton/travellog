@@ -265,7 +265,7 @@ def test_run_deletes_only_imported_mails(app, db, user, monkeypatch):
         b"2": make_mail(text="Pas de vol ici", message_id="<ko@x>").as_bytes(),
         b"3": make_mail(text=AIR_FRANCE_TEXT, sender="stranger@example.org", message_id="<who@x>").as_bytes(),
     })
-    monkeypatch.setattr(mail_import.imaplib, "IMAP4_SSL", box)
+    monkeypatch.setattr(mail_import.mailbox.imaplib, "IMAP4_SSL", box)
 
     assert mail_import.run() == {"imported": 1, "failed": 1, "ignored": 1}
     assert box.deleted == {b"1"} and box.expunged == [b"1"]
@@ -280,7 +280,7 @@ def test_run_deletes_only_imported_mails(app, db, user, monkeypatch):
 def test_dry_run_opens_mailbox_read_only(app, db, user, monkeypatch):
     app.config.update(IMAP_SERVER="imap.example.org")
     box = FakeIMAP({b"1": make_mail(text=AIR_FRANCE_TEXT).as_bytes()})
-    monkeypatch.setattr(mail_import.imaplib, "IMAP4_SSL", box)
+    monkeypatch.setattr(mail_import.mailbox.imaplib, "IMAP4_SSL", box)
     assert mail_import.run(dry_run=True) == {"imported": 1}
     assert box.readonly and not box.deleted and Trip.query.count() == 0
 
