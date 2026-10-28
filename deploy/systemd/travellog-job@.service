@@ -3,8 +3,9 @@
 
 [Unit]
 Description=Voyage Voyage - tâche %i
-After=network-online.target
-Wants=network-online.target
+After=network-online.target docker.service
+# PostgreSQL tourne dans Docker (deploy/postgres/compose.yml).
+Wants=network-online.target docker.service
 
 [Service]
 Type=oneshot

@@ -3,7 +3,9 @@
 
 [Unit]
 Description=Voyage Voyage - Flask travel map (voyage-voyage.app)
-After=network.target
+After=network.target docker.service
+# PostgreSQL tourne dans Docker (deploy/postgres/compose.yml).
+Wants=docker.service
 
 [Service]
 Type=simple

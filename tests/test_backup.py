@@ -1,7 +1,6 @@
 import io
 import json
 import os
-import sqlite3
 import tarfile
 import zipfile
 from datetime import date
@@ -9,25 +8,18 @@ from datetime import date
 import pytest
 from PIL import Image
 
-from app import create_app
 from app.backup import BackupError, create_backup, list_backups, read_manifest, restore_backup
 from app.extensions import db as _db
 from app.models import Journey, Photo, Trip, User
-from config import TestingConfig
 
 from .conftest import login, make_trip, make_user
 
 
 @pytest.fixture
-def file_app(tmp_path, monkeypatch):
-    """Application sur une base SQLite fichier (la sauvegarde ne s'applique pas à une base en mémoire)."""
-    monkeypatch.setattr(TestingConfig, "SQLALCHEMY_DATABASE_URI", f"sqlite:///{tmp_path / 'travel.db'}")
-    app = create_app("testing")
-    app.config.update(UPLOAD_FOLDER=str(tmp_path / "uploads"), BACKUP_DIR=str(tmp_path / "backups"))
-    with app.app_context():
-        _db.create_all()
-        yield app
-        _db.session.remove()
+def file_app(app, tmp_path):
+    """Application dont les sauvegardes vont dans le dossier temporaire du test."""
+    app.config["BACKUP_DIR"] = str(tmp_path / "backups")
+    return app
 
 
 def _jpeg():
@@ -45,7 +37,7 @@ def test_backup_and_restore_roundtrip(file_app, tmp_path):
     manifest = read_manifest(path)
     assert manifest["counts"]["trips"] == 1 and manifest["counts"]["users"] == 1
     with tarfile.open(path) as archive:
-        assert {"travel.db", "manifest.json", "uploads/abc.jpg"} <= set(archive.getnames())
+        assert {"database.dump", "manifest.json", "uploads/abc.jpg"} <= set(archive.getnames())
 
     # On casse tout, puis on restaure.
     _db.session.execute(_db.delete(Trip))
@@ -55,7 +47,8 @@ def test_backup_and_restore_roundtrip(file_app, tmp_path):
     _db.engine.dispose()
     restored, safety = restore_backup(path)
     assert os.path.exists(safety) and read_manifest(safety)["counts"]["trips"] == 0  # état d'avant restauration
-    assert sqlite3.connect(tmp_path / "travel.db").execute("SELECT count(*) FROM trips").fetchone()[0] == 1
+    assert _db.session.scalar(_db.select(_db.func.count(Trip.id))) == 1
+    assert _db.session.scalar(_db.select(User.email)) == "alice@example.com"
     assert (tmp_path / "uploads" / "abc.jpg").read_bytes() == b"photo"
 
 
@@ -82,7 +75,7 @@ def test_keep_only_recent_backups(file_app, monkeypatch):
 def test_restore_rejects_unsafe_archives(file_app, tmp_path, name):
     path = tmp_path / "bad.tar.gz"
     with tarfile.open(path, "w:gz") as archive:
-        for member, data in (("manifest.json", json.dumps({"counts": {}}).encode()), (name, b"x")):
+        for member, data in (("manifest.json", json.dumps({"format": 2, "counts": {}}).encode()), (name, b"x")):
             info = tarfile.TarInfo(member)
             info.size = len(data)
             archive.addfile(info, io.BytesIO(data))
@@ -106,6 +99,7 @@ def test_restore_rejects_tampered_database(file_app, tmp_path):
                 dst.addfile(member, src.extractfile(member) if member.isfile() else None)
     with pytest.raises(BackupError, match="manifeste"):
         restore_backup(str(tampered))
+    assert _db.session.scalar(_db.select(_db.func.count(User.id))) == 1  # transaction annulée : base intacte
 
 
 def test_backup_cli(file_app):
@@ -116,9 +110,16 @@ def test_backup_cli(file_app):
     assert "travel-backup-" in runner.invoke(args=["backup", "list"]).output
 
 
-def test_backup_refuses_memory_database(app):
+def test_restore_refuses_old_sqlite_archive(file_app, tmp_path):
+    path = tmp_path / "old.tar.gz"
+    with tarfile.open(path, "w:gz") as archive:
+        for member, data in (("manifest.json", json.dumps({"format": 1, "counts": {}}).encode()),
+                             ("travel.db", b"SQLite format 3")):
+            info = tarfile.TarInfo(member)
+            info.size = len(data)
+            archive.addfile(info, io.BytesIO(data))
     with pytest.raises(BackupError, match="SQLite"):
-        create_backup()
+        restore_backup(str(path))
 
 
 # --- Sauvegarde complète d'un compte (.zip) -------------------------------------------------

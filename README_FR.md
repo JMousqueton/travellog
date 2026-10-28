@@ -162,6 +162,8 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
 ## Prérequis
 
 - Python 3.11 ou plus récent
+- PostgreSQL (testé avec la 18) et ses outils clients (`pg_dump`, `pg_restore`, `psql`, paquet
+  `postgresql-client`) pour les sauvegardes
 - Un accès réseau aux tuiles de carte, à Nominatim
   et, pour la recherche par numéro de vol, à adsbdb. Bootstrap, Font Awesome, Chart.js, la police Inter, Leaflet,
   MarkerCluster, d3-geo et d3-array sont fournis dans `app/static/vendor/` : aucune page n'appelle de CDN, l'adresse IP
@@ -172,10 +174,11 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
 ```bash
 git clone https://github.com/JMousqueton/travellog.git && cd travellog
 make install            # ou : python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-cp .env.example .env    # puis renseignez SECRET_KEY et NOMINATIM_USER_AGENT
+cp .env.example .env    # puis renseignez SECRET_KEY, NOMINATIM_USER_AGENT, POSTGRES_PASSWORD et DATABASE_URL
+sudo docker compose -f deploy/postgres/compose.yml --env-file .env up -d   # ou tout serveur PostgreSQL
 source .venv/bin/activate
 flask translate compile # compile les .po en .mo (déjà fait par make install)
-flask db upgrade        # crée instance/travel.db
+flask db upgrade        # crée les tables dans la base de DATABASE_URL
 flask seed              # optionnel : demo@example.com / demo1234 avec 12 voyages
 flask create-admin vous@example.com   # crée un administrateur (mot de passe demandé)
 ```
@@ -202,6 +205,10 @@ refuse de démarrer si `SECRET_KEY` est absente ou vaut une valeur d'exemple.
   d'exécution sur `127.0.0.1:5012`, avec `FLASK_CONFIG=production`, `APP_BASE_URL=https://voyage-voyage.app`
   et `PROXY_FIX_COUNT=1` (le reste vient de `.env`). `sudo systemctl restart travellog` après une mise à jour
   du code ; journal : `journalctl -u travellog`.
+- PostgreSQL 18 dans Docker : conteneur `travellog-postgres` (`deploy/postgres/compose.yml`, volume
+  `travellog_pgdata`, relancé par Docker), à l'écoute sur `127.0.0.1:5432` seulement ; mot de passe dans `.env`
+  (`POSTGRES_PASSWORD`). Console : `sudo docker exec -it travellog-postgres psql -U travel`.
+  L'ancienne base SQLite a été copiée par `scripts/sqlite_to_postgres.py` (conservé pour les anciennes sauvegardes).
 - nginx : `deploy/nginx/voyage-voyage.app.conf` (HTTPS, fichiers statiques servis directement, 64 Mo par
   envoi) ; `www.voyage-voyage.app` et l'ancienne adresse `travellog.julien.io` redirigent vers
   `https://voyage-voyage.app`. Les adresses des fichiers statiques portent l'empreinte de leur contenu (`?v=…`, voir
@@ -239,7 +246,7 @@ encore en cours : plus besoin de fichier verrou. Les commandes individuelles res
 manuel (`flask geocode purge [--all]`, `flask purge-share-links`, `flask mail-import --dry-run`…), sans être
 notées.
 
-Sauvegardes complètes du serveur (base SQLite + photos, archive `.tar.gz` avec manifeste) :
+Sauvegardes complètes du serveur (export PostgreSQL + photos, archive `.tar.gz` avec manifeste) :
 
 ```bash
 flask backup create              # dans BACKUP_DIR (instance/backups par défaut), garde les BACKUP_KEEP plus récentes
@@ -247,8 +254,10 @@ flask backup list
 flask backup restore instance/backups/travel-backup-AAAAMMJJ-HHMMSS.tar.gz   # application arrêtée
 ```
 
-La restauration vérifie l'archive (chemins, intégrité SQLite, manifeste), sauvegarde d'abord l'état actuel,
-puis applique les migrations si l'archive est plus ancienne que le code. La sauvegarde nocturne est la tâche
+L'export (`pg_dump`, format custom) et les nombres de lignes du manifeste viennent du même instantané : la
+sauvegarde est cohérente application en marche. La restauration vérifie l'archive (chemins, export lisible),
+sauvegarde d'abord l'état actuel, remplace la base en une seule transaction, annulée si les nombres de lignes
+diffèrent du manifeste, puis applique les migrations si l'archive est plus ancienne que le code. La sauvegarde nocturne est la tâche
 `backup` ci-dessus.
 
 Import par e-mail : réglages IMAP dans `.env` (`IMAP_SERVER`, `IMAP_USERNAME`, `IMAP_PASSWORD`…), relevé par la
@@ -297,7 +306,8 @@ sauvegardes, avec la base de données.
 |---|---|
 | `SECRET_KEY` | Clé secrète Flask (obligatoire en production) |
 | `FLASK_CONFIG` | `development`, `production` ou `testing` |
-| `DATABASE_URL` | URL SQLAlchemy (par défaut `instance/travel.db`) |
+| `DATABASE_URL` | URL PostgreSQL, obligatoire (`postgresql://utilisateur:motdepasse@hôte:5432/travel`) |
+| `TEST_DATABASE_URL` | Base PostgreSQL des tests, vidée par eux (son nom doit se terminer par `_test`) |
 | `NOMINATIM_URL` | Point d'accès de recherche Nominatim (instance publique ou auto-hébergée) |
 | `NOMINATIM_USER_AGENT` | User-Agent identifiant l'application, **obligatoire** selon la politique Nominatim |
 | `NOMINATIM_EMAIL` | Adresse de contact optionnelle (paramètre `email=`) |
@@ -422,6 +432,9 @@ Les liens de partage ont les équivalents `/api/shared/<jeton>/trips`, `/stats` 
 ```bash
 make test               # ou : pytest
 ```
+
+Les tests utilisent leur propre base PostgreSQL, `TEST_DATABASE_URL` (son nom doit se terminer par `_test` ; elle
+est vidée après chaque test), par exemple `sudo docker exec travellog-postgres createdb -U travel travel_test`.
 
 La suite couvre les modèles et contraintes, la validation aller-retour, l'isolation entre utilisateurs,
 l'API (filtres, statistiques, géocodage simulé, cache, limite de débit), l'authentification, la protection

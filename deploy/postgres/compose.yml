@@ -1,0 +1,27 @@
+# Voyage Voyage — PostgreSQL dans Docker, joignable uniquement en local (127.0.0.1:5432).
+# Lancement : sudo docker compose -f deploy/postgres/compose.yml --env-file .env up -d
+# Le mot de passe vient de POSTGRES_PASSWORD dans /opt/travel/.env ; les données restent dans le volume.
+name: travellog
+
+services:
+  postgres:
+    image: postgres:18
+    container_name: travellog-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: travel
+      POSTGRES_DB: travel
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD manquant dans .env}
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U travel -d travel"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    shm_size: 256mb
+
+volumes:
+  pgdata:

@@ -105,7 +105,7 @@ def list_trips(user, filters=None):
     trips = db.session.execute(trips_query(user, filters)).scalars().all()
     query = (filters or {}).get("q")
     if query:
-        # Filtrage en Python : insensible aux accents, ce que SQLite ne sait pas faire seul.
+        # Filtrage en Python : insensible aux accents (sans dépendre de l'extension unaccent).
         from ..i18n import current_locale
 
         locale = current_locale()

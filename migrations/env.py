@@ -93,31 +93,14 @@ def run_migrations_online():
     connectable = get_engine()
 
     with connectable.connect() as connection:
-        sqlite = connection.dialect.name == "sqlite"
-        if sqlite:
-            # Le mode batch d'Alembic recrée les tables SQLite (copie, DROP, renommage). Avec les clés
-            # étrangères actives (voir extensions.py), le DROP d'une table parente comme `users` exécute
-            # les ON DELETE CASCADE et vide les tables enfants (voyages, trajets…). On les désactive donc
-            # pendant les migrations ; le PRAGMA doit être exécuté hors transaction.
-            connection.exec_driver_sql("PRAGMA foreign_keys=OFF")
-            connection.commit()
         context.configure(
             connection=connection,
             target_metadata=get_metadata(),
             **conf_args
         )
 
-        try:
-            with context.begin_transaction():
-                context.run_migrations()
-            if sqlite:
-                # Les données copiées doivent toujours respecter les clés étrangères.
-                problems = connection.exec_driver_sql("PRAGMA foreign_key_check").fetchall()
-                if problems:
-                    raise RuntimeError(f"Clés étrangères invalides après migration : {problems[:5]}")
-        finally:
-            if sqlite:
-                connection.exec_driver_sql("PRAGMA foreign_keys=ON")
+        with context.begin_transaction():
+            context.run_migrations()
 
 
 if context.is_offline_mode():

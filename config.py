@@ -14,11 +14,21 @@ def _bool(name, default="0"):
     return os.environ.get(name, default).strip().lower() in ("1", "true", "yes", "on")
 
 
+def _database_url(name):
+    """URL PostgreSQL lue dans l'environnement ; postgres:// et postgresql:// passent par le pilote psycopg 3."""
+    url = os.environ.get(name, "").strip()
+    for prefix in ("postgres://", "postgresql://"):
+        if url.startswith(prefix):
+            return "postgresql+psycopg://" + url[len(prefix):]
+    return url
+
+
 class Config:
     SECRET_KEY = os.environ.get("SECRET_KEY", "dev-insecure-change-me")
-    SQLALCHEMY_DATABASE_URI = os.environ.get("DATABASE_URL") or "sqlite:///" + os.path.join(
-        basedir, "instance", "travel.db"
-    )
+    # Base PostgreSQL, obligatoire (ex. postgresql://travel:secret@127.0.0.1:5432/travel).
+    SQLALCHEMY_DATABASE_URI = _database_url("DATABASE_URL")
+    # Une connexion coupée (redémarrage de PostgreSQL) est détectée et remplacée avant usage.
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     SESSION_COOKIE_SAMESITE = "Lax"
@@ -158,7 +168,8 @@ class TestingConfig(Config):
     TESTING = True
     SECRET_KEY = "test-secret"
     LOGO_DEV_TOKEN = ""
-    SQLALCHEMY_DATABASE_URI = "sqlite://"
+    # Base dédiée aux tests, vidée à chaque test (jamais celle de DATABASE_URL, voir tests/conftest.py).
+    SQLALCHEMY_DATABASE_URI = _database_url("TEST_DATABASE_URL")
     WTF_CSRF_ENABLED = False
     NOMINATIM_MIN_INTERVAL = 0.0
     NOMINATIM_LOCK_FILE = "none"

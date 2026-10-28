@@ -58,7 +58,7 @@ def upgrade():
     sa.Column('return_date', sa.Date(), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), nullable=False),
     sa.CheckConstraint("transport_mode IN ('plane', 'train', 'car', 'bus', 'boat', 'bike', 'walk')", name=op.f('ck_trips_transport_mode_valid')),
-    sa.CheckConstraint('(is_round_trip = 0 AND return_date IS NULL) OR (is_round_trip = 1 AND return_date IS NOT NULL AND return_date >= depart_date)', name=op.f('ck_trips_return_date_consistency')),
+    sa.CheckConstraint('(NOT is_round_trip AND return_date IS NULL) OR (is_round_trip AND return_date IS NOT NULL AND return_date >= depart_date)', name=op.f('ck_trips_return_date_consistency')),
     sa.CheckConstraint('origin_lat BETWEEN -90 AND 90 AND dest_lat BETWEEN -90 AND 90', name=op.f('ck_trips_lat_range')),
     sa.CheckConstraint('origin_lon BETWEEN -180 AND 180 AND dest_lon BETWEEN -180 AND 180', name=op.f('ck_trips_lon_range')),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], name=op.f('fk_trips_user_id_users'), ondelete='CASCADE'),

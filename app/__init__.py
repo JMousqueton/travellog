@@ -19,6 +19,9 @@ def create_app(config_name=None):
     app.config["CONFIG_NAME"] = config_name
     if config_name == "production" and (app.config.get("SECRET_KEY") or "") in INSECURE_SECRET_KEYS:
         raise RuntimeError("SECRET_KEY doit être définie avec une valeur secrète en production (voir .env.example).")
+    if not app.config["SQLALCHEMY_DATABASE_URI"].startswith("postgresql+psycopg://"):
+        name = "TEST_DATABASE_URL" if config_name == "testing" else "DATABASE_URL"
+        raise RuntimeError(f"{name} doit pointer vers une base PostgreSQL (voir .env.example).")
     os.makedirs(app.instance_path, exist_ok=True)
     if not app.config["UPLOAD_FOLDER"]:
         app.config["UPLOAD_FOLDER"] = os.path.join(app.instance_path, "uploads")
@@ -35,7 +38,7 @@ def create_app(config_name=None):
         app.wsgi_app = ProxyFix(app.wsgi_app, x_for=n, x_proto=n, x_host=n)
 
     db.init_app(app)
-    migrate.init_app(app, db, render_as_batch=True)
+    migrate.init_app(app, db)
     csrf.init_app(app)
     limiter.init_app(app)
     security.init_app(app)

@@ -1,4 +1,5 @@
 import os
+import uuid
 from datetime import date
 
 import pytest
@@ -6,12 +7,52 @@ from babel.messages.mofile import write_mo
 from babel.messages.pofile import read_po
 from flask import g
 from flask_babel import refresh
+from sqlalchemy import create_engine
+from sqlalchemy.engine import make_url
 
 from app import create_app
 from app.extensions import db as _db
 from app.models import Trip, User
+from config import Config, TestingConfig
 
 TRANSLATIONS = os.path.join(os.path.dirname(__file__), "..", "app", "translations")
+
+
+@pytest.fixture(scope="session", autouse=True)
+def test_database():
+    """Chaque test vide sa base : on refuse toute base qui ne serait pas dédiée aux tests."""
+    url = TestingConfig.SQLALCHEMY_DATABASE_URI
+    if not url:
+        pytest.exit("TEST_DATABASE_URL manquante (ex. postgresql://travel:…@127.0.0.1:5432/travel_test).", 2)
+    test_db = make_url(url)
+    if not test_db.database.endswith("_test"):
+        pytest.exit(f"La base de test doit se terminer par _test (TEST_DATABASE_URL : {test_db.database}).", 2)
+    if Config.SQLALCHEMY_DATABASE_URI:
+        prod = make_url(Config.SQLALCHEMY_DATABASE_URI)
+        if (prod.host, prod.port, prod.database) == (test_db.host, test_db.port, test_db.database):
+            pytest.exit("TEST_DATABASE_URL désigne la même base que DATABASE_URL.", 2)
+    # Schéma créé une fois pour toute la session ; chaque test vide ensuite les tables (voir `app`).
+    app = create_app("testing")
+    with app.app_context():
+        _db.drop_all()
+        _db.create_all()
+        _db.engine.dispose()
+    return test_db
+
+
+@pytest.fixture
+def empty_database(test_database):
+    """URL d'une base PostgreSQL vide, créée pour le test puis supprimée (tests de migration)."""
+    name = f"{test_database.database}_{uuid.uuid4().hex[:8]}"
+    admin = create_engine(test_database, isolation_level="AUTOCOMMIT")
+    with admin.connect() as conn:
+        conn.exec_driver_sql(f'CREATE DATABASE "{name}"')
+    try:
+        yield test_database.set(database=name).render_as_string(hide_password=False)
+    finally:
+        with admin.connect() as conn:
+            conn.exec_driver_sql(f'DROP DATABASE IF EXISTS "{name}" WITH (FORCE)')
+        admin.dispose()
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -28,7 +69,7 @@ def compiled_translations():
 
 
 @pytest.fixture
-def app(tmp_path):
+def app(tmp_path, test_database):
     app = create_app("testing")
     app.config["UPLOAD_FOLDER"] = str(tmp_path / "uploads")
     app.config["IMPORT_FOLDER"] = str(tmp_path / "imports")
@@ -38,10 +79,12 @@ def app(tmp_path):
     # Idem pour l'utilisateur mis en cache par Flask-Login (sinon partagé entre deux clients).
     app.before_request(lambda: g.pop("_login_user", None) and None)
     with app.app_context():
-        _db.create_all()
         yield app
         _db.session.remove()
-        _db.drop_all()
+        tables = ", ".join(f'"{t.name}"' for t in _db.metadata.sorted_tables)
+        with _db.engine.begin() as conn:
+            conn.exec_driver_sql(f"TRUNCATE {tables} RESTART IDENTITY CASCADE")
+        _db.engine.dispose()
 
 
 @pytest.fixture

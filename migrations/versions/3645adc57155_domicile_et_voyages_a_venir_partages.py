@@ -21,7 +21,7 @@ def upgrade():
     with op.batch_alter_table('share_links', schema=None) as batch_op:
         batch_op.add_column(sa.Column('include_upcoming', sa.Boolean(), server_default='0', nullable=False))
     # Les liens existants affichaient déjà les voyages à venir : on conserve ce comportement pour eux.
-    op.execute("UPDATE share_links SET include_upcoming = 1")
+    op.execute("UPDATE share_links SET include_upcoming = true")
 
     with op.batch_alter_table('users', schema=None) as batch_op:
         batch_op.add_column(sa.Column('home_name', sa.String(length=255), nullable=True))

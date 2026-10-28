@@ -19,7 +19,7 @@ def utcnow():
 
 
 def as_utc(value):
-    """SQLite renvoie des dates sans fuseau : on les considère en UTC."""
+    """Une date sans fuseau (anciennes données, saisie Python) est considérée en UTC."""
     if value is not None and value.tzinfo is None:
         return value.replace(tzinfo=timezone.utc)
     return value
@@ -62,7 +62,6 @@ class User(UserMixin, db.Model):
 
     __table_args__ = (
         CheckConstraint("theme IS NULL OR theme IN ('light', 'dark')", name="theme_valid"),
-        # Index unique plutôt que contrainte : l'ajouter ne reconstruit pas la table users sous SQLite.
         db.Index("ix_users_public_name", "public_name", unique=True),
     )
 
@@ -262,8 +261,8 @@ class Trip(db.Model):
 
     __table_args__ = (
         CheckConstraint(
-            "(is_round_trip = 0 AND return_date IS NULL) OR "
-            "(is_round_trip = 1 AND return_date IS NOT NULL AND return_date >= depart_date)",
+            "(NOT is_round_trip AND return_date IS NULL) OR "
+            "(is_round_trip AND return_date IS NOT NULL AND return_date >= depart_date)",
             name="return_date_consistency",
         ),
         CheckConstraint(f"transport_mode IN ({_MODES_SQL})", name="transport_mode_valid"),
@@ -351,7 +350,7 @@ class GeocodeCache(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     query = db.Column(db.String(255), nullable=False)
-    lang = db.Column(db.String(5), nullable=False)
+    lang = db.Column(db.String(10), nullable=False)  # code de langue, ou "flight" (app/flights.py)
     # Meilleur résultat (NULL si aucun) ; la liste complète des suggestions est dans `results`.
     name = db.Column(db.String(255), nullable=True)
     lat = db.Column(db.Float, nullable=True)

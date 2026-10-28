@@ -220,7 +220,7 @@ def register_cli(app):
         if not yes:
             click.confirm("Remplacer la base et les photos actuelles par cette archive ?", abort=True)
         db.session.remove()
-        db.engine.dispose()  # ferme les connexions avant de remplacer le fichier
+        db.engine.dispose()  # ferme les connexions avant de remplacer la base
         try:
             manifest, safety = restore_backup(archive)
         except BackupError as exc:

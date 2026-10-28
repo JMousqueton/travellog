@@ -151,6 +151,8 @@ available in French, English, Spanish, German and Italian.
 ## Requirements
 
 - Python 3.11 or later
+- PostgreSQL (tested with 18) and its client tools (`pg_dump`, `pg_restore`, `psql`, package
+  `postgresql-client`) for backups
 - Network access to the map tiles, Nominatim
   and, for flight number lookup, adsbdb.
   Bootstrap, Font Awesome, Chart.js, the Inter font, Leaflet, MarkerCluster, d3-geo and d3-array are bundled in
@@ -161,10 +163,11 @@ available in French, English, Spanish, German and Italian.
 ```bash
 git clone https://github.com/JMousqueton/travellog.git && cd travellog
 make install            # or: python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-cp .env.example .env    # then fill in SECRET_KEY and NOMINATIM_USER_AGENT
+cp .env.example .env    # then fill in SECRET_KEY, NOMINATIM_USER_AGENT, POSTGRES_PASSWORD and DATABASE_URL
+sudo docker compose -f deploy/postgres/compose.yml --env-file .env up -d   # or any PostgreSQL server
 source .venv/bin/activate
 flask translate compile # compiles the .po files into .mo (already done by make install)
-flask db upgrade        # creates instance/travel.db
+flask db upgrade        # creates the tables in the DATABASE_URL database
 flask seed              # optional: demo@example.com / demo1234 with 12 trips
 flask create-admin you@example.com   # creates an administrator (password prompted)
 ```
@@ -191,6 +194,10 @@ if `SECRET_KEY` is missing or set to an example value.
   `127.0.0.1:5012`, with `FLASK_CONFIG=production`, `APP_BASE_URL=https://voyage-voyage.app` and
   `PROXY_FIX_COUNT=1` (everything else comes from `.env`). `sudo systemctl restart travellog` after a code
   update; logs: `journalctl -u travellog`.
+- PostgreSQL 18 in Docker: container `travellog-postgres` (`deploy/postgres/compose.yml`, volume
+  `travellog_pgdata`, restarted by Docker), listening on `127.0.0.1:5432` only; password in `.env`
+  (`POSTGRES_PASSWORD`). Shell: `sudo docker exec -it travellog-postgres psql -U travel`.
+  The former SQLite database was copied with `scripts/sqlite_to_postgres.py` (kept for older backups).
 - nginx: `deploy/nginx/voyage-voyage.app.conf` (HTTPS, static files served directly, 64 MB per upload);
   `www.voyage-voyage.app` and the former address `travellog.julien.io` redirect to `https://voyage-voyage.app`.
   Static file URLs carry a fingerprint of their content (`?v=…`, see `app/assets.py`): nginx caches them
@@ -228,7 +235,7 @@ latest runs with their traceback. A timer never starts a task that is still runn
 The individual commands still exist for manual use (`flask geocode purge [--all]`, `flask purge-share-links`,
 `flask mail-import --dry-run`…), but they are not recorded.
 
-Full server backups (SQLite database + photos, `.tar.gz` archive with a manifest):
+Full server backups (PostgreSQL dump + photos, `.tar.gz` archive with a manifest):
 
 ```bash
 flask backup create              # into BACKUP_DIR (instance/backups by default), keeps the BACKUP_KEEP most recent
@@ -236,8 +243,10 @@ flask backup list
 flask backup restore instance/backups/travel-backup-YYYYMMDD-HHMMSS.tar.gz   # with the application stopped
 ```
 
-Restoring checks the archive (paths, SQLite integrity, manifest), first backs up the current state, then
-applies migrations if the archive is older than the code. The nightly backup is the `backup` task above.
+The dump (`pg_dump`, custom format) and the manifest's row counts come from the same snapshot, so a backup is
+consistent while the application runs. Restoring checks the archive (paths, readable dump), first backs up
+the current state, then replaces the database in a single transaction that is cancelled if the row counts
+differ from the manifest, and applies migrations if the archive is older than the code. The nightly backup is the `backup` task above.
 
 Import by email: IMAP settings in `.env` (`IMAP_SERVER`, `IMAP_USERNAME`, `IMAP_PASSWORD`…), run by the
 `mail-import` task.
@@ -285,7 +294,8 @@ the database.
 |---|---|
 | `SECRET_KEY` | Flask secret key (mandatory in production) |
 | `FLASK_CONFIG` | `development`, `production` or `testing` |
-| `DATABASE_URL` | SQLAlchemy URL (default `instance/travel.db`) |
+| `DATABASE_URL` | PostgreSQL URL, required (`postgresql://user:password@host:5432/travel`) |
+| `TEST_DATABASE_URL` | PostgreSQL database for the tests, emptied by them (name must end in `_test`) |
 | `NOMINATIM_URL` | Nominatim search endpoint (public or self-hosted instance) |
 | `NOMINATIM_USER_AGENT` | User-Agent identifying the application, **mandatory** under the Nominatim policy |
 | `NOMINATIM_EMAIL` | Optional contact address (`email=` parameter) |
@@ -409,6 +419,9 @@ Share links have the equivalents `/api/shared/<token>/trips`, `/stats` and `/cou
 ```bash
 make test               # or: pytest
 ```
+
+The tests need a PostgreSQL database of their own in `TEST_DATABASE_URL` (its name must end in `_test`, and it is
+emptied after each test), for example `sudo docker exec travellog-postgres createdb -U travel travel_test`.
 
 The suite covers the models and constraints, round-trip validation, isolation between users, the API
 (filters, statistics, mocked geocoding, cache, rate limit), authentication, CSRF protection, CSP compliance of every page and i18n. For
