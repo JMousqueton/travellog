@@ -13,7 +13,8 @@ from ..models import (ImportAddress, User, import_address_token, is_import_addre
 from ..utils import is_safe_redirect
 from . import bp
 from .forms import (ChangePasswordForm, DeleteAccountForm, ForgotPasswordForm, HomeForm, ImportAddressForm, LoginForm,
-                    ProfileForm, RegisterForm, ResetPasswordForm, SignupCompleteForm, SignupRequestForm)
+                    ProfileForm, PublicProfileForm, RegisterForm, ResetPasswordForm, SignupCompleteForm,
+                    SignupRequestForm)
 
 
 def _email_key():
@@ -167,7 +168,8 @@ def logout():
     return redirect(url_for("trips.index"))
 
 
-def _render_profile(form=None, password_form=None, delete_form=None, home_form=None, import_form=None):
+def _render_profile(form=None, password_form=None, delete_form=None, home_form=None, import_form=None,
+                    public_form=None):
     if form is None:
         form = ProfileForm(formdata=None, obj=current_user)
         form.theme.data = current_user.theme or ""
@@ -178,6 +180,7 @@ def _render_profile(form=None, password_form=None, delete_form=None, home_form=N
         password_form=password_form or ChangePasswordForm(formdata=None, prefix="pw"),
         delete_form=delete_form or DeleteAccountForm(formdata=None, prefix="del"),
         import_form=import_form or ImportAddressForm(formdata=None, prefix="imp"),
+        public_form=public_form or PublicProfileForm(formdata=None, prefix="pub", obj=current_user),
     )
 
 
@@ -222,6 +225,23 @@ def clear_home():
     db.session.commit()
     flash(_("Domicile supprimé."), "success")
     return redirect(url_for("auth.profile", _anchor="home"))
+
+
+@bp.route("/public-profile", methods=["POST"])
+@login_required
+def set_public_profile():
+    """Choisit, change ou retire (nom vide) le nom du profil public /u/<nom>."""
+    form = PublicProfileForm(prefix="pub", user=current_user)
+    if form.validate_on_submit():
+        current_user.public_name = form.public_name.data or None
+        db.session.commit()
+        if current_user.public_name:
+            flash(_("Profil public activé : toute personne qui connaît son adresse voit le résumé de vos voyages."),
+                  "success")
+        else:
+            flash(_("Profil public désactivé."), "success")
+        return redirect(url_for("auth.profile", _anchor="public-profile"))
+    return _render_profile(public_form=form), 400
 
 
 @bp.route("/password", methods=["POST"])

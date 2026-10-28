@@ -41,6 +41,8 @@ class User(UserMixin, db.Model):
     home_country = db.Column(db.String(2), nullable=True)
     # Jeton secret de l'abonnement agenda (.ics) ; NULL si l'abonnement est désactivé.
     calendar_token = db.Column(db.String(64), nullable=True, unique=True)
+    # Nom du profil public (/u/<nom>), en minuscules ; NULL si le profil public est désactivé.
+    public_name = db.Column(db.String(30), nullable=True)
     # Administrateurs : e-mail à chaque nouveau message d'utilisateur sur un ticket.
     ticket_emails = db.Column(db.Boolean, nullable=False, default=True, server_default="1")
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
@@ -58,6 +60,8 @@ class User(UserMixin, db.Model):
 
     __table_args__ = (
         CheckConstraint("theme IS NULL OR theme IN ('light', 'dark')", name="theme_valid"),
+        # Index unique plutôt que contrainte : l'ajouter ne reconstruit pas la table users sous SQLite.
+        db.Index("ix_users_public_name", "public_name", unique=True),
     )
 
     def set_password(self, password):

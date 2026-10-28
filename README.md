@@ -28,6 +28,11 @@ available in French, English, Spanish, German and Italian.
   menu: Map, Statistics (since the beginning, one card per year, badges), Trips (list grouped by journey, if
   the link allows it) and Review. Upcoming trips are hidden by default (they reveal when you're away); an
   option per link shows them, faded and flagged. No notes, photos or home.
+- Public profile (`/u/<name>`): from Preferences, users can choose a name (3 to 30 lowercase letters, digits,
+  `-` or `_`) to publish a summary of their past trips: key figures (trips, distance, countries, continents,
+  share of the world's land), distance by mode, countries visited per continent and the badges earned. No trips,
+  dates, notes, photos, home or upcoming trips; the page is not indexed by search engines (`noindex`). Clearing
+  the name turns the profile off.
 - Countries: each trip knows its departure and arrival country (ISO code returned by Nominatim, or derived
   offline from the coordinates). "Countries visited" layer on the map, flags in the list and detail pages.
 - Statistics (`/stats`): overview of all trips (key figures, Chart.js charts of trips and distance per year

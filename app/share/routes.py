@@ -116,6 +116,29 @@ def stats(token):
     )
 
 
+@bp.route("/u/<name>")
+def public_profile(name):
+    """Profil public choisi dans les préférences : résumé des voyages passés (pays, distances par mode, badges).
+
+    Ni trajets, ni dates de voyage, ni notes, ni photos, ni domicile, ni voyages à venir.
+    """
+    from ..models import User
+    from ..trips.badges import compute_badges, continent_summary
+    from ..trips.stats import compute_stats, happened
+
+    user = db.session.execute(db.select(User).filter_by(public_name=name.lower())).scalar_one_or_none()
+    if user is None:
+        abort(404)
+    trips = happened(user.trips.all())
+    badges = [row for row in compute_badges(trips) if row["earned"]]
+    return render_template(
+        "share/profile.html", profile=user, totals=compute_stats(trips),
+        continents=continent_summary(trips, current_locale()),
+        badges=sorted(badges, key=lambda row: row["earned"], reverse=True),
+        since=min((t.depart_date.year for t in trips), default=None),
+    )
+
+
 @bp.route("/s/<token>/trips")
 def trips(token):
     """Liste des voyages d'un lien qui la montre : dates, lieux, mode et distance (ni notes, ni photos)."""

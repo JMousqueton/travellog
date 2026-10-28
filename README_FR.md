@@ -30,6 +30,11 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   (liste regroupée par voyage, si le lien le prévoit) et Bilan. Les voyages à venir sont masqués par défaut
   (ils révèlent quand vous êtes absent) ; une option par lien les montre, estompés et signalés. Ni notes, ni
   photos, ni domicile.
+- Profil public (`/u/<nom>`) : depuis les préférences, chacun peut choisir un nom (3 à 30 lettres minuscules,
+  chiffres, `-` ou `_`) pour publier un résumé de ses voyages passés : chiffres clés (voyages, distance, pays,
+  continents, part des terres émergées), distance par mode, pays visités par continent et badges obtenus. Ni
+  trajets, ni dates, ni notes, ni photos, ni domicile, ni voyages à venir ; la page n'est pas indexée par les
+  moteurs de recherche (`noindex`). Vider le nom désactive le profil.
 - Pays : chaque trajet connaît son pays de départ et d'arrivée (code ISO renvoyé par Nominatim, ou déduit
   des coordonnées hors ligne). Couche « Pays visités » sur la carte, drapeaux dans la liste et les fiches.
 - Statistiques (`/stats`) : vue d'ensemble de tous les voyages (chiffres clés, graphiques des trajets et de la

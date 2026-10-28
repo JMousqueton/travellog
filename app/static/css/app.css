@@ -724,3 +724,17 @@ details.history > summary { cursor: pointer; list-style-position: outside; }
 .ticket-message-staff { background: var(--brand-soft); border-color: transparent; }
 .ticket-message-mine { align-self: flex-end; }
 .ticket-status { white-space: nowrap; }
+
+/* Profil public (/u/<nom>) */
+.profile-avatar {
+  display: inline-flex; align-items: center; justify-content: center; width: 3.5rem; height: 3.5rem;
+  border-radius: 50%; background: var(--bs-primary); color: #fff; font-size: 1.6rem; font-weight: 700;
+}
+.profile-modes li { display: grid; grid-template-columns: 7.5rem 1fr 13rem; align-items: center; gap: .5rem .75rem; }
+.profile-modes li > :last-child { text-align: end; }
+@media (max-width: 575.98px) {
+  .profile-modes li { grid-template-columns: 6.5rem 1fr; }
+  .profile-modes li > :last-child { grid-column: 1 / -1; text-align: start; }
+}
+.public-profile .continent-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); align-items: start; }
+.public-profile .continent-tile .country-chips { margin-top: .5rem; }

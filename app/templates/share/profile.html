@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% from "trips/_stats_parts.html" import tiles %}
+{% from "partials/macros.html" import mode_badge, badge_tile, country_chips with context %}
+{% block title %}{{ _("Profil de %(name)s", name=profile.public_name) }}{% endblock %}
+{% block head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block content %}
+<div class="stats-page public-profile">
+  <div class="d-flex flex-wrap align-items-center gap-3 mb-4">
+    <span class="profile-avatar" aria-hidden="true">{{ profile.public_name[0]|upper }}</span>
+    <div>
+      <h1 class="h3 fw-bold mb-0">{{ profile.public_name }}</h1>
+      <p class="small text-body-secondary mb-0">
+        {% if since %}{{ _("Voyage depuis %(year)s", year=since) }}{% else %}{{ _("Aucun voyage pour l'instant") }}{% endif %}</p>
+    </div>
+  </div>
+
+  {% if totals.legs %}
+  <section aria-labelledby="profileTotals" class="mb-5">
+    <h2 class="visually-hidden" id="profileTotals">{{ _("En chiffres") }}</h2>
+    {{ tiles([
+      ('fa-suitcase', totals.count_fmt, _("Voyages")),
+      ('fa-route', totals.total_distance_fmt, _("Distance estimée")),
+      ('fa-earth-europe', totals.countries_fmt, _("Pays et territoires")),
+      ('fa-globe', continents|selectattr('countries')|list|length ~ ' / ' ~ continents|length, _("Continents")),
+      ('fa-percent', totals.land_share_fmt, _("des terres émergées")),
+    ]) }}
+  </section>
+
+  <section aria-labelledby="profileModes" class="mb-5">
+    <h2 class="h5 fw-semibold mb-3" id="profileModes">{{ _("Distance par mode") }}</h2>
+    <div class="card shadow-soft"><div class="card-body p-4">
+      {% set max_km = totals.by_mode|map(attribute='distance_km')|max %}
+      <ul class="list-unstyled mb-0 profile-modes">
+        {% for m in totals.by_mode|sort(attribute='distance_km', reverse=True) %}
+        <li class="{{ 'mb-3' if not loop.last }}">
+          <span>{{ mode_badge(m.mode) }}</span>
+          <span class="year-bar" aria-hidden="true"><span style="width: {{ (100 * m.distance_km / max_km) if max_km else 0 }}%"></span></span>
+          <span class="small text-nowrap"><strong>{{ m.distance_fmt }}</strong>
+            <span class="text-body-secondary">· {{ ngettext("%(num)s trajet", "%(num)s trajets", m.count) }}</span></span>
+        </li>
+        {% endfor %}
+      </ul>
+    </div></div>
+  </section>
+
+  <section aria-labelledby="profileCountries" class="mb-5">
+    <h2 class="h5 fw-semibold mb-3" id="profileCountries">{{ _("Pays visités") }}
+      <span class="text-body-secondary fw-normal small">· {{ totals.countries_fmt }}</span></h2>
+    <ul class="continent-grid list-unstyled mb-0">
+      {% for c in continents if c.countries %}
+      <li class="continent-tile is-visited">
+        <span class="d-flex justify-content-between align-items-baseline gap-2">
+          <span class="fw-semibold">{{ c.name }}</span>
+          <span class="small text-body-secondary text-nowrap">{{ c.countries|length }} / {{ c.total }}</span></span>
+        <span class="coverage-bar" role="img" aria-label="{{ _('%(share)s des pays', share=c.share|percent) }}"><span style="width: {{ (100 * c.share)|round(1) }}%"></span></span>
+        {{ country_chips(c.countries) }}
+      </li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section aria-labelledby="profileBadges" class="mb-5">
+    <h2 class="h5 fw-semibold mb-3" id="profileBadges">{{ _("Badges") }}
+      <span class="text-body-secondary fw-normal small">· {{ badges|length }}</span></h2>
+    {% if badges %}
+    <ul class="badge-grid list-unstyled mb-0">{% for row in badges %}{{ badge_tile(row) }}{% endfor %}</ul>
+    {% else %}
+    <p class="text-body-secondary">{{ _("Aucun badge pour l'instant.") }}</p>
+    {% endif %}
+  </section>
+  {% else %}
+  <div class="empty-state card shadow-soft py-5">
+    <div class="empty-illustration" aria-hidden="true"><i class="fa-solid fa-earth-europe"></i></div>
+    <h2 class="h5">{{ _("Aucun voyage à afficher") }}</h2>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

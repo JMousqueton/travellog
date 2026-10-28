@@ -143,3 +143,27 @@ class ImportAddressForm(FlaskForm):
         Length(max=255, message=_l("L'adresse e-mail est trop longue.")),
     ])
     submit = SubmitField(_l("Envoyer le lien de confirmation"))
+
+
+class PublicProfileForm(FlaskForm):
+    """Nom du profil public (/u/<nom>) ; vide : profil désactivé."""
+
+    public_name = StringField(_l("Nom du profil public"),
+                              filters=[lambda value: value.strip().lower() if value else value], validators=[
+        Optional(),
+        Regexp(r"^[a-z0-9][a-z0-9_-]{2,29}$", message=_l(
+            "De 3 à 30 caractères : lettres sans accents, chiffres, tirets et soulignés, en commençant par une lettre ou un chiffre.")),
+    ])
+    submit = SubmitField(_l("Enregistrer le profil public"))
+
+    def __init__(self, *args, user=None, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def validate_public_name(self, field):
+        if not field.data:
+            return
+        taken = db.session.execute(db.select(User.id).filter(
+            User.public_name == field.data, User.id != (self.user.id if self.user else None))).first()
+        if taken:
+            raise ValidationError(_l("Ce nom est déjà pris."))

@@ -66,6 +66,33 @@
       </div>
     </div>
 
+    <h2 class="h5 fw-semibold mt-5 mb-3" id="public-profile">{{ _("Profil public") }}</h2>
+    <div class="card shadow-soft">
+      <div class="card-body p-4">
+        <p class="text-body-secondary">
+          {{ _("Choisissez un nom pour publier un résumé de vos voyages passés : pays visités, distances par mode et badges obtenus. Ni trajets, ni dates, ni notes, ni photos, ni domicile, ni voyages à venir. Laissez le nom vide pour désactiver le profil.") }}
+        </p>
+        {% if current_user.public_name %}
+        {% set public_url = url_for('share.public_profile', name=current_user.public_name, _external=True) %}
+        <div class="input-group mb-3">
+          <input type="text" class="form-control font-monospace form-control-sm" value="{{ public_url }}" readonly
+                 aria-label="{{ _('Adresse du profil public') }}">
+          <button type="button" class="btn btn-outline-primary btn-sm" data-copy="{{ public_url }}">
+            <i class="fa-regular fa-copy me-1" aria-hidden="true"></i>{{ _("Copier") }}</button>
+          <a class="btn btn-outline-secondary btn-sm" href="{{ public_url }}">
+            <i class="fa-solid fa-arrow-up-right-from-square me-1" aria-hidden="true"></i>{{ _("Voir") }}</a>
+        </div>
+        {% endif %}
+        <form method="post" action="{{ url_for('auth.set_public_profile') }}" novalidate>
+          {{ public_form.hidden_tag() }}
+          {{ field(public_form.public_name, help=_("Adresse : %(url)s", url=request.url_root ~ 'u/…'),
+                   attrs={'autocomplete': 'off', 'autocapitalize': 'none', 'spellcheck': 'false', 'maxlength': 30}) }}
+          <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Enregistrement…') }}">
+            {{ public_form.submit.label.text }}</button>
+        </form>
+      </div>
+    </div>
+
     <h2 class="h5 fw-semibold mt-5 mb-3">{{ _("Mot de passe") }}</h2>
     <div class="card shadow-soft">
       <div class="card-body p-4">
