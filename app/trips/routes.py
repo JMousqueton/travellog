@@ -498,7 +498,7 @@ def journey_ics(journey_id):
 def calendar_feed(token):
     """Abonnement : les applications d'agenda ne se connectent pas, d'où le jeton secret dans l'adresse."""
     user = db.session.execute(db.select(User).filter_by(calendar_token=token)).scalar_one_or_none() if token else None
-    if user is None:
+    if user is None or user.is_blocked:
         abort(404)
     response = _ics_response(list_trips(user), "voyages.ics", current_app.config["SITE_NAME"])
     response.headers["Content-Disposition"] = 'inline; filename="voyages.ics"'

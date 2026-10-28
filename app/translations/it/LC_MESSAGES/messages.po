@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-28 09:06+0000\n"
+"POT-Creation-Date: 2026-10-28 12:01+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -27,12 +27,12 @@ msgid "Authentification requise."
 msgstr "Autenticazione richiesta."
 
 #: app/__init__.py:111
-msgid "Requête invalide"
-msgstr "Richiesta non valida"
-
-#: app/__init__.py:111
 msgid "La requête envoyée n'a pas pu être traitée."
 msgstr "Non è stato possibile elaborare la richiesta."
+
+#: app/__init__.py:111 app/admin/routes.py:79
+msgid "Requête invalide"
+msgstr "Richiesta non valida"
 
 #: app/__init__.py:112
 msgid "Accès refusé"
@@ -80,47 +80,71 @@ msgstr "Si è verificato un errore imprevisto. Riprova più tardi."
 msgid "Autoriser les inscriptions"
 msgstr "Consenti le registrazioni"
 
-#: app/admin/forms.py:8 app/auth/forms.py:62 app/trips/forms.py:67
-#: app/trips/forms.py:105
+#: app/admin/forms.py:8 app/auth/forms.py:62 app/templates/admin/users.html:57
+#: app/trips/forms.py:67 app/trips/forms.py:105
 msgid "Enregistrer"
 msgstr "Salva"
 
-#: app/admin/routes.py:34
+#: app/admin/routes.py:35
 msgid "Vous ne pouvez pas supprimer votre propre compte."
 msgstr "Non puoi eliminare il tuo account."
 
-#: app/admin/routes.py:40
+#: app/admin/routes.py:41
 #, python-format
 msgid "Le compte %(email)s a été supprimé."
 msgstr "L'account %(email)s è stato eliminato."
 
-#: app/admin/routes.py:53
+#: app/admin/routes.py:58
+msgid "Vous ne pouvez pas bloquer votre propre compte."
+msgstr "Non puoi bloccare il tuo account."
+
+#: app/admin/routes.py:62
+#, python-format
+msgid "Le compte %(email)s est bloqué."
+msgstr "L'account %(email)s è bloccato."
+
+#: app/admin/routes.py:63
+#, python-format
+msgid "Le compte %(email)s est débloqué."
+msgstr "L'account %(email)s è sbloccato."
+
+#: app/admin/routes.py:76
+#, python-format
+msgid "Nom du profil public de %(email)s : %(name)s."
+msgstr "Nome del profilo pubblico di %(email)s: %(name)s."
+
+#: app/admin/routes.py:77
+#, python-format
+msgid "Profil public de %(email)s désactivé."
+msgstr "Profilo pubblico di %(email)s disattivato."
+
+#: app/admin/routes.py:93
 msgid "Paramètres enregistrés."
 msgstr "Impostazioni salvate."
 
-#: app/admin/routes.py:116
+#: app/admin/routes.py:156
 #, python-format
 msgid "Réponse envoyée à %(email)s."
 msgstr "Risposta inviata a %(email)s."
 
-#: app/admin/routes.py:132
+#: app/admin/routes.py:172
 msgid "Ticket fermé."
 msgstr "Ticket chiuso."
 
-#: app/admin/routes.py:132
+#: app/admin/routes.py:172
 msgid "Ticket rouvert."
 msgstr "Ticket riaperto."
 
-#: app/admin/routes.py:142
+#: app/admin/routes.py:182
 msgid "Vous recevrez un e-mail à chaque nouveau message de ticket."
 msgstr "Riceverai un'e-mail a ogni nuovo messaggio di ticket."
 
-#: app/admin/routes.py:143
+#: app/admin/routes.py:183
 msgid "Vous ne recevrez plus d'e-mail pour les tickets."
 msgstr "Non riceverai più e-mail per i ticket."
 
 #: app/api/routes.py:126 app/api/routes.py:138
-#: app/templates/admin/users.html:34 app/templates/share/profile.html:39
+#: app/templates/admin/users.html:106 app/templates/share/profile.html:39
 #: app/templates/share/trips.html:52 app/templates/trips/_stats_parts.html:60
 #: app/templates/trips/_stats_parts.html:190 app/templates/trips/list.html:135
 #: app/templates/trips/stats.html:67 app/templates/trips/stats.html:84
@@ -210,7 +234,7 @@ msgstr ""
 "Questo indirizzo è usato per l'importazione via e-mail di un account: non"
 " può essere usato per registrarsi."
 
-#: app/auth/forms.py:56 app/templates/admin/users.html:14
+#: app/auth/forms.py:56 app/templates/admin/users.html:15
 msgid "Langue"
 msgstr "Lingua"
 
@@ -279,11 +303,12 @@ msgstr "Ricevi il link di iscrizione"
 msgid "Envoyer le lien de confirmation"
 msgstr "Invia il link di conferma"
 
-#: app/auth/forms.py:151
+#: app/auth/forms.py:151 app/templates/admin/users.html:45
+#: app/templates/admin/users.html:47
 msgid "Nom du profil public"
 msgstr "Nome del profilo pubblico"
 
-#: app/auth/forms.py:155
+#: app/auth/forms.py:155 app/templates/admin/users.html:51
 msgid ""
 "De 3 à 30 caractères : lettres sans accents, chiffres, tirets et "
 "soulignés, en commençant par une lettre ou un chiffre."
@@ -332,19 +357,23 @@ msgstr "Questo link è già stato usato: l'account esiste. Accedi."
 msgid "Adresse e-mail ou mot de passe incorrect."
 msgstr "Indirizzo e-mail o password errati."
 
-#: app/auth/routes.py:158
+#: app/auth/routes.py:154
+msgid "Ce compte est bloqué. Contactez un administrateur."
+msgstr "Questo account è bloccato. Contatta un amministratore."
+
+#: app/auth/routes.py:160
 msgid "Bon retour parmi nous !"
 msgstr "Bentornato!"
 
-#: app/auth/routes.py:168
+#: app/auth/routes.py:170
 msgid "Vous êtes déconnecté."
 msgstr "Sei stato disconnesso."
 
-#: app/auth/routes.py:198
+#: app/auth/routes.py:200
 msgid "Préférences enregistrées."
 msgstr "Preferenze salvate."
 
-#: app/auth/routes.py:216
+#: app/auth/routes.py:218
 #, python-format
 msgid ""
 "Domicile enregistré : les jours d'absence sont calculés à partir de "
@@ -353,11 +382,11 @@ msgstr ""
 "Residenza salvata: i giorni di assenza sono calcolati a partire da "
 "%(place)s."
 
-#: app/auth/routes.py:227
+#: app/auth/routes.py:229
 msgid "Domicile supprimé."
 msgstr "Residenza eliminata."
 
-#: app/auth/routes.py:240
+#: app/auth/routes.py:242
 msgid ""
 "Profil public activé : toute personne qui connaît son adresse voit le "
 "résumé de vos voyages."
@@ -365,23 +394,23 @@ msgstr ""
 "Profilo pubblico attivato: chiunque ne conosca l'indirizzo vede il "
 "riepilogo dei tuoi viaggi."
 
-#: app/auth/routes.py:243
+#: app/auth/routes.py:245
 msgid "Profil public désactivé."
 msgstr "Profilo pubblico disattivato."
 
-#: app/auth/routes.py:255
+#: app/auth/routes.py:257
 msgid "Mot de passe actuel incorrect."
 msgstr "La password attuale non è corretta."
 
-#: app/auth/routes.py:263
+#: app/auth/routes.py:265
 msgid "Mot de passe modifié. Vos autres sessions ont été déconnectées."
 msgstr "Password modificata. Le tue altre sessioni sono state disconnesse."
 
-#: app/auth/routes.py:276
+#: app/auth/routes.py:278
 msgid "Mot de passe incorrect."
 msgstr "Password non corretta."
 
-#: app/auth/routes.py:280
+#: app/auth/routes.py:282
 msgid ""
 "Vous êtes le seul administrateur : désignez-en un autre avant de "
 "supprimer votre compte."
@@ -389,11 +418,11 @@ msgstr ""
 "Sei l'unico amministratore: nominane un altro prima di eliminare il tuo "
 "account."
 
-#: app/auth/routes.py:288
+#: app/auth/routes.py:290
 msgid "Votre compte et tous vos voyages ont été supprimés."
 msgstr "Il tuo account e tutti i tuoi viaggi sono stati eliminati."
 
-#: app/auth/routes.py:299
+#: app/auth/routes.py:301
 msgid ""
 "Nouvelle adresse d'abonnement créée. L'ancienne adresse ne fonctionne "
 "plus."
@@ -401,28 +430,28 @@ msgstr ""
 "Nuovo indirizzo di abbonamento creato. Il vecchio indirizzo non funziona "
 "più."
 
-#: app/auth/routes.py:308
+#: app/auth/routes.py:310
 msgid "Abonnement agenda désactivé."
 msgstr "Abbonamento al calendario disattivato."
 
-#: app/auth/routes.py:332
+#: app/auth/routes.py:334
 msgid "Cette adresse est déjà autorisée pour votre compte."
 msgstr "Questo indirizzo è già autorizzato per il tuo account."
 
-#: app/auth/routes.py:334
+#: app/auth/routes.py:336
 #, python-format
 msgid "Vous avez atteint le nombre maximal d'adresses (%(max)s)."
 msgstr "Hai raggiunto il numero massimo di indirizzi (%(max)s)."
 
-#: app/auth/routes.py:338 app/auth/routes.py:370
+#: app/auth/routes.py:340 app/auth/routes.py:372
 msgid "Cette adresse ne peut pas être ajoutée."
 msgstr "Questo indirizzo non può essere aggiunto."
 
-#: app/auth/routes.py:346
+#: app/auth/routes.py:348
 msgid "Confirmez votre adresse d'import pour Voyage Voyage"
 msgstr "Conferma il tuo indirizzo di importazione per Voyage Voyage"
 
-#: app/auth/routes.py:348
+#: app/auth/routes.py:350
 #, python-format
 msgid ""
 "Un lien de confirmation a été envoyé à %(email)s (valable %(minutes)s "
@@ -431,7 +460,7 @@ msgstr ""
 "È stato inviato un link di conferma a %(email)s (valido %(minutes)s "
 "minuti)."
 
-#: app/auth/routes.py:361
+#: app/auth/routes.py:363
 msgid ""
 "Ce lien de confirmation est invalide ou a expiré. Demandez-en un nouveau "
 "depuis vos préférences."
@@ -439,12 +468,12 @@ msgstr ""
 "Questo link di conferma non è valido o è scaduto. Richiedine uno nuovo "
 "dalle preferenze."
 
-#: app/auth/routes.py:366
+#: app/auth/routes.py:368
 #, python-format
 msgid "Adresse %(email)s déjà confirmée."
 msgstr "Indirizzo %(email)s già confermato."
 
-#: app/auth/routes.py:374
+#: app/auth/routes.py:376
 #, python-format
 msgid ""
 "Adresse %(email)s confirmée : ses confirmations de voyage peuvent être "
@@ -453,16 +482,16 @@ msgstr ""
 "Indirizzo %(email)s confermato: le sue conferme di viaggio possono essere"
 " inoltrate all'indirizzo di importazione."
 
-#: app/auth/routes.py:388
+#: app/auth/routes.py:390
 #, python-format
 msgid "Adresse %(email)s retirée."
 msgstr "Indirizzo %(email)s rimosso."
 
-#: app/auth/routes.py:415
+#: app/auth/routes.py:417
 msgid "Réinitialisation de votre mot de passe"
 msgstr "Reimpostazione della password"
 
-#: app/auth/routes.py:418
+#: app/auth/routes.py:420
 msgid ""
 "Si un compte correspond à cette adresse, un e-mail contenant un lien de "
 "réinitialisation vient d'être envoyé."
@@ -470,7 +499,7 @@ msgstr ""
 "Se esiste un account con questo indirizzo, è stata appena inviata "
 "un'e-mail con un link di reimpostazione."
 
-#: app/auth/routes.py:428
+#: app/auth/routes.py:430
 msgid ""
 "Ce lien de réinitialisation est invalide ou a expiré. Demandez-en un "
 "nouveau."
@@ -478,7 +507,7 @@ msgstr ""
 "Questo link di reimpostazione non è valido o è scaduto. Richiedine uno "
 "nuovo."
 
-#: app/auth/routes.py:436
+#: app/auth/routes.py:438
 msgid "Mot de passe modifié. Vous pouvez vous connecter."
 msgstr "Password modificata. Ora puoi accedere."
 
@@ -543,8 +572,8 @@ msgstr "Reimposta filtri"
 msgid "Ajouter un voyage"
 msgstr "Aggiungi un viaggio"
 
-#: app/i18n.py:104 app/templates/trips/detail.html:31
-#: app/templates/trips/list.html:145
+#: app/i18n.py:104 app/templates/admin/users.html:37
+#: app/templates/trips/detail.html:31 app/templates/trips/list.html:145
 msgid "Modifier"
 msgstr "Modifica"
 
@@ -836,17 +865,17 @@ msgstr ""
 "Pulizia della cache di geocodifica, dei link di condivisione scaduti, del"
 " registro delle importazioni via e-mail e dello storico delle attività"
 
-#: app/mail_import/processing.py:112
+#: app/mail_import/processing.py:114
 #, python-format
 msgid "Import impossible : %(subject)s"
 msgstr "Importazione impossibile: %(subject)s"
 
-#: app/mail_import/processing.py:114
+#: app/mail_import/processing.py:116
 #, python-format
 msgid "Voyages importés : %(subject)s"
 msgstr "Viaggi importati: %(subject)s"
 
-#: app/mail_import/processing.py:116
+#: app/mail_import/processing.py:118
 #, python-format
 msgid "Voyages déjà enregistrés : %(subject)s"
 msgstr "Viaggi già registrati: %(subject)s"
@@ -1748,23 +1777,90 @@ msgstr "Nessun ticket."
 msgid "Liste des utilisateurs"
 msgstr "Elenco degli utenti"
 
-#: app/templates/admin/users.html:13
+#: app/templates/admin/users.html:13 app/templates/auth/profile.html:69
+msgid "Profil public"
+msgstr "Profilo pubblico"
+
+#: app/templates/admin/users.html:14
 msgid "Inscription"
 msgstr "Registrazione"
 
-#: app/templates/admin/users.html:16 app/templates/trips/list.html:117
+#: app/templates/admin/users.html:17 app/templates/trips/list.html:117
 msgid "Actions"
 msgstr "Azioni"
 
-#: app/templates/admin/users.html:24
+#: app/templates/admin/users.html:25
 msgid "Admin"
 msgstr "Admin"
 
-#: app/templates/admin/users.html:33
+#: app/templates/admin/users.html:26
+msgid "Bloqué"
+msgstr "Bloccato"
+
+#: app/templates/admin/users.html:31 app/templates/admin/users.html:32
+msgid "Profil masqué : compte bloqué"
+msgstr "Profilo nascosto: account bloccato"
+
+#: app/templates/admin/users.html:36
+#, python-format
+msgid "Modifier le nom du profil public de %(email)s"
+msgstr "Modifica il nome del profilo pubblico di %(email)s"
+
+#: app/templates/admin/users.html:52
+msgid "Laissez vide pour désactiver le profil public."
+msgstr "Lascia vuoto per disattivare il profilo pubblico."
+
+#: app/templates/admin/users.html:71
+msgid "Débloquer"
+msgstr "Sblocca"
+
+#: app/templates/admin/users.html:72
+#, python-format
+msgid "Débloquer le compte %(email)s"
+msgstr "Sblocca l'account %(email)s"
+
+#: app/templates/admin/users.html:77
+#, python-format
+msgid "Bloquer le compte %(email)s"
+msgstr "Blocca l'account %(email)s"
+
+#: app/templates/admin/users.html:77 app/templates/admin/users.html:97
+msgid "Bloquer"
+msgstr "Blocca"
+
+#: app/templates/admin/users.html:85
+msgid "Bloquer ce compte ?"
+msgstr "Bloccare questo account?"
+
+#: app/templates/admin/users.html:88
+msgid "Les sessions ouvertes sont fermées et la connexion est refusée."
+msgstr "Le sessioni aperte vengono chiuse e l'accesso viene rifiutato."
+
+#: app/templates/admin/users.html:89
+msgid ""
+"Le profil public, les liens de partage et le calendrier deviennent "
+"inaccessibles."
+msgstr ""
+"Il profilo pubblico, i link di condivisione e il calendario non sono più "
+"accessibili."
+
+#: app/templates/admin/users.html:90
+msgid "Les e-mails transférés ne sont plus importés."
+msgstr "Le e-mail inoltrate non vengono più importate."
+
+#: app/templates/admin/users.html:92
+msgid ""
+"Aucune donnée n'est supprimée : le compte peut être débloqué à tout "
+"moment."
+msgstr ""
+"Nessun dato viene eliminato: l'account può essere sbloccato in qualsiasi "
+"momento."
+
+#: app/templates/admin/users.html:105
 msgid "Supprimer ce compte ?"
 msgstr "Eliminare questo account?"
 
-#: app/templates/admin/users.html:35
+#: app/templates/admin/users.html:107
 #, python-format
 msgid "Supprimer le compte %(email)s"
 msgstr "Elimina l'account %(email)s"
@@ -1961,10 +2057,6 @@ msgstr "Suggerimenti di luoghi"
 #: app/templates/auth/profile.html:63
 msgid "Supprimer le domicile"
 msgstr "Elimina la residenza"
-
-#: app/templates/auth/profile.html:69
-msgid "Profil public"
-msgstr "Profilo pubblico"
 
 #: app/templates/auth/profile.html:73
 msgid ""
@@ -2207,7 +2299,7 @@ msgstr "Attiva/disattiva tema chiaro o scuro"
 msgid "Ouvrir le menu"
 msgstr "Apri menu"
 
-#: app/templates/admin/users.html:15 app/templates/base.html:124
+#: app/templates/admin/users.html:16 app/templates/base.html:124
 #: app/templates/map.html:45 app/templates/map.html:140
 #: app/templates/share/profile.html:21
 #: app/templates/trips/_stats_parts.html:134
@@ -2277,6 +2369,7 @@ msgstr "Eliminare questo viaggio?"
 msgid "Cette action est définitive."
 msgstr "Questa azione è definitiva."
 
+#: app/templates/admin/users.html:56 app/templates/admin/users.html:95
 #: app/templates/base.html:234 app/templates/transfer/preview.html:73
 #: app/templates/trips/form.html:157 app/templates/trips/journey.html:29
 msgid "Annuler"

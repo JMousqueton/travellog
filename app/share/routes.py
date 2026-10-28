@@ -127,7 +127,7 @@ def public_profile(name):
     from ..trips.stats import compute_stats, happened
 
     user = db.session.execute(db.select(User).filter_by(public_name=name.lower())).scalar_one_or_none()
-    if user is None:
+    if user is None or user.is_blocked:
         abort(404)
     trips = happened(user.trips.all())
     badges = [row for row in compute_badges(trips) if row["earned"]]

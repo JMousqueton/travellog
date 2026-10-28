@@ -150,6 +150,8 @@ def login():
         ).scalar_one_or_none()
         if user is None or not user.check_password(form.password.data):
             flash(_("Adresse e-mail ou mot de passe incorrect."), "danger")
+        elif user.is_blocked:
+            flash(_("Ce compte est bloqué. Contactez un administrateur."), "danger")
         else:
             login_user(user, remember=form.remember.data)
             target = request.args.get("next", "")

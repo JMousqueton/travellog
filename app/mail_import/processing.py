@@ -44,6 +44,8 @@ def process(raw, dry_run=False):
     user = account_for(sender)
     if not sender or user is None or user.email == current_app.config["MAIL_IMPORT_ERROR_EMAIL"]:
         return _finish(Outcome("ignored", reason="expéditeur inconnu"), key, sender, subject, None, dry_run)
+    if user.is_blocked:
+        return _finish(Outcome("ignored", reason="compte bloqué"), key, sender, subject, user, dry_run)
     if current_app.config["MAIL_IMPORT_REQUIRE_DKIM"] and not dkim_aligned(raw, sender.rpartition("@")[2]):
         return _finish(Outcome("ignored", reason="signature DKIM absente, invalide ou d'un autre domaine"),
                        key, sender, subject, user, dry_run)

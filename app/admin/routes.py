@@ -4,6 +4,7 @@ from flask import abort, flash, redirect, render_template, request, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
 
+from ..auth.forms import PublicProfileForm
 from ..extensions import db
 from ..mail_import.processing import forget_user
 from ..models import Setting, Ticket, Trip, User, registration_open, utcnow
@@ -38,6 +39,45 @@ def delete_user(user_id):
     db.session.delete(user)
     db.session.commit()
     flash(_("Le compte %(email)s a été supprimé.", email=email), "success")
+    return redirect(url_for("admin.users"))
+
+
+def _user_or_404(user_id):
+    user = db.session.get(User, user_id)
+    if user is None:
+        abort(404)
+    return user
+
+
+@bp.route("/users/<int:user_id>/block", methods=["POST"])
+@admin_required
+def toggle_block(user_id):
+    """Bloque ou débloque un compte : bloqué, il ne peut plus se connecter et ses sessions sont fermées."""
+    user = _user_or_404(user_id)
+    if user.id == current_user.id:
+        flash(_("Vous ne pouvez pas bloquer votre propre compte."), "danger")
+        return redirect(url_for("admin.users"))
+    user.is_blocked = not user.is_blocked
+    db.session.commit()
+    flash(_("Le compte %(email)s est bloqué.", email=user.email) if user.is_blocked
+          else _("Le compte %(email)s est débloqué.", email=user.email), "success")
+    return redirect(url_for("admin.users"))
+
+
+@bp.route("/users/<int:user_id>/name", methods=["POST"])
+@admin_required
+def set_public_name(user_id):
+    """Change ou retire (nom vide) le nom du profil public d'un utilisateur."""
+    user = _user_or_404(user_id)
+    form = PublicProfileForm(prefix="name", user=user)
+    if form.validate_on_submit():
+        user.public_name = form.public_name.data or None
+        db.session.commit()
+        flash(_("Nom du profil public de %(email)s : %(name)s.", email=user.email, name=user.public_name)
+              if user.public_name else _("Profil public de %(email)s désactivé.", email=user.email), "success")
+    else:
+        for error in form.public_name.errors or [_("Requête invalide")]:
+            flash(error, "danger")
     return redirect(url_for("admin.users"))
 
 

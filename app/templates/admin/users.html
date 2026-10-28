@@ -10,6 +10,7 @@
       <thead>
         <tr>
           <th scope="col">{{ _("Adresse e-mail") }}</th>
+          <th scope="col">{{ _("Profil public") }}</th>
           <th scope="col">{{ _("Inscription") }}</th>
           <th scope="col">{{ _("Langue") }}</th>
           <th scope="col" class="text-end">{{ _("Voyages") }}</th>
@@ -22,12 +23,83 @@
           <td>
             {{ user.email }}
             {% if user.is_admin %}<span class="badge text-bg-primary ms-1">{{ _("Admin") }}</span>{% endif %}
+            {% if user.is_blocked %}<span class="badge text-bg-danger ms-1">{{ _("Bloqué") }}</span>{% endif %}
+          </td>
+          <td>
+            <span class="d-inline-flex align-items-center gap-1">
+              {% if user.public_name and user.is_blocked %}
+              <span class="text-body-secondary text-decoration-line-through" title="{{ _('Profil masqué : compte bloqué') }}">{{ user.public_name }}</span>
+              <span class="visually-hidden">{{ _("Profil masqué : compte bloqué") }}</span>
+              {% elif user.public_name %}<a href="{{ url_for('share.public_profile', name=user.public_name) }}">{{ user.public_name }}</a>
+              {% else %}<span class="text-body-secondary">—</span>{% endif %}
+              <button type="button" class="btn btn-icon btn-sm" data-bs-toggle="modal" data-bs-target="#nameModal-{{ user.id }}"
+                      aria-label="{{ _('Modifier le nom du profil public de %(email)s', email=user.email) }}"
+                      title="{{ _('Modifier') }}">
+                <i class="fa-solid fa-pen" aria-hidden="true"></i></button>
+            </span>
+            <div class="modal fade" id="nameModal-{{ user.id }}" tabindex="-1" aria-labelledby="nameModalTitle-{{ user.id }}" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <form class="modal-content" method="post" action="{{ url_for('admin.set_public_name', user_id=user.id) }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <div class="modal-body p-4">
+                    <h2 class="h5 mb-1" id="nameModalTitle-{{ user.id }}">{{ _("Nom du profil public") }}</h2>
+                    <p class="text-body-secondary small mb-3">{{ user.email }}</p>
+                    <label class="visually-hidden" for="name-{{ user.id }}">{{ _("Nom du profil public") }}</label>
+                    <input class="form-control" type="text" id="name-{{ user.id }}" name="name-public_name"
+                           value="{{ user.public_name or '' }}" maxlength="30" autocomplete="off" spellcheck="false">
+                    <div class="form-text">
+                      {{ _("De 3 à 30 caractères : lettres sans accents, chiffres, tirets et soulignés, en commençant par une lettre ou un chiffre.") }}
+                      {{ _("Laissez vide pour désactiver le profil public.") }}
+                    </div>
+                  </div>
+                  <div class="modal-footer border-0 pt-0 gap-2 pb-4 px-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
+                    <button type="submit" class="btn btn-primary rounded-pill px-4">{{ _("Enregistrer") }}</button>
+                  </div>
+                </form>
+              </div>
+            </div>
           </td>
           <td class="text-nowrap">{{ user.created_at|day }}</td>
           <td>{{ user.locale }}</td>
           <td class="text-end">{{ trip_count }}</td>
           <td class="text-end">
             {% if user.id != current_user.id %}
+            {% if user.is_blocked %}
+            <form method="post" action="{{ url_for('admin.toggle_block', user_id=user.id) }}" class="d-inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-icon btn-sm" title="{{ _('Débloquer') }}"
+                      aria-label="{{ _('Débloquer le compte %(email)s', email=user.email) }}">
+                <i class="fa-solid fa-lock-open" aria-hidden="true"></i></button>
+            </form>
+            {% else %}
+            <button type="button" class="btn btn-icon btn-sm text-warning" data-bs-toggle="modal" data-bs-target="#blockModal-{{ user.id }}"
+                    title="{{ _('Bloquer') }}" aria-label="{{ _('Bloquer le compte %(email)s', email=user.email) }}">
+              <i class="fa-solid fa-lock" aria-hidden="true"></i></button>
+            <div class="modal fade text-start" id="blockModal-{{ user.id }}" tabindex="-1" aria-labelledby="blockModalTitle-{{ user.id }}" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <form class="modal-content" method="post" action="{{ url_for('admin.toggle_block', user_id=user.id) }}">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <div class="modal-body p-4">
+                    <div class="modal-icon modal-icon-warning mb-3" aria-hidden="true"><i class="fa-solid fa-lock"></i></div>
+                    <h2 class="h5 mb-1 text-center" id="blockModalTitle-{{ user.id }}">{{ _("Bloquer ce compte ?") }}</h2>
+                    <p class="fw-semibold text-center mb-3">{{ user.email }}</p>
+                    <ul class="text-body-secondary small mb-2 ps-3">
+                      <li>{{ _("Les sessions ouvertes sont fermées et la connexion est refusée.") }}</li>
+                      <li>{{ _("Le profil public, les liens de partage et le calendrier deviennent inaccessibles.") }}</li>
+                      <li>{{ _("Les e-mails transférés ne sont plus importés.") }}</li>
+                    </ul>
+                    <p class="text-body-secondary small mb-0">{{ _("Aucune donnée n'est supprimée : le compte peut être débloqué à tout moment.") }}</p>
+                  </div>
+                  <div class="modal-footer border-0 pt-0 justify-content-center gap-2 pb-4">
+                    <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
+                    <button type="submit" class="btn btn-warning rounded-pill px-4">
+                      <i class="fa-solid fa-lock me-1" aria-hidden="true"></i>{{ _("Bloquer") }}</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+            {% endif %}
             <button type="button" class="btn btn-icon btn-sm text-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
                     data-delete-url="{{ url_for('admin.delete_user', user_id=user.id) }}"
                     data-delete-title="{{ _('Supprimer ce compte ?') }}"

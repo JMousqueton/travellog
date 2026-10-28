@@ -125,3 +125,76 @@ def test_admin_can_reopen_registration(client, db):
 def test_settings_requires_admin(auth_client):
     assert auth_client.get("/admin/settings").status_code == 403
     assert auth_client.post("/admin/settings", data={}).status_code == 403
+
+
+def test_admin_blocks_user_and_ends_their_session(app, db, user):
+    from app.models import ShareLink
+
+    user.public_name = "alice"
+    user.calendar_token = "cal-token"
+    link = ShareLink(user_id=user.id)
+    db.session.add(link)
+    db.session.commit()
+    user_client = app.test_client()
+    login(user_client)
+    assert user_client.get("/trips").status_code == 200
+
+    admin = app.test_client()
+    admin_client(admin, db)
+    assert "Bloquer ce compte ?" in admin.get("/admin/").text
+    assert admin.post(f"/admin/users/{user.id}/block").status_code == 302
+    db.session.refresh(user)
+    assert user.is_blocked
+    page = admin.get("/admin/").text
+    assert "Bloqué" in page
+    assert 'href="/u/alice"' not in page and "Profil masqué : compte bloqué" in page
+
+    assert user_client.get("/trips").status_code == 302  # session fermée
+    response = login(app.test_client())
+    assert "Ce compte est bloqué" in response.text
+    anonymous = app.test_client()
+    for url in ("/u/alice", f"/s/{link.token}", f"/api/shared/{link.token}/trips", "/calendar/cal-token.ics"):
+        assert anonymous.get(url).status_code == 404, url
+
+    admin.post(f"/admin/users/{user.id}/block")
+    db.session.refresh(user)
+    assert not user.is_blocked
+    assert anonymous.get("/u/alice").status_code == 200
+    assert login(app.test_client()).status_code == 302
+
+
+def test_admin_cannot_block_self(client, db):
+    admin = admin_client(client, db)
+    client.post(f"/admin/users/{admin.id}/block")
+    db.session.refresh(admin)
+    assert not admin.is_blocked
+
+
+def test_block_and_rename_require_admin(auth_client, db, other_user):
+    assert auth_client.post(f"/admin/users/{other_user.id}/block").status_code == 403
+    assert auth_client.post(f"/admin/users/{other_user.id}/name", data={"name-public_name": "x-bob"}).status_code == 403
+    db.session.refresh(other_user)
+    assert not other_user.is_blocked and other_user.public_name is None
+
+
+def test_admin_sets_and_clears_public_name(client, db, user):
+    admin_client(client, db)
+    client.post(f"/admin/users/{user.id}/name", data={"name-public_name": "  Alice-Voyage "})
+    db.session.refresh(user)
+    assert user.public_name == "alice-voyage"
+    assert "alice-voyage" in client.get("/admin/").text
+    client.post(f"/admin/users/{user.id}/name", data={"name-public_name": ""})
+    db.session.refresh(user)
+    assert user.public_name is None
+
+
+def test_admin_rename_rejects_invalid_or_taken_name(client, db, user, other_user):
+    admin_client(client, db)
+    other_user.public_name = "bob"
+    db.session.commit()
+    for name in ("bob", "a", "pas d'espace"):
+        client.post(f"/admin/users/{user.id}/name", data={"name-public_name": name})
+        db.session.refresh(user)
+        assert user.public_name is None, name
+    response = client.post(f"/admin/users/{user.id}/name", data={"name-public_name": "bob"}, follow_redirects=True)
+    assert "Ce nom est déjà pris" in response.text

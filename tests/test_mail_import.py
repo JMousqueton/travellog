@@ -455,3 +455,11 @@ def test_maintenance_purges_old_import_log_but_keeps_failures(app, db, user):
     db.session.commit()
     assert "2 e-mail(s) d'import" in run_job("maintenance").summary
     assert sorted(db.session.execute(db.select(MailImport.message_key)).scalars()) == ["3", "4"]
+
+
+def test_mail_from_blocked_account_is_ignored(app, db, user):
+    user.is_blocked = True
+    db.session.commit()
+    outcome = mail_import.process(make_mail(html=json_ld(flight("CDG", "BCN", "2026-03-12T10:05:00+01:00"))).as_bytes())
+    assert outcome.status == "ignored" and outcome.reason == "compte bloqué"
+    assert user.trips.count() == 0

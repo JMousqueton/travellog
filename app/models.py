@@ -34,6 +34,8 @@ class User(UserMixin, db.Model):
     locale = db.Column(db.String(5), nullable=False, default="fr", server_default="fr")
     theme = db.Column(db.String(10), nullable=True)
     is_admin = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
+    # Compte bloqué par un administrateur : plus de connexion, ni de pages publiques, ni d'import par e-mail.
+    is_blocked = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
     # Domicile : point de départ et de retour pour le calcul des jours d'absence.
     home_name = db.Column(db.String(255), nullable=True)
     home_lat = db.Column(db.Float, nullable=True)
@@ -128,12 +130,12 @@ def read_signup_token(token):
 
 @login_manager.user_loader
 def load_user(session_id):
-    """Les sessions ouvertes avant un changement de mot de passe ne sont plus acceptées."""
+    """Les sessions ouvertes avant un changement de mot de passe, ou d'un compte bloqué, ne sont plus acceptées."""
     user_id, _, fingerprint = str(session_id).partition(".")
     if not user_id.isdigit():
         return None
     user = db.session.get(User, int(user_id))
-    if user is None or not hmac.compare_digest(fingerprint, user.password_fingerprint):
+    if user is None or user.is_blocked or not hmac.compare_digest(fingerprint, user.password_fingerprint):
         return None
     return user
 
@@ -426,9 +428,9 @@ class ShareLink(db.Model):
 
     @classmethod
     def active(cls, token):
-        """Lien valide (existant et non expiré) correspondant au jeton, sinon None."""
+        """Lien valide (existant, non expiré, compte non bloqué) correspondant au jeton, sinon None."""
         link = db.session.execute(db.select(cls).filter_by(token=token)).scalar_one_or_none()
-        return None if link is None or link.is_expired else link
+        return None if link is None or link.is_expired or link.user.is_blocked else link
 
 
 class Photo(db.Model):

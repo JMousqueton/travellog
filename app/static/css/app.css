@@ -430,6 +430,7 @@ body.app-layout { height: 100dvh; display: flex; flex-direction: column; overflo
 .toast.showing, .toast.show { animation: toast-in .35s var(--ease); }
 .modal-content { border-radius: var(--radius-lg); border: 0; background: var(--surface-raised); box-shadow: var(--shadow-strong); }
 .modal-icon { width: 60px; height: 60px; margin: 0 auto; display: grid; place-items: center; border-radius: 20px; background: rgba(220, 38, 38, .12); color: #dc2626; font-size: 1.5rem; }
+.modal-icon-warning { background: rgba(217, 119, 6, .12); color: #d97706; }
 
 /* ==========================================================================
    Animations
