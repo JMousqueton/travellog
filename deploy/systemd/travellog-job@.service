@@ -1,0 +1,24 @@
+# Voyage Voyage — tâche périodique « flask jobs run %i », lancée par son timer (travellog-<tâche>.timer).
+# Résultat noté dans l'administration (onglet Tâches) ; journal : journalctl -u travellog-job@%i
+
+[Unit]
+Description=Voyage Voyage - tâche %i
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=ubuntu
+Group=ubuntu
+WorkingDirectory=/opt/travel
+# Mêmes valeurs propres à la production que travellog.service ; le reste vient de /opt/travel/.env.
+Environment=PYTHONUNBUFFERED=1
+Environment=FLASK_CONFIG=production
+Environment=APP_BASE_URL=https://voyage-voyage.app
+ExecStart=/opt/travel/.venv/bin/flask jobs run %i
+TimeoutStartSec=30min
+Nice=10
+
+NoNewPrivileges=true
+PrivateTmp=true
+SyslogIdentifier=travellog-job

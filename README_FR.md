@@ -89,7 +89,7 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   est mémorisé dans le navigateur.
 - Import par e-mail : l'utilisateur transfère ses confirmations de vol ou de train à l'adresse d'import
   (`IMPORT_ADDRESS`, indiquée sur la page d'import) depuis l'adresse de son compte. `flask mail-import`, lancé
-  toutes les 5 minutes par cron, relève la boîte IMAP : l'expéditeur doit être un compte et l'e-mail porter
+  toutes les 5 minutes par un timer systemd, relève la boîte IMAP : l'expéditeur doit être un compte et l'e-mail porter
   une signature DKIM valide du domaine de l'expéditeur (sinon n'importe qui pourrait usurper l'adresse From).
   Les trajets sont lus dans les données schema.org (JSON-LD) que la plupart des compagnies et agences
   ajoutent (vols, trains, bus, bateaux), sinon dans le texte (numéro de vol, codes d'aéroports, date en cinq
@@ -202,12 +202,28 @@ Derrière un proxy inverse, définissez `PROXY_FIX_COUNT` (sinon la limitation d
 proxy pour tout le monde) et `APP_BASE_URL`. Avec plusieurs workers, donnez à la limitation de débit un
 stockage partagé (`RATELIMIT_STORAGE_URI=redis://…`).
 
-Tâches périodiques conseillées (cron) :
+Les tâches périodiques sont des timers systemd (`deploy/systemd/`), chacune lancée par `flask jobs run <tâche>`
+qui note chaque exécution (début, fin, résultat, trace en cas d'échec) dans la base :
+
+| Tâche | Timer | Rôle |
+|---|---|---|
+| `mail-import` | toutes les 5 minutes | import par e-mail (sans objet tant que `IMAP_SERVER` est vide) |
+| `backup` | chaque nuit à 3 h 15 | sauvegarde complète (`flask backup create`) |
+| `maintenance` | chaque nuit à 4 h 30 | purge le cache de géocodage expiré, les liens de partage expirés et l'historique des tâches de plus de 14 jours |
 
 ```bash
-flask geocode purge        # supprime les entrées expirées du cache de géocodage (--all : tout)
-flask purge-share-links    # supprime les liens de partage expirés
+sudo deploy/systemd/install.sh     # installe et démarre les timers, retire les lignes cron qu'ils remplacent
+flask jobs list                    # dernière exécution de chaque tâche
+systemctl list-timers 'travellog-*'
+journalctl -u 'travellog-job@*'
 ```
+
+L'onglet « Tâches » de l'administration (`/admin/jobs`) montre la dernière exécution de chaque tâche, signale
+les tâches en échec ou en retard (aucun succès depuis deux fois leur intervalle), compte les imports par e-mail
+des dernières 24 heures et liste les dernières exécutions avec leur trace. Un timer ne relance jamais une tâche
+encore en cours : plus besoin de fichier verrou. Les commandes individuelles restent disponibles pour un usage
+manuel (`flask geocode purge [--all]`, `flask purge-share-links`, `flask mail-import --dry-run`…), sans être
+notées.
 
 Sauvegardes complètes du serveur (base SQLite + photos, archive `.tar.gz` avec manifeste) :
 
@@ -218,18 +234,11 @@ flask backup restore instance/backups/travel-backup-AAAAMMJJ-HHMMSS.tar.gz   # a
 ```
 
 La restauration vérifie l'archive (chemins, intégrité SQLite, manifeste), sauvegarde d'abord l'état actuel,
-puis applique les migrations si l'archive est plus ancienne que le code. Exemple de tâche nocturne (cron) :
+puis applique les migrations si l'archive est plus ancienne que le code. La sauvegarde nocturne est la tâche
+`backup` ci-dessus.
 
-```
-15 3 * * * cd /opt/travel && .venv/bin/flask backup create >> instance/backups/backup.log 2>&1
-```
-
-Import par e-mail (réglages IMAP dans `.env` : `IMAP_SERVER`, `IMAP_USERNAME`, `IMAP_PASSWORD`…), toutes les
-5 minutes ; `flock` empêche deux relevés simultanés :
-
-```
-*/5 * * * * cd /opt/travel && flock -n instance/mail-import.lock .venv/bin/flask mail-import >> instance/mail-import.log 2>&1
-```
+Import par e-mail : réglages IMAP dans `.env` (`IMAP_SERVER`, `IMAP_USERNAME`, `IMAP_PASSWORD`…), relevé par la
+tâche `mail-import`.
 
 Copiez régulièrement `instance/backups` sur une autre machine : une sauvegarde sur le même disque ne protège
 pas d'une panne de celui-ci. Chaque utilisateur peut aussi télécharger sa propre sauvegarde (trajets + photos,

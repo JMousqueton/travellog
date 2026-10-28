@@ -268,6 +268,33 @@ def register_cli(app):
         db.session.commit()
         click.echo(f"{result.rowcount} lien(s) de partage expiré(s) supprimé(s).")
 
+    @app.cli.group("jobs")
+    def jobs_group():
+        """Tâches périodiques suivies dans l'administration (timers systemd : deploy/systemd)."""
+
+    from .jobs import JOBS
+
+    @jobs_group.command("run")
+    @click.argument("name", type=click.Choice(sorted(JOBS)))
+    def jobs_run(name):
+        """Exécute une tâche et note son résultat (onglet Tâches de l'administration)."""
+        from .jobs import run_job
+
+        record = run_job(name)
+        click.echo(f"{name} : {record.status}" + (f" — {record.summary}" if record.summary else ""))
+        if record.status == "failed":
+            raise SystemExit(1)
+
+    @jobs_group.command("list")
+    def jobs_list():
+        """Dernière exécution de chaque tâche."""
+        from .jobs import job_overview
+
+        for job, last, _last_ok, late, failures in job_overview():
+            state = f"{last.status} le {last.started_at:%Y-%m-%d %H:%M}" if last else "jamais exécutée"
+            click.echo(f"{job.name:12} {state}{'  EN RETARD' if late else ''}"
+                       f"{f'  {failures} échec(s) sur 24 h' if failures else ''}")
+
     @app.cli.group("translate")
     def translate():
         """Workflow de traduction (pybabel)."""

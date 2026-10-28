@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Tâches") }} · {{ _("Administration") }}{% endblock %}
+{% macro run_status(status) %}
+{%- set label, style = {'running': (_("En cours"), 'info'), 'ok': (_("Réussie"), 'success'),
+                         'failed': (_("Échec"), 'danger'), 'skipped': (_("Désactivée"), 'secondary')}[status] -%}
+<span class="badge rounded-pill text-bg-{{ style }}">{{ label }}</span>
+{%- endmacro %}
+{% block content %}
+{% include "admin/_nav.html" %}
+<h2 class="visually-hidden">{{ _("Tâches") }}</h2>
+<div class="row g-3 mb-4">
+  {% for job, last, last_ok, late, failures in overview %}
+  <div class="col-md-6 col-xl-4">
+    <div class="card shadow-soft h-100{% if last and (late or last.status == 'failed') %} border-danger{% endif %}">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-start gap-2 mb-1">
+          <h3 class="h6 fw-semibold mb-0"><code>{{ job.name }}</code></h3>
+          {% if last %}{{ run_status(last.status) }}{% endif %}
+        </div>
+        <p class="small text-body-secondary mb-2">{{ job.description }}</p>
+        {% if last %}
+        <p class="small mb-1">{{ _("Dernière exécution") }} : {{ last.started_at|moment }}
+          {%- if last.duration is not none %} · {{ last.duration|round(1)|number }} s{% endif %}</p>
+        {% if last.summary %}<p class="small text-body-secondary mb-1 text-break">{{ last.summary }}</p>{% endif %}
+        {% if late %}
+        <p class="small text-danger fw-semibold mb-1"><i class="fa-solid fa-triangle-exclamation me-1" aria-hidden="true"></i>
+          {%- if last_ok %}{{ _("En retard : dernier succès %(when)s.", when=last_ok.started_at|moment) }}{% else %}{{ _("En retard : aucun succès.") }}{% endif %}</p>
+        {% endif %}
+        {% if failures %}<p class="small text-danger mb-0">{{ ngettext("%(num)d échec sur 24 h", "%(num)d échecs sur 24 h", failures) }}</p>{% endif %}
+        {% else %}
+        <p class="small text-body-secondary mb-0">{{ _("Jamais exécutée : timer systemd absent ?") }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<h2 class="h5 fw-semibold mb-2">{{ _("Import par e-mail sur 24 h") }}</h2>
+<p class="mb-4">
+  {% for status, label in [('imported', _("importés")), ('failed', _("en échec (ticket ouvert)")), ('ignored', _("ignorés"))] %}
+  <span class="me-3"><strong>{{ mail_counts.get(status, 0)|number }}</strong> {{ label }}</span>
+  {% endfor %}
+</p>
+
+<h2 class="h5 fw-semibold mb-2">{{ _("Dernières exécutions") }}</h2>
+<p class="small text-body-secondary">{{ _("Les relèves de la boîte d'import réussies ne sont pas listées.") }}</p>
+{% if recent %}
+<div class="card shadow-soft">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <caption class="visually-hidden">{{ _("Dernières exécutions") }}</caption>
+      <thead>
+        <tr>
+          <th scope="col">{{ _("Tâche") }}</th>
+          <th scope="col">{{ _("Début") }}</th>
+          <th scope="col" class="text-end">{{ _("Durée") }}</th>
+          <th scope="col">{{ _("Statut") }}</th>
+          <th scope="col">{{ _("Résultat") }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for run in recent %}
+        <tr>
+          <td><code>{{ run.name }}</code></td>
+          <td class="text-nowrap">{{ run.started_at|moment }}</td>
+          <td class="text-end text-nowrap">{% if run.duration is not none %}{{ run.duration|round(1)|number }} s{% endif %}</td>
+          <td>{{ run_status(run.status) }}</td>
+          <td class="small text-break">{{ run.summary or "" }}
+            {% if run.error %}<details class="mt-1"><summary>{{ _("Trace") }}</summary><pre class="small mb-0">{{ run.error }}</pre></details>{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% else %}
+<p class="text-body-secondary">{{ _("Aucune exécution.") }}</p>
+{% endif %}
+{% endblock %}

@@ -82,7 +82,7 @@ available in French, English, Spanish, German and Italian.
   The choice is remembered in the browser.
 - Import by email: users forward their flight or train confirmations to the import address (`IMPORT_ADDRESS`,
   shown on the import page) from the address of their account. `flask mail-import`, run every 5 minutes by
-  cron, reads the IMAP mailbox: the sender must be an account and the email must carry a valid DKIM signature
+  a systemd timer, reads the IMAP mailbox: the sender must be an account and the email must carry a valid DKIM signature
   from the sender's domain (otherwise anyone could forge the From address). Trips are read from the schema.org
   JSON-LD data most airlines and agencies embed (flights, trains, buses, boats), otherwise from the text
   (flight number, airport codes, date in five languages); a flight and its return become a round trip. The
@@ -192,12 +192,27 @@ Behind a reverse proxy, set `PROXY_FIX_COUNT` (otherwise rate limiting sees the 
 everyone) and `APP_BASE_URL`. With several workers, give rate limiting shared storage
 (`RATELIMIT_STORAGE_URI=redis://…`).
 
-Recommended periodic tasks (cron):
+Periodic tasks run as systemd timers (`deploy/systemd/`), each through `flask jobs run <task>`, which records
+every run (start, end, result, traceback on failure) in the database:
+
+| Task | Timer | What it does |
+|---|---|---|
+| `mail-import` | every 5 minutes | import by email (skipped while `IMAP_SERVER` is empty) |
+| `backup` | every night at 03:15 | full backup (`flask backup create`) |
+| `maintenance` | every night at 04:30 | purges the expired geocoding cache, expired share links and task history older than 14 days |
 
 ```bash
-flask geocode purge        # removes expired entries from the geocoding cache (--all: everything)
-flask purge-share-links    # removes expired share links
+sudo deploy/systemd/install.sh     # installs and starts the timers, removes the cron lines they replace
+flask jobs list                    # last run of each task
+systemctl list-timers 'travellog-*'
+journalctl -u 'travellog-job@*'
 ```
+
+The administration's "Tasks" tab (`/admin/jobs`) shows the last run of each task, flags failed tasks and tasks
+that are late (no success for twice their interval), counts the past 24 hours of email imports and lists the
+latest runs with their traceback. A timer never starts a task that is still running, so no lock file is needed.
+The individual commands still exist for manual use (`flask geocode purge [--all]`, `flask purge-share-links`,
+`flask mail-import --dry-run`…), but they are not recorded.
 
 Full server backups (SQLite database + photos, `.tar.gz` archive with a manifest):
 
@@ -208,18 +223,10 @@ flask backup restore instance/backups/travel-backup-YYYYMMDD-HHMMSS.tar.gz   # w
 ```
 
 Restoring checks the archive (paths, SQLite integrity, manifest), first backs up the current state, then
-applies migrations if the archive is older than the code. Example nightly task (cron):
+applies migrations if the archive is older than the code. The nightly backup is the `backup` task above.
 
-```
-15 3 * * * cd /opt/travel && .venv/bin/flask backup create >> instance/backups/backup.log 2>&1
-```
-
-Import by email (IMAP settings in `.env`: `IMAP_SERVER`, `IMAP_USERNAME`, `IMAP_PASSWORD`…), every 5 minutes;
-`flock` prevents two runs from overlapping:
-
-```
-*/5 * * * * cd /opt/travel && flock -n instance/mail-import.lock .venv/bin/flask mail-import >> instance/mail-import.log 2>&1
-```
+Import by email: IMAP settings in `.env` (`IMAP_SERVER`, `IMAP_USERNAME`, `IMAP_PASSWORD`…), run by the
+`mail-import` task.
 
 Copy `instance/backups` to another machine regularly: a backup on the same disk doesn't protect against that
 disk failing. Each user can also download their own backup (trips + photos, `.zip`) from their preferences and

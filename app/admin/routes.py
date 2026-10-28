@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 from flask import abort, flash, redirect, render_template, request, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
@@ -49,6 +51,23 @@ def settings():
         flash(_("Paramètres enregistrés."), "success")
         return redirect(url_for("admin.settings"))
     return render_template("admin/settings.html", form=form)
+
+
+@bp.route("/jobs")
+@admin_required
+def jobs():
+    """Tâches périodiques : dernière exécution, retards, échecs, et les dernières exécutions."""
+    from ..jobs import job_overview
+    from ..models import JobRun, MailImport
+
+    recent = db.session.execute(
+        db.select(JobRun).filter(db.or_(JobRun.name != "mail-import", JobRun.status != "ok"))
+        .order_by(JobRun.started_at.desc(), JobRun.id.desc()).limit(30)).scalars().all()
+    since = utcnow() - timedelta(days=1)
+    mail_counts = dict(db.session.execute(
+        db.select(MailImport.status, db.func.count(MailImport.id)).filter(MailImport.created_at >= since)
+        .group_by(MailImport.status)).all())
+    return render_template("admin/jobs.html", overview=job_overview(), recent=recent, mail_counts=mail_counts)
 
 
 # Onglets de la liste des tickets : « à traiter » d'abord.

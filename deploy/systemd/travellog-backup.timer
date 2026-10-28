@@ -1,0 +1,11 @@
+# Sauvegarde complète chaque nuit à 3 h 15 (rattrapée au démarrage si le serveur était éteint).
+[Unit]
+Description=Voyage Voyage - sauvegarde nocturne
+
+[Timer]
+OnCalendar=*-*-* 03:15:00
+Persistent=true
+Unit=travellog-job@backup.service
+
+[Install]
+WantedBy=timers.target

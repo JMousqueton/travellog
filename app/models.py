@@ -574,3 +574,31 @@ def read_import_address_token(token):
     if not isinstance(data, dict) or not isinstance(data.get("email"), str) or not isinstance(data.get("id"), int):
         return None
     return data
+
+
+class JobRun(db.Model):
+    """Exécution d'une tâche périodique (flask jobs run, lancée par un timer systemd) : suivie dans
+    l'administration (onglet Tâches)."""
+
+    __tablename__ = "job_runs"
+
+    STATUSES = ("running", "ok", "failed", "skipped")
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(40), nullable=False)
+    status = db.Column(db.String(10), nullable=False, default="running")
+    summary = db.Column(db.String(255), nullable=True)
+    error = db.Column(db.Text, nullable=True)
+    started_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
+    finished_at = db.Column(db.DateTime(timezone=True), nullable=True)
+
+    __table_args__ = (
+        CheckConstraint("status IN ('running', 'ok', 'failed', 'skipped')", name="job_run_status_valid"),
+        db.Index("ix_job_runs_name_started_at", "name", "started_at"),
+    )
+
+    @property
+    def duration(self):
+        if self.finished_at is None:
+            return None
+        return (as_utc(self.finished_at) - as_utc(self.started_at)).total_seconds()

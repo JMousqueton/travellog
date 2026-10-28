@@ -1,0 +1,12 @@
+# Purges quotidiennes (cache de géocodage, liens de partage expirés, historique des tâches) à 4 h 30.
+[Unit]
+Description=Voyage Voyage - maintenance quotidienne
+
+[Timer]
+OnCalendar=*-*-* 04:30:00
+Persistent=true
+RandomizedDelaySec=10min
+Unit=travellog-job@maintenance.service
+
+[Install]
+WantedBy=timers.target

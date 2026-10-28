@@ -1,0 +1,11 @@
+# Import par e-mail : relève de la boîte toutes les 5 minutes (une seule exécution à la fois, sans flock).
+[Unit]
+Description=Voyage Voyage - import par e-mail toutes les 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+Unit=travellog-job@mail-import.service
+
+[Install]
+WantedBy=timers.target

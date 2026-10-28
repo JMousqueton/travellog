@@ -1,5 +1,5 @@
 """Import de voyages par e-mail : `flask mail-import` relève la boîte IMAP (IMAP_SERVER…), toutes les 5 minutes
-par cron.
+(tâche mail-import, voir app/jobs.py).
 
 Un e-mail n'est accepté que si son expéditeur (From) est un compte, ou une adresse d'import confirmée
 d'un compte (ImportAddress), et que l'e-mail porte une signature DKIM

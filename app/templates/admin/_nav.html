@@ -2,6 +2,7 @@
 <ul class="nav nav-pills mb-4">
   {% for endpoint, active, icon, label in [('admin.users', ['admin.users'], 'fa-users', _("Utilisateurs")),
                                           ('admin.tickets', ['admin.tickets', 'admin.ticket'], 'fa-life-ring', _("Tickets")),
+                                          ('admin.jobs', ['admin.jobs'], 'fa-clock-rotate-left', _("Tâches")),
                                           ('admin.settings', ['admin.settings'], 'fa-gear', _("Paramètres"))] %}
   <li class="nav-item">
     <a class="nav-link {% if request.endpoint in active %}active{% endif %}" href="{{ url_for(endpoint) }}"
