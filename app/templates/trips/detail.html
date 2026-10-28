@@ -41,7 +41,12 @@
           {% if trip.is_round_trip %}<div><dt>{{ _("Retour") }}</dt><dd>{{ trip.return_date|day }}</dd></div>{% endif %}
           {% set service = SERVICE_FIELDS.get(trip.transport_mode) %}
           {% if service %}{% for key in ("carrier", "service_number", "vehicle") if key in service and trip[key] %}
+          {% if key == 'service_number' and trip.service_numbers[1] %}
+          <div><dt>{{ service[key][0] }}</dt><dd>{{ trip.service_numbers[0] }}</dd></div>
+          <div><dt>{{ _("Numéro du vol retour") }}</dt><dd>{{ trip.service_numbers[1] }}</dd></div>
+          {% else %}
           <div><dt>{{ service[key][0] }}</dt><dd>{{ trip[key] }}</dd></div>
+          {% endif %}
           {% endfor %}{% endif %}
           {% else %}
           <div><dt>{{ _("Dates") }}</dt><dd>{{ journey.start_date|day }}{% if journey.end_date != journey.start_date %} – {{ journey.end_date|day }}{% endif %}</dd></div>

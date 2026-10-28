@@ -6,7 +6,7 @@ from wtforms.widgets import HiddenInput
 
 from ..extensions import db
 from ..i18n import LANGUAGES
-from ..models import User
+from ..models import User, is_import_address
 from ..utils import select_choices
 
 PASSWORD_MIN = 8
@@ -47,6 +47,9 @@ class RegisterForm(FlaskForm):
         ).first()
         if exists:
             raise ValidationError(_l("Un compte existe déjà avec cette adresse e-mail."))
+        if is_import_address(field.data):
+            raise ValidationError(_l("Cette adresse sert à l'import par e-mail d'un compte : elle ne peut pas servir à "
+                                     "s'inscrire."))
 
 
 class ProfileForm(FlaskForm):
@@ -129,3 +132,14 @@ class SignupCompleteForm(FlaskForm):
 
     password, confirm = _new_password_fields()
     submit = SubmitField(_l("Créer mon compte"))
+
+
+class ImportAddressForm(FlaskForm):
+    """Adresse supplémentaire autorisée à envoyer des confirmations à l'import par e-mail."""
+
+    email = EmailField(_l("Adresse e-mail"), filters=[lambda value: value.strip() if value else value], validators=[
+        DataRequired(message=_l("L'adresse e-mail est obligatoire.")),
+        Email(message=_l("Adresse e-mail invalide.")),
+        Length(max=255, message=_l("L'adresse e-mail est trop longue.")),
+    ])
+    submit = SubmitField(_l("Envoyer le lien de confirmation"))

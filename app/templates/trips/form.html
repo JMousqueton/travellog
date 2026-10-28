@@ -123,6 +123,11 @@
               <div class="row g-3"><div class="col-sm-6">
                 {{ field(form.return_date, icon='fa-plane-arrival',
                          help=_("Le retour reprend le même itinéraire et le même mode, en sens inverse.")) }}
+              </div>
+              {# Numéro du vol retour : avion seulement (voir syncService). #}
+              <div class="col-sm-6" data-plane-only {% if (form.transport_mode.data or TRANSPORT_MODES|first) != 'plane' %}hidden{% endif %}>
+                {{ field(form.return_service_number, icon='fa-plane',
+                         attrs={'maxlength': 18, 'autocomplete': 'off', 'placeholder': 'AF1549'}) }}
               </div></div>
             </div>
           </div>

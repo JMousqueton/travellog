@@ -1,0 +1,14 @@
+{% extends "auth/_layout.html" %}
+{% block title %}{{ _("Confirmer l'adresse d'import") }}{% endblock %}
+{% block head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block heading %}{{ _("Confirmer l'adresse d'import") }}{% endblock %}
+{% block subheading %}{{ email }}{% endblock %}
+{% block form %}
+<p class="text-body-secondary">
+  {{ _("Les voyages des e-mails envoyés depuis %(email)s pourront être importés dans le compte %(account)s. Cette adresse ne permet pas de se connecter.", email=email, account=account) }}
+</p>
+<form method="post">
+  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+  <button type="submit" class="btn btn-primary w-100 rounded-pill py-2 mt-2">{{ _("Confirmer") }}</button>
+</form>
+{% endblock %}

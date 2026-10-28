@@ -275,6 +275,24 @@ def confirm_import():
     return redirect(url_for("trips.list_view"))
 
 
+def new_trip(user, record):
+    """Trajet d'une ligne validée (validate_record), pays et étiquettes compris ; à ajouter à la session."""
+    trip = Trip(
+        user_id=user.id,
+        origin_name=record["origin_name"], origin_lat=record["origin_lat"], origin_lon=record["origin_lon"],
+        origin_country=record["origin_country"],
+        dest_name=record["dest_name"], dest_lat=record["dest_lat"], dest_lon=record["dest_lon"],
+        dest_country=record["dest_country"],
+        depart_date=record["depart_date"], transport_mode=record["transport_mode"],
+        is_round_trip=record["return_date"] is not None, return_date=record["return_date"],
+        notes=record["notes"],
+        carrier=record["carrier"], service_number=record["service_number"], vehicle=record["vehicle"],
+    )
+    trip.fill_missing_countries()
+    trip.tags = resolve(user, parse_tags(record["tags"])[:MAX_TAGS])
+    return trip
+
+
 def _create(records, archive=None):
     """Crée les trajets (sauf doublons), regroupe les voyages, restaure les photos d'une archive."""
     existing = _existing_keys()
@@ -285,19 +303,7 @@ def _create(records, archive=None):
             skipped += 1
             continue
         existing.add(key)
-        trip = Trip(
-            user_id=current_user.id,
-            origin_name=record["origin_name"], origin_lat=record["origin_lat"], origin_lon=record["origin_lon"],
-            origin_country=record["origin_country"],
-            dest_name=record["dest_name"], dest_lat=record["dest_lat"], dest_lon=record["dest_lon"],
-            dest_country=record["dest_country"],
-            depart_date=record["depart_date"], transport_mode=record["transport_mode"],
-            is_round_trip=record["return_date"] is not None, return_date=record["return_date"],
-            notes=record["notes"],
-            carrier=record["carrier"], service_number=record["service_number"], vehicle=record["vehicle"],
-        )
-        trip.fill_missing_countries()
-        trip.tags = resolve(current_user, parse_tags(record["tags"])[:MAX_TAGS])
+        trip = new_trip(current_user, record)
         db.session.add(trip)
         created.append(trip)
         created_records.append((trip, record))

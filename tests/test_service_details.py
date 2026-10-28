@@ -1,8 +1,9 @@
 """Compagnie, numéro et appareil des vols et des trains : formulaire, fiche, export et statistiques."""
+import re
 from datetime import date
 
 from app.models import Trip
-from app.trips.stats import service_stats
+from app.trips.stats import legs, service_stats
 
 from .conftest import make_trip
 from .test_trips import post_trip
@@ -127,3 +128,30 @@ def test_carrier_logos(app, auth_client, user):
     assert 'src="https://img.logo.dev/name/SNCF?token=pk_test&amp;size=64&amp;format=webp&amp;retina=true"' in html
     assert "Logos fournis par Logo.dev" in html
     assert "img.logo.dev" in auth_client.get("/privacy").text
+
+
+def test_return_flight_number_saved_shown_and_edited(auth_client, db):
+    post_trip(auth_client, carrier="Air France", service_number="AF1823", return_service_number=" AF1722 ",
+              is_round_trip="y", return_date="2026-11-14", depart_date="2026-11-10")
+    trip = db.session.execute(db.select(Trip)).scalar_one()
+    assert trip.service_number == "AF1823 / AF1722" and trip.service_numbers == ("AF1823", "AF1722")
+    html = auth_client.get(f"/trips/{trip.id}").text
+    assert "Numéro du vol retour" in html and "AF1722" in html and "AF1823 / AF1722" not in html
+    form = auth_client.get(f"/trips/{trip.id}/edit").text
+    inputs = {re.search(r'name="(\w+)"', tag).group(1): tag for tag in re.findall(r"<input[^>]*>", form)}
+    assert 'value="AF1823"' in inputs["service_number"] and 'value="AF1722"' in inputs["return_service_number"]
+    assert [leg["number"] for leg in legs(trip)] == ["AF1823", "AF1722"]
+
+
+def test_return_flight_number_needs_round_trip_plane_and_outbound(auth_client, db):
+    post_trip(auth_client, service_number="AF1823", return_service_number="AF1722")  # aller simple
+    assert db.session.execute(db.select(Trip)).scalar_one().service_number == "AF1823"
+    response = post_trip(auth_client, return_service_number="AF1722", is_round_trip="y",
+                         return_date="2026-11-14", depart_date="2026-11-10")
+    assert "Indiquez aussi le numéro du vol aller." in response.text
+
+
+def test_single_number_on_round_trip_is_not_split(app, db, user):
+    trip = make_trip(user, transport_mode="plane", service_number="AF1823", is_round_trip=True,
+                     return_date=date(2025, 5, 3))
+    assert trip.service_numbers == ("AF1823", None)

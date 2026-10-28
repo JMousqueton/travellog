@@ -53,6 +53,8 @@ class User(UserMixin, db.Model):
     # Passe par l'ORM pour que les fichiers des photos soient supprimés avec le compte.
     photos = db.relationship("Photo", cascade="all", lazy="dynamic", overlaps="user")
     tickets = db.relationship("Ticket", back_populates="user", cascade="all, delete-orphan", lazy="dynamic")
+    import_addresses = db.relationship("ImportAddress", back_populates="user", cascade="all, delete-orphan",
+                                       order_by="ImportAddress.email")
 
     __table_args__ = (
         CheckConstraint("theme IS NULL OR theme IN ('light', 'dark')", name="theme_valid"),
@@ -301,6 +303,15 @@ class Trip(db.Model):
         return list(dict.fromkeys(c for c in (self.origin_country, self.dest_country) if c))
 
     @property
+    def service_numbers(self):
+        """(aller, retour) : un aller-retour enregistre « AF1148 / AF1549 » ; retour None sans second numéro."""
+        number = self.service_number or ""
+        outbound, sep, back = number.partition(" / ")
+        if self.is_round_trip and sep and outbound.strip() and back.strip() and " / " not in back:
+            return outbound.strip(), back.strip()
+        return number or None, None
+
+    @property
     def end_date(self):
         return self.return_date or self.depart_date
 
@@ -489,3 +500,77 @@ class TicketMessage(db.Model):
 
     ticket = db.relationship("Ticket", back_populates="messages")
     author = db.relationship("User")
+
+
+class MailImport(db.Model):
+    """E-mail déjà traité par l'import par e-mail (flask mail-import) : il n'est jamais traité deux fois.
+
+    imported : trajets ajoutés, e-mail supprimé de la boîte ; failed : aucun trajet reconnu, ticket ouvert
+    (une seule fois), e-mail laissé dans la boîte ; ignored : expéditeur inconnu ou non authentifié.
+    """
+
+    __tablename__ = "mail_imports"
+
+    STATUSES = ("imported", "failed", "ignored")
+
+    id = db.Column(db.Integer, primary_key=True)
+    # Empreinte SHA-256 du Message-ID (ou de l'e-mail brut s'il n'en a pas).
+    message_key = db.Column(db.String(64), nullable=False, unique=True)
+    status = db.Column(db.String(10), nullable=False)
+    sender = db.Column(db.String(255), nullable=True)
+    subject = db.Column(db.String(200), nullable=True)
+    reason = db.Column(db.String(255), nullable=True)
+    trip_count = db.Column(db.Integer, nullable=False, default=0, server_default="0")
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="SET NULL"), nullable=True, index=True)
+    ticket_id = db.Column(db.Integer, db.ForeignKey("tickets.id", ondelete="SET NULL"), nullable=True)
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
+
+    __table_args__ = (
+        CheckConstraint("status IN ('imported', 'failed', 'ignored')", name="mail_import_status_valid"),
+    )
+
+
+class ImportAddress(db.Model):
+    """Adresse supplémentaire autorisée à envoyer des confirmations à l'import par e-mail. Elle n'est créée
+    qu'après confirmation par lien magique, ne permet pas de se connecter, et ne peut être ni l'adresse d'un
+    compte ni celle d'un autre utilisateur."""
+
+    __tablename__ = "import_addresses"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    email = db.Column(db.String(255), nullable=False, unique=True)
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
+
+    user = db.relationship("User", back_populates="import_addresses")
+
+    @staticmethod
+    def taken(email):
+        """Vrai si l'adresse est déjà celle d'un compte ou une adresse d'import (de n'importe quel utilisateur)."""
+        email = email.strip().lower()
+        return (db.session.execute(db.select(User.id).filter(db.func.lower(User.email) == email)).first() is not None
+                or is_import_address(email))
+
+
+def is_import_address(email):
+    return db.session.execute(
+        db.select(ImportAddress.id).filter_by(email=email.strip().lower())).first() is not None
+
+
+def _import_address_serializer():
+    return URLSafeTimedSerializer(current_app.config["SECRET_KEY"], salt="import-address")
+
+
+def import_address_token(user, email):
+    return _import_address_serializer().dumps({"id": user.id, "email": email})
+
+
+def read_import_address_token(token):
+    """{"id", "email"} si le jeton est valide et récent, sinon None."""
+    try:
+        data = _import_address_serializer().loads(token, max_age=current_app.config["IMPORT_ADDRESS_LINK_MAX_AGE"])
+    except BadSignature:
+        return None
+    if not isinstance(data, dict) or not isinstance(data.get("email"), str) or not isinstance(data.get("id"), int):
+        return None
+    return data

@@ -73,6 +73,20 @@
         </form>
       </div>
     </div>
+    {% if config.IMPORT_ADDRESS %}
+    <div class="card shadow-soft mt-3">
+      <div class="card-body p-4 d-flex flex-wrap align-items-center gap-3">
+        <div class="feature-icon" aria-hidden="true"><i class="fa-solid fa-envelope-open-text"></i></div>
+        <div class="flex-grow-1">
+          <h3 class="h6 fw-semibold mb-1">{{ _("Import par e-mail") }}</h3>
+          <p class="small text-body-secondary mb-0">
+            {{ _("Transférez vos confirmations de vol ou de train à %(address)s depuis %(email)s : les trajets sont ajoutés à votre compte en quelques minutes.",
+                 address=config.IMPORT_ADDRESS, email=current_user.email) }}
+          </p>
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

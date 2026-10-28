@@ -12,9 +12,9 @@ def mail_enabled():
     return bool(cfg["MAIL_SERVER"]) or cfg.get("DEBUG") or cfg.get("TESTING")
 
 
-def send_email(to, subject, body):
-    """Envoie un e-mail. Sans MAIL_SERVER : conservé en mémoire (tests) ou écrit dans les logs (développement).
-    Renvoie False en cas d'échec, sans lever d'exception."""
+def send_email(to, subject, body, headers=None):
+    """Envoie un e-mail (avec d'éventuels en-têtes supplémentaires). Sans MAIL_SERVER : conservé en mémoire
+    (tests) ou écrit dans les logs (développement). Renvoie False en cas d'échec, sans lever d'exception."""
     cfg = current_app.config
     message = EmailMessage()
     message["Subject"] = subject
@@ -24,6 +24,8 @@ def send_email(to, subject, body):
     # anti-spam (rspamd…) rejettent le message.
     message["Date"] = formatdate(localtime=False, usegmt=True)
     message["Message-ID"] = make_msgid(domain=parseaddr(message["From"])[1].rpartition("@")[2] or "localhost")
+    for name, value in (headers or {}).items():
+        message[name] = value
     message.set_content(body)
 
     if not cfg["MAIL_SERVER"]:

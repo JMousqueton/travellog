@@ -1,0 +1,16 @@
+{{ _("Bonjour,") }}
+{% if failed %}
+{{ _("Nous n'avons pas pu lire de trajet dans votre e-mail « %(subject)s ».", subject=subject) }}
+
+{{ _("Il a été transmis à notre équipe, qui ajoutera vos trajets à la main dans votre compte. Vous n'avez rien à faire.") }}
+{% endif %}{% if added %}
+{{ _("Ces trajets de votre e-mail « %(subject)s » ont été ajoutés à votre compte :", subject=subject) }}
+{% for line in added %}- {{ line }}
+{% endfor %}{% endif %}{% if duplicates %}
+{% if added %}{{ _("Ces trajets étaient déjà enregistrés et n'ont pas été ajoutés une seconde fois :") }}{% else %}{{ _("Les trajets de votre e-mail « %(subject)s » étaient déjà enregistrés : rien n'a été ajouté une seconde fois.", subject=subject) }}{% endif %}
+{% for line in duplicates %}- {{ line }}
+{% endfor %}{% endif %}
+{{ _("Vos trajets :") }} {{ url }}
+
+-- 
+{{ site }}

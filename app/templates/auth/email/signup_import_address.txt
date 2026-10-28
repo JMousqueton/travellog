@@ -1,0 +1,5 @@
+{{ _("Bonjour,") }}
+
+{{ _("Une inscription à Voyage Voyage a été demandée avec cette adresse, mais elle sert déjà à l'import par e-mail d'un compte et ne peut donc pas servir à s'inscrire. Pour l'utiliser, retirez-la d'abord des préférences de ce compte.") }}
+
+{{ _("Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail.") }}

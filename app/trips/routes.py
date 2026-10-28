@@ -144,6 +144,9 @@ def _save(form, trip):
     for key in ("carrier", "service_number", "vehicle"):  # seulement pour l'avion et le train
         value = (getattr(form, key).data or "").strip() if key in SERVICE_FIELDS.get(trip.transport_mode, {}) else ""
         setattr(trip, key, value or None)
+    back = (form.return_service_number.data or "").strip()
+    if back and trip.service_number and trip.is_round_trip and trip.transport_mode == "plane":
+        trip.service_number = f"{trip.service_number} / {back}"
     if (trip.origin_lat, trip.origin_lon, trip.dest_lat, trip.dest_lon, trip.transport_mode) != before:
         update_route(trip)
     trip.tags = resolve(current_user, parse_tags(form.tags.data))
@@ -210,6 +213,7 @@ def edit(trip_id):
     form = TripForm(obj=trip)
     if request.method == "GET":
         form.tags.data = tags_text(trip.tags)
+        form.service_number.data, form.return_service_number.data = trip.service_numbers
     if _handle_form(form, trip):
         prune_unused(current_user)
         db.session.commit()

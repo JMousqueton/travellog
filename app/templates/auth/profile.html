@@ -120,6 +120,46 @@
       </div>
     </div>
 
+    {% if config.IMPORT_ADDRESS %}
+    <h2 class="h5 fw-semibold mt-5 mb-3" id="mail-import">{{ _("Import par e-mail") }}</h2>
+    <div class="card shadow-soft">
+      <div class="card-body p-4">
+        <p class="text-body-secondary">
+          {{ _("Transférez vos confirmations de vol ou de train à %(address)s : les trajets sont ajoutés à votre compte en quelques minutes. Les e-mails sont acceptés depuis l'adresse de votre compte et depuis les adresses confirmées ci-dessous, qui ne permettent pas de se connecter.", address=config.IMPORT_ADDRESS) }}
+        </p>
+        <ul class="list-group mb-3">
+          <li class="list-group-item d-flex align-items-center gap-2">
+            <i class="fa-solid fa-user text-body-secondary" aria-hidden="true"></i>
+            <span class="me-auto">{{ current_user.email }}</span>
+            <span class="small text-body-secondary">{{ _("adresse du compte") }}</span>
+          </li>
+          {% for address in current_user.import_addresses %}
+          <li class="list-group-item d-flex align-items-center gap-2">
+            <i class="fa-solid fa-envelope-circle-check text-body-secondary" aria-hidden="true"></i>
+            <span class="me-auto">{{ address.email }}</span>
+            <form method="post" action="{{ url_for('auth.delete_import_address', address_id=address.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">{{ _("Retirer") }}</button>
+            </form>
+          </li>
+          {% endfor %}
+        </ul>
+        {% if password_reset_enabled() %}
+        <form method="post" action="{{ url_for('auth.add_import_address') }}" novalidate>
+          {{ import_form.hidden_tag() }}
+          <label class="form-label" for="{{ import_form.email.id }}">{{ _("Autoriser une autre adresse") }}</label>
+          <div class="d-flex flex-wrap gap-2">
+            {{ import_form.email(class_='form-control flex-grow-1 w-auto' ~ (' is-invalid' if import_form.email.errors else ''),
+                                 autocomplete='email', placeholder='prenom@exemple.fr') }}
+            <button type="submit" class="btn btn-primary rounded-pill px-4">{{ import_form.submit.label.text }}</button>
+            {% for error in import_form.email.errors %}<div class="invalid-feedback d-block w-100">{{ error }}</div>{% endfor %}
+          </div>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+
     <h2 class="h5 fw-semibold mt-5 mb-3">{{ _("Sauvegarde") }}</h2>
     <div class="card shadow-soft">
       <div class="card-body p-4 d-flex flex-wrap align-items-center gap-3">

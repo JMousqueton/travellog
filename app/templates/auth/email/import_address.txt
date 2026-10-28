@@ -1,0 +1,9 @@
+{{ _("Bonjour,") }}
+
+{{ _("Le compte Voyage Voyage %(account)s souhaite pouvoir importer des voyages à partir des e-mails envoyés par cette adresse. Pour l'autoriser, ouvrez ce lien puis confirmez :", account=account) }}
+
+{{ url }}
+
+{{ _("Ce lien est valable %(minutes)s minutes. Cette adresse servira seulement à l'import : elle ne permettra pas de se connecter.", minutes=minutes) }}
+
+{{ _("Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail : rien ne sera autorisé.") }}

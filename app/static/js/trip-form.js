@@ -47,6 +47,7 @@ function syncService() {
   serviceWrapper.classList.toggle("is-open", open);
   serviceWrapper.toggleAttribute("inert", !open);
   serviceWrapper.setAttribute("aria-hidden", String(!open));
+  form.querySelectorAll("[data-plane-only]").forEach((el) => { el.hidden = mode !== "plane"; });
   if (!open) return;
   form.elements.carrier.setAttribute("list", `carriers-${mode}`);
   const suffix = `${mode[0].toUpperCase()}${mode.slice(1)}`;
@@ -176,6 +177,7 @@ document.addEventListener("languagechange", () => {
     notes: form.elements.notes.value,
     carrier: form.elements.carrier.value,
     service_number: form.elements.service_number.value,
+    return_service_number: form.elements.return_service_number.value,
     vehicle: form.elements.vehicle.value,
   };
   try { sessionStorage.setItem(draftKey, JSON.stringify(draft)); } catch { /* ignoré */ }
@@ -196,7 +198,7 @@ document.addEventListener("languagechange", () => {
   roundTrip.checked = draft.round;
   returnInput.value = draft.ret;
   if (draft.notes !== undefined) form.elements.notes.value = draft.notes;
-  for (const key of ["carrier", "service_number", "vehicle"]) {
+  for (const key of ["carrier", "service_number", "return_service_number", "vehicle"]) {
     if (draft[key] !== undefined) form.elements[key].value = draft[key];
   }
 })();

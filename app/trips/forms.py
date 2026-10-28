@@ -59,6 +59,8 @@ class TripForm(FlaskForm):
     return_date = DateField(_l("Date de retour"), validators=[Optional()])
     carrier = StringField(_l("Compagnie ou opérateur"), validators=[Optional(), Length(max=80)])
     service_number = StringField(_l("Numéro"), validators=[Optional(), Length(max=40)])
+    # Aller-retour en avion : numéro du vol retour, enregistré avec l'aller (« AF1148 / AF1549 »).
+    return_service_number = StringField(_l("Numéro du vol retour"), validators=[Optional(), Length(max=18)])
     vehicle = StringField(_l("Appareil"), validators=[Optional(), Length(max=80)])
     tags = _tags_field()
     notes = _notes_field()
@@ -80,6 +82,15 @@ class TripForm(FlaskForm):
                 self.return_date.errors.append(
                     _l("La date de retour doit être postérieure ou égale à la date de départ.")
                 )
+                valid = False
+        back = (self.return_service_number.data or "").strip()
+        if back and self.is_round_trip.data and self.transport_mode.data == "plane":
+            outbound = (self.service_number.data or "").strip()
+            if not outbound:
+                self.return_service_number.errors.append(_l("Indiquez aussi le numéro du vol aller."))
+                valid = False
+            elif len(outbound) + len(back) + 3 > 40:
+                self.return_service_number.errors.append(_l("Numéros de vol trop longs."))
                 valid = False
         return valid
 

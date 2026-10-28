@@ -87,6 +87,22 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   pincement, boutons) et tourner avec les flèches du clavier. Cliquer sur un trajet (sur le globe ou dans la
   liste) tourne le globe vers lui et affiche sa fiche ; la relecture fonctionne aussi sur le globe. Le choix
   est mémorisé dans le navigateur.
+- Import par e-mail : l'utilisateur transfère ses confirmations de vol ou de train à l'adresse d'import
+  (`IMPORT_ADDRESS`, indiquée sur la page d'import) depuis l'adresse de son compte. `flask mail-import`, lancé
+  toutes les 5 minutes par cron, relève la boîte IMAP : l'expéditeur doit être un compte et l'e-mail porter
+  une signature DKIM valide du domaine de l'expéditeur (sinon n'importe qui pourrait usurper l'adresse From).
+  Les trajets sont lus dans les données schema.org (JSON-LD) que la plupart des compagnies et agences
+  ajoutent (vols, trains, bus, bateaux), sinon dans le texte (numéro de vol, codes d'aéroports, date en cinq
+  langues) ; un vol et son retour deviennent un aller-retour. L'e-mail est alors supprimé de la boîte. Si rien
+  n'est reconnu, un ticket est ouvert au nom du compte « Import Error » (`MAIL_IMPORT_ERROR_EMAIL`, qui ne
+  peut pas se connecter) avec l'e-mail brut, et l'e-mail reste dans la boîte. Chaque e-mail est noté dans
+  `mail_imports` : il n'est traité (et son ticket ouvert) qu'une fois. Les e-mails d'expéditeurs inconnus ou
+  non authentifiés sont ignorés et laissés. `--dry-run` montre ce qui serait importé sans rien écrire ni
+  supprimer.
+  Chaque utilisateur peut aussi autoriser d'autres adresses d'expédition (Préférences → Import par e-mail) :
+  une adresse n'est ajoutée qu'après confirmation par un lien magique qui lui est envoyé, elle ne permet
+  jamais de se connecter, et ne peut être ni l'adresse d'un compte ni l'adresse d'import d'un autre
+  utilisateur ; l'inscription avec une adresse d'import est refusée.
 - Import / export (`/import-export`) en CSV, GeoJSON et GPX. Les trois formats contiennent les mêmes champs
   (dont notes et regroupements en voyages) et se réimportent sans perte : c'est aussi une sauvegarde, hors
   photos. À l'import, un aperçu liste les trajets lus : décochez ceux à écarter (boutons tout / rien / par
@@ -205,6 +221,13 @@ puis applique les migrations si l'archive est plus ancienne que le code. Exemple
 
 ```
 15 3 * * * cd /opt/travel && .venv/bin/flask backup create >> instance/backups/backup.log 2>&1
+```
+
+Import par e-mail (réglages IMAP dans `.env` : `IMAP_SERVER`, `IMAP_USERNAME`, `IMAP_PASSWORD`…), toutes les
+5 minutes ; `flock` empêche deux relevés simultanés :
+
+```
+*/5 * * * * cd /opt/travel && flock -n instance/mail-import.lock .venv/bin/flask mail-import >> instance/mail-import.log 2>&1
 ```
 
 Copiez régulièrement `instance/backups` sur une autre machine : une sauvegarde sur le même disque ne protège

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-27 08:49+0000\n"
+"POT-Creation-Date: 2026-10-27 21:43+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -82,8 +82,8 @@ msgstr "Se ha producido un error inesperado. Inténtalo más tarde."
 msgid "Autoriser les inscriptions"
 msgstr "Permitir registros"
 
-#: app/admin/forms.py:8 app/auth/forms.py:59 app/trips/forms.py:65
-#: app/trips/forms.py:94
+#: app/admin/forms.py:8 app/auth/forms.py:62 app/trips/forms.py:67
+#: app/trips/forms.py:105
 msgid "Enregistrer"
 msgstr "Guardar"
 
@@ -140,28 +140,29 @@ msgstr "Número de vuelo desconocido."
 msgid "Recherche trop longue."
 msgstr "La búsqueda es demasiado larga."
 
-#: app/auth/forms.py:16 app/auth/forms.py:28 app/auth/forms.py:91
-#: app/auth/forms.py:119 app/templates/admin/users.html:12
+#: app/auth/forms.py:16 app/auth/forms.py:28 app/auth/forms.py:94
+#: app/auth/forms.py:122 app/auth/forms.py:140
+#: app/templates/admin/users.html:12
 msgid "Adresse e-mail"
 msgstr "Correo electrónico"
 
-#: app/auth/forms.py:17 app/auth/forms.py:29 app/auth/forms.py:92
-#: app/auth/forms.py:120
+#: app/auth/forms.py:17 app/auth/forms.py:29 app/auth/forms.py:95
+#: app/auth/forms.py:123 app/auth/forms.py:141
 msgid "L'adresse e-mail est obligatoire."
 msgstr "El correo electrónico es obligatorio."
 
-#: app/auth/forms.py:18 app/auth/forms.py:30 app/auth/forms.py:93
-#: app/auth/forms.py:121
+#: app/auth/forms.py:18 app/auth/forms.py:30 app/auth/forms.py:96
+#: app/auth/forms.py:124 app/auth/forms.py:142
 msgid "Adresse e-mail invalide."
 msgstr "Correo electrónico no válido."
 
-#: app/auth/forms.py:20 app/auth/forms.py:33 app/auth/forms.py:84
+#: app/auth/forms.py:20 app/auth/forms.py:33 app/auth/forms.py:87
 #: app/templates/auth/profile.html:69
 msgid "Mot de passe"
 msgstr "Contraseña"
 
-#: app/auth/forms.py:21 app/auth/forms.py:34 app/auth/forms.py:64
-#: app/auth/forms.py:77 app/auth/forms.py:85
+#: app/auth/forms.py:21 app/auth/forms.py:34 app/auth/forms.py:67
+#: app/auth/forms.py:80 app/auth/forms.py:88
 msgid "Le mot de passe est obligatoire."
 msgstr "La contraseña es obligatoria."
 
@@ -174,28 +175,28 @@ msgstr "Mantener la sesión iniciada"
 msgid "Se connecter"
 msgstr "Iniciar sesión"
 
-#: app/auth/forms.py:31 app/auth/forms.py:122
+#: app/auth/forms.py:31 app/auth/forms.py:125 app/auth/forms.py:143
 msgid "L'adresse e-mail est trop longue."
 msgstr "El correo electrónico es demasiado largo."
 
-#: app/auth/forms.py:36 app/auth/forms.py:66
+#: app/auth/forms.py:36 app/auth/forms.py:69
 #, python-format
 msgid "Le mot de passe doit contenir au moins %(min)d caractères."
 msgstr "La contraseña debe tener al menos %(min)d caracteres."
 
-#: app/auth/forms.py:38 app/auth/forms.py:68
+#: app/auth/forms.py:38 app/auth/forms.py:71
 msgid "Confirmer le mot de passe"
 msgstr "Confirmar contraseña"
 
-#: app/auth/forms.py:39 app/auth/forms.py:69
+#: app/auth/forms.py:39 app/auth/forms.py:72
 msgid "Veuillez confirmer le mot de passe."
 msgstr "Confirma la contraseña."
 
-#: app/auth/forms.py:40 app/auth/forms.py:70
+#: app/auth/forms.py:40 app/auth/forms.py:73
 msgid "Les mots de passe ne correspondent pas."
 msgstr "Las contraseñas no coinciden."
 
-#: app/auth/forms.py:42 app/auth/forms.py:131
+#: app/auth/forms.py:42 app/auth/forms.py:134
 msgid "Créer mon compte"
 msgstr "Crear mi cuenta"
 
@@ -203,72 +204,84 @@ msgstr "Crear mi cuenta"
 msgid "Un compte existe déjà avec cette adresse e-mail."
 msgstr "Ya existe una cuenta con este correo electrónico."
 
-#: app/auth/forms.py:53 app/templates/admin/users.html:14
+#: app/auth/forms.py:51 app/auth/routes.py:121
+msgid ""
+"Cette adresse sert à l'import par e-mail d'un compte : elle ne peut pas "
+"servir à s'inscrire."
+msgstr ""
+"Esta dirección se usa para la importación por correo de una cuenta: no "
+"puede usarse para registrarse."
+
+#: app/auth/forms.py:56 app/templates/admin/users.html:14
 msgid "Langue"
 msgstr "Idioma"
 
-#: app/auth/forms.py:54
+#: app/auth/forms.py:57
 msgid "Thème"
 msgstr "Tema"
 
-#: app/auth/forms.py:55
+#: app/auth/forms.py:58
 msgid "Automatique (selon le système)"
 msgstr "Automático (según el sistema)"
 
-#: app/auth/forms.py:56
+#: app/auth/forms.py:59
 msgid "Clair"
 msgstr "Claro"
 
-#: app/auth/forms.py:57
+#: app/auth/forms.py:60
 msgid "Sombre"
 msgstr "Oscuro"
 
-#: app/auth/forms.py:63 app/templates/auth/reset.html:3
+#: app/auth/forms.py:66 app/templates/auth/reset.html:3
 #: app/templates/auth/reset.html:4
 msgid "Nouveau mot de passe"
 msgstr "Nueva contraseña"
 
-#: app/auth/forms.py:76
+#: app/auth/forms.py:79
 msgid "Mot de passe actuel"
 msgstr "Contraseña actual"
 
-#: app/auth/forms.py:80
+#: app/auth/forms.py:83
 msgid "Changer le mot de passe"
 msgstr "Cambiar la contraseña"
 
-#: app/auth/forms.py:87 app/templates/auth/profile.html:132
+#: app/auth/forms.py:90 app/templates/auth/profile.html:172
 msgid "Supprimer mon compte"
 msgstr "Eliminar mi cuenta"
 
-#: app/auth/forms.py:95
+#: app/auth/forms.py:98
 msgid "Envoyer le lien"
 msgstr "Enviar el enlace"
 
-#: app/auth/forms.py:100
+#: app/auth/forms.py:103
 msgid "Enregistrer le mot de passe"
 msgstr "Guardar la contraseña"
 
-#: app/auth/forms.py:106
+#: app/auth/forms.py:109
 msgid "Ville de domicile"
 msgstr "Ciudad de residencia"
 
-#: app/auth/forms.py:107
+#: app/auth/forms.py:110
 msgid "Indiquez votre ville."
 msgstr "Indica tu ciudad."
 
-#: app/auth/forms.py:108 app/trips/forms.py:40 app/trips/forms.py:46
+#: app/auth/forms.py:111 app/trips/forms.py:40 app/trips/forms.py:46
 msgid "Ce nom de lieu est trop long."
 msgstr "Este nombre de lugar es demasiado largo."
 
-#: app/auth/forms.py:113
+#: app/auth/forms.py:116
 msgid "Enregistrer le domicile"
 msgstr "Guardar domicilio"
 
-#: app/auth/forms.py:124
+#: app/auth/forms.py:127
 msgid "Recevoir le lien d'inscription"
 msgstr "Recibir el enlace de registro"
 
-#: app/auth/routes.py:51
+#: app/auth/forms.py:145
+msgid "Envoyer le lien de confirmation"
+msgstr "Enviar el enlace de confirmación"
+
+#: app/auth/routes.py:52
 msgid ""
 "Les inscriptions sont fermées. Contactez un administrateur pour obtenir "
 "un compte."
@@ -276,15 +289,15 @@ msgstr ""
 "Los registros están cerrados. Contacta con un administrador para obtener "
 "una cuenta."
 
-#: app/auth/routes.py:73 app/auth/routes.py:127
+#: app/auth/routes.py:74 app/auth/routes.py:133
 msgid "Bienvenue ! Votre compte a été créé."
 msgstr "¡Bienvenido! Tu cuenta ha sido creada."
 
-#: app/auth/routes.py:94
+#: app/auth/routes.py:97
 msgid "Votre inscription à Voyage Voyage"
 msgstr "Tu registro en Voyage Voyage"
 
-#: app/auth/routes.py:110
+#: app/auth/routes.py:113
 #, python-format
 msgid ""
 "Ce lien d'inscription est invalide ou a expiré (il est valable "
@@ -293,60 +306,60 @@ msgstr ""
 "Este enlace de registro no es válido o ha caducado (es válido durante "
 "%(minutes)s minutos). Solicita uno nuevo."
 
-#: app/auth/routes.py:115
+#: app/auth/routes.py:118
 msgid "Ce lien a déjà servi : le compte existe. Connectez-vous."
 msgstr "Este enlace ya se ha usado: la cuenta existe. Inicia sesión."
 
-#: app/auth/routes.py:144
+#: app/auth/routes.py:150
 msgid "Adresse e-mail ou mot de passe incorrect."
 msgstr "Correo electrónico o contraseña incorrectos."
 
-#: app/auth/routes.py:150
+#: app/auth/routes.py:156
 msgid "Bon retour parmi nous !"
 msgstr "¡Bienvenido de nuevo!"
 
-#: app/auth/routes.py:160
+#: app/auth/routes.py:166
 msgid "Vous êtes déconnecté."
 msgstr "Has cerrado sesión."
 
-#: app/auth/routes.py:187
+#: app/auth/routes.py:194
 msgid "Préférences enregistrées."
 msgstr "Preferencias guardadas."
 
-#: app/auth/routes.py:205
+#: app/auth/routes.py:212
 #, python-format
 msgid ""
 "Domicile enregistré : les jours d'absence sont calculés à partir de "
 "%(place)s."
 msgstr "Domicilio guardado: los días fuera se calculan desde %(place)s."
 
-#: app/auth/routes.py:216
+#: app/auth/routes.py:223
 msgid "Domicile supprimé."
 msgstr "Domicilio eliminado."
 
-#: app/auth/routes.py:227
+#: app/auth/routes.py:234
 msgid "Mot de passe actuel incorrect."
 msgstr "La contraseña actual es incorrecta."
 
-#: app/auth/routes.py:235
+#: app/auth/routes.py:242
 msgid "Mot de passe modifié. Vos autres sessions ont été déconnectées."
 msgstr "Contraseña cambiada. Se han cerrado tus otras sesiones."
 
-#: app/auth/routes.py:248
+#: app/auth/routes.py:255
 msgid "Mot de passe incorrect."
 msgstr "Contraseña incorrecta."
 
-#: app/auth/routes.py:252
+#: app/auth/routes.py:259
 msgid ""
 "Vous êtes le seul administrateur : désignez-en un autre avant de "
 "supprimer votre compte."
 msgstr "Eres el único administrador: designa a otro antes de eliminar tu cuenta."
 
-#: app/auth/routes.py:259
+#: app/auth/routes.py:266
 msgid "Votre compte et tous vos voyages ont été supprimés."
 msgstr "Tu cuenta y todos tus viajes se han eliminado."
 
-#: app/auth/routes.py:270
+#: app/auth/routes.py:277
 msgid ""
 "Nouvelle adresse d'abonnement créée. L'ancienne adresse ne fonctionne "
 "plus."
@@ -354,15 +367,68 @@ msgstr ""
 "Se ha creado una nueva dirección de suscripción. La anterior ya no "
 "funciona."
 
-#: app/auth/routes.py:279
+#: app/auth/routes.py:286
 msgid "Abonnement agenda désactivé."
 msgstr "Suscripción al calendario desactivada."
 
-#: app/auth/routes.py:306
+#: app/auth/routes.py:310
+msgid "Cette adresse est déjà autorisée pour votre compte."
+msgstr "Esta dirección ya está autorizada para tu cuenta."
+
+#: app/auth/routes.py:312
+#, python-format
+msgid "Vous avez atteint le nombre maximal d'adresses (%(max)s)."
+msgstr "Has alcanzado el número máximo de direcciones (%(max)s)."
+
+#: app/auth/routes.py:316 app/auth/routes.py:348
+msgid "Cette adresse ne peut pas être ajoutée."
+msgstr "Esta dirección no se puede añadir."
+
+#: app/auth/routes.py:324
+msgid "Confirmez votre adresse d'import pour Voyage Voyage"
+msgstr "Confirma tu dirección de importación para Voyage Voyage"
+
+#: app/auth/routes.py:326
+#, python-format
+msgid ""
+"Un lien de confirmation a été envoyé à %(email)s (valable %(minutes)s "
+"minutes)."
+msgstr ""
+"Se ha enviado un enlace de confirmación a %(email)s (válido %(minutes)s "
+"minutos)."
+
+#: app/auth/routes.py:339
+msgid ""
+"Ce lien de confirmation est invalide ou a expiré. Demandez-en un nouveau "
+"depuis vos préférences."
+msgstr ""
+"Este enlace de confirmación no es válido o ha caducado. Solicita uno "
+"nuevo desde tus preferencias."
+
+#: app/auth/routes.py:344
+#, python-format
+msgid "Adresse %(email)s déjà confirmée."
+msgstr "Dirección %(email)s ya confirmada."
+
+#: app/auth/routes.py:352
+#, python-format
+msgid ""
+"Adresse %(email)s confirmée : ses confirmations de voyage peuvent être "
+"transférées à l'adresse d'import."
+msgstr ""
+"Dirección %(email)s confirmada: sus confirmaciones de viaje pueden "
+"reenviarse a la dirección de importación."
+
+#: app/auth/routes.py:366
+#, python-format
+msgid "Adresse %(email)s retirée."
+msgstr "Dirección %(email)s eliminada."
+
+#: app/auth/routes.py:393
 msgid "Réinitialisation de votre mot de passe"
 msgstr "Restablecimiento de tu contraseña"
 
-#: app/auth/routes.py:309
+#: app/auth/routes.py:396
 msgid ""
 "Si un compte correspond à cette adresse, un e-mail contenant un lien de "
 "réinitialisation vient d'être envoyé."
@@ -370,7 +436,7 @@ msgstr ""
 "Si existe una cuenta con esta dirección, se acaba de enviar un correo con"
 " un enlace de restablecimiento."
 
-#: app/auth/routes.py:319
+#: app/auth/routes.py:406
 msgid ""
 "Ce lien de réinitialisation est invalide ou a expiré. Demandez-en un "
 "nouveau."
@@ -378,7 +444,7 @@ msgstr ""
 "Este enlace de restablecimiento no es válido o ha caducado. Solicita uno "
 "nuevo."
 
-#: app/auth/routes.py:327
+#: app/auth/routes.py:414
 msgid "Mot de passe modifié. Vous pouvez vous connecter."
 msgstr "Contraseña cambiada. Ya puedes iniciar sesión."
 
@@ -448,7 +514,7 @@ msgid "Modifier"
 msgstr "Editar"
 
 #: app/i18n.py:105 app/templates/base.html:240
-#: app/templates/trips/detail.html:111 app/templates/trips/form.html:148
+#: app/templates/trips/detail.html:116 app/templates/trips/form.html:153
 msgid "Supprimer"
 msgstr "Eliminar"
 
@@ -478,7 +544,7 @@ msgid "Retour"
 msgstr "Regreso"
 
 #: app/i18n.py:111 app/templates/share/trips.html:38
-#: app/templates/trips/_stats_parts.html:239 app/templates/trips/detail.html:50
+#: app/templates/trips/_stats_parts.html:239 app/templates/trips/detail.html:55
 #: app/templates/trips/list.html:116
 #: app/templates/trips/transport_stats.html:16
 msgid "Distance"
@@ -548,11 +614,11 @@ msgstr "Escribe al menos 3 caracteres"
 msgid "%(count)s suggestions disponibles, utilisez les flèches haut et bas"
 msgstr "%(count)s sugerencias disponibles, usa las flechas arriba y abajo"
 
-#: app/i18n.py:127 app/trips/forms.py:81
+#: app/i18n.py:127 app/trips/forms.py:83
 msgid "La date de retour doit être postérieure ou égale à la date de départ."
 msgstr "La fecha de regreso debe ser igual o posterior a la de salida."
 
-#: app/i18n.py:128 app/trips/forms.py:77
+#: app/i18n.py:128 app/trips/forms.py:79
 msgid "La date de retour est obligatoire pour un aller-retour."
 msgstr "La fecha de regreso es obligatoria para un viaje de ida y vuelta."
 
@@ -723,6 +789,21 @@ msgstr ""
 msgid "Compagnie trouvée ; itinéraire inconnu pour ce numéro."
 msgstr "Aerolínea encontrada; ruta desconocida para este número."
 
+#: app/mail_import.py:187
+#, python-format
+msgid "Import impossible : %(subject)s"
+msgstr "Importación imposible: %(subject)s"
+
+#: app/mail_import.py:189
+#, python-format
+msgid "Voyages importés : %(subject)s"
+msgstr "Viajes importados: %(subject)s"
+
+#: app/mail_import.py:191
+#, python-format
+msgid "Voyages déjà enregistrés : %(subject)s"
+msgstr "Viajes ya registrados: %(subject)s"
+
 #: app/photos.py:50
 #, python-format
 msgid "Nombre maximal de photos atteint (%(max)s)."
@@ -733,7 +814,7 @@ msgstr "Se ha alcanzado el número máximo de fotos (%(max)s)."
 msgid "Photo trop volumineuse (%(max)s Mo au maximum)."
 msgstr "Foto demasiado grande (%(max)s MB como máximo)."
 
-#: app/photos.py:58 app/trips/forms.py:101
+#: app/photos.py:58 app/trips/forms.py:112
 msgid "Format non pris en charge : utilisez JPEG, PNG, WebP ou GIF."
 msgstr "Formato no admitido: usa JPEG, PNG, WebP o GIF."
 
@@ -874,7 +955,7 @@ msgstr "En 1 año"
 msgid "Libellé (facultatif)"
 msgstr "Etiqueta (opcional)"
 
-#: app/share/forms.py:21 app/trips/forms.py:90
+#: app/share/forms.py:21 app/trips/forms.py:101
 msgid "Ce nom est trop long."
 msgstr "Este nombre es demasiado largo."
 
@@ -958,7 +1039,7 @@ msgstr "Enviar la solicitud"
 msgid "Réponse"
 msgstr "Respuesta"
 
-#: app/support/forms.py:29 app/trips/forms.py:103
+#: app/support/forms.py:29 app/trips/forms.py:114
 msgid "Envoyer"
 msgstr "Subir"
 
@@ -1522,12 +1603,41 @@ msgstr "¿Eliminar esta cuenta?"
 msgid "Supprimer le compte %(email)s"
 msgstr "Eliminar la cuenta %(email)s"
 
+#: app/templates/auth/email/import_address.txt:1
 #: app/templates/auth/email/reset_password.txt:1
 #: app/templates/auth/email/signup.txt:1
 #: app/templates/auth/email/signup_existing.txt:1
+#: app/templates/auth/email/signup_import_address.txt:1
+#: app/templates/mail_import/result.txt:1
 #: app/templates/support/email/to_user.txt:1
 msgid "Bonjour,"
 msgstr "Hola:"
+
+#: app/templates/auth/email/import_address.txt:3
+#, python-format
+msgid ""
+"Le compte Voyage Voyage %(account)s souhaite pouvoir importer des voyages"
+" à partir des e-mails envoyés par cette adresse. Pour l'autoriser, ouvrez"
+" ce lien puis confirmez :"
+msgstr ""
+"La cuenta de Voyage Voyage %(account)s desea importar viajes a partir de "
+"los correos enviados desde esta dirección. Para autorizarlo, abre este "
+"enlace y confirma:"
+
+#: app/templates/auth/email/import_address.txt:7
+#, python-format
+msgid ""
+"Ce lien est valable %(minutes)s minutes. Cette adresse servira seulement "
+"à l'import : elle ne permettra pas de se connecter."
+msgstr ""
+"Este enlace es válido %(minutes)s minutos. Esta dirección solo servirá "
+"para la importación: no permitirá iniciar sesión."
+
+#: app/templates/auth/email/import_address.txt:9
+msgid ""
+"Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail : "
+"rien ne sera autorisé."
+msgstr "Si no has hecho esta solicitud, ignora este correo: no se autorizará nada."
 
 #: app/templates/auth/email/reset_password.txt:3
 msgid ""
@@ -1582,8 +1692,21 @@ msgid "Mot de passe oublié ? Choisissez-en un nouveau ici :"
 msgstr "¿Has olvidado tu contraseña? Elige una nueva aquí:"
 
 #: app/templates/auth/email/signup_existing.txt:11
+#: app/templates/auth/email/signup_import_address.txt:5
 msgid "Si vous n'êtes pas à l'origine de cette demande, ignorez cet e-mail."
 msgstr "Si no has hecho esta solicitud, ignora este correo."
+
+#: app/templates/auth/email/signup_import_address.txt:3
+msgid ""
+"Une inscription à Voyage Voyage a été demandée avec cette adresse, mais "
+"elle sert déjà à l'import par e-mail d'un compte et ne peut donc pas "
+"servir à s'inscrire. Pour l'utiliser, retirez-la d'abord des préférences "
+"de ce compte."
+msgstr ""
+"Se ha solicitado un registro en Voyage Voyage con esta dirección, pero ya"
+" se usa para la importación por correo de una cuenta y por tanto no puede"
+" usarse para registrarse. Para usarla, elimínala primero de las "
+"preferencias de esa cuenta."
 
 #: app/templates/auth/forgot.html:3 app/templates/auth/forgot.html:4
 msgid "Mot de passe oublié"
@@ -1595,13 +1718,31 @@ msgstr "Indica tu dirección de correo para recibir un enlace de restablecimient
 
 #: app/templates/auth/forgot.html:10 app/templates/auth/register.html:12
 #: app/templates/support/_macros.html:40 app/templates/support/index.html:19
-#: app/templates/trips/detail.html:129
+#: app/templates/trips/detail.html:134
 msgid "Envoi…"
 msgstr "Enviando…"
 
 #: app/templates/auth/forgot.html:14
 msgid "Retour à la connexion"
 msgstr "Volver al inicio de sesión"
+
+#: app/templates/auth/import_address_confirm.html:2
+#: app/templates/auth/import_address_confirm.html:4
+msgid "Confirmer l'adresse d'import"
+msgstr "Confirmar la dirección de importación"
+
+#: app/templates/auth/import_address_confirm.html:8
+#, python-format
+msgid ""
+"Les voyages des e-mails envoyés depuis %(email)s pourront être importés "
+"dans le compte %(account)s. Cette adresse ne permet pas de se connecter."
+msgstr ""
+"Los viajes de los correos enviados desde %(email)s podrán importarse en "
+"la cuenta %(account)s. Esta dirección no permite iniciar sesión."
+
+#: app/templates/auth/import_address_confirm.html:12
+msgid "Confirmer"
+msgstr "Confirmar"
 
 #: app/templates/auth/login.html:5
 msgid "Retrouvez tous vos voyages sur la carte."
@@ -1625,7 +1766,7 @@ msgstr "El modo automático sigue la configuración de tu dispositivo."
 
 #: app/templates/auth/profile.html:24 app/templates/auth/profile.html:56
 #: app/templates/auth/profile.html:79 app/templates/auth/reset.html:12
-#: app/templates/trips/form.html:153
+#: app/templates/trips/form.html:158
 msgid "Enregistrement…"
 msgstr "Guardando…"
 
@@ -1708,11 +1849,40 @@ msgstr "Desactivar"
 msgid "Activer l'abonnement"
 msgstr "Activar la suscripción"
 
-#: app/templates/auth/profile.html:123
+#: app/templates/auth/profile.html:124 app/templates/transfer/index.html:81
+msgid "Import par e-mail"
+msgstr "Importar por correo"
+
+#: app/templates/auth/profile.html:128
+#, python-format
+msgid ""
+"Transférez vos confirmations de vol ou de train à %(address)s : les "
+"trajets sont ajoutés à votre compte en quelques minutes. Les e-mails sont"
+" acceptés depuis l'adresse de votre compte et depuis les adresses "
+"confirmées ci-dessous, qui ne permettent pas de se connecter."
+msgstr ""
+"Reenvía tus confirmaciones de vuelo o de tren a %(address)s: los "
+"trayectos se añaden a tu cuenta en unos minutos. Se aceptan los correos "
+"enviados desde la dirección de tu cuenta y desde las direcciones "
+"confirmadas a continuación, que no permiten iniciar sesión."
+
+#: app/templates/auth/profile.html:134
+msgid "adresse du compte"
+msgstr "dirección de la cuenta"
+
+#: app/templates/auth/profile.html:142
+msgid "Retirer"
+msgstr "Quitar"
+
+#: app/templates/auth/profile.html:150
+msgid "Autoriser une autre adresse"
+msgstr "Autorizar otra dirección"
+
+#: app/templates/auth/profile.html:163
 msgid "Sauvegarde"
 msgstr "Copia de seguridad"
 
-#: app/templates/auth/profile.html:126
+#: app/templates/auth/profile.html:166
 msgid ""
 "Téléchargez tous vos trajets, notes, étiquettes et photos dans un fichier"
 " .zip. Il se réimporte depuis la page Importer / exporter."
@@ -1720,11 +1890,11 @@ msgstr ""
 "Descarga todos tus trayectos, notas, etiquetas y fotos en un archivo "
 ".zip. Se puede volver a importar desde la página Importar / exportar."
 
-#: app/templates/auth/profile.html:128
+#: app/templates/auth/profile.html:168
 msgid "Télécharger ma sauvegarde"
 msgstr "Descargar mi copia"
 
-#: app/templates/auth/profile.html:136
+#: app/templates/auth/profile.html:176
 msgid ""
 "Votre compte, vos voyages et vos liens de partage seront définitivement "
 "supprimés. Cette action est irréversible."
@@ -1732,7 +1902,7 @@ msgstr ""
 "Tu cuenta, tus viajes y tus enlaces para compartir se eliminarán "
 "definitivamente. Esta acción es irreversible."
 
-#: app/templates/auth/profile.html:140
+#: app/templates/auth/profile.html:180
 msgid "Confirmez avec votre mot de passe."
 msgstr "Confirma con tu contraseña."
 
@@ -1908,7 +2078,7 @@ msgid "Cette action est définitive."
 msgstr "Esta acción es definitiva."
 
 #: app/templates/base.html:238 app/templates/transfer/preview.html:73
-#: app/templates/trips/form.html:152 app/templates/trips/journey.html:29
+#: app/templates/trips/form.html:157 app/templates/trips/journey.html:29
 msgid "Annuler"
 msgstr "Cancelar"
 
@@ -2594,6 +2764,47 @@ msgstr ""
 "indicada arriba. También puedes presentar una reclamación ante la CNIL "
 "(autoridad francesa de protección de datos):"
 
+#: app/templates/mail_import/result.txt:3
+#, python-format
+msgid "Nous n'avons pas pu lire de trajet dans votre e-mail « %(subject)s »."
+msgstr "No hemos podido leer ningún trayecto en tu correo «%(subject)s»."
+
+#: app/templates/mail_import/result.txt:5
+msgid ""
+"Il a été transmis à notre équipe, qui ajoutera vos trajets à la main dans"
+" votre compte. Vous n'avez rien à faire."
+msgstr ""
+"Se ha transmitido a nuestro equipo, que añadirá tus trayectos a tu cuenta"
+" manualmente. No tienes que hacer nada."
+
+#: app/templates/mail_import/result.txt:7
+#, python-format
+msgid ""
+"Ces trajets de votre e-mail « %(subject)s » ont été ajoutés à votre "
+"compte :"
+msgstr "Estos trayectos de tu correo «%(subject)s» se han añadido a tu cuenta:"
+
+#: app/templates/mail_import/result.txt:10
+msgid ""
+"Ces trajets étaient déjà enregistrés et n'ont pas été ajoutés une seconde"
+" fois :"
+msgstr ""
+"Estos trayectos ya estaban registrados y no se han añadido por segunda "
+"vez:"
+
+#: app/templates/mail_import/result.txt:10
+#, python-format
+msgid ""
+"Les trajets de votre e-mail « %(subject)s » étaient déjà enregistrés : "
+"rien n'a été ajouté une seconde fois."
+msgstr ""
+"Los trayectos de tu correo «%(subject)s» ya estaban registrados: no se ha"
+" añadido nada por segunda vez."
+
+#: app/templates/mail_import/result.txt:13
+msgid "Vos trajets :"
+msgstr "Tus trayectos:"
+
 #: app/templates/map.html:2 app/templates/map.html:22
 #: app/templates/trips/review.html:10
 msgid "Carte partagée"
@@ -2635,7 +2846,7 @@ msgstr "Países y territorios"
 
 #: app/templates/map.html:60 app/templates/trips/_stats_parts.html:140
 #: app/templates/trips/_stats_parts.html:240
-#: app/templates/trips/_stats_parts.html:272 app/templates/trips/detail.html:56
+#: app/templates/trips/_stats_parts.html:272 app/templates/trips/detail.html:61
 msgid "CO₂ estimé"
 msgstr "CO₂ estimado"
 
@@ -2671,7 +2882,7 @@ msgstr "Hasta"
 msgid "Modes de transport"
 msgstr "Medios de transporte"
 
-#: app/templates/map.html:108 app/templates/trips/detail.html:59
+#: app/templates/map.html:108 app/templates/trips/detail.html:64
 #: app/trips/forms.py:30
 msgid "Étiquettes"
 msgstr "Etiquetas"
@@ -3090,6 +3301,15 @@ msgstr ""
 msgid "Import…"
 msgstr "Importando…"
 
+#: app/templates/transfer/index.html:83
+#, python-format
+msgid ""
+"Transférez vos confirmations de vol ou de train à %(address)s depuis "
+"%(email)s : les trajets sont ajoutés à votre compte en quelques minutes."
+msgstr ""
+"Reenvía tus confirmaciones de vuelo o de tren a %(address)s desde "
+"%(email)s: los trayectos se añaden a tu cuenta en unos minutos."
+
 #: app/templates/transfer/preview.html:3 app/templates/transfer/preview.html:7
 msgid "Aperçu de l'import"
 msgstr "Vista previa de la importación"
@@ -3408,68 +3628,72 @@ msgstr "Ver en el mapa"
 msgid "Ajouter à l'agenda"
 msgstr "Añadir al calendario"
 
-#: app/templates/trips/detail.html:47 app/templates/trips/form.html:107
+#: app/templates/trips/detail.html:46 app/trips/forms.py:63
+msgid "Numéro du vol retour"
+msgstr "Número del vuelo de vuelta"
+
+#: app/templates/trips/detail.html:52 app/templates/trips/form.html:107
 msgid "Dates"
 msgstr "Fechas"
 
-#: app/templates/trips/detail.html:48
+#: app/templates/trips/detail.html:53
 #: app/templates/trips/transport_stats.html:15
 #: app/templates/trips/transport_stats.html:76
 msgid "Trajets"
 msgstr "Trayectos"
 
-#: app/templates/trips/detail.html:52
+#: app/templates/trips/detail.html:57
 msgid "par la route"
 msgstr "por carretera"
 
-#: app/templates/trips/detail.html:53
+#: app/templates/trips/detail.html:58
 #, python-format
 msgid "estimée (%(km)s à vol d'oiseau)"
 msgstr "estimada (%(km)s en línea recta)"
 
-#: app/templates/trips/detail.html:54
+#: app/templates/trips/detail.html:59
 msgid "à vol d'oiseau"
 msgstr "en línea recta"
 
-#: app/templates/trips/detail.html:57
+#: app/templates/trips/detail.html:62
 msgid "Pays"
 msgstr "Países"
 
-#: app/templates/trips/detail.html:65
+#: app/templates/trips/detail.html:70
 msgid "Étapes"
 msgstr "Etapas"
 
-#: app/templates/trips/detail.html:73 app/templates/trips/detail.html:98
+#: app/templates/trips/detail.html:78 app/templates/trips/detail.html:103
 msgid "Photos"
 msgstr "Fotos"
 
-#: app/templates/trips/detail.html:81
+#: app/templates/trips/detail.html:86
 msgid "Fait partie du voyage"
 msgstr "Forma parte del viaje"
 
-#: app/templates/trips/detail.html:86 app/templates/trips/list.html:62
+#: app/templates/trips/detail.html:91 app/templates/trips/list.html:62
 #: app/trips/forms.py:14
 msgid "Notes"
 msgstr "Notas"
 
-#: app/templates/trips/detail.html:92
+#: app/templates/trips/detail.html:97
 msgid "Aucune note."
 msgstr "Sin notas."
 
-#: app/templates/trips/detail.html:93
+#: app/templates/trips/detail.html:98
 msgid "Ajouter une note"
 msgstr "Añadir una nota"
 
-#: app/templates/trips/detail.html:106
+#: app/templates/trips/detail.html:111
 msgid "Photo"
 msgstr "Foto"
 
-#: app/templates/trips/detail.html:110
+#: app/templates/trips/detail.html:115
 #, python-format
 msgid "Supprimer la photo %(name)s"
 msgstr "Eliminar la foto %(name)s"
 
-#: app/templates/trips/detail.html:126
+#: app/templates/trips/detail.html:131
 msgid ""
 "JPEG, PNG, WebP ou GIF. Les métadonnées (dont la position GPS) sont "
 "retirées. Photos privées : elles n'apparaissent pas sur les liens de "
@@ -3503,19 +3727,19 @@ msgstr "Detalles del trayecto"
 msgid "Le retour reprend le même itinéraire et le même mode, en sens inverse."
 msgstr "La vuelta sigue el mismo itinerario y medio, en sentido inverso."
 
-#: app/templates/trips/form.html:132
+#: app/templates/trips/form.html:137
 msgid "Étiquettes et notes"
 msgstr "Etiquetas y notas"
 
-#: app/templates/trips/form.html:136 app/templates/trips/journey.html:24
+#: app/templates/trips/form.html:141 app/templates/trips/journey.html:24
 msgid "Souvenirs, adresses, conseils…"
 msgstr "Recuerdos, direcciones, consejos…"
 
-#: app/templates/trips/form.html:138
+#: app/templates/trips/form.html:143
 msgid "Pour ajouter des photos, ouvrez la fiche du trajet."
 msgstr "Para añadir fotos, abre la ficha del trayecto."
 
-#: app/templates/trips/form.html:139
+#: app/templates/trips/form.html:144
 msgid "Ouvrir la fiche"
 msgstr "Abrir la ficha"
 
@@ -4112,35 +4336,35 @@ msgstr "Esta vista previa ha caducado: vuelve a importar el archivo."
 msgid "Aucun trajet sélectionné : rien n'a été importé."
 msgstr "Ningún trayecto seleccionado: no se ha importado nada."
 
-#: app/transfer/routes.py:329
+#: app/transfer/routes.py:335
 #, python-format
 msgid "%(num)s trajet importé."
 msgid_plural "%(num)s trajets importés."
 msgstr[0] "%(num)s trayecto importado."
 msgstr[1] "%(num)s trayectos importados."
 
-#: app/transfer/routes.py:331
+#: app/transfer/routes.py:337
 #, python-format
 msgid "%(num)s voyage recréé."
 msgid_plural "%(num)s voyages recréés."
 msgstr[0] "%(num)s viaje recreado."
 msgstr[1] "%(num)s viajes recreados."
 
-#: app/transfer/routes.py:333
+#: app/transfer/routes.py:339
 #, python-format
 msgid "%(num)s doublon ignoré."
 msgid_plural "%(num)s doublons ignorés."
 msgstr[0] "%(num)s duplicado ignorado."
 msgstr[1] "%(num)s duplicados ignorados."
 
-#: app/transfer/routes.py:335
+#: app/transfer/routes.py:341
 #, python-format
 msgid "%(num)s photo restaurée."
 msgid_plural "%(num)s photos restaurées."
 msgstr[0] "%(num)s foto restaurada."
 msgstr[1] "%(num)s fotos restauradas."
 
-#: app/transfer/routes.py:337
+#: app/transfer/routes.py:343
 #, python-format
 msgid "%(num)s photo illisible ignorée."
 msgid_plural "%(num)s photos illisibles ignorées."
@@ -4183,7 +4407,7 @@ msgstr "Aerolínea"
 msgid "Numéro de vol"
 msgstr "Número de vuelo"
 
-#: app/transport.py:42 app/trips/forms.py:62
+#: app/transport.py:42 app/trips/forms.py:64
 msgid "Appareil"
 msgstr "Avión"
 
@@ -4490,15 +4714,23 @@ msgstr "Aerolínea u operador"
 msgid "Numéro"
 msgstr "Número"
 
-#: app/trips/forms.py:88
+#: app/trips/forms.py:90
+msgid "Indiquez aussi le numéro du vol aller."
+msgstr "Indica también el número del vuelo de ida."
+
+#: app/trips/forms.py:93
+msgid "Numéros de vol trop longs."
+msgstr "Los números de vuelo son demasiado largos."
+
+#: app/trips/forms.py:99
 msgid "Nom du voyage"
 msgstr "Nombre del viaje"
 
-#: app/trips/forms.py:98
+#: app/trips/forms.py:109
 msgid "Ajouter des photos"
 msgstr "Añadir fotos"
 
-#: app/trips/forms.py:99
+#: app/trips/forms.py:110
 msgid "Choisissez au moins une photo."
 msgstr "Elige al menos una foto."
 
@@ -4533,46 +4765,46 @@ msgstr "Periodo desconocido: %(when)s"
 msgid "Lieu introuvable : choisissez une suggestion de la liste."
 msgstr "Lugar no encontrado: elige una sugerencia de la lista."
 
-#: app/trips/routes.py:201
+#: app/trips/routes.py:204
 msgid "Voyage ajouté."
 msgstr "Viaje añadido."
 
-#: app/trips/routes.py:216
+#: app/trips/routes.py:220
 msgid "Voyage modifié."
 msgstr "Viaje actualizado."
 
-#: app/trips/routes.py:231
+#: app/trips/routes.py:235
 msgid "Voyage supprimé."
 msgstr "Viaje eliminado."
 
-#: app/trips/routes.py:245
+#: app/trips/routes.py:249
 msgid "Sélectionnez au moins deux trajets à regrouper."
 msgstr "Selecciona al menos dos trayectos para agrupar."
 
-#: app/trips/routes.py:259
+#: app/trips/routes.py:263
 msgid "Trajets regroupés en un voyage."
 msgstr "Trayectos agrupados en un viaje."
 
-#: app/trips/routes.py:283
+#: app/trips/routes.py:287
 msgid "Voyage enregistré."
 msgstr "Viaje guardado."
 
-#: app/trips/routes.py:294
+#: app/trips/routes.py:298
 msgid "Voyage dégroupé : ses trajets sont de nouveau indépendants."
 msgstr "Viaje desagrupado: sus trayectos vuelven a ser independientes."
 
-#: app/trips/routes.py:307
+#: app/trips/routes.py:311
 msgid "Trajet retiré du voyage."
 msgstr "Trayecto quitado del viaje."
 
-#: app/trips/routes.py:347
+#: app/trips/routes.py:351
 #, python-format
 msgid "%(num)s photo ajoutée."
 msgid_plural "%(num)s photos ajoutées."
 msgstr[0] "%(num)s foto añadida."
 msgstr[1] "%(num)s fotos añadidas."
 
-#: app/trips/routes.py:395
+#: app/trips/routes.py:399
 msgid "Photo supprimée."
 msgstr "Foto eliminada."
 

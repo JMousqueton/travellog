@@ -243,6 +243,22 @@ def register_cli(app):
             raise click.ClickException("Échec de l'envoi (voir le journal ci-dessus).")
         click.echo(f"E-mail de test remis au serveur {app.config['MAIL_SERVER']}:{app.config['MAIL_PORT']} pour {to}.")
 
+    @app.cli.command("mail-import")
+    @click.option("--dry-run", is_flag=True, help="Affiche ce qui serait importé, sans rien écrire ni supprimer.")
+    def mail_import(dry_run):
+        """Relève la boîte IMAP d'import et ajoute les trajets des e-mails reçus (cron : toutes les 5 minutes)."""
+        import logging
+
+        from .mail_import import run
+
+        if not app.config["IMAP_SERVER"]:
+            raise click.ClickException("IMAP_SERVER n'est pas configuré.")
+        if dry_run:
+            app.logger.setLevel(logging.INFO)
+        counts = run(dry_run=dry_run)
+        if dry_run or set(counts) - {"done"}:  # e-mails déjà traités laissés dans la boîte : rien à signaler
+            click.echo(" · ".join(f"{status} : {n}" for status, n in sorted(counts.items())) or "Boîte vide.")
+
     @app.cli.command("purge-share-links")
     def purge_share_links():
         """Supprime les liens de partage expirés."""

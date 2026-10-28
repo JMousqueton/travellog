@@ -56,6 +56,24 @@ class Config:
     # Inscription par lien magique envoyé par e-mail (15 minutes par défaut).
     SIGNUP_LINK_MAX_AGE = int(os.environ.get("SIGNUP_LINK_MAX_AGE", "900"))
 
+    # Import de voyages par e-mail (flask mail-import, par cron) : boîte IMAP où les utilisateurs transfèrent
+    # leurs confirmations. Sans IMAP_SERVER, l'import est désactivé.
+    IMAP_SERVER = os.environ.get("IMAP_SERVER", "")
+    IMAP_PORT = int(os.environ.get("IMAP_PORT", "993"))
+    IMAP_USERNAME = os.environ.get("IMAP_USERNAME", "")
+    IMAP_PASSWORD = os.environ.get("IMAP_PASSWORD", "")
+    IMAP_FOLDER = os.environ.get("IMAP_FOLDER", "INBOX")
+    IMAP_TIMEOUT = float(os.environ.get("IMAP_TIMEOUT", "30"))
+    # Adresse affichée aux utilisateurs (par défaut : IMAP_USERNAME).
+    IMPORT_ADDRESS = os.environ.get("IMPORT_ADDRESS", "") or IMAP_USERNAME
+    # Signature DKIM du domaine de l'expéditeur exigée (sans elle, l'adresse From peut être usurpée).
+    MAIL_IMPORT_REQUIRE_DKIM = _bool("MAIL_IMPORT_REQUIRE_DKIM", "1")
+    # Validité du lien de confirmation d'une adresse d'import supplémentaire (secondes).
+    IMPORT_ADDRESS_LINK_MAX_AGE = int(os.environ.get("IMPORT_ADDRESS_LINK_MAX_AGE", "3600"))
+    MAX_IMPORT_ADDRESSES = int(os.environ.get("MAX_IMPORT_ADDRESSES", "10"))
+    # Compte « Import Error » qui ouvre un ticket pour chaque e-mail sans trajet reconnu.
+    MAIL_IMPORT_ERROR_EMAIL = os.environ.get("MAIL_IMPORT_ERROR_EMAIL", "import-error@voyage-voyage.invalid")
+
     # Journalisation et suivi des erreurs (Sentry, facultatif : pip install "sentry-sdk[flask]").
     LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO").upper()
     SENTRY_DSN = os.environ.get("SENTRY_DSN", "")
@@ -147,6 +165,7 @@ class TestingConfig(Config):
     RATELIMIT_STORAGE_URI = "memory://"
     LOGIN_RATE_LIMIT = REGISTER_RATE_LIMIT = PASSWORD_RESET_RATE_LIMIT = "10000 per minute"
     MAIL_SERVER = ""
+    IMAP_SERVER = IMPORT_ADDRESS = ""
     APP_BASE_URL = ""
     SENTRY_DSN = ""
 

@@ -80,6 +80,20 @@ available in French, English, Spanish, German and Italian.
   touched and can be dragged, zoomed (wheel, pinch, buttons) and turned with the arrow keys. Clicking a trip
   (on the globe or in the list) turns the globe towards it and shows its card; replay works on the globe too.
   The choice is remembered in the browser.
+- Import by email: users forward their flight or train confirmations to the import address (`IMPORT_ADDRESS`,
+  shown on the import page) from the address of their account. `flask mail-import`, run every 5 minutes by
+  cron, reads the IMAP mailbox: the sender must be an account and the email must carry a valid DKIM signature
+  from the sender's domain (otherwise anyone could forge the From address). Trips are read from the schema.org
+  JSON-LD data most airlines and agencies embed (flights, trains, buses, boats), otherwise from the text
+  (flight number, airport codes, date in five languages); a flight and its return become a round trip. The
+  email is then deleted from the mailbox. When nothing is recognised, a ticket is opened by the "Import
+  Error" account (`MAIL_IMPORT_ERROR_EMAIL`, which cannot sign in) with the raw email, and the email stays in
+  the mailbox. Every email is recorded in `mail_imports`, so it is processed, and its ticket opened, only
+  once. Emails from unknown or unauthenticated senders are ignored and left. `--dry-run` shows what would be
+  imported without writing or deleting anything.
+  Each user can also allow other sender addresses (Preferences → Import by email): an address is only added
+  once confirmed through a magic link sent to it, it can never be used to sign in, and it can be neither
+  an account's address nor another user's import address; signing up with an import address is refused.
 - Import / export (`/import-export`) as CSV, GeoJSON and GPX. All three formats carry the same fields
   (including notes and journey groupings) and can be imported back without loss: they also serve as a
   backup, photos excepted. On import, a preview lists the trips read: untick the ones to leave out (all /
@@ -197,6 +211,13 @@ applies migrations if the archive is older than the code. Example nightly task (
 
 ```
 15 3 * * * cd /opt/travel && .venv/bin/flask backup create >> instance/backups/backup.log 2>&1
+```
+
+Import by email (IMAP settings in `.env`: `IMAP_SERVER`, `IMAP_USERNAME`, `IMAP_PASSWORD`…), every 5 minutes;
+`flock` prevents two runs from overlapping:
+
+```
+*/5 * * * * cd /opt/travel && flock -n instance/mail-import.lock .venv/bin/flask mail-import >> instance/mail-import.log 2>&1
 ```
 
 Copy `instance/backups` to another machine regularly: a backup on the same disk doesn't protect against that

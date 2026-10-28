@@ -8,11 +8,12 @@ from flask_login import current_user, login_required, login_user, logout_user
 from ..extensions import db, limiter
 from ..i18n import LANGUAGES, current_locale
 from ..mail import mail_enabled, send_email
-from ..models import User, read_signup_token, registration_open, signup_token
+from ..models import (ImportAddress, User, import_address_token, is_import_address, read_import_address_token,
+                      read_signup_token, registration_open, signup_token)
 from ..utils import is_safe_redirect
 from . import bp
-from .forms import (ChangePasswordForm, DeleteAccountForm, ForgotPasswordForm, HomeForm, LoginForm, ProfileForm,
-                    RegisterForm, ResetPasswordForm, SignupCompleteForm, SignupRequestForm)
+from .forms import (ChangePasswordForm, DeleteAccountForm, ForgotPasswordForm, HomeForm, ImportAddressForm, LoginForm,
+                    ProfileForm, RegisterForm, ResetPasswordForm, SignupCompleteForm, SignupRequestForm)
 
 
 def _email_key():
@@ -87,6 +88,8 @@ def _register_with_magic_link():
             if existing:
                 body = render_template("auth/email/signup_existing.txt", login_url=_external_url("auth.login"),
                                        forgot_url=_external_url("auth.forgot_password"))
+            elif is_import_address(email):  # adresse d'import d'un compte : pas d'inscription possible
+                body = render_template("auth/email/signup_import_address.txt")
             else:
                 body = render_template("auth/email/signup.txt",
                                        url=_external_url("auth.signup", token=signup_token(email, locale)),
@@ -114,6 +117,9 @@ def signup(token):
     if db.session.execute(db.select(User.id).filter_by(email=email)).first():
         flash(_("Ce lien a déjà servi : le compte existe. Connectez-vous."), "info")
         return redirect(url_for("auth.login"))
+    if is_import_address(email):  # devenue adresse d'import entre l'envoi du lien et son ouverture
+        flash(_("Cette adresse sert à l'import par e-mail d'un compte : elle ne peut pas servir à s'inscrire."), "danger")
+        return redirect(url_for("auth.register"))
     if current_user.is_authenticated:
         logout_user()
     form = SignupCompleteForm()
@@ -161,7 +167,7 @@ def logout():
     return redirect(url_for("trips.index"))
 
 
-def _render_profile(form=None, password_form=None, delete_form=None, home_form=None):
+def _render_profile(form=None, password_form=None, delete_form=None, home_form=None, import_form=None):
     if form is None:
         form = ProfileForm(formdata=None, obj=current_user)
         form.theme.data = current_user.theme or ""
@@ -171,6 +177,7 @@ def _render_profile(form=None, password_form=None, delete_form=None, home_form=N
         home_form=home_form or HomeForm(formdata=None, obj=current_user),
         password_form=password_form or ChangePasswordForm(formdata=None, prefix="pw"),
         delete_form=delete_form or DeleteAccountForm(formdata=None, prefix="del"),
+        import_form=import_form or ImportAddressForm(formdata=None, prefix="imp"),
     )
 
 
@@ -278,6 +285,86 @@ def calendar_disable():
     db.session.commit()
     flash(_("Abonnement agenda désactivé."), "success")
     return redirect(url_for("auth.profile", _anchor="calendar"))
+
+
+# --- Adresses d'import supplémentaires ---------------------------------------------------------
+# Une adresse n'est enregistrée qu'à la confirmation du lien envoyé à cette adresse : demander une adresse
+# ne la réserve pas (personne ne peut bloquer l'adresse d'un autre).
+
+def _import_address_limit():
+    return current_app.config["REGISTER_RATE_LIMIT"]
+
+
+@bp.route("/import-addresses", methods=["POST"])
+@login_required
+@limiter.limit(_import_address_limit)
+def add_import_address():
+    if not mail_enabled():
+        abort(404)
+    form = ImportAddressForm(prefix="imp")
+    if not form.validate_on_submit():
+        return _render_profile(import_form=form), 400
+    email = form.email.data.strip().lower()
+    mine = {a.email for a in current_user.import_addresses}
+    if email == current_user.email.lower() or email in mine:
+        form.email.errors.append(_("Cette adresse est déjà autorisée pour votre compte."))
+    elif len(mine) >= current_app.config["MAX_IMPORT_ADDRESSES"]:
+        form.email.errors.append(_("Vous avez atteint le nombre maximal d'adresses (%(max)s).",
+                                   max=current_app.config["MAX_IMPORT_ADDRESSES"]))
+    elif ImportAddress.taken(email):
+        # Même message qu'il s'agisse d'un compte ou de l'adresse d'un autre : rien n'est révélé.
+        form.email.errors.append(_("Cette adresse ne peut pas être ajoutée."))
+    if form.email.errors:
+        return _render_profile(import_form=form), 400
+    minutes = current_app.config["IMPORT_ADDRESS_LINK_MAX_AGE"] // 60
+    with force_locale(current_user.locale):
+        body = render_template("auth/email/import_address.txt", account=current_user.email, minutes=minutes,
+                               url=_external_url("auth.confirm_import_address",
+                                                 token=import_address_token(current_user, email)))
+        subject = _("Confirmez votre adresse d'import pour Voyage Voyage")
+    send_email(email, subject, body)
+    flash(_("Un lien de confirmation a été envoyé à %(email)s (valable %(minutes)s minutes).",
+            email=email, minutes=minutes), "success")
+    return redirect(url_for("auth.profile", _anchor="mail-import"))
+
+
+@bp.route("/import-addresses/confirm/<token>", methods=["GET", "POST"])
+@limiter.limit(_import_address_limit, methods=["POST"])
+def confirm_import_address(token):
+    """Page du lien de confirmation ; l'adresse n'est ajoutée qu'à l'envoi du formulaire (POST), pour que les
+    robots des messageries qui ouvrent les liens ne la confirment pas. Pas besoin d'être connecté."""
+    data = read_import_address_token(token)
+    user = db.session.get(User, data["id"]) if data else None
+    if user is None:
+        flash(_("Ce lien de confirmation est invalide ou a expiré. Demandez-en un nouveau depuis vos préférences."),
+              "danger")
+        return redirect(url_for("auth.profile" if current_user.is_authenticated else "auth.login"))
+    email = data["email"]
+    if any(a.email == email for a in user.import_addresses):
+        flash(_("Adresse %(email)s déjà confirmée.", email=email), "info")
+        return redirect(url_for("auth.profile", _anchor="mail-import"))
+    if request.method == "POST":
+        if ImportAddress.taken(email):  # devenue entre-temps un compte ou l'adresse d'un autre
+            flash(_("Cette adresse ne peut pas être ajoutée."), "danger")
+        else:
+            db.session.add(ImportAddress(user_id=user.id, email=email))
+            db.session.commit()
+            flash(_("Adresse %(email)s confirmée : ses confirmations de voyage peuvent être transférées à "
+                    "l'adresse d'import.", email=email), "success")
+        return redirect(url_for("auth.profile", _anchor="mail-import"))
+    return render_template("auth/import_address_confirm.html", email=email, account=user.email)
+
+
+@bp.route("/import-addresses/<int:address_id>/delete", methods=["POST"])
+@login_required
+def delete_import_address(address_id):
+    address = db.session.get(ImportAddress, address_id)
+    if address is None or address.user_id != current_user.id:
+        abort(404)
+    db.session.delete(address)
+    db.session.commit()
+    flash(_("Adresse %(email)s retirée.", email=address.email), "success")
+    return redirect(url_for("auth.profile", _anchor="mail-import"))
 
 
 def _reset_url(user):
