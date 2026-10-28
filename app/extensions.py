@@ -28,9 +28,18 @@ babel = Babel()
 limiter = Limiter(key_func=get_remote_address)
 
 
+# Attente maximale d'un verrou d'écriture (gunicorn à plusieurs threads, tâches cron en parallèle).
+SQLITE_BUSY_TIMEOUT_MS = 15_000
+
+
 @event.listens_for(Engine, "connect")
-def _enable_sqlite_foreign_keys(dbapi_connection, _record):
+def _configure_sqlite(dbapi_connection, _record):
     if isinstance(dbapi_connection, sqlite3.Connection):
         cursor = dbapi_connection.cursor()
         cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.execute(f"PRAGMA busy_timeout={SQLITE_BUSY_TIMEOUT_MS}")
+        # WAL : les lectures ne bloquent plus l'écriture (et inversement). Le mode est enregistré dans le fichier
+        # (une base en mémoire reste en « memory ») ; synchronous=NORMAL suffit en WAL, sans risque de corruption.
+        cursor.execute("PRAGMA journal_mode=WAL")
+        cursor.execute("PRAGMA synchronous=NORMAL")
         cursor.close()

@@ -35,3 +35,16 @@ def test_migrations_keep_existing_trips(tmp_path, monkeypatch):
     assert counts == {"users": 1, "trips": 1, "journeys": 1, "share_links": 1}
     assert db.execute("PRAGMA foreign_key_check").fetchall() == []
     assert {"tickets", "ticket_messages"} <= {r[0] for r in db.execute("SELECT name FROM sqlite_master WHERE type='table'")}
+
+
+def test_file_database_uses_wal(tmp_path, monkeypatch):
+    path = tmp_path / "travel.db"
+    monkeypatch.setattr(TestingConfig, "SQLALCHEMY_DATABASE_URI", f"sqlite:///{path}")
+    app = create_app("testing")
+    with app.app_context():
+        from app.extensions import db
+
+        with db.engine.connect() as conn:
+            assert conn.exec_driver_sql("PRAGMA journal_mode").scalar() == "wal"
+            assert conn.exec_driver_sql("PRAGMA busy_timeout").scalar() == 15_000
+            assert conn.exec_driver_sql("PRAGMA foreign_keys").scalar() == 1
