@@ -17,12 +17,14 @@ from flask_wtf.file import FileField, FileRequired
 from wtforms import HiddenField, SubmitField
 
 from ..extensions import db
+from ..mail_import.wallet import is_pass
 from ..models import Journey, Trip
 from ..photos import PhotoError, photo_path, save_upload
 from ..tags import MAX_TAGS, parse_tags, resolve
 from ..trips.queries import list_trips
 from . import bp
-from .formats import PARSERS, FileFormatError, detect_format, to_csv, to_geojson, to_gpx, trip_record, validate_record
+from .formats import (PARSERS, FileFormatError, detect_format, pair_round_trips, to_csv, to_geojson, to_gpx, trip_record,
+                      validate_record)
 
 EXPORTS = {  # « zip » (sauvegarde complète) a sa propre route
     "csv": ("text/csv; charset=utf-8", "csv"),
@@ -33,7 +35,7 @@ MAX_REPORTED_ERRORS = 20
 
 
 class ImportForm(FlaskForm):
-    file = FileField(_l("Fichier CSV, GeoJSON, GPX ou sauvegarde complète (.zip)"), validators=[FileRequired(message=_l("Choisissez un fichier."))])
+    file = FileField(_l("Fichier CSV, GeoJSON, GPX, carte d'embarquement Wallet (.pkpass) ou sauvegarde complète (.zip)"), validators=[FileRequired(message=_l("Choisissez un fichier."))])
     submit = SubmitField(_l("Importer"))
 
 
@@ -120,6 +122,20 @@ def _read_archive(data):
         return archive.read("trips.geojson"), archive
     except KeyError:
         raise FileFormatError(_("Archive invalide : trips.geojson absent (utilisez une sauvegarde complète).")) from None
+
+
+def _read_passes(data):
+    """Trajets des cartes d'embarquement d'un .pkpass ou .pkpasses (aller et retour réunis)."""
+    from ..i18n import current_locale
+    from ..mail_import.wallet import WalletError, pass_rows
+
+    try:
+        rows = pass_rows(data, date.today(), current_locale())
+    except WalletError:
+        raise FileFormatError(_("Carte Wallet illisible : ce n'est pas un fichier .pkpass valide.")) from None
+    if not rows:
+        raise FileFormatError(_("Aucun trajet reconnu dans cette carte Wallet (seules les cartes d'embarquement sont lues)."))
+    return pair_round_trips(list(enumerate(rows, start=1)))
 
 
 def _attach_photos(archive, entries, trip=None, journey=None):
@@ -217,6 +233,8 @@ def import_file():
             if is_archive:
                 geojson, archive = _read_archive(data)
                 rows = PARSERS["geojson"](geojson)
+            elif is_pass(storage.filename, storage.mimetype):
+                rows = _read_passes(data)
             else:
                 rows = PARSERS[detect_format(storage.filename, data)](data)
         except FileFormatError as exc:

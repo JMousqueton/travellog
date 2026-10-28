@@ -59,13 +59,14 @@
           <div class="mb-3">
             {{ form.file.label(class_='form-label') }}
             {{ form.file(class_='form-control' ~ (' is-invalid' if form.file.errors else ''),
-                         accept='.csv,.geojson,.json,.gpx,.zip,text/csv,application/geo+json,application/gpx+xml,application/zip',
+                         accept='.csv,.geojson,.json,.gpx,.zip,.pkpass,.pkpasses,text/csv,application/geo+json,application/gpx+xml,application/zip,application/vnd.apple.pkpass,application/vnd.apple.pkpasses',
                          **{'aria-describedby': 'import-help'}) }}
             {% for error in form.file.errors %}<div class="invalid-feedback">{{ error }}</div>{% endfor %}
             <div class="form-text" id="import-help">
               {{ _("Colonnes attendues : celles d'un export (depart_date au format AAAA-MM-JJ, transport_mode parmi %(modes)s, noms et coordonnées des lieux). Les trajets déjà présents sont ignorés, et le pays est déduit des coordonnées s'il manque.",
                    modes=TRANSPORT_MODES|join(', ')) }}
               {{ _("Les historiques de vols exportés en CSV par Flighty ou myFlightradar24 sont aussi reconnus : chaque vol devient un trajet en avion (les vols annulés sont ignorés).") }}
+              {{ _("Une carte d'embarquement Apple Wallet (.pkpass) donne son vol ou son trajet en train, en bus ou en bateau.") }}
             </div>
           </div>
           <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Import…') }}">

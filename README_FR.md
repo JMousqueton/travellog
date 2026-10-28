@@ -92,8 +92,8 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   toutes les 5 minutes par un timer systemd, relève la boîte IMAP : l'expéditeur doit être un compte et l'e-mail porter
   une signature DKIM valide du domaine de l'expéditeur (sinon n'importe qui pourrait usurper l'adresse From).
   Les trajets sont lus dans les données schema.org (JSON-LD) que la plupart des compagnies et agences
-  ajoutent (vols, trains, bus, bateaux), sinon dans le texte (numéro de vol, codes d'aéroports, date en cinq
-  langues) ; un vol et son retour deviennent un aller-retour. L'e-mail est alors supprimé de la boîte. Si rien
+  ajoutent (vols, trains, bus, bateaux), puis dans les cartes d'embarquement Apple Wallet jointes (`.pkpass`,
+  voir plus bas), sinon dans le texte (numéro de vol, codes d'aéroports, date en cinq langues) ; un vol et son retour deviennent un aller-retour. L'e-mail est alors supprimé de la boîte. Si rien
   n'est reconnu, un ticket est ouvert au nom du compte « Import Error » (`MAIL_IMPORT_ERROR_EMAIL`, qui ne
   peut pas se connecter) avec l'e-mail brut, et l'e-mail reste dans la boîte. Chaque e-mail est noté dans
   `mail_imports` : il n'est traité (et son ticket ouvert) qu'une fois. Les e-mails d'expéditeurs inconnus ou
@@ -109,6 +109,13 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   année) avant de confirmer ; les trajets déjà présents sont décochés et ignorés. Un fichier contenant une
   erreur n'importe rien (les erreurs sont listées avec leur numéro de ligne). Une sauvegarde complète (.zip)
   est restaurée directement, photos comprises.
+- Cartes d'embarquement Apple Wallet (`.pkpass`, ou `.pkpasses` qui en regroupe plusieurs), jointes à un e-mail
+  d'import ou envoyées depuis la page Importer / exporter (`app/mail_import/wallet.py`) : une carte aérienne est
+  lue dans son code-barres (format IATA BCBP : aéroports, compagnie, numéro et jour de chacun de ses vols), sinon
+  dans ses données « semantics » ou ses champs affichés (codes d'aéroports, numéro de vol, date de la carte) ;
+  une carte de train, de bus ou de bateau dans ses données « semantics » (gares et leurs coordonnées, numéro,
+  opérateur). Les autres cartes (événements, fidélité) sont ignorées. La signature de la carte n'est pas
+  vérifiée : l'e-mail qui la porte est authentifié (DKIM), et un fichier envoyé passe par l'aperçu de l'import.
 - Import d'historiques de vols : les exports CSV de Flighty et de myFlightradar24 sont reconnus
   automatiquement. Chaque vol devient un trajet en avion entre les deux aéroports (vols annulés ignorés,
   aéroport de déroutement pris comme arrivée, date américaine M/J/AA ou

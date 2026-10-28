@@ -17,7 +17,8 @@ Modules :
 - mailbox : relève de la boîte IMAP ;
 - processing : traitement d'un e-mail (expéditeur, trajets enregistrés, ticket d'échec, compte rendu) ;
 - authentication : signature DKIM de l'expéditeur ;
-- extract : lecture des trajets, d'abord en JSON-LD (json_ld), sinon dans le texte (text).
+- extract : lecture des trajets, d'abord en JSON-LD (json_ld), puis dans les cartes Wallet jointes (wallet),
+  sinon dans le texte (text).
 """
 from .authentication import dkim_aligned
 from .extract import extract_trips, html_to_text

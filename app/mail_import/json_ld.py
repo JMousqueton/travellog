@@ -57,7 +57,7 @@ def _ld_row(trip, lang):
         return None
     mode, origin_key, dest_key, number_key = kind
     day = str(trip.get("departureTime") or trip.get("departureDay") or "")[:10]
-    places = [_ld_place(trip.get(origin_key), lang), _ld_place(trip.get(dest_key), lang)]
+    places = [ld_place(trip.get(origin_key), lang), ld_place(trip.get(dest_key), lang)]
     if not re.match(r"^\d{4}-\d{2}-\d{2}$", day) or None in places:
         return None
     carrier, number = "", str(trip.get(number_key) or "").strip() if number_key else ""
@@ -74,7 +74,7 @@ def _ld_row(trip, lang):
     return make_row(day, mode, *places, carrier=carrier, number=number)
 
 
-def _ld_place(node, lang):
+def ld_place(node, lang):
     """{name, lat, lon, country} d'un aéroport, d'une gare ou d'un arrêt ; None si introuvable."""
     if isinstance(node, str):
         node = {"name": node}

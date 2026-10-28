@@ -84,8 +84,9 @@ available in French, English, Spanish, German and Italian.
   shown on the import page) from the address of their account. `flask mail-import`, run every 5 minutes by
   a systemd timer, reads the IMAP mailbox: the sender must be an account and the email must carry a valid DKIM signature
   from the sender's domain (otherwise anyone could forge the From address). Trips are read from the schema.org
-  JSON-LD data most airlines and agencies embed (flights, trains, buses, boats), otherwise from the text
-  (flight number, airport codes, date in five languages); a flight and its return become a round trip. The
+  JSON-LD data most airlines and agencies embed (flights, trains, buses, boats), then from attached Apple Wallet
+  boarding passes (`.pkpass`, see below), otherwise from the text (flight number, airport codes, date in five
+  languages); a flight and its return become a round trip. The
   email is then deleted from the mailbox. When nothing is recognised, a ticket is opened by the "Import
   Error" account (`MAIL_IMPORT_ERROR_EMAIL`, which cannot sign in) with the raw email, and the email stays in
   the mailbox. Every email is recorded in `mail_imports`, so it is processed, and its ticket opened, only
@@ -100,6 +101,13 @@ available in French, English, Spanish, German and Italian.
   none / per-year buttons) before confirming; trips already present are unticked and skipped. A file
   containing an error imports nothing (errors are listed with their line number). A full backup (.zip) is
   restored directly, photos included.
+- Apple Wallet boarding passes (`.pkpass`, or `.pkpasses` holding several), attached to an import email or sent
+  from the Import / export page (`app/mail_import/wallet.py`): a plane pass is read from its barcode (IATA BCBP
+  format: airports, airline, flight number and day of every flight it holds), otherwise from its "semantics"
+  data or its displayed fields (airport codes, flight number, date of the pass); a train, bus or boat pass from
+  its "semantics" data (stations and their coordinates, number, operator). Other passes (events, loyalty
+  cards) are ignored. The pass signature is not checked: the email carrying it is authenticated (DKIM), and an
+  uploaded file goes through the import preview.
 - Flight history import: CSV exports from Flighty and myFlightradar24 are recognised automatically. Each
   flight becomes a plane trip between the two airports (cancelled flights skipped, diversion airport used as
   the arrival, US M/D/YY or DD/MM/YYYY dates detected from the file). The airline (name looked up from its

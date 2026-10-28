@@ -1,4 +1,5 @@
-"""Lecture des trajets d'un e-mail : corps texte et HTML (e-mails transférés compris), JSON-LD d'abord."""
+"""Lecture des trajets d'un e-mail : corps texte et HTML (e-mails transférés compris), JSON-LD d'abord, puis
+cartes Wallet jointes, puis texte."""
 import re
 from datetime import date
 from email.utils import parsedate_to_datetime
@@ -7,6 +8,7 @@ from html.parser import HTMLParser
 from ..transfer.formats import pair_round_trips, validate_record
 from .json_ld import json_ld_rows
 from .text import text_rows
+from .wallet import WalletError, is_pass, pass_rows
 
 
 class _TextExtractor(HTMLParser):
@@ -47,10 +49,15 @@ def html_to_text(markup):
 
 
 def _bodies(msg):
-    """(textes, pages HTML) de l'e-mail, y compris ceux d'un e-mail transféré en pièce jointe."""
-    texts, pages = [], []
+    """(textes, pages HTML, cartes Wallet) de l'e-mail, y compris ceux d'un e-mail transféré en pièce jointe."""
+    texts, pages, passes = [], [], []
     for part in msg.walk():
-        if part.is_multipart() or part.get_content_maintype() != "text":
+        if part.is_multipart():
+            continue
+        if is_pass(part.get_filename(), part.get_content_type()):
+            passes.append(part.get_payload(decode=True) or b"")
+            continue
+        if part.get_content_maintype() != "text":
             continue
         try:
             content = part.get_content()
@@ -60,7 +67,7 @@ def _bodies(msg):
             pages.append(content)
         elif part.get_content_subtype() == "plain":
             texts.append(content)
-    return texts, pages
+    return texts, pages, passes
 
 
 def _reference_date(msg):
@@ -72,9 +79,16 @@ def _reference_date(msg):
 
 def extract_trips(msg, lang):
     """(trajets validés, problèmes) d'un e-mail ; les trajets sont au format de validate_record."""
-    texts, pages = _bodies(msg)
+    texts, pages, passes = _bodies(msg)
     ref = _reference_date(msg)
+    records, problems = [], []
     rows = [r for page in pages for r in json_ld_rows(page, lang)]
+    # Cartes d'embarquement Wallet jointes : leur code-barres est plus sûr que le texte de l'e-mail.
+    for data in passes if not rows else ():
+        try:
+            rows.extend(pass_rows(data, ref, lang))
+        except WalletError as exc:
+            problems.append(str(exc))
     if not rows:
         # Le texte tiré du HTML garde la structure (une cellule par ligne) ; le texte brut sert de secours.
         for text in [html_to_text(p) for p in pages] + texts:
@@ -85,7 +99,6 @@ def extract_trips(msg, lang):
     for row in rows:
         unique.setdefault((row["transport_mode"], row["origin_name"], row["dest_name"], row["depart_date"]), row)
     paired = pair_round_trips(list(enumerate(unique.values())))
-    records, problems = [], []
     for _line, raw in paired:
         record, errors = validate_record(raw)
         if errors:
