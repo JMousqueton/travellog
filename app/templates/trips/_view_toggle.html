@@ -1,0 +1,12 @@
+{# Sélecteur Liste / Calendrier de « Mes voyages » (le calendrier est Premium). #}
+{% from "partials/premium.html" import diamond with context %}
+{% macro view_toggle(active) %}
+<div class="btn-group view-toggle" role="group" aria-label="{{ _('Affichage') }}">
+  <a class="btn btn-sm {{ 'btn-primary' if active == 'list' else 'btn-outline-secondary' }}" href="{{ url_for('trips.list_view') }}"
+     {% if active == 'list' %}aria-current="page"{% endif %}>
+    <i class="fa-solid fa-list me-1" aria-hidden="true"></i>{{ _("Liste") }}</a>
+  <a class="btn btn-sm {{ 'btn-primary' if active == 'calendar' else 'btn-outline-secondary' }}" href="{{ url_for('trips.calendar_view') }}"
+     {% if active == 'calendar' %}aria-current="page"{% endif %}>
+    <i class="fa-regular fa-calendar me-1" aria-hidden="true"></i>{{ _("Calendrier") }}{{ diamond() }}</a>
+</div>
+{% endmacro %}

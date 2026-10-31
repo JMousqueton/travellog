@@ -193,6 +193,25 @@ def list_view():
                            year=year, years=years, has_trips=bool(years))
 
 
+@bp.route("/trips/calendar")
+@premium_required
+def calendar_view():
+    """Mes voyages en calendrier : un mois, chaque trajet ou voyage en barre du départ au retour (Premium)."""
+    from . import calendar
+
+    first = calendar.parse_month(request.args.get("month"))
+    start, end = calendar.visible_range(first)
+    trips = db.session.execute(db.select(Trip).filter(Trip.user_id == current_user.id, Trip.depart_date <= end)
+                               .order_by(Trip.depart_date, Trip.id)).scalars().all()
+    items = [i for i in calendar.calendar_items(list_rows(trips)) if i.end >= start]
+    in_month = [i for i in items if i.start < calendar.shift_month(first, 1) and i.end >= first]
+    has_trips = db.session.execute(db.select(Trip.id).filter_by(user_id=current_user.id).limit(1)).first() is not None
+    return render_template("trips/calendar.html", first=first, weeks=calendar.month_weeks(first, items),
+                           weekdays=calendar.weekday_names(), month_items=in_month, has_trips=has_trips,
+                           prev_month=calendar.shift_month(first, -1), next_month=calendar.shift_month(first, 1),
+                           this_month=utils.today().replace(day=1))
+
+
 @bp.route("/trips/new", methods=["GET", "POST"])
 @login_required
 def create():

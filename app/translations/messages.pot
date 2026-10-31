@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-31 12:31+0000\n"
+"POT-Creation-Date: 2026-10-31 15:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -168,7 +168,7 @@ msgstr ""
 #: app/api/routes.py:126 app/api/routes.py:138
 #: app/templates/admin/users.html:117 app/templates/share/profile.html:39
 #: app/templates/share/trips.html:52 app/templates/trips/_stats_parts.html:65
-#: app/templates/trips/_stats_parts.html:195 app/templates/trips/list.html:135
+#: app/templates/trips/_stats_parts.html:195 app/templates/trips/list.html:137
 #: app/templates/trips/stats.html:67 app/templates/trips/stats.html:84
 #, python-format
 msgid "%(num)s trajet"
@@ -582,7 +582,7 @@ msgstr ""
 msgid "Votre abonnement reprend : prochain renouvellement le %(date)s."
 msgstr ""
 
-#: app/i18n.py:75
+#: app/i18n.py:75 app/templates/trips/calendar.html:24
 msgid "Aujourd'hui"
 msgstr ""
 
@@ -616,12 +616,13 @@ msgid "Réessayer"
 msgstr ""
 
 #: app/i18n.py:108 app/templates/share/profile.html:13
-#: app/templates/trips/list.html:177 app/templates/trips/stats.html:45
+#: app/templates/trips/calendar.html:69 app/templates/trips/list.html:179
+#: app/templates/trips/stats.html:45
 msgid "Aucun voyage pour l'instant"
 msgstr ""
 
-#: app/i18n.py:109 app/templates/trips/list.html:178
-#: app/templates/trips/stats.html:46
+#: app/i18n.py:109 app/templates/trips/calendar.html:70
+#: app/templates/trips/list.html:180 app/templates/trips/stats.html:46
 msgid "Ajoutez votre premier voyage pour le voir apparaître sur la carte."
 msgstr ""
 
@@ -638,13 +639,14 @@ msgid "Réinitialiser les filtres"
 msgstr ""
 
 #: app/i18n.py:113 app/templates/base.html:162 app/templates/base.html:163
-#: app/templates/map.html:223 app/templates/trips/list.html:11
-#: app/templates/trips/list.html:180
+#: app/templates/map.html:223 app/templates/trips/calendar.html:11
+#: app/templates/trips/calendar.html:72 app/templates/trips/list.html:13
+#: app/templates/trips/list.html:182
 msgid "Ajouter un voyage"
 msgstr ""
 
 #: app/i18n.py:114 app/templates/admin/users.html:39
-#: app/templates/trips/detail.html:32 app/templates/trips/list.html:145
+#: app/templates/trips/detail.html:32 app/templates/trips/list.html:147
 msgid "Modifier"
 msgstr ""
 
@@ -658,12 +660,12 @@ msgstr ""
 msgid "Afficher %(route)s sur la carte"
 msgstr ""
 
-#: app/i18n.py:117 app/templates/trips/list.html:81
+#: app/i18n.py:117 app/templates/trips/list.html:83
 #, python-format
 msgid "Modifier le voyage %(route)s"
 msgstr ""
 
-#: app/i18n.py:118 app/templates/trips/list.html:86
+#: app/i18n.py:118 app/templates/trips/list.html:88
 #, python-format
 msgid "Supprimer le voyage %(route)s"
 msgstr ""
@@ -680,19 +682,19 @@ msgstr ""
 
 #: app/i18n.py:121 app/templates/share/trips.html:38
 #: app/templates/trips/_stats_parts.html:244 app/templates/trips/detail.html:56
-#: app/templates/trips/list.html:116
+#: app/templates/trips/list.html:118
 #: app/templates/trips/transport_stats.html:16
 msgid "Distance"
 msgstr ""
 
 #: app/i18n.py:122 app/templates/map.html:130 app/templates/share/trips.html:17
-#: app/templates/transfer/preview.html:59 app/templates/trips/list.html:59
+#: app/templates/transfer/preview.html:59 app/templates/trips/list.html:61
 #: app/trips/forms.py:58
 msgid "Aller-retour"
 msgstr ""
 
 #: app/i18n.py:123 app/templates/map.html:130 app/templates/share/trips.html:17
-#: app/templates/trips/list.html:59 app/templates/trips/stats.html:31
+#: app/templates/trips/list.html:61 app/templates/trips/stats.html:31
 msgid "Aller simple"
 msgstr ""
 
@@ -813,12 +815,13 @@ msgstr ""
 msgid "Fiche"
 msgstr ""
 
-#: app/i18n.py:152 app/templates/trips/list.html:78
+#: app/i18n.py:152 app/templates/trips/list.html:80
 #, python-format
 msgid "Fiche du trajet %(route)s"
 msgstr ""
 
-#: app/i18n.py:153 app/templates/map.html:121 app/templates/trips/stats.html:19
+#: app/i18n.py:153 app/templates/map.html:121
+#: app/templates/trips/calendar.html:58 app/templates/trips/stats.html:19
 msgid "À venir"
 msgstr ""
 
@@ -2159,7 +2162,7 @@ msgid "Inscription"
 msgstr ""
 
 #: app/templates/admin/users.html:17 app/templates/billing/invoices.html:20
-#: app/templates/trips/list.html:117
+#: app/templates/trips/list.html:119
 msgid "Actions"
 msgstr ""
 
@@ -2713,9 +2716,9 @@ msgid "Bilan"
 msgstr ""
 
 #: app/templates/base.html:145 app/templates/base.html:147
-#: app/templates/errors/404.html:32 app/templates/trips/detail.html:12
-#: app/templates/trips/list.html:3 app/templates/trips/list.html:6
-#: app/templates/trips/photos_map.html:27
+#: app/templates/errors/404.html:32 app/templates/trips/calendar.html:7
+#: app/templates/trips/detail.html:12 app/templates/trips/list.html:4
+#: app/templates/trips/list.html:7 app/templates/trips/photos_map.html:30
 msgid "Mes voyages"
 msgstr ""
 
@@ -2735,7 +2738,7 @@ msgid "Partager mes voyages"
 msgstr ""
 
 #: app/templates/base.html:175 app/templates/transfer/index.html:3
-#: app/templates/transfer/index.html:7 app/templates/trips/list.html:9
+#: app/templates/transfer/index.html:7 app/templates/trips/list.html:11
 #: app/templates/trips/stats.html:13
 msgid "Importer / exporter"
 msgstr ""
@@ -2905,7 +2908,7 @@ msgid ""
 msgstr ""
 
 #: app/templates/billing/invoices.html:16 app/templates/share/trips.html:35
-#: app/templates/transfer/preview.html:43 app/templates/trips/list.html:113
+#: app/templates/transfer/preview.html:43 app/templates/trips/list.html:115
 msgid "Date"
 msgstr ""
 
@@ -3645,12 +3648,12 @@ msgstr ""
 msgid "Vous consultez ces voyages en lecture seule."
 msgstr ""
 
-#: app/templates/map.html:31 app/templates/trips/list.html:27
+#: app/templates/map.html:31 app/templates/trips/list.html:29
 #: app/templates/trips/stats.html:172
 msgid "Année"
 msgstr ""
 
-#: app/templates/map.html:32 app/templates/trips/list.html:31
+#: app/templates/map.html:32 app/templates/trips/list.html:33
 msgid "Tout"
 msgstr ""
 
@@ -4204,7 +4207,7 @@ msgid "Trajet"
 msgstr ""
 
 #: app/templates/share/trips.html:37 app/templates/transfer/preview.html:45
-#: app/templates/trips/detail.html:40 app/templates/trips/list.html:115
+#: app/templates/trips/detail.html:40 app/templates/trips/list.html:117
 msgid "Mode"
 msgstr ""
 
@@ -4662,6 +4665,45 @@ msgstr[1] ""
 msgid "Nouveaux : %(list)s"
 msgstr ""
 
+#: app/templates/trips/_view_toggle.html:4
+msgid "Affichage"
+msgstr ""
+
+#: app/templates/trips/_view_toggle.html:7
+msgid "Liste"
+msgstr ""
+
+#: app/templates/trips/_view_toggle.html:10
+msgid "Calendrier"
+msgstr ""
+
+#: app/templates/trips/calendar.html:4
+msgid "Calendrier de mes voyages"
+msgstr ""
+
+#: app/templates/trips/calendar.html:15
+msgid "Mois"
+msgstr ""
+
+#: app/templates/trips/calendar.html:17
+msgid "Mois précédent"
+msgstr ""
+
+#: app/templates/trips/calendar.html:21
+msgid "Mois suivant"
+msgstr ""
+
+#: app/templates/trips/calendar.html:50
+#, python-format
+msgid "%(num)s départ ou séjour en %(month)s"
+msgid_plural "%(num)s départs ou séjours en %(month)s"
+msgstr[0] ""
+msgstr[1] ""
+
+#: app/templates/trips/calendar.html:63
+msgid "Aucun voyage ce mois-ci."
+msgstr ""
+
 #: app/templates/trips/detail.html:10 app/templates/trips/form.html:8
 #: app/templates/trips/photo.html:8
 msgid "Fil d’Ariane"
@@ -4718,7 +4760,7 @@ msgstr ""
 msgid "Fait partie du voyage"
 msgstr ""
 
-#: app/templates/trips/detail.html:92 app/templates/trips/list.html:62
+#: app/templates/trips/detail.html:92 app/templates/trips/list.html:64
 #: app/trips/forms.py:14
 msgid "Notes"
 msgstr ""
@@ -4812,7 +4854,7 @@ msgstr ""
 msgid "Modifier le voyage"
 msgstr ""
 
-#: app/templates/trips/form.html:20 app/templates/trips/list.html:114
+#: app/templates/trips/form.html:20 app/templates/trips/list.html:116
 msgid "Itinéraire"
 msgstr ""
 
@@ -4853,85 +4895,85 @@ msgstr ""
 msgid "Les étiquettes s'appliquent à tous les trajets du voyage."
 msgstr ""
 
-#: app/templates/trips/list.html:18 app/templates/trips/list.html:24
+#: app/templates/trips/list.html:20 app/templates/trips/list.html:26
 msgid "Rechercher"
 msgstr ""
 
-#: app/templates/trips/list.html:22
+#: app/templates/trips/list.html:24
 msgid "Lieu, pays, note, étiquette, nom de voyage…"
 msgstr ""
 
-#: app/templates/trips/list.html:36
+#: app/templates/trips/list.html:38
 #, python-format
 msgid "%(num)s trajet trouvé pour « %(query)s »."
 msgid_plural "%(num)s trajets trouvés pour « %(query)s »."
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/templates/trips/list.html:37
+#: app/templates/trips/list.html:39
 msgid "Effacer la recherche"
 msgstr ""
 
-#: app/templates/trips/list.html:46
+#: app/templates/trips/list.html:48
 #, python-format
 msgid "Sélectionner le trajet %(route)s"
 msgstr ""
 
-#: app/templates/trips/list.html:72
+#: app/templates/trips/list.html:74
 msgid "Retirer du voyage"
 msgstr ""
 
-#: app/templates/trips/list.html:73
+#: app/templates/trips/list.html:75
 #, python-format
 msgid "Retirer le trajet %(route)s du voyage"
 msgstr ""
 
-#: app/templates/trips/list.html:77 app/templates/trips/list.html:142
+#: app/templates/trips/list.html:79 app/templates/trips/list.html:144
 msgid "Fiche, notes et photos"
 msgstr ""
 
-#: app/templates/trips/list.html:94
+#: app/templates/trips/list.html:96
 msgid "Regrouper en un voyage"
 msgstr ""
 
-#: app/templates/trips/list.html:95
+#: app/templates/trips/list.html:97
 msgid ""
 "Cochez au moins deux trajets d'un même voyage, par exemple l'aller, les "
 "étapes et le retour."
 msgstr ""
 
-#: app/templates/trips/list.html:100
+#: app/templates/trips/list.html:102
 msgid "Liste de vos voyages"
 msgstr ""
 
-#: app/templates/trips/list.html:112
+#: app/templates/trips/list.html:114
 msgid "Sélection"
 msgstr ""
 
-#: app/templates/trips/list.html:142
+#: app/templates/trips/list.html:144
 #, python-format
 msgid "Fiche du voyage %(name)s"
 msgstr ""
 
-#: app/templates/trips/list.html:145
+#: app/templates/trips/list.html:147
 #, python-format
 msgid "Modifier le voyage %(name)s"
 msgstr ""
 
-#: app/templates/trips/list.html:149
+#: app/templates/trips/list.html:151
 msgid "Dégrouper"
 msgstr ""
 
-#: app/templates/trips/list.html:150
+#: app/templates/trips/list.html:152
 #, python-format
 msgid "Dégrouper le voyage %(name)s"
 msgstr ""
 
-#: app/templates/trips/list.html:171
+#: app/templates/trips/list.html:173
 msgid "Aucun résultat"
 msgstr ""
 
-#: app/templates/trips/list.html:172
+#: app/templates/trips/list.html:174
 msgid "Essayez un autre mot, ou une partie du nom d'un lieu."
 msgstr ""
 
@@ -5005,15 +5047,15 @@ msgid ""
 "position GPS. Cliquez sur une vignette pour l'agrandir."
 msgstr ""
 
-#: app/templates/trips/photos_map.html:18
+#: app/templates/trips/photos_map.html:20
 msgid "Carte de mes photos"
 msgstr ""
 
-#: app/templates/trips/photos_map.html:24
+#: app/templates/trips/photos_map.html:27
 msgid "Aucune photo localisée pour l'instant"
 msgstr ""
 
-#: app/templates/trips/photos_map.html:25
+#: app/templates/trips/photos_map.html:28
 msgid ""
 "Ajoutez des photos à vos trajets et à vos voyages depuis leur page : "
 "celles qui contiennent une position GPS (la plupart des photos prises "
@@ -5964,54 +6006,54 @@ msgstr ""
 msgid "Lieu introuvable : choisissez une suggestion de la liste."
 msgstr ""
 
-#: app/trips/routes.py:205
+#: app/trips/routes.py:224
 msgid "Voyage ajouté."
 msgstr ""
 
-#: app/trips/routes.py:221
+#: app/trips/routes.py:240
 msgid "Voyage modifié."
 msgstr ""
 
-#: app/trips/routes.py:236
+#: app/trips/routes.py:255
 msgid "Voyage supprimé."
 msgstr ""
 
-#: app/trips/routes.py:250
+#: app/trips/routes.py:269
 msgid "Sélectionnez au moins deux trajets à regrouper."
 msgstr ""
 
-#: app/trips/routes.py:264
+#: app/trips/routes.py:283
 msgid "Trajets regroupés en un voyage."
 msgstr ""
 
-#: app/trips/routes.py:288
+#: app/trips/routes.py:307
 msgid "Voyage enregistré."
 msgstr ""
 
-#: app/trips/routes.py:299
+#: app/trips/routes.py:318
 msgid "Voyage dégroupé : ses trajets sont de nouveau indépendants."
 msgstr ""
 
-#: app/trips/routes.py:312
+#: app/trips/routes.py:331
 msgid "Trajet retiré du voyage."
 msgstr ""
 
-#: app/trips/routes.py:352
+#: app/trips/routes.py:371
 #, python-format
 msgid "%(num)s photo ajoutée."
 msgid_plural "%(num)s photos ajoutées."
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/trips/routes.py:420
+#: app/trips/routes.py:439
 msgid "Voir la photo"
 msgstr ""
 
-#: app/trips/routes.py:420
+#: app/trips/routes.py:439
 msgid "photos"
 msgstr ""
 
-#: app/trips/routes.py:473
+#: app/trips/routes.py:492
 msgid "Photo supprimée."
 msgstr ""
 

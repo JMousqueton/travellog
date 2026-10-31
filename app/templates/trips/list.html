@@ -1,10 +1,12 @@
 {% extends "base.html" %}
 {% from "partials/macros.html" import mode_badge, status_badge, tag_chips with context %}
+{% from "trips/_view_toggle.html" import view_toggle with context %}
 {% block title %}{{ _("Mes voyages") }}{% endblock %}
 {% block content %}
 <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
   <h1 class="h3 fw-bold mb-0">{{ _("Mes voyages") }}</h1>
-  <div class="d-flex flex-wrap gap-2">
+  <div class="d-flex flex-wrap gap-2 align-items-center">
+    {% if has_trips %}{{ view_toggle('list') }}{% endif %}
     <a class="btn btn-outline-secondary rounded-pill px-3" href="{{ url_for('transfer.index') }}">
       <i class="fa-solid fa-file-import me-1" aria-hidden="true"></i>{{ _("Importer / exporter") }}</a>
     <a class="btn btn-primary rounded-pill px-3" href="{{ url_for('trips.create') }}">

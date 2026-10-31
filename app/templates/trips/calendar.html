@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+{% from "trips/_view_toggle.html" import view_toggle with context %}
+{% set month_label = first|day("LLLL yyyy") %}
+{% block title %}{{ _("Calendrier de mes voyages") }}{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+  <h1 class="h3 fw-bold mb-0">{{ _("Mes voyages") }}</h1>
+  <div class="d-flex flex-wrap gap-2 align-items-center">
+    {{ view_toggle('calendar') }}
+    <a class="btn btn-primary rounded-pill px-3" href="{{ url_for('trips.create') }}">
+      <i class="fa-solid fa-plus me-1" aria-hidden="true"></i>{{ _("Ajouter un voyage") }}</a>
+  </div>
+</div>
+{% if has_trips %}
+<nav class="calendar-nav d-flex flex-wrap align-items-center gap-2 mb-3" aria-label="{{ _('Mois') }}">
+  <a class="btn btn-icon btn-sm" href="{{ url_for('trips.calendar_view', month=prev_month.strftime('%Y-%m')) }}"
+     aria-label="{{ _('Mois précédent') }}" title="{{ _('Mois précédent') }}" rel="prev">
+    <i class="fa-solid fa-chevron-left" aria-hidden="true"></i></a>
+  <h2 class="h5 fw-bold mb-0 calendar-month" aria-live="polite">{{ month_label|capitalize }}</h2>
+  <a class="btn btn-icon btn-sm" href="{{ url_for('trips.calendar_view', month=next_month.strftime('%Y-%m')) }}"
+     aria-label="{{ _('Mois suivant') }}" title="{{ _('Mois suivant') }}" rel="next">
+    <i class="fa-solid fa-chevron-right" aria-hidden="true"></i></a>
+  {% if first != this_month %}
+  <a class="btn btn-sm btn-outline-secondary rounded-pill px-3 ms-1" href="{{ url_for('trips.calendar_view') }}">{{ _("Aujourd'hui") }}</a>
+  {% endif %}
+</nav>
+<div class="card shadow-soft trip-calendar" aria-hidden="true">
+  <div class="trip-calendar-head">
+    {% for name in weekdays %}<div>{{ name }}</div>{% endfor %}
+  </div>
+  {% for week in weeks %}
+  <div class="trip-calendar-week" style="--lanes: {{ week.lanes }}">
+    {% for d in week.days %}
+    <div class="trip-calendar-day {% if not d.in_month %}is-outside{% endif %} {% if d.today %}is-today{% endif %}"
+         style="grid-column: {{ loop.index }}"><span>{{ d.date.day }}</span></div>
+    {% endfor %}
+    {% for seg in week.segments %}
+    {% set it = seg.item %}
+    <a class="trip-bar status-{{ it.status }} {% if it.journey %}is-journey{% endif %} {% if seg.cont_before %}cont-before{% endif %} {% if seg.cont_after %}cont-after{% endif %}"
+       href="{{ it.url }}" tabindex="-1" title="{{ it.label }} · {{ it.start|day }}{% if it.end != it.start %} – {{ it.end|day }}{% endif %}"
+       style="grid-column: {{ seg.col }} / span {{ seg.span }}; grid-row: {{ seg.lane + 2 }}; --mode-color: {{ it.color }}; --mode-color-dark: {{ it.color_dark }}">
+      <i class="fa-solid {{ it.icon }}" aria-hidden="true"></i><span>{{ it.label }}</span></a>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+{# Le même mois en liste : lisible au lecteur d'écran et sur petit écran. #}
+<section class="mt-4" aria-labelledby="monthListTitle">
+  <h2 class="h6 fw-bold text-body-secondary text-uppercase small" id="monthListTitle">
+    {{ ngettext("%(num)s départ ou séjour en %(month)s", "%(num)s départs ou séjours en %(month)s", month_items|length, month=month_label) }}</h2>
+  {% if month_items %}
+  <ul class="list-unstyled calendar-agenda mb-0">
+    {% for it in month_items %}
+    <li class="status-{{ it.status }}" style="--mode-color: {{ it.color }}; --mode-color-dark: {{ it.color_dark }}">
+      <span class="calendar-agenda-dates text-nowrap">{{ it.start|day }}{% if it.end != it.start %} – {{ it.end|day }}{% endif %}</span>
+      <a class="fw-medium text-decoration-none" href="{{ it.url }}">
+        <i class="fa-solid {{ it.icon }} me-1" aria-hidden="true"></i>{{ it.label }}</a>
+      {% if it.status == 'upcoming' %}<span class="badge rounded-pill text-bg-light ms-1">{{ _("À venir") }}</span>{% endif %}
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p class="text-body-secondary small mb-0">{{ _("Aucun voyage ce mois-ci.") }}</p>
+  {% endif %}
+</section>
+{% else %}
+<div class="empty-state card shadow-soft py-5">
+  <div class="empty-illustration" aria-hidden="true"><i class="fa-regular fa-calendar"></i></div>
+  <h2 class="h5">{{ _("Aucun voyage pour l'instant") }}</h2>
+  <p class="text-body-secondary">{{ _("Ajoutez votre premier voyage pour le voir apparaître sur la carte.") }}</p>
+  <a class="btn btn-primary rounded-pill px-4" href="{{ url_for('trips.create') }}">
+    <i class="fa-solid fa-plus me-1" aria-hidden="true"></i>{{ _("Ajouter un voyage") }}</a>
+</div>
+{% endif %}
+{% endblock %}
