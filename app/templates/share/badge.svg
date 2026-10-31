@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="96" viewBox="0 0 400 96" role="img" aria-label="{{ label }}">
+  <title>{{ label }}</title>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4f46e5"/><stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+  <rect width="400" height="96" rx="16" fill="url(#g)"/>
+  <circle cx="352" cy="-6" r="58" fill="#fff" opacity=".07"/>
+  <g transform="translate(18 22)" fill="none" stroke="#fff" stroke-width="2.4" opacity=".95">
+    <circle cx="26" cy="26" r="24"/>
+    <ellipse cx="26" cy="26" rx="10" ry="24"/>
+    <path d="M2 26h48M6 13h40M6 39h40"/>
+  </g>
+  <g font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif" fill="#fff">
+    <text x="84" y="28" font-size="12" font-weight="600" opacity=".75">{{ site }} · /u/{{ name }}</text>
+    {% for x, value, caption in columns %}
+    <text x="{{ x }}" y="60" font-size="21" font-weight="800">{{ value }}</text>
+    <text x="{{ x }}" y="77" font-size="11" opacity=".8">{{ caption }}</text>
+    {% endfor %}
+  </g>
+</svg>

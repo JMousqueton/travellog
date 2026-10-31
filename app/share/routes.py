@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from flask import abort, flash, redirect, render_template, url_for
+from flask import abort, current_app, flash, redirect, render_template, url_for
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
 
@@ -141,6 +141,36 @@ def public_profile(name):
         badges=sorted(badges, key=lambda row: row["earned"], reverse=True),
         since=min((t.depart_date.year for t in trips), default=None),
     )
+
+
+@bp.route("/u/<name>/badge.svg")
+def public_badge(name):
+    """Badge SVG du profil public (pays, distance, trajets), à intégrer sur un blog ou un profil GitHub."""
+    from flask_babel import format_decimal, ngettext
+
+    from ..models import User
+    from ..trips.stats import compute_stats, happened
+
+    user = db.session.execute(db.select(User).filter_by(public_name=name.lower())).scalar_one_or_none()
+    if user is None or user.is_blocked or not user.has_premium_access:
+        abort(404)
+    totals = compute_stats(happened(user.trips.all()))
+    km = format_decimal(round(totals["total_distance_km"]), format="#,##0")
+    columns = [
+        (84, totals["countries_fmt"], ngettext("pays", "pays", totals["countries"])),
+        (168, f"{km} km", _("parcourus")),
+        (310, totals["count_fmt"], ngettext("voyage", "voyages", totals["count"])),
+    ]
+    label = _("%(site)s : %(countries)s pays, %(km)s km, %(trips)s voyages", site=current_app.config["SITE_NAME"],
+              countries=totals["countries_fmt"], km=km, trips=totals["count_fmt"])
+    svg = render_template("share/badge.svg", site=current_app.config["SITE_NAME"], name=user.public_name,
+                          columns=columns, label=label)
+    response = current_app.response_class(svg, mimetype="image/svg+xml")
+    response.cache_control.public = True
+    response.cache_control.max_age = 3600
+    # Intégré sur d'autres sites (<img>) : la ressource doit pouvoir être chargée depuis n'importe quelle origine.
+    response.headers["Cross-Origin-Resource-Policy"] = "cross-origin"
+    return response
 
 
 def _years_chart(trips):
