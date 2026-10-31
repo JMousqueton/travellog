@@ -14,8 +14,11 @@
 </div>
 {% if photos %}
 <p class="text-body-secondary small mb-3">{{ _("Chaque photo est placée à l'endroit où elle a été prise, d'après sa position GPS. Cliquez sur une vignette pour l'agrandir.") }}</p>
-<div class="photos-map card shadow-soft" id="photosMap" data-tiles='{{ tiles|tojson }}'
-     role="region" aria-label="{{ _('Carte de mes photos') }}"></div>
+<div class="photos-stage card shadow-soft">
+  <div class="photos-map" id="photosMap" data-tiles='{{ tiles|tojson }}'
+       data-world-url="{{ url_for('static', filename='data/world.json') }}"
+       role="region" aria-label="{{ _('Carte de mes photos') }}"></div>
+</div>
 <script type="application/json" id="photosData">{{ {"photos": photos, "strings": strings}|tojson }}</script>
 {% else %}
 <div class="card shadow-soft">
@@ -33,6 +36,8 @@
 {% if photos %}
 <script src="{{ url_for('static', filename='vendor/leaflet-1.9.4/leaflet.js') }}"></script>
 <script src="{{ url_for('static', filename='vendor/leaflet.markercluster-1.5.3/leaflet.markercluster.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/d3-array-3.2.4/d3-array.min.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/d3-geo-3.1.1/d3-geo.min.js') }}"></script>
 <script type="module" src="{{ url_for('static', filename='js/photos-map.js') }}"></script>
 {% endif %}
 {% endblock %}

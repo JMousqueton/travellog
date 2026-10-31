@@ -177,6 +177,7 @@ def test_photos_map_lists_geotagged_photos(auth_client, user, db):
     html = auth_client.get("/photos").text
     assert 'id="photosMap"' in html and html.count("\"thumb\":") == 1 and "Paris, France" in html and "Lyon, France" in html
     assert 'href="/photos"' in html  # menu
+    assert "d3-geo" in html and 'data-world-url="/static/data/world.json' in html  # vue globe
 
 
 def test_photos_map_empty_state(auth_client, user):

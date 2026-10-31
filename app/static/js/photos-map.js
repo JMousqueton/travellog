@@ -1,6 +1,7 @@
 // Mes photos : chaque photo localisée en vignette sur la carte, regroupées quand elles sont proches.
 import { escapeHtml, t } from "./i18n.js";
 import { currentTheme } from "./theme.js";
+import { PhotoGlobe } from "./photo-globe.js";
 
 const element = document.getElementById("photosMap");
 const data = JSON.parse(document.getElementById("photosData")?.textContent || "null");
@@ -54,11 +55,57 @@ if (element && data && window.L) {
   if (bounds.length === 1) map.setView(bounds[0], 13);
   else map.fitBounds(bounds, { padding: [48, 48], maxZoom: 14 });
 
+  // Globe : mêmes photos, vue choisie par le sélecteur Carte / Globe (retenue dans le navigateur).
+  const globe = window.d3 ? new PhotoGlobe(element.parentElement, {
+    theme: currentTheme(), worldUrl: element.dataset.worldUrl, popup,
+  }) : null;
+  globe?.setPhotos(data.photos);
+
   const applyTheme = (theme) => {
     const url = (theme === "dark" && tiles.dark) || tiles.light;
     if (layer._url !== url) layer.setUrl(url);
     element.classList.toggle("tiles-filter-dark", theme === "dark" && !tiles.dark);
+    globe?.setTheme(theme);
   };
   applyTheme(currentTheme());
   document.addEventListener("themechange", (event) => applyTheme(event.detail.theme));
+
+  if (globe) {
+    const VIEW_PREF = "photos:view";
+    const viewSwitch = document.createElement("div");
+    viewSwitch.className = "view-switch shadow-sm";
+    viewSwitch.setAttribute("role", "group");
+    viewSwitch.setAttribute("aria-label", t("view_choice"));
+    viewSwitch.innerHTML = [["map", "fa-map", t("view_map")], ["globe", "fa-earth-americas", t("view_globe")]]
+      .map(([value, icon, label]) => `<button type="button" data-view="${value}" aria-pressed="${value === "map"}">
+        <i class="fa-solid ${icon}" aria-hidden="true"></i><span>${escapeHtml(label)}</span></button>`).join("");
+    element.parentElement.append(viewSwitch);
+
+    const setView = (name, save = true) => {
+      const toGlobe = name === "globe";
+      if (toGlobe === globe.visible) return;
+      map.closePopup();
+      if (toGlobe) {
+        element.style.visibility = "hidden";
+        globe.show().then(() => globe.fitAll());
+      } else {
+        globe.hide();
+        element.style.visibility = "";
+        map.invalidateSize();
+      }
+      viewSwitch.querySelectorAll("[data-view]").forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.view === name));
+      });
+      if (save) {
+        try { localStorage.setItem(VIEW_PREF, name); } catch { /* stockage indisponible */ }
+      }
+    };
+    viewSwitch.addEventListener("click", (event) => {
+      const button = event.target.closest("[data-view]");
+      if (button) setView(button.dataset.view);
+    });
+    let saved = "map";
+    try { saved = localStorage.getItem(VIEW_PREF) || "map"; } catch { /* stockage indisponible */ }
+    if (saved === "globe") setView("globe", false);
+  }
 }
