@@ -22,9 +22,9 @@ def file_app(app, tmp_path):
     return app
 
 
-def _jpeg():
+def _jpeg(exif=None):
     out = io.BytesIO()
-    Image.new("RGB", (64, 64), (10, 120, 200)).save(out, "JPEG")
+    Image.new("RGB", (64, 64), (10, 120, 200)).save(out, "JPEG", **({"exif": exif.tobytes()} if exif else {}))
     return out.getvalue()
 
 
@@ -130,7 +130,10 @@ def test_account_archive_roundtrip_with_photos(app, client, db, user):
     login(client)
     client.post("/journeys", data={"trip_ids": [a.id, b.id]})
     journey = db.session.execute(db.select(Journey)).scalar_one()
-    client.post(f"/trips/{a.id}/photos", data={"photos": [(io.BytesIO(_jpeg()), "a.jpg")]},
+    exif = Image.Exif()
+    exif[0x0110] = "Pixel 9"
+    exif[0x8825] = {1: "S", 2: (33.0, 51.0, 0.0), 3: "E", 4: (151.0, 12.0, 0.0)}
+    client.post(f"/trips/{a.id}/photos", data={"photos": [(io.BytesIO(_jpeg(exif)), "a.jpg")]},
                 content_type="multipart/form-data")
     client.post(f"/journeys/{journey.id}/photos", data={"photos": [(io.BytesIO(_jpeg()), "j.jpg")]},
                 content_type="multipart/form-data")
@@ -148,6 +151,9 @@ def test_account_archive_roundtrip_with_photos(app, client, db, user):
     carol = db.session.execute(db.select(User).filter_by(email="carol@example.com")).scalar_one()
     trips = carol.trips.order_by(Trip.depart_date).all()
     assert trips[0].notes == "Note A" and [p.original_name for p in trips[0].photos] == ["a.jpg"]
+    # L'EXIF, absent du fichier de l'archive, est restauré depuis trips.geojson.
+    restored = trips[0].photos[0].exif
+    assert restored["model"] == "Pixel 9" and restored["lat"] == -33.85 and restored["lon"] == 151.2
     assert [p.original_name for p in trips[0].journey.photos] == ["j.jpg"]
 
 

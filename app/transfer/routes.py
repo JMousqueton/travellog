@@ -19,7 +19,7 @@ from wtforms import HiddenField, SubmitField
 from ..extensions import db
 from ..mail_import.wallet import is_pass
 from ..models import Journey, Trip
-from ..photos import PhotoError, photo_path, save_upload
+from ..photos import PhotoError, clean_exif, photo_path, save_upload
 from ..tags import MAX_TAGS, parse_tags, resolve
 from ..trips.queries import list_trips
 from . import bp
@@ -80,7 +80,7 @@ def export_archive():
                     archive.write(photo_path(photo), name)
                 except FileNotFoundError:
                     continue
-                entries.append({"file": name, "name": photo.original_name})
+                entries.append({"file": name, "name": photo.original_name, "exif": photo.exif})
             return entries
 
         for trip in trips:
@@ -143,7 +143,10 @@ def _attach_photos(archive, entries, trip=None, journey=None):
     for entry in entries:
         try:
             data = archive.read(entry["file"])
-            save_upload(_ArchivedFile(data, entry.get("name") or entry["file"]), current_user, trip=trip, journey=journey)
+            photo = save_upload(_ArchivedFile(data, entry.get("name") or entry["file"]), current_user,
+                                trip=trip, journey=journey)
+            # Le fichier de la sauvegarde n'a plus d'EXIF : les informations viennent de l'archive.
+            photo.exif = photo.exif or clean_exif(entry.get("exif"))
             added += 1
         except (KeyError, PhotoError, zipfile.BadZipFile):
             failed += 1

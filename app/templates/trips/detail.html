@@ -106,7 +106,7 @@
     <ul class="photo-grid list-unstyled mb-4">
       {% for photo in photos %}
       <li class="photo-tile">
-        <a href="{{ url_for('trips.photo_file', photo_id=photo.id) }}" target="_blank" rel="noopener">
+        <a href="{{ url_for('trips.photo_view', photo_id=photo.id) }}">
           <img src="{{ url_for('trips.photo_thumb', photo_id=photo.id) }}" loading="lazy" width="240" height="240"
                alt="{{ photo.original_name or _('Photo') }}"></a>
         <form method="post" action="{{ url_for('trips.delete_photo', photo_id=photo.id) }}">
@@ -128,7 +128,7 @@
             {{ upload_form.photos(class_='form-control', multiple=True, accept='image/jpeg,image/png,image/webp,image/gif',
                                   **{'aria-describedby': 'photos-help'}) }}
             <div class="form-text" id="photos-help">
-              {{ _("JPEG, PNG, WebP ou GIF. Les métadonnées (dont la position GPS) sont retirées. Photos privées : elles n'apparaissent pas sur les liens de partage.") }}</div>
+              {{ _("JPEG, PNG, WebP ou GIF. Les métadonnées (appareil, position GPS) sont retirées du fichier et ne restent visibles que de vous. Photos privées : elles n'apparaissent pas sur les liens de partage.") }}</div>
           </div>
           <div class="col-sm-auto">
             <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Envoi…') }}">

@@ -447,6 +447,9 @@ class Photo(db.Model):
     width = db.Column(db.Integer, nullable=False)
     height = db.Column(db.Integer, nullable=False)
     size = db.Column(db.Integer, nullable=False)
+    # Métadonnées relevées à l'envoi (appareil, réglages, date, GPS) : visibles du seul propriétaire,
+    # jamais écrites dans le fichier servi. Voir photos.read_exif.
+    exif = db.Column(db.JSON, nullable=True)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
 
     user = db.relationship("User", overlaps="photos")

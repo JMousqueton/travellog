@@ -3,7 +3,7 @@ from datetime import date
 from babel.dates import get_month_names
 from flask import Response, abort, current_app, flash, redirect, render_template, request, send_file, url_for
 from flask_babel import gettext as _
-from flask_babel import ngettext
+from flask_babel import format_date, ngettext
 from flask_login import current_user, login_required
 
 from ..extensions import db
@@ -12,7 +12,7 @@ from ..i18n import current_locale
 from .. import countries as geo_countries
 from .. import ics, review_image
 from ..models import Journey, Photo, Trip, User
-from ..photos import PhotoError, merge_notes, move_photos, photo_path, save_upload
+from ..photos import PhotoError, exif_rows, merge_notes, move_photos, photo_path, save_upload
 from ..routing import update_route
 from ..tags import parse_tags, prune_unused, resolve, tags_text
 from ..carriers import carrier_suggestions, vehicle_suggestions
@@ -373,11 +373,7 @@ def _own_photo_or_404(photo_id):
     return photo
 
 
-@bp.route("/photos/<int:photo_id>", endpoint="photo_file")
-@bp.route("/photos/<int:photo_id>/thumb", endpoint="photo_thumb", defaults={"thumb": True})
-@login_required
-def photo_file(photo_id, thumb=False):
-    photo = _own_photo_or_404(photo_id)
+def _photo_file(photo, thumb=False):
     try:
         response = send_file(photo_path(photo, thumb=thumb), mimetype="image/jpeg", max_age=86400,
                              download_name=f"photo-{photo.id}.jpg", conditional=True)
@@ -386,6 +382,54 @@ def photo_file(photo_id, thumb=False):
     response.cache_control.private = True
     response.cache_control.public = False
     return response
+
+
+def _wants_image():
+    """Requête d'une balise <img> (et non navigation vers l'adresse) : Sec-Fetch-Dest, sinon l'en-tête Accept."""
+    dest, accept = request.headers.get("Sec-Fetch-Dest"), request.headers.get("Accept", "")
+    return dest == "image" if dest else accept.startswith("image/")
+
+
+@bp.route("/photos/<int:photo_id>/thumb")
+@login_required
+def photo_thumb(photo_id):
+    return _photo_file(_own_photo_or_404(photo_id), thumb=True)
+
+
+@bp.route("/photos/<int:photo_id>/view")
+@login_required
+def photo_view_legacy(photo_id):
+    return redirect(url_for("trips.photo_view", photo_id=photo_id), 301)
+
+
+@bp.route("/photos/<int:photo_id>")
+@login_required
+def photo_view(photo_id):
+    """Page d'une photo : l'image, ses informations EXIF et sa position GPS (propriétaire seulement)."""
+    # Une seule adresse : la page (Polaroid et informations) pour le navigateur, le JPEG pour sa balise <img>.
+    photo = _own_photo_or_404(photo_id)
+    if _wants_image():
+        response = _photo_file(photo)
+        # Revalidation à chaque fois (304 grâce à l'ETag) : une navigation vers l'adresse ne doit jamais
+        # réutiliser le JPEG du cache à la place de la page.
+        response.cache_control.no_cache = True
+        response.vary.update(("Sec-Fetch-Dest", "Accept"))
+        return response
+    owner = photo.trip or photo.journey
+    siblings = sorted(owner.photos, key=lambda p: p.id)
+    index = siblings.index(photo)
+    camera, gps = exif_rows(photo.exif)
+    back = (url_for("trips.detail", trip_id=photo.trip_id) if photo.trip_id
+            else url_for("trips.journey_detail", journey_id=photo.journey_id))
+    return render_template(
+        "trips/photo.html", photo=photo, camera=camera, gps=gps, back=back, tiles=map_tiles(),
+        owner_title=(f"{photo.trip.origin_name} → {photo.trip.dest_name}" if photo.trip
+                     else photo.journey.display_name),
+        taken_on=format_date(date.fromisoformat(photo.exif["taken_at"][:10]), "long")
+        if photo.exif and photo.exif.get("taken_at") else None,
+        position=index + 1, total=len(siblings),
+        previous=siblings[index - 1] if index > 0 else None,
+        next=siblings[index + 1] if index + 1 < len(siblings) else None), {"Vary": "Sec-Fetch-Dest, Accept"}
 
 
 @bp.route("/photos/<int:photo_id>/delete", methods=["POST"])

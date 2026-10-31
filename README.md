@@ -43,7 +43,9 @@ available in French, English, Spanish, German and Italian.
   highlights, the year's badges, plane and train, tags. The calendar's days away come from the home city when
   it is set, otherwise from round trips.
 - Notes and photos on every trip and journey (detail page). Photos are re-encoded as JPEG, without EXIF
-  metadata (so without GPS location), with a thumbnail. They stay private: share links show neither notes
+  metadata in the stored file, with a thumbnail. Camera, settings, date taken and GPS position are read at
+  upload, kept in the database and shown only to the owner on the photo page (`/photos/<id>`), with a
+  small map. They stay private: share links show neither notes
   nor photos.
 - Upcoming trips: "In 12 days", "Tomorrow" or "Ongoing" badge, faded routes on the map, past / upcoming
   filter, "Next departure" card on the dashboard. Statistics only count trips that have already started.

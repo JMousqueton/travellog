@@ -46,7 +46,9 @@ et interface disponible en français, anglais, espagnol, allemand et italien.
   badges de l'année, avion et train, étiquettes. Les jours loin de chez soi du calendrier viennent du
   domicile s'il est défini, sinon des allers-retours.
 - Notes et photos sur chaque trajet et chaque voyage (fiche détaillée). Les photos sont ré-encodées en JPEG,
-  sans métadonnées EXIF (donc sans position GPS), avec une miniature. Elles restent privées : les liens de
+  sans métadonnées EXIF dans le fichier conservé, avec une miniature. Appareil, réglages, date de prise de vue
+  et position GPS sont relevés à l'envoi, gardés en base et affichés au seul propriétaire sur la page de la
+  photo (`/photos/<id>`), avec une petite carte. Elles restent privées : les liens de
   partage n'affichent ni notes ni photos.
 - Voyages à venir : badge « Dans 12 jours », « Demain » ou « En cours », trajets estompés sur la carte,
   filtre passés / à venir, carte « Prochain départ » dans le tableau de bord. Les statistiques ne comptent que

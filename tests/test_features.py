@@ -267,6 +267,9 @@ def _image_bytes(fmt="JPEG", size=(1200, 800), gps=False):
     return out.getvalue()
 
 
+IMG = {"Sec-Fetch-Dest": "image"}  # requête d'une balise <img>
+
+
 def _upload(client, url, *files):
     return client.post(url, data={"photos": [(io.BytesIO(data), name) for data, name in files]},
                        content_type="multipart/form-data")
@@ -285,13 +288,74 @@ def test_photo_upload_strips_metadata_and_serves_thumbnail(app, auth_client, db,
     assert response.status_code == 302
     photo = db.session.execute(db.select(Photo)).scalar_one()
     assert (photo.trip_id, photo.width, photo.height, photo.original_name) == (trip.id, 1200, 800, "vacances.jpg")
-    full = auth_client.get(f"/photos/{photo.id}")
+    full = auth_client.get(f"/photos/{photo.id}", headers=IMG)
     assert full.status_code == 200 and full.mimetype == "image/jpeg"
-    assert "private" in full.headers["Cache-Control"]
+    assert "private" in full.headers["Cache-Control"] and "no-cache" in full.headers["Cache-Control"]
+    assert "Sec-Fetch-Dest" in full.headers["Vary"]
     with Image.open(io.BytesIO(full.data)) as image:
         assert not image.getexif()  # plus de marque ni de position GPS
     with Image.open(io.BytesIO(auth_client.get(f"/photos/{photo.id}/thumb").data)) as thumb:
         assert thumb.size == (480, 480)
+
+
+def _camera_jpeg():
+    """JPEG d'un téléphone : appareil, réglages, date et position GPS (tour Eiffel, 35 m)."""
+    exif = Image.Exif()
+    exif[0x010F], exif[0x0110], exif[0x0131] = "Apple", "iPhone 15 Pro", "17.1"
+    exif[0x8769] = {0x9003: "2026:07:14 18:22:05", 0x9011: "+02:00", 0x829A: 1 / 250, 0x829D: 1.78,
+                    0x8827: 64, 0x920A: 6.86, 0xA405: 24, 0x9209: 16, 0xA434: "iPhone 15 Pro back camera"}
+    exif[0x8825] = {1: "N", 2: (48.0, 51.0, 29.4), 3: "E", 4: (2.0, 17.0, 40.2), 5: b"\x00", 6: 35.0}
+    out = io.BytesIO()
+    Image.new("RGB", (1200, 800), (40, 90, 200)).save(out, "JPEG", exif=exif.tobytes())
+    return out.getvalue()
+
+
+def test_photo_exif_kept_privately_and_shown_on_photo_page(auth_client, db, user):
+    trip = make_trip(user)
+    _upload(auth_client, f"/trips/{trip.id}/photos", (_camera_jpeg(), "eiffel.jpg"))
+    photo = db.session.execute(db.select(Photo)).scalar_one()
+    exif = photo.exif
+    assert (exif["make"], exif["model"], exif["iso"], exif["focal_35"]) == ("Apple", "iPhone 15 Pro", 64, 24)
+    assert exif["taken_at"] == "2026-07-14T18:22:05" and exif["flash"] is False
+    assert exif["lat"] == pytest.approx(48.858167) and exif["lon"] == pytest.approx(2.294500)
+    assert exif["alt"] == 35 and (exif["width"], exif["height"]) == (1200, 800)
+    with Image.open(io.BytesIO(auth_client.get(f"/photos/{photo.id}", headers=IMG).data)) as image:
+        assert not image.getexif()  # le fichier servi reste sans métadonnées
+
+    assert f'href="/photos/{photo.id}"' in auth_client.get(f"/trips/{trip.id}").text
+    assert auth_client.get(f"/photos/{photo.id}/view").location.endswith(f"/photos/{photo.id}")
+    page = auth_client.get(f"/photos/{photo.id}").text
+    assert f'src="/photos/{photo.id}' in page and "/full" not in page
+    # Même adresse : la page pour une navigation (ou Accept HTML), le JPEG pour une balise <img>.
+    assert auth_client.get(f"/photos/{photo.id}", headers={"Accept": "text/html,*/*"}).mimetype == "text/html"
+    assert auth_client.get(f"/photos/{photo.id}", headers={"Sec-Fetch-Dest": "document"}).mimetype == "text/html"
+    assert auth_client.get(f"/photos/{photo.id}", headers={"Accept": "image/webp,*/*"}).mimetype == "image/jpeg"
+    assert auth_client.get(f"/photos/{photo.id}/full").status_code == 404
+    for text in ("iPhone 15 Pro", "1/250 s", "ƒ/1,8", "ISO 64", "24 mm", "Non déclenché",
+                 "48,858167° N", "2,294500° E", "35 m", 'id="photoMap"', "js/photo-map.js"):
+        assert text in page, text
+    assert "Apple iPhone 15 Pro" in page
+    assert 'class="polaroid' in page and "14 juillet 2026" in page  # légende du Polaroid
+
+
+def test_photo_page_without_exif(auth_client, db, user):
+    trip = make_trip(user)
+    _upload(auth_client, f"/trips/{trip.id}/photos", (_image_bytes(), "a.jpg"), (_image_bytes(), "b.jpg"))
+    first, second = db.session.execute(db.select(Photo).order_by(Photo.id)).scalars()
+    assert first.exif is None
+    page = auth_client.get(f"/photos/{first.id}").text
+    assert "Aucune information EXIF" in page and "Pas de position GPS" in page
+    assert "photoMap" not in page and "leaflet" not in page
+    assert f'href="/photos/{second.id}"' in page and "1 sur 2" in page
+
+
+def test_exif_ignores_malformed_values(app):
+    from app.photos import clean_exif, exif_rows
+    assert clean_exif({"make": "\x00", "iso": float("nan"), "lat": 120, "lon": 3}) is None
+    assert clean_exif({"model": "X", "taken_at": "hier", "lat": 10, "alt": 5, "width": True}) == {"model": "X"}
+    assert clean_exif("pas un dict") is None
+    with app.test_request_context():
+        assert exif_rows({"make": "Canon", "model": "Canon EOS R6"})[0] == [("Appareil", "Canon EOS R6")]
 
 
 def test_png_with_transparency_and_large_images_are_resized(auth_client, db, user):
@@ -321,6 +385,7 @@ def test_photos_are_private(app, client, db, user, other_user):
     assert client.get(f"/photos/{photo.id}").status_code == 302
     login(client, "bob@example.com")
     assert client.get(f"/photos/{photo.id}").status_code == 404
+    assert client.get(f"/photos/{photo.id}", headers=IMG).status_code == 404
     assert client.post(f"/photos/{photo.id}/delete").status_code == 404
     assert _upload(client, f"/trips/{trip.id}/photos", (_image_bytes(), "b.jpg")).status_code == 404
 

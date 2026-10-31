@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% set name = photo.original_name or _("Photo") %}
+{% block title %}{{ name }}{% endblock %}
+{% block head %}
+{% if gps %}<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-1.9.4/leaflet.css') }}">{% endif %}
+{% endblock %}
+{% block content %}
+<nav aria-label="{{ _('Fil d’Ariane') }}" class="mb-3">
+  <a class="link-secondary text-decoration-none small" href="{{ back }}">
+    <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>{{ owner_title }}</a>
+</nav>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    {# Présentation « Polaroid » : cadre blanc, large marge du bas, légende manuscrite. #}
+    <figure class="polaroid mx-auto mb-4">
+      <img src="{{ url_for('trips.photo_view', photo_id=photo.id) }}" width="{{ photo.width }}" height="{{ photo.height }}"
+           alt="{{ name }}">
+      <figcaption>{{ owner_title }}{% if photo.exif and photo.exif.taken_at %}
+        <span>{{ taken_on }}</span>{% endif %}</figcaption>
+    </figure>
+    <div class="d-flex align-items-center justify-content-between gap-2">
+      {% if previous %}
+      <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" rel="prev"
+         href="{{ url_for('trips.photo_view', photo_id=previous.id) }}">
+        <i class="fa-solid fa-chevron-left me-1" aria-hidden="true"></i>{{ _("Précédente") }}</a>
+      {% else %}<span></span>{% endif %}
+      {% if total > 1 %}<span class="text-body-secondary small">{{ _("%(num)s sur %(total)s", num=position, total=total) }}</span>{% endif %}
+      {% if next %}
+      <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" rel="next"
+         href="{{ url_for('trips.photo_view', photo_id=next.id) }}">
+        {{ _("Suivante") }}<i class="fa-solid fa-chevron-right ms-1" aria-hidden="true"></i></a>
+      {% else %}<span></span>{% endif %}
+    </div>
+  </div>
+
+  <aside class="col-lg-4" aria-labelledby="photoInfoTitle">
+    <div class="card shadow-soft photo-info">
+      <div class="card-body p-4">
+        <h1 class="h5 fw-semibold mb-1 text-break" id="photoInfoTitle">{{ name }}</h1>
+        <p class="text-body-secondary small mb-4">
+          {{ photo.width }} × {{ photo.height }} px · {{ _('%(size)s Ko', size=(photo.size / 1024)|round|int) }}
+          · {{ _("ajoutée le %(date)s", date=photo.created_at|day) }}</p>
+
+        <h2 class="h6 fw-semibold mb-2"><i class="fa-solid fa-camera me-2 text-body-secondary" aria-hidden="true"></i>{{ _("EXIF") }}</h2>
+        {% if camera %}
+        <dl class="photo-facts mb-4">
+          {% for label, value in camera %}<dt>{{ label }}</dt><dd>{{ value }}</dd>{% endfor %}
+        </dl>
+        {% else %}
+        <p class="text-body-secondary small mb-4">{{ _("Aucune information EXIF pour cette photo.") }}
+          {% if not photo.exif %}{{ _("Les photos envoyées avant leur prise en charge n'en ont pas gardé.") }}{% endif %}</p>
+        {% endif %}
+
+        <h2 class="h6 fw-semibold mb-2"><i class="fa-solid fa-location-dot me-2 text-body-secondary" aria-hidden="true"></i>{{ _("Position GPS") }}</h2>
+        {% if gps %}
+        <dl class="photo-facts mb-3">
+          {% for label, value in gps %}<dt>{{ label }}</dt><dd>{{ value }}</dd>{% endfor %}
+        </dl>
+        <div class="photo-map mb-2" id="photoMap" data-lat="{{ photo.exif.lat }}" data-lon="{{ photo.exif.lon }}"
+             data-tiles='{{ tiles|tojson }}' role="img" aria-label="{{ _('Carte : lieu de prise de vue') }}"></div>
+        <a class="small" href="https://www.openstreetmap.org/?mlat={{ photo.exif.lat }}&amp;mlon={{ photo.exif.lon }}#map=16/{{ photo.exif.lat }}/{{ photo.exif.lon }}"
+           target="_blank" rel="noopener noreferrer">
+          {{ _("Ouvrir dans OpenStreetMap") }}<i class="fa-solid fa-arrow-up-right-from-square ms-1" aria-hidden="true"></i></a>
+        {% else %}
+        <p class="text-body-secondary small mb-0">{{ _("Pas de position GPS.") }}</p>
+        {% endif %}
+
+        <p class="form-text mt-4 mb-0"><i class="fa-solid fa-lock me-1" aria-hidden="true"></i>
+          {{ _("Visible de vous seul : le fichier de la photo ne contient aucune métadonnée.") }}</p>
+      </div>
+    </div>
+  </aside>
+</div>
+{% endblock %}
+{% block scripts %}
+{% if gps %}
+<script src="{{ url_for('static', filename='vendor/leaflet-1.9.4/leaflet.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/photo-map.js') }}"></script>
+{% endif %}
+{% endblock %}
