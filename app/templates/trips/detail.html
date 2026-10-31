@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "partials/premium.html" import crown, locked %}
+{% from "partials/premium.html" import diamond, locked %}
 {% from "partials/macros.html" import mode_badge, country_chips, status_badge, tag_chips with context %}
 {% set item = trip or journey %}
 {% set title = (trip.origin_name ~ ' → ' ~ trip.dest_name) if trip else journey.display_name %}
@@ -101,7 +101,7 @@
       </div>
     </div>
 
-    <h2 class="h5 fw-semibold mb-3">{{ _("Photos") }}{{ crown() }}
+    <h2 class="h5 fw-semibold mb-3">{{ _("Photos") }}{{ diamond() }}
       {% if photos %}<span class="text-body-secondary fw-normal small">· {{ photos|length }}</span>{% endif %}</h2>
     {% if photos %}
     <ul class="photo-grid list-unstyled mb-4">

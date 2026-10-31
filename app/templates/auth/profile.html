@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "partials/premium.html" import crown, locked %}
+{% from "partials/premium.html" import diamond, locked %}
 {% from "partials/macros.html" import field %}
 {% block title %}{{ _("Préférences") }}{% endblock %}
 {% block content %}
@@ -67,7 +67,7 @@
       </div>
     </div>
 
-    <h2 class="h5 fw-semibold mt-5 mb-3" id="public-profile">{{ _("Profil public") }}{{ crown() }}</h2>
+    <h2 class="h5 fw-semibold mt-5 mb-3" id="public-profile">{{ _("Profil public") }}{{ diamond() }}</h2>
     {% if not premium_access() %}
     {{ locked(_("Le profil public est réservé aux abonnés Premium.")) }}
     {% if current_user.public_name %}
@@ -161,7 +161,8 @@
     </div>
 
     {% if config.IMPORT_ADDRESS %}
-    <h2 class="h5 fw-semibold mt-5 mb-3" id="mail-import">{{ _("Import par e-mail") }}</h2>
+    <h2 class="h5 fw-semibold mt-5 mb-3" id="mail-import">{{ _("Import par e-mail") }}{{ diamond() }}</h2>
+    {% if not premium_access() %}<div class="mb-3">{{ locked(_("L'import par e-mail est réservé aux abonnés Premium.")) }}</div>{% endif %}
     <div class="card shadow-soft">
       <div class="card-body p-4">
         <p class="text-body-secondary">
@@ -184,7 +185,7 @@
           </li>
           {% endfor %}
         </ul>
-        {% if password_reset_enabled() %}
+        {% if password_reset_enabled() and premium_access() %}
         <form method="post" action="{{ url_for('auth.add_import_address') }}" novalidate>
           {{ import_form.hidden_tag() }}
           <label class="form-label" for="{{ import_form.email.id }}">{{ _("Autoriser une autre adresse") }}</label>

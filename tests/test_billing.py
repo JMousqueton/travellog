@@ -499,17 +499,62 @@ def test_public_profile_requires_premium(auth_client, billing, user, db):
     assert db.session.get(User, user.id).public_name is None
 
 
-def test_crown_marks_premium_features(app, client, user, db):
+def test_diamond_marks_premium_features(app, client, user, db):
     login(client)
-    assert "fa-crown" not in client.get("/share").text  # sans Stripe : pas de couronne
+    assert "fa-gem" not in client.get("/share").text  # sans Stripe : pas de diamant
     app.config.update(STRIPE_SECRET_KEY="sk_test_x")
     menu = client.get("/auth/profile").text
     assert menu.count("Fonction Premium") >= 3  # partage, support, profil public
     about = client.get("/about").text
-    assert "fa-crown" in about and "12,00" in about and "Gratuit, sans publicité, et open source" not in about
+    assert "fa-gem" in about and "12,00" in about and "Gratuit, sans publicité, et open source" not in about
 
 
-def test_landing_marks_photos_with_crown(app, client):
+def test_landing_marks_photos_with_diamond(app, client):
     app.config.update(STRIPE_SECRET_KEY="sk_test_x")
     page = client.get("/").text
-    assert page.count("fa-crown") == 1 and "essentiel est gratuit" in page
+    assert page.count("fa-gem") == 1 and "essentiel est gratuit" in page
+
+
+# --- Import par e-mail : fonction Premium ------------------------------------------------------
+
+def test_mail_import_requires_premium(app, db, user):
+    from app import mail_import
+    from app.models import MailImport
+
+    from .test_mail_import import AIR_FRANCE_TEXT, make_mail
+
+    app.config.update(STRIPE_SECRET_KEY="sk_test_x", MAIL_IMPORT_REQUIRE_DKIM=False)
+    outcome = mail_import.process(make_mail(text=AIR_FRANCE_TEXT, subject="Résa").as_bytes())
+    assert outcome.status == "ignored" and not outcome.delete and user.trips.count() == 0
+    assert db.session.execute(db.select(MailImport)).scalar_one().reason == "Premium requis"
+    [reply] = [m for m in app.extensions.get("mail_outbox", []) if m["To"] == "alice@example.com"]
+    assert reply["Subject"] == "Import non effectué : Résa"
+    assert "réservé aux abonnés Premium" in reply.get_content() and "/billing/" in reply.get_content()
+
+    user.premium_granted = True
+    db.session.commit()
+    outcome = mail_import.process(make_mail(text=AIR_FRANCE_TEXT, message_id="<again@x>").as_bytes())
+    assert outcome.status == "imported" and user.trips.count() == 1
+
+
+def test_unknown_sender_gets_no_premium_reply(app, db, user):
+    from app import mail_import
+
+    from .test_mail_import import AIR_FRANCE_TEXT, make_mail
+
+    app.config.update(STRIPE_SECRET_KEY="sk_test_x", MAIL_IMPORT_REQUIRE_DKIM=False)
+    mail_import.process(make_mail(text=AIR_FRANCE_TEXT, sender="stranger@example.org").as_bytes())
+    assert app.extensions.get("mail_outbox", []) == []
+
+
+def test_import_addresses_require_premium(auth_client, billing, user, db):
+    from app.models import ImportAddress
+
+    billing.config.update(IMPORT_ADDRESS="addto@voyage-voyage.app")
+    page = auth_client.get("/auth/profile").text
+    assert "import par e-mail est réservé" in page and 'name="imp-email"' not in page
+    resp = auth_client.post("/auth/import-addresses", data={"imp-email": "work@example.org"})
+    assert resp.status_code == 302 and resp.location.endswith("/billing/")
+    assert db.session.execute(db.select(ImportAddress)).first() is None
+    subscribe(user, db)
+    assert 'name="imp-email"' in auth_client.get("/auth/profile").text

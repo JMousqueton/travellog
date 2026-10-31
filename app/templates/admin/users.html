@@ -24,8 +24,8 @@
             {{ user.email }}
             {% if user.is_admin %}<span class="badge text-bg-primary ms-1">{{ _("Admin") }}</span>{% endif %}
             {% if user.is_blocked %}<span class="badge text-bg-danger ms-1">{{ _("Bloqué") }}</span>{% endif %}
-            {% if user.has_subscription %}<span class="badge text-bg-success ms-1" title="{{ _("Abonné jusqu'au %(date)s", date=user.premium_until|day) }}"><i class="fa-solid fa-crown me-1" aria-hidden="true"></i>{{ _("Premium") }}</span>
-            {% elif user.premium_granted %}<span class="badge text-bg-success ms-1"><i class="fa-solid fa-crown me-1" aria-hidden="true"></i>{{ _("Premium offert") }}</span>{% endif %}
+            {% if user.has_subscription %}<span class="badge text-bg-success ms-1" title="{{ _("Abonné jusqu'au %(date)s", date=user.premium_until|day) }}"><i class="fa-solid fa-gem me-1" aria-hidden="true"></i>{{ _("Premium") }}</span>
+            {% elif user.premium_granted %}<span class="badge text-bg-success ms-1"><i class="fa-solid fa-gem me-1" aria-hidden="true"></i>{{ _("Premium offert") }}</span>{% endif %}
           </td>
           <td>
             <span class="d-inline-flex align-items-center gap-1">
@@ -70,10 +70,10 @@
               <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
               {% set label = _('Retirer le Premium offert à %(email)s', email=user.email) if user.premium_granted
                              else _('Offrir le Premium à %(email)s', email=user.email) %}
-              <button type="submit" class="btn btn-icon btn-sm {% if user.premium_granted %}text-warning{% endif %}"
+              <button type="submit" class="btn btn-icon btn-sm {% if user.premium_granted %}text-info{% endif %}"
                       title="{{ _('Retirer le Premium offert') if user.premium_granted else _('Offrir le Premium') }}"
                       aria-label="{{ label }}" aria-pressed="{{ 'true' if user.premium_granted else 'false' }}">
-                <i class="fa-solid fa-crown" aria-hidden="true"></i></button>
+                <i class="fa-solid fa-gem" aria-hidden="true"></i></button>
             </form>
             {% if user.id != current_user.id %}
             {% if user.is_blocked %}

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-31 10:08+0000\n"
+"POT-Creation-Date: 2026-10-31 10:21+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: en\n"
@@ -286,7 +286,7 @@ msgstr "Current password"
 msgid "Changer le mot de passe"
 msgstr "Change password"
 
-#: app/auth/forms.py:90 app/templates/auth/profile.html:212
+#: app/auth/forms.py:90 app/templates/auth/profile.html:213
 msgid "Supprimer mon compte"
 msgstr "Delete my account"
 
@@ -459,24 +459,28 @@ msgstr "New subscription address created. The old address no longer works."
 msgid "Abonnement agenda désactivé."
 msgstr "Calendar subscription disabled."
 
-#: app/auth/routes.py:356
+#: app/auth/routes.py:351 app/templates/auth/profile.html:165
+msgid "L'import par e-mail est réservé aux abonnés Premium."
+msgstr "Import by email is reserved for Premium subscribers."
+
+#: app/auth/routes.py:359
 msgid "Cette adresse est déjà autorisée pour votre compte."
 msgstr "This address is already allowed for your account."
 
-#: app/auth/routes.py:358
+#: app/auth/routes.py:361
 #, python-format
 msgid "Vous avez atteint le nombre maximal d'adresses (%(max)s)."
 msgstr "You have reached the maximum number of addresses (%(max)s)."
 
-#: app/auth/routes.py:362 app/auth/routes.py:394
+#: app/auth/routes.py:365 app/auth/routes.py:397
 msgid "Cette adresse ne peut pas être ajoutée."
 msgstr "This address cannot be added."
 
-#: app/auth/routes.py:370
+#: app/auth/routes.py:373
 msgid "Confirmez votre adresse d'import pour Voyage Voyage"
 msgstr "Confirm your import address for Voyage Voyage"
 
-#: app/auth/routes.py:372
+#: app/auth/routes.py:375
 #, python-format
 msgid ""
 "Un lien de confirmation a été envoyé à %(email)s (valable %(minutes)s "
@@ -485,7 +489,7 @@ msgstr ""
 "A confirmation link has been sent to %(email)s (valid for %(minutes)s "
 "minutes)."
 
-#: app/auth/routes.py:385
+#: app/auth/routes.py:388
 msgid ""
 "Ce lien de confirmation est invalide ou a expiré. Demandez-en un nouveau "
 "depuis vos préférences."
@@ -493,12 +497,12 @@ msgstr ""
 "This confirmation link is invalid or has expired. Request a new one from "
 "your preferences."
 
-#: app/auth/routes.py:390
+#: app/auth/routes.py:393
 #, python-format
 msgid "Adresse %(email)s déjà confirmée."
 msgstr "Address %(email)s already confirmed."
 
-#: app/auth/routes.py:398
+#: app/auth/routes.py:401
 #, python-format
 msgid ""
 "Adresse %(email)s confirmée : ses confirmations de voyage peuvent être "
@@ -507,16 +511,16 @@ msgstr ""
 "Address %(email)s confirmed: its travel confirmations can be forwarded to"
 " the import address."
 
-#: app/auth/routes.py:412
+#: app/auth/routes.py:415
 #, python-format
 msgid "Adresse %(email)s retirée."
 msgstr "Address %(email)s removed."
 
-#: app/auth/routes.py:439
+#: app/auth/routes.py:442
 msgid "Réinitialisation de votre mot de passe"
 msgstr "Reset your password"
 
-#: app/auth/routes.py:442
+#: app/auth/routes.py:445
 msgid ""
 "Si un compte correspond à cette adresse, un e-mail contenant un lien de "
 "réinitialisation vient d'être envoyé."
@@ -524,13 +528,13 @@ msgstr ""
 "If an account matches this address, an email with a reset link has just "
 "been sent."
 
-#: app/auth/routes.py:452
+#: app/auth/routes.py:455
 msgid ""
 "Ce lien de réinitialisation est invalide ou a expiré. Demandez-en un "
 "nouveau."
 msgstr "This reset link is invalid or has expired. Request a new one."
 
-#: app/auth/routes.py:460
+#: app/auth/routes.py:463
 msgid "Mot de passe modifié. Vous pouvez vous connecter."
 msgstr "Password changed. You can now sign in."
 
@@ -944,20 +948,25 @@ msgstr ""
 "Purges the geocoding cache, expired share links, the email import log and"
 " task history"
 
-#: app/mail_import/processing.py:114
+#: app/mail_import/processing.py:120
 #, python-format
 msgid "Import impossible : %(subject)s"
 msgstr "Import failed: %(subject)s"
 
-#: app/mail_import/processing.py:116
+#: app/mail_import/processing.py:122
 #, python-format
 msgid "Voyages importés : %(subject)s"
 msgstr "Trips imported: %(subject)s"
 
-#: app/mail_import/processing.py:118
+#: app/mail_import/processing.py:124
 #, python-format
 msgid "Voyages déjà enregistrés : %(subject)s"
 msgstr "Trips already saved: %(subject)s"
+
+#: app/mail_import/processing.py:141
+#, python-format
+msgid "Import non effectué : %(subject)s"
+msgstr "Not imported: %(subject)s"
 
 #: app/photos.py:58
 #, python-format
@@ -1714,13 +1723,14 @@ msgstr "Your data belongs to you"
 #, python-format
 msgid ""
 "Sans publicité, et open source sous licence MIT. L'essentiel est gratuit "
-"; les fonctions marquées d'une couronne font partie de Premium "
-"(%(monthly)s par mois ou %(yearly)s par an) : photos, liens de partage, "
-"profil public et support."
+"; les fonctions marquées d'un diamant font partie de Premium (%(monthly)s"
+" par mois ou %(yearly)s par an) : photos, import par e-mail, liens de "
+"partage, profil public et support."
 msgstr ""
 "No ads, and open source under the MIT licence. The essentials are free; "
-"features marked with a crown are part of Premium (%(monthly)s a month or "
-"%(yearly)s a year): photos, share links, public profile and support."
+"features marked with a diamond are part of Premium (%(monthly)s a month "
+"or %(yearly)s a year): photos, import by email, share links, public "
+"profile and support."
 
 #: app/templates/about.html:75
 msgid "Gratuit, sans publicité, et open source sous licence MIT."
@@ -2193,6 +2203,7 @@ msgstr "Delete account %(email)s"
 #: app/templates/auth/email/signup.txt:1
 #: app/templates/auth/email/signup_existing.txt:1
 #: app/templates/auth/email/signup_import_address.txt:1
+#: app/templates/mail_import/premium.txt:1
 #: app/templates/mail_import/result.txt:1
 #: app/templates/support/email/to_user.txt:1
 msgid "Bonjour,"
@@ -2473,7 +2484,7 @@ msgstr "Enable subscription"
 msgid "Import par e-mail"
 msgstr "Import by email"
 
-#: app/templates/auth/profile.html:168
+#: app/templates/auth/profile.html:169
 #, python-format
 msgid ""
 "Transférez vos confirmations de vol ou de train à %(address)s : les "
@@ -2486,23 +2497,23 @@ msgstr ""
 " account's address and from the confirmed addresses below, which cannot "
 "be used to sign in."
 
-#: app/templates/auth/profile.html:174
+#: app/templates/auth/profile.html:175
 msgid "adresse du compte"
 msgstr "account address"
 
-#: app/templates/auth/profile.html:182
+#: app/templates/auth/profile.html:183
 msgid "Retirer"
 msgstr "Remove"
 
-#: app/templates/auth/profile.html:190
+#: app/templates/auth/profile.html:191
 msgid "Autoriser une autre adresse"
 msgstr "Allow another address"
 
-#: app/templates/auth/profile.html:203
+#: app/templates/auth/profile.html:204
 msgid "Sauvegarde"
 msgstr "Backup"
 
-#: app/templates/auth/profile.html:206
+#: app/templates/auth/profile.html:207
 msgid ""
 "Téléchargez tous vos trajets, notes, étiquettes et photos dans un fichier"
 " .zip. Il se réimporte depuis la page Importer / exporter."
@@ -2510,11 +2521,11 @@ msgstr ""
 "Download all your trips, notes, tags and photos as a .zip file. It can be"
 " imported back from the Import / export page."
 
-#: app/templates/auth/profile.html:208
+#: app/templates/auth/profile.html:209
 msgid "Télécharger ma sauvegarde"
 msgstr "Download my backup"
 
-#: app/templates/auth/profile.html:216
+#: app/templates/auth/profile.html:217
 msgid ""
 "Votre compte, vos voyages et vos liens de partage seront définitivement "
 "supprimés. Cette action est irréversible."
@@ -2522,7 +2533,7 @@ msgstr ""
 "Your account, trips and share links will be permanently deleted. This "
 "cannot be undone."
 
-#: app/templates/auth/profile.html:220
+#: app/templates/auth/profile.html:221
 msgid "Confirmez avec votre mot de passe."
 msgstr "Confirm with your password."
 
@@ -2666,7 +2677,7 @@ msgstr "Import / export"
 
 #: app/templates/admin/users.html:27 app/templates/base.html:173
 #: app/templates/billing/index.html:2 app/templates/billing/index.html:6
-#: app/templates/billing/index.html:19 app/templates/billing/invoices.html:7
+#: app/templates/billing/index.html:20 app/templates/billing/invoices.html:7
 msgid "Premium"
 msgstr "Premium"
 
@@ -2733,20 +2744,24 @@ msgid "Profil public à votre nom (/u/votre-nom)"
 msgstr "A public profile under your name (/u/your-name)"
 
 #: app/templates/billing/index.html:12
+msgid "Import par e-mail de vos confirmations de vol ou de train"
+msgstr "Import of your flight or train confirmations by email"
+
+#: app/templates/billing/index.html:13
 msgid ""
 "Accès au support : posez vos questions, signalez un problème, proposez "
 "une idée"
 msgstr "Access to support: ask questions, report a problem, suggest an idea"
 
-#: app/templates/billing/index.html:20
+#: app/templates/billing/index.html:21
 msgid "Abonnement annuel"
 msgstr "Yearly subscription"
 
-#: app/templates/billing/index.html:20
+#: app/templates/billing/index.html:21
 msgid "Abonnement mensuel"
 msgstr "Monthly subscription"
 
-#: app/templates/billing/index.html:24
+#: app/templates/billing/index.html:25
 msgid ""
 "Le dernier paiement a échoué. Réglez la facture en attente pour garder "
 "l'accès Premium."
@@ -2754,36 +2769,36 @@ msgstr ""
 "The last payment failed. Pay the outstanding invoice to keep Premium "
 "access."
 
-#: app/templates/billing/index.html:25 app/templates/billing/index.html:34
-#: app/templates/billing/index.html:72 app/templates/billing/index.html:97
+#: app/templates/billing/index.html:26 app/templates/billing/index.html:35
+#: app/templates/billing/index.html:73 app/templates/billing/index.html:98
 #: app/templates/billing/invoices.html:2 app/templates/billing/invoices.html:8
 #: app/templates/billing/invoices.html:13
 msgid "Mes factures"
 msgstr "My invoices"
 
-#: app/templates/billing/index.html:28
+#: app/templates/billing/index.html:29
 #, python-format
 msgid "Abonnement résilié : l'accès Premium prend fin le %(date)s."
 msgstr "Subscription cancelled: Premium access ends on %(date)s."
 
-#: app/templates/billing/index.html:30
+#: app/templates/billing/index.html:31
 #, python-format
 msgid "Prochain renouvellement le %(date)s."
 msgstr "Next renewal on %(date)s."
 
-#: app/templates/billing/index.html:39
+#: app/templates/billing/index.html:40
 msgid "Reprendre mon abonnement"
 msgstr "Resume my subscription"
 
-#: app/templates/billing/index.html:43 app/templates/billing/index.html:62
+#: app/templates/billing/index.html:44 app/templates/billing/index.html:63
 msgid "Arrêter mon abonnement"
 msgstr "Stop my subscription"
 
-#: app/templates/billing/index.html:55
+#: app/templates/billing/index.html:56
 msgid "Arrêter votre abonnement ?"
 msgstr "Stop your subscription?"
 
-#: app/templates/billing/index.html:57
+#: app/templates/billing/index.html:58
 #, python-format
 msgid ""
 "Aucun nouveau prélèvement ne sera fait. L'accès Premium reste actif "
@@ -2792,52 +2807,52 @@ msgstr ""
 "You will not be charged again. Premium access stays active until "
 "%(date)s, and you can resume the subscription until then."
 
-#: app/templates/billing/index.html:61
+#: app/templates/billing/index.html:62
 msgid "Garder mon abonnement"
 msgstr "Keep my subscription"
 
-#: app/templates/billing/index.html:69
+#: app/templates/billing/index.html:70
 msgid "L'accès Premium vous est offert : aucun abonnement n'est nécessaire."
 msgstr "You have been granted Premium access: no subscription is needed."
 
-#: app/templates/billing/index.html:77
+#: app/templates/billing/index.html:78
 msgid "par mois"
 msgstr "per month"
 
-#: app/templates/billing/index.html:77
+#: app/templates/billing/index.html:78
 msgid "Sans engagement, résiliable à tout moment."
 msgstr "No commitment, cancel at any time."
 
-#: app/templates/billing/index.html:78
+#: app/templates/billing/index.html:79
 msgid "par an"
 msgstr "per year"
 
-#: app/templates/billing/index.html:78
+#: app/templates/billing/index.html:79
 #, python-format
 msgid "Économisez %(saving)s par rapport au mois."
 msgstr "Save %(saving)s compared with monthly."
 
-#: app/templates/billing/index.html:78
+#: app/templates/billing/index.html:79
 msgid "Un seul paiement par an."
 msgstr "A single payment per year."
 
-#: app/templates/billing/index.html:85
+#: app/templates/billing/index.html:86
 msgid "Annuel"
 msgstr "Yearly"
 
-#: app/templates/billing/index.html:85
+#: app/templates/billing/index.html:86
 msgid "Mensuel"
 msgstr "Monthly"
 
-#: app/templates/billing/index.html:89
+#: app/templates/billing/index.html:90
 msgid "Redirection…"
 msgstr "Redirecting…"
 
-#: app/templates/billing/index.html:89
+#: app/templates/billing/index.html:90
 msgid "S'abonner"
 msgstr "Subscribe"
 
-#: app/templates/billing/index.html:95
+#: app/templates/billing/index.html:96
 #, python-format
 msgid ""
 "Paiement sécurisé par Stripe. Vos coordonnées bancaires ne transitent pas"
@@ -3645,6 +3660,19 @@ msgid ""
 msgstr ""
 "For any other request, write to the contact address above. You can also "
 "lodge a complaint with the CNIL (the French data protection authority):"
+
+#: app/templates/mail_import/premium.txt:3
+#, python-format
+msgid ""
+"Votre e-mail « %(subject)s » n'a pas été importé : l'import par e-mail "
+"est réservé aux abonnés Premium."
+msgstr ""
+"Your email “%(subject)s” was not imported: import by email is reserved "
+"for Premium subscribers."
+
+#: app/templates/mail_import/premium.txt:5
+msgid "Abonnez-vous, puis transférez de nouveau l'e-mail :"
+msgstr "Subscribe, then forward the email again:"
 
 #: app/templates/mail_import/result.txt:3
 #, python-format

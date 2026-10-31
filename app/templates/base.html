@@ -1,5 +1,5 @@
 <!doctype html>
-{% from "partials/premium.html" import crown, locked %}
+{% from "partials/premium.html" import diamond, locked %}
 <html lang="{{ current_locale }}" data-bs-theme="light"
       data-theme-pref="{{ current_user.theme if current_user.is_authenticated and current_user.theme else '' }}">
 <head>
@@ -165,15 +165,15 @@
               <li><a class="dropdown-item" href="{{ url_for('auth.profile') }}">
                 <i class="fa-solid fa-sliders me-2" aria-hidden="true"></i>{{ _("Préférences") }}</a></li>
               <li><a class="dropdown-item" href="{{ url_for('share.links') }}">
-                <i class="fa-solid fa-share-nodes me-2" aria-hidden="true"></i>{{ _("Partager mes voyages") }}{{ crown() }}</a></li>
+                <i class="fa-solid fa-share-nodes me-2" aria-hidden="true"></i>{{ _("Partager mes voyages") }}{{ diamond() }}</a></li>
               <li><a class="dropdown-item" href="{{ url_for('transfer.index') }}">
                 <i class="fa-solid fa-file-export me-2" aria-hidden="true"></i>{{ _("Importer / exporter") }}</a></li>
               {% if billing_enabled() %}
               <li><a class="dropdown-item" href="{{ url_for('billing.index') }}">
-                <i class="fa-solid fa-crown text-warning me-2" aria-hidden="true"></i>{{ _("Premium") }}</a></li>
+                <i class="fa-solid fa-gem text-info me-2" aria-hidden="true"></i>{{ _("Premium") }}</a></li>
               {% endif %}
               <li><a class="dropdown-item" href="{{ url_for('support.index') }}">
-                <i class="fa-solid fa-life-ring me-2" aria-hidden="true"></i>{{ _("Support") }}{{ crown() }}</a></li>
+                <i class="fa-solid fa-life-ring me-2" aria-hidden="true"></i>{{ _("Support") }}{{ diamond() }}</a></li>
               {% if current_user.is_admin %}
               <li><a class="dropdown-item" href="{{ url_for('admin.users') }}">
                 <i class="fa-solid fa-user-shield me-2" aria-hidden="true"></i>{{ _("Administration") }}</a></li>

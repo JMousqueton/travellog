@@ -11,8 +11,10 @@ Voyage Voyage was coded with the help of AI.
 ## Features
 
 - Premium subscription (`/billing`, "Premium" in the account menu), paid through Stripe: 2 € a month or 12 € a
-  year by default (prices in `.env`). Photo upload, share links, the public profile and support are Premium
-  features, marked everywhere with a crown (menu, pages, About and home pages). When Premium ends, share
+  year by default (prices in `.env`). Photo upload, import by email, share links, the public profile and support
+  are Premium features, marked everywhere with a diamond (menu, pages, About and home pages). An email
+  sent by an account without Premium is not imported: the sender gets a reply saying why, with a link to
+  subscribe. When Premium ends, share
   links and the public profile are no longer served (visitors get a 404) but are kept, and work again with a
   new subscription; they can still be revoked or removed. Payment happens on
   Stripe's hosted page (Checkout); subscribers then see their invoices (`/billing/invoices`, with the
@@ -101,7 +103,7 @@ Voyage Voyage was coded with the help of AI.
   touched and can be dragged, zoomed (wheel, pinch, buttons) and turned with the arrow keys. Clicking a trip
   (on the globe or in the list) turns the globe towards it and shows its card; replay works on the globe too.
   The choice is remembered in the browser.
-- Import by email: users forward their flight or train confirmations to the import address (`IMPORT_ADDRESS`,
+- Import by email (Premium): users forward their flight or train confirmations to the import address (`IMPORT_ADDRESS`,
   shown on the import page) from the address of their account. `flask mail-import`, run every 5 minutes by
   a systemd timer, reads the IMAP mailbox: the sender must be an account and the email must carry a valid DKIM signature
   from the sender's domain (otherwise anyone could forge the From address). Trips are read from the schema.org

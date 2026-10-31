@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "partials/premium.html" import crown %}
+{% from "partials/premium.html" import diamond %}
 {% block title %}{{ _("À propos") }}{% endblock %}
 {% block meta_description %}{{ _("Pourquoi le site s'appelle Voyage Voyage, et tout ce qu'il sait faire : carte, globe, statistiques, bilan de l'année, import de vos vols, partage.") }}{% endblock %}
 {% block main_class %}landing{% endblock %}
@@ -35,7 +35,7 @@
       _("Sauvegarde complète (.zip, photos comprises) à télécharger et à réimporter à tout moment."),
       _("Cartes d'embarquement Apple Wallet (.pkpass) : le vol est lu dans le code-barres, ou le trajet en train, en bus ou en bateau dans les données de la carte."),
     ] + ([
-      _("Import par e-mail : transférez vos confirmations de vol ou de train (et leurs cartes Wallet) à %(address)s, les trajets s'ajoutent à votre compte en quelques minutes.", address=config.IMPORT_ADDRESS),
+      (_("Import par e-mail : transférez vos confirmations de vol ou de train (et leurs cartes Wallet) à %(address)s, les trajets s'ajoutent à votre compte en quelques minutes.", address=config.IMPORT_ADDRESS), True),
     ] if config.IMPORT_ADDRESS else [])),
     ('fa-map-location-dot', _("Carte et globe"), [
       _("Carte plein écran : trajets colorés par mode, arcs géodésiques pour l'avion, retours en pointillés, marqueurs regroupés."),
@@ -72,7 +72,7 @@
       _("Application installable sur l'écran d'accueil, qui reste consultable hors ligne."),
     ]),
     ('fa-shield-halved', _("Vos données vous appartiennent"), [
-      _("Sans publicité, et open source sous licence MIT. L'essentiel est gratuit ; les fonctions marquées d'une couronne font partie de Premium (%(monthly)s par mois ou %(yearly)s par an) : photos, liens de partage, profil public et support.", **premium_prices()) if billing_enabled() else _("Gratuit, sans publicité, et open source sous licence MIT."),
+      _("Sans publicité, et open source sous licence MIT. L'essentiel est gratuit ; les fonctions marquées d'un diamant font partie de Premium (%(monthly)s par mois ou %(yearly)s par an) : photos, import par e-mail, liens de partage, profil public et support.", **premium_prices()) if billing_enabled() else _("Gratuit, sans publicité, et open source sous licence MIT."),
       _("Vos trajets restent privés ; la mesure d'audience est auto-hébergée et vous pouvez la refuser."),
       _("Bibliothèques et polices servies par le site lui-même : aucun CDN ni Google Fonts ne voit passer vos visites."),
       _("Export complet à tout moment, et suppression de votre compte depuis vos préférences."),
@@ -84,7 +84,7 @@
       <h3 class="h5 fw-semibold mb-0">{{ title }}</h3>
     </div>
     <ul class="mb-0">
-      {% for item in items %}<li>{% if item is string %}{{ item }}{% else %}{{ item[0] }}{{ crown() }}{% endif %}</li>{% endfor %}
+      {% for item in items %}<li>{% if item is string %}{{ item }}{% else %}{{ item[0] }}{{ diamond() }}{% endif %}</li>{% endfor %}
     </ul>
   </section>
   {% endfor %}

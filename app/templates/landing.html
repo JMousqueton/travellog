@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "partials/premium.html" import crown %}
+{% from "partials/premium.html" import diamond %}
 {% block title %}{{ _("Vos voyages sur une carte") }}{% endblock %}
 {% block head %}
 <script type="application/ld+json" nonce="{{ csp_nonce() }}">{{ {
@@ -73,7 +73,7 @@
     <div class="col-sm-6 col-lg-4">
       <div class="feature card h-100 shadow-soft p-4">
         <span class="feature-icon mb-3" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></span>
-        <h3 class="h5 fw-semibold">{{ title }}{% if premium %}{{ crown() }}{% endif %}</h3>
+        <h3 class="h5 fw-semibold">{{ title }}{% if premium %}{{ diamond() }}{% endif %}</h3>
         <p class="text-body-secondary mb-0">{{ text }}</p>
       </div>
     </div>

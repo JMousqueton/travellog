@@ -11,8 +11,10 @@ Voyage Voyage a été codé avec l'aide de l'IA.
 ## Fonctionnalités
 
 - Abonnement Premium (`/billing`, « Premium » dans le menu du compte), payé avec Stripe : 2 € par mois ou 12 €
-  par an par défaut (prix dans `.env`). L'ajout de photos, les liens de partage, le profil public et le support
-  sont des fonctions Premium, signalées partout par une couronne (menu, pages, pages À propos et d'accueil).
+  par an par défaut (prix dans `.env`). L'ajout de photos, l'import par e-mail, les liens de partage, le profil
+  public et le support sont des fonctions Premium, signalées partout par un diamant (menu, pages, pages
+  À propos et d'accueil). Un e-mail envoyé par un compte sans Premium n'est pas importé : l'expéditeur
+  reçoit une réponse qui l'explique, avec un lien pour s'abonner.
   À la fin du Premium, liens de partage et profil public ne sont plus servis (les visiteurs obtiennent une
   404) mais sont conservés, et fonctionnent de nouveau avec un nouvel abonnement ; on peut toujours les
   révoquer ou les retirer. Le
@@ -110,7 +112,7 @@ Voyage Voyage a été codé avec l'aide de l'IA.
   pincement, boutons) et tourner avec les flèches du clavier. Cliquer sur un trajet (sur le globe ou dans la
   liste) tourne le globe vers lui et affiche sa fiche ; la relecture fonctionne aussi sur le globe. Le choix
   est mémorisé dans le navigateur.
-- Import par e-mail : l'utilisateur transfère ses confirmations de vol ou de train à l'adresse d'import
+- Import par e-mail (Premium) : l'utilisateur transfère ses confirmations de vol ou de train à l'adresse d'import
   (`IMPORT_ADDRESS`, indiquée sur la page d'import) depuis l'adresse de son compte. `flask mail-import`, lancé
   toutes les 5 minutes par un timer systemd, relève la boîte IMAP : l'expéditeur doit être un compte et l'e-mail porter
   une signature DKIM valide du domaine de l'expéditeur (sinon n'importe qui pourrait usurper l'adresse From).

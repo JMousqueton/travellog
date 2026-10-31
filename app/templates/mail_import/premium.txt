@@ -1,0 +1,8 @@
+{{ _("Bonjour,") }}
+
+{{ _("Votre e-mail « %(subject)s » n'a pas été importé : l'import par e-mail est réservé aux abonnés Premium.", subject=subject) }}
+
+{{ _("Abonnez-vous, puis transférez de nouveau l'e-mail :") }} {{ url }}
+
+-- 
+{{ site }}

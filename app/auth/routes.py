@@ -347,6 +347,9 @@ def _import_address_limit():
 def add_import_address():
     if not mail_enabled():
         abort(404)
+    if not premium_access():
+        flash(_("L'import par e-mail est réservé aux abonnés Premium."), "info")
+        return redirect(url_for("billing.index"))
     form = ImportAddressForm(prefix="imp")
     if not form.validate_on_submit():
         return _render_profile(import_form=form), 400

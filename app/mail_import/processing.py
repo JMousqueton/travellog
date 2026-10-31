@@ -49,6 +49,12 @@ def process(raw, dry_run=False):
     if current_app.config["MAIL_IMPORT_REQUIRE_DKIM"] and not dkim_aligned(raw, sender.rpartition("@")[2]):
         return _finish(Outcome("ignored", reason="signature DKIM absente, invalide ou d'un autre domaine"),
                        key, sender, subject, user, dry_run)
+    if not user.has_premium_access:
+        outcome = _finish(Outcome("ignored", reason="Premium requis"), key, sender, subject, user, dry_run)
+        if not dry_run:
+            with current_app.test_request_context(base_url=current_app.config["APP_BASE_URL"] or None):
+                _reply_premium(sender, subject, user)
+        return outcome
 
     try:
         records, problems = extract_trips(msg, user.locale)
@@ -119,6 +125,22 @@ def _reply(sender, subject, user, added, duplicates, failed):
         body = render_template("mail_import/result.txt", subject=subject, failed=failed,
                                added=[_trip_line(r) for r in added], duplicates=[_trip_line(r) for r in duplicates],
                                url=_external_url("trips.list_view"), site=current_app.config["SITE_NAME"])
+    send_email(sender, title[:200], body, headers={"Auto-Submitted": "auto-replied"})
+
+
+def _reply_premium(sender, subject, user):
+    """Expéditeur authentifié (DKIM) sans Premium : l'e-mail n'est pas importé, on lui dit pourquoi."""
+    from flask import render_template
+    from flask_babel import force_locale
+    from flask_babel import gettext as _
+
+    from ..auth.routes import _external_url
+    from ..mail import send_email
+
+    with force_locale(user.locale):
+        title = _("Import non effectué : %(subject)s", subject=subject)
+        body = render_template("mail_import/premium.txt", subject=subject, url=_external_url("billing.index"),
+                               site=current_app.config["SITE_NAME"])
     send_email(sender, title[:200], body, headers={"Auto-Submitted": "auto-replied"})
 
 
