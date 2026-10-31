@@ -121,14 +121,23 @@ def list_invoices(user, limit=36):
 
 
 def subscription_report():
-    """Abonnements en cours, lus chez Stripe, avec ce que chaque client a payé depuis le début de son
-    abonnement (factures réglées, taxes comprises). Pour la page d'administration."""
+    """Lu chez Stripe, pour l'administration : abonnements en cours (avec ce que chaque client a payé depuis le
+    début de son abonnement, taxes comprises), paiements (date, montant en centimes, devise) et dates de fin des
+    abonnements terminés."""
     client = _client()
-    subs = [s.to_dict() for s in client.Subscription.list(status="all", limit=100).auto_paging_iter()
-            if s.status in User.PREMIUM_STATUSES]
-    paid = {}  # client -> [(date, montant en centimes, devise)]
+    subs, ended = [], []
+    for s in client.Subscription.list(status="all", limit=100).auto_paging_iter():
+        s = s.to_dict()
+        if s["status"] in User.PREMIUM_STATUSES:
+            subs.append(s)
+        elif s.get("ended_at"):
+            ended.append(datetime.fromtimestamp(s["ended_at"], timezone.utc))
+    payments, paid = [], {}  # paid : client -> [(date, montant)]
     for inv in client.Invoice.list(status="paid", limit=100).auto_paging_iter():
-        paid.setdefault(inv.customer, []).append((inv.created, inv.amount_paid or 0, inv.currency))
+        amount = inv.amount_paid or 0
+        paid.setdefault(inv.customer, []).append((inv.created, amount))
+        if amount:
+            payments.append((datetime.fromtimestamp(inv.created, timezone.utc), amount, (inv.currency or "eur").upper()))
     users = {u.stripe_customer_id: u for u in db.session.execute(
         db.select(User).filter(User.stripe_customer_id.in_([s["customer"] for s in subs]))).scalars()}
     rows = []
@@ -147,11 +156,31 @@ def subscription_report():
             "currency": (price.get("currency") or sub.get("currency") or "eur").upper(),
             "status": sub["status"],
             "cancel_at_period_end": bool(sub.get("cancel_at_period_end")),
-            "earned": Decimal(sum(amount for created, amount, _ in paid.get(sub["customer"], [])
-                                  if created >= start)) / 100,
+            "earned": Decimal(sum(amount for created, amount in paid.get(sub["customer"], []) if created >= start)) / 100,
         })
     rows.sort(key=lambda r: r["started"], reverse=True)
-    return rows
+    return {"rows": rows, "payments": payments, "ended": ended}
+
+
+def monthly_history(report, today, months=12):
+    """Les `months` derniers mois, du plus ancien au plus récent : (premier jour du mois, encaissé par devise,
+    abonnements terminés dans le mois)."""
+    firsts = []
+    year, month = today.year, today.month
+    for _ in range(months):
+        firsts.append(datetime(year, month, 1, tzinfo=timezone.utc))
+        year, month = (year, month - 1) if month > 1 else (year - 1, 12)
+    firsts.reverse()
+    key = lambda d: (d.year, d.month)  # noqa: E731
+    history = {key(f): {"month": f, "revenue": {}, "ended": 0} for f in firsts}
+    for when, amount, currency in report["payments"]:
+        if key(when) in history:
+            revenue = history[key(when)]["revenue"]
+            revenue[currency] = revenue.get(currency, 0) + Decimal(amount) / 100
+    for when in report["ended"]:
+        if key(when) in history:
+            history[key(when)]["ended"] += 1
+    return list(history.values())
 
 
 def set_cancel_at_period_end(user, cancel):

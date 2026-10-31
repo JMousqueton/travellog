@@ -2,7 +2,7 @@ from datetime import timedelta
 
 import stripe
 from flask import abort, current_app, flash, redirect, render_template, request, url_for
-from flask_babel import format_currency, format_timedelta
+from flask_babel import format_currency, format_date, format_timedelta
 from flask_babel import gettext as _
 from flask_login import current_user
 
@@ -103,29 +103,68 @@ def set_public_name(user_id):
     return redirect(url_for("admin.users"))
 
 
-@bp.route("/subscriptions")
-@admin_required
-def subscriptions():
-    """Abonnés Premium : date d'abonnement, formule et montant encaissé, d'après Stripe."""
+def _subscription_report():
     from ..billing import billing_enabled
     from ..billing.stripe_sync import subscription_report
 
     if not billing_enabled():
         abort(404)
     try:
-        rows, error = subscription_report(), False
+        return subscription_report(), False
     except stripe.StripeError:
         current_app.logger.exception("Stripe : lecture des abonnements")
-        rows, error = [], True
+        return {"rows": [], "payments": [], "ended": []}, True
+
+
+@bp.route("/subscriptions")
+@admin_required
+def subscriptions():
+    """Abonnés Premium : date d'abonnement, formule et montant encaissé, revenus et résiliations par mois."""
+    from ..billing.stripe_sync import monthly_history
+
+    report, error = _subscription_report()
+    rows = report["rows"]
     by_interval = {i: [r for r in rows if r["interval"] == i] for i in ("month", "year")}
     totals = {}
     for r in rows:
         totals[r["currency"]] = totals.get(r["currency"], 0) + r["earned"]
     default_currency = current_app.config["PREMIUM_CURRENCY"].upper()
+    history = monthly_history(report, utcnow())
+    peak = max((m["revenue"].get(default_currency, 0) for m in history), default=0) or 1
     return render_template("admin/subscriptions.html", rows=rows, error=error, totals=totals,
                            monthly=by_interval["month"], yearly=by_interval["year"],
+                           history=history, peak=peak, currency=default_currency,
+                           pending_cancel=sum(1 for r in rows if r["cancel_at_period_end"]),
+                           ended_12m=sum(m["ended"] for m in history),
                            money=lambda amount, currency=default_currency: format_currency(amount, currency),
-                           age=lambda since: format_timedelta(utcnow() - since, threshold=1.0))
+                           age=lambda since: format_timedelta(utcnow() - since, threshold=1.0),
+                           month_label=lambda d: format_date(d, "MMM"))
+
+
+@bp.route("/subscriptions.csv")
+@admin_required
+def subscriptions_csv():
+    """Export CSV des abonnés en cours (pour un tableur ou la comptabilité)."""
+    import csv
+    import io
+
+    report, error = _subscription_report()
+    if error:
+        flash(_("Stripe ne répond pas : la liste des abonnements n'a pas pu être lue. Réessayez dans un instant."),
+              "danger")
+        return redirect(url_for("admin.subscriptions"))
+    out = io.StringIO()
+    writer = csv.writer(out)
+    writer.writerow(["email", "stripe_customer", "started", "plan", "price", "currency", "status",
+                     "cancel_at_period_end", "period_end", "earned"])
+    for r in report["rows"]:
+        writer.writerow([r["user"].email if r["user"] else "", r["customer"], r["started"].date().isoformat(),
+                         r["interval"] or "", r["price"], r["currency"], r["status"],
+                         "yes" if r["cancel_at_period_end"] else "no",
+                         r["renews"].date().isoformat() if r["renews"] else "", r["earned"]])
+    response = current_app.response_class("\ufeff" + out.getvalue(), mimetype="text/csv")
+    response.headers["Content-Disposition"] = f'attachment; filename="abonnes-{utcnow():%Y-%m-%d}.csv"'
+    return response
 
 
 @bp.route("/settings", methods=["GET", "POST"])
