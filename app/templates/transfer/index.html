@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "partials/premium.html" import diamond %}
 {% block title %}{{ _("Importer / exporter") }}{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
@@ -79,7 +80,7 @@
       <div class="card-body p-4 d-flex flex-wrap align-items-center gap-3">
         <div class="feature-icon" aria-hidden="true"><i class="fa-solid fa-envelope-open-text"></i></div>
         <div class="flex-grow-1">
-          <h3 class="h6 fw-semibold mb-1">{{ _("Import par e-mail") }}</h3>
+          <h3 class="h6 fw-semibold mb-1">{{ _("Import par e-mail") }}{{ diamond() }}</h3>
           <p class="small text-body-secondary mb-2">
             {{ _("Transférez vos confirmations de vol ou de train à %(address)s depuis l'une de ces adresses : les trajets sont ajoutés à votre compte en quelques minutes.",
                  address=config.IMPORT_ADDRESS) }}
@@ -90,8 +91,14 @@
             <li><i class="fa-solid fa-envelope-circle-check text-body-secondary me-2" aria-hidden="true"></i>{{ address.email }}</li>
             {% endfor %}
           </ul>
+          {% if premium_access() %}
           <a class="small" href="{{ url_for('auth.profile', _anchor='mail-import') }}">
             <i class="fa-solid fa-pen me-1" aria-hidden="true"></i>{{ _("Ajouter ou modifier les adresses") }}</a>
+          {% else %}
+          <p class="small mb-0">
+            <i class="fa-solid fa-gem text-info me-1" aria-hidden="true"></i>{{ _("L'import par e-mail est réservé aux abonnés Premium.") }}
+            <a href="{{ url_for('billing.index') }}">{{ _("Découvrir Premium") }}</a></p>
+          {% endif %}
         </div>
       </div>
     </div>

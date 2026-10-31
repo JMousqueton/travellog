@@ -558,3 +558,12 @@ def test_import_addresses_require_premium(auth_client, billing, user, db):
     assert db.session.execute(db.select(ImportAddress)).first() is None
     subscribe(user, db)
     assert 'name="imp-email"' in auth_client.get("/auth/profile").text
+
+
+def test_transfer_page_marks_mail_import_premium(auth_client, billing, user, db):
+    billing.config.update(IMPORT_ADDRESS="addto@voyage-voyage.app")
+    page = auth_client.get("/import-export").text
+    assert "fa-gem" in page and "import par e-mail est réservé" in page and "#mail-import" not in page
+    subscribe(user, db)
+    page = auth_client.get("/import-export").text
+    assert "fa-gem" in page and "#mail-import" in page and "import par e-mail est réservé" not in page
