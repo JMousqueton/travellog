@@ -110,10 +110,23 @@ if (savedView === "globe") setView("globe", { save: false });
 
 /* --- Filtres <-> URL ----------------------------------------------------- */
 
+// Toutes les années choisies explicitement (bouton « Tout », dates effacées, réinitialisation) : ?period=all
+// dans l'adresse, sans quoi la carte s'ouvre sur l'année en cours.
+let allYears = false;
+
 function readUrl() {
   const params = new URLSearchParams(window.location.search);
   filtersForm.elements.from.value = params.get("from") || "";
   filtersForm.elements.to.value = params.get("to") || "";
+  allYears = params.get("period") === "all";
+  // Sa propre carte (pas un lien de partage), sans période choisie ni voyage à montrer : l'année en cours,
+  // si elle compte des voyages.
+  const year = mapEl.dataset.year;
+  if (!params.has("from") && !params.has("to") && !allYears && !focusId && mapEl.dataset.createUrl
+      && yearButtons.some((button) => button.dataset.year === year)) {
+    filtersForm.elements.from.value = `${year}-01-01`;
+    filtersForm.elements.to.value = `${year}-12-31`;
+  }
   for (const name of ["modes", "tags"]) {
     const selected = (params.get(name) || "").split(",");
     filtersForm.querySelectorAll(`input[name="${name}"]`).forEach((box) => { box.checked = selected.includes(box.value); });
@@ -132,6 +145,7 @@ function filterParams() {
   const { from, to } = filtersForm.elements;
   if (from.value) params.set("from", from.value);
   if (to.value) params.set("to", to.value);
+  if (!from.value && !to.value && allYears) params.set("period", "all");
   for (const name of ["modes", "tags"]) {
     const selected = [...filtersForm.querySelectorAll(`input[name="${name}"]:checked`)].map((box) => box.value);
     if (selected.length) params.set(name, selected.join(","));
@@ -174,6 +188,7 @@ function syncYearButtons() {
 
 yearButtons.forEach((button) => button.addEventListener("click", () => {
   const { year } = button.dataset;
+  allYears = !year;
   filtersForm.elements.from.value = year ? `${year}-01-01` : "";
   filtersForm.elements.to.value = year ? `${year}-12-31` : "";
   load();
@@ -438,7 +453,11 @@ filtersForm.addEventListener("submit", (event) => event.preventDefault());
 
 function resetFilters() {
   filtersForm.reset();
+  allYears = true;
   load();
+}
+for (const input of [filtersForm.elements.from, filtersForm.elements.to]) {
+  input.addEventListener("change", () => { allYears = true; });
 }
 $("resetFilters").addEventListener("click", resetFilters);
 
