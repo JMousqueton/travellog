@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-31 11:22+0000\n"
+"POT-Creation-Date: 2026-10-31 11:41+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -1443,7 +1443,7 @@ msgstr ""
 msgid "Merci à Mallorie pour l'idée !"
 msgstr "¡Gracias a Mallorie por la idea!"
 
-#: app/templates/about.html:35 app/templates/plans.html:110
+#: app/templates/about.html:35 app/templates/plans.html:111
 msgid "Toutes les fonctionnalités"
 msgstr "Todas las funciones"
 
@@ -1816,12 +1816,12 @@ msgid "Politique de confidentialité"
 msgstr "Política de privacidad"
 
 #: app/templates/about.html:114 app/templates/landing.html:34
-#: app/templates/plans.html:98
+#: app/templates/plans.html:99
 msgid "Commencer gratuitement"
 msgstr "Empezar gratis"
 
 #: app/templates/about.html:115 app/templates/landing.html:35
-#: app/templates/plans.html:100
+#: app/templates/plans.html:101
 msgid "J'ai déjà un compte"
 msgstr "Ya tengo una cuenta"
 
@@ -2129,12 +2129,12 @@ msgid "il y a %(age)s"
 msgstr "hace %(age)s"
 
 #: app/templates/admin/subscriptions.html:71
-#: app/templates/billing/index.html:86
+#: app/templates/billing/index.html:87
 msgid "Annuel"
 msgstr "Anual"
 
 #: app/templates/admin/subscriptions.html:73
-#: app/templates/billing/index.html:86
+#: app/templates/billing/index.html:87
 msgid "Mensuel"
 msgstr "Mensual"
 
@@ -2296,8 +2296,8 @@ msgstr "Suscrito hasta el %(date)s"
 
 #: app/templates/admin/users.html:27 app/templates/base.html:173
 #: app/templates/billing/index.html:2 app/templates/billing/index.html:6
-#: app/templates/billing/index.html:20 app/templates/billing/invoices.html:7
-#: app/templates/plans.html:57
+#: app/templates/billing/index.html:21 app/templates/billing/invoices.html:7
+#: app/templates/plans.html:58
 msgid "Premium"
 msgstr "Premium"
 
@@ -2928,15 +2928,23 @@ msgstr ""
 "Acceso al soporte: haga sus preguntas, informe de un problema, proponga "
 "una idea"
 
-#: app/templates/billing/index.html:21
+#: app/templates/billing/index.html:14 app/templates/plans.html:41
+msgid ""
+"Vous aidez à maintenir le site : hébergement, mises à jour et nouvelles "
+"fonctions"
+msgstr ""
+"Ayudas a mantener el sitio: alojamiento, actualizaciones y nuevas "
+"funciones"
+
+#: app/templates/billing/index.html:22
 msgid "Abonnement annuel"
 msgstr "Suscripción anual"
 
-#: app/templates/billing/index.html:21
+#: app/templates/billing/index.html:22
 msgid "Abonnement mensuel"
 msgstr "Suscripción mensual"
 
-#: app/templates/billing/index.html:25
+#: app/templates/billing/index.html:26
 msgid ""
 "Le dernier paiement a échoué. Réglez la facture en attente pour garder "
 "l'accès Premium."
@@ -2944,36 +2952,36 @@ msgstr ""
 "El último pago ha fallado. Abone la factura pendiente para mantener el "
 "acceso Premium."
 
-#: app/templates/billing/index.html:26 app/templates/billing/index.html:35
-#: app/templates/billing/index.html:73 app/templates/billing/index.html:98
+#: app/templates/billing/index.html:27 app/templates/billing/index.html:36
+#: app/templates/billing/index.html:74 app/templates/billing/index.html:99
 #: app/templates/billing/invoices.html:2 app/templates/billing/invoices.html:8
 #: app/templates/billing/invoices.html:13
 msgid "Mes factures"
 msgstr "Mis facturas"
 
-#: app/templates/billing/index.html:29
+#: app/templates/billing/index.html:30
 #, python-format
 msgid "Abonnement résilié : l'accès Premium prend fin le %(date)s."
 msgstr "Suscripción cancelada: el acceso Premium termina el %(date)s."
 
-#: app/templates/billing/index.html:31
+#: app/templates/billing/index.html:32
 #, python-format
 msgid "Prochain renouvellement le %(date)s."
 msgstr "Próxima renovación el %(date)s."
 
-#: app/templates/billing/index.html:40
+#: app/templates/billing/index.html:41
 msgid "Reprendre mon abonnement"
 msgstr "Reanudar mi suscripción"
 
-#: app/templates/billing/index.html:44 app/templates/billing/index.html:63
+#: app/templates/billing/index.html:45 app/templates/billing/index.html:64
 msgid "Arrêter mon abonnement"
 msgstr "Detener mi suscripción"
 
-#: app/templates/billing/index.html:56
+#: app/templates/billing/index.html:57
 msgid "Arrêter votre abonnement ?"
 msgstr "¿Detener su suscripción?"
 
-#: app/templates/billing/index.html:58
+#: app/templates/billing/index.html:59
 #, python-format
 msgid ""
 "Aucun nouveau prélèvement ne sera fait. L'accès Premium reste actif "
@@ -2982,44 +2990,44 @@ msgstr ""
 "No se realizará ningún cobro más. El acceso Premium sigue activo hasta el"
 " %(date)s y puede reanudar la suscripción hasta entonces."
 
-#: app/templates/billing/index.html:62
+#: app/templates/billing/index.html:63
 msgid "Garder mon abonnement"
 msgstr "Mantener mi suscripción"
 
-#: app/templates/billing/index.html:70
+#: app/templates/billing/index.html:71
 msgid "L'accès Premium vous est offert : aucun abonnement n'est nécessaire."
 msgstr "Se le ha regalado el acceso Premium: no necesita ninguna suscripción."
 
-#: app/templates/billing/index.html:78
+#: app/templates/billing/index.html:79
 msgid "par mois"
 msgstr "al mes"
 
-#: app/templates/billing/index.html:78
+#: app/templates/billing/index.html:79
 msgid "Sans engagement, résiliable à tout moment."
 msgstr "Sin permanencia, cancelable en cualquier momento."
 
-#: app/templates/billing/index.html:79
+#: app/templates/billing/index.html:80
 msgid "par an"
 msgstr "al año"
 
-#: app/templates/billing/index.html:79
+#: app/templates/billing/index.html:80
 #, python-format
 msgid "Économisez %(saving)s par rapport au mois."
 msgstr "Ahorre un %(saving)s respecto al plan mensual."
 
-#: app/templates/billing/index.html:79
+#: app/templates/billing/index.html:80
 msgid "Un seul paiement par an."
 msgstr "Un solo pago al año."
 
-#: app/templates/billing/index.html:90
+#: app/templates/billing/index.html:91
 msgid "Redirection…"
 msgstr "Redirigiendo…"
 
-#: app/templates/billing/index.html:90
+#: app/templates/billing/index.html:91
 msgid "S'abonner"
 msgstr "Suscribirse"
 
-#: app/templates/billing/index.html:96
+#: app/templates/billing/index.html:97
 #, python-format
 msgid ""
 "Paiement sécurisé par Stripe. Vos coordonnées bancaires ne transitent pas"
@@ -4157,49 +4165,49 @@ msgstr "Fotos en tus trayectos y viajes, con sus datos EXIF y GPS"
 msgid "Accès au support : questions, problèmes, idées"
 msgstr "Acceso al soporte: preguntas, problemas, ideas"
 
-#: app/templates/plans.html:46
+#: app/templates/plans.html:47
 msgid "Comparatif des offres gratuite et Premium"
 msgstr "Comparativa de los planes gratuito y Premium"
 
-#: app/templates/plans.html:49
+#: app/templates/plans.html:50
 msgid "Fonction"
 msgstr "Función"
 
-#: app/templates/plans.html:52
+#: app/templates/plans.html:53
 msgid "Gratuit"
 msgstr "Gratis"
 
-#: app/templates/plans.html:53
+#: app/templates/plans.html:54
 msgid "pour toujours"
 msgstr "para siempre"
 
-#: app/templates/plans.html:58
+#: app/templates/plans.html:59
 #, python-format
 msgid "%(monthly)s / mois"
 msgstr "%(monthly)s / mes"
 
-#: app/templates/plans.html:83
+#: app/templates/plans.html:84
 msgid "Prix"
 msgstr "Precio"
 
-#: app/templates/plans.html:86
+#: app/templates/plans.html:87
 msgid "mois"
 msgstr "mes"
 
-#: app/templates/plans.html:87
+#: app/templates/plans.html:88
 #, python-format
 msgid "ou %(yearly)s par an"
 msgstr "o %(yearly)s al año"
 
-#: app/templates/plans.html:102
+#: app/templates/plans.html:103
 msgid "Vous profitez déjà de Premium. Merci !"
 msgstr "Ya disfrutas de Premium. ¡Gracias!"
 
-#: app/templates/plans.html:105
+#: app/templates/plans.html:106
 msgid "Passer à Premium"
 msgstr "Pasar a Premium"
 
-#: app/templates/plans.html:109
+#: app/templates/plans.html:110
 msgid "Sans engagement, résiliable à tout moment. Paiement sécurisé par Stripe."
 msgstr "Sin compromiso, cancelable en cualquier momento. Pago seguro con Stripe."
 

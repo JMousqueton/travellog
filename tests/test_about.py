@@ -55,6 +55,7 @@ def test_plans_compares_free_and_premium(app, client):
     assert "Gratuit ou Premium ?" in html and "Réservé à Premium" in html
     assert "fa-circle-xmark" in html and 'href="/auth/register"' in html
     assert "2,00" in html and "10,00" in html
+    assert "Vous aidez à maintenir le site" in html
 
 
 def test_plans_offers_upgrade_to_signed_in_free_user(app, auth_client):
