@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "partials/premium.html" import diamond %}
 {% block title %}{{ _("Carte partagée") if shared else _("Carte") }}{% endblock %}
 {% block body_class %}app-layout{% endblock %}
 {% block main_class %}app-shell{% endblock %}
@@ -174,6 +175,40 @@
        data-places-url="{{ places_url or url_for('api.places') }}"
        data-world-url="{{ url_for('static', filename='data/world.json') }}"
        {% if not shared %}data-create-url="{{ url_for('trips.create') }}"{% endif %} data-tiles='{{ tiles|tojson }}' {% if focus %}data-focus="{{ focus }}"{% endif %}></div>
+  {% if not shared and not map_years %}
+  <section class="welcome-card card shadow alert alert-dismissible fade show p-0" role="region" aria-labelledby="welcomeTitle">
+    <div class="card-body p-4">
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="{{ _('Fermer') }}"></button>
+      <div class="d-flex align-items-center gap-3 mb-2">
+        <span class="feature-icon" aria-hidden="true"><i class="fa-solid fa-earth-europe"></i></span>
+        <h2 class="h5 fw-bold mb-0" id="welcomeTitle">{{ _("Bienvenue sur %(site)s !", site=config.SITE_NAME) }}</h2>
+      </div>
+      <p class="text-body-secondary mb-3">{{ _("Votre carte est encore vide. Pour la remplir, choisissez par où commencer :") }}</p>
+      <div class="welcome-steps">
+        <a class="welcome-step" href="{{ url_for('trips.create') }}">
+          <span class="welcome-step-icon" aria-hidden="true"><i class="fa-solid fa-plus"></i></span>
+          <span><strong>{{ _("Ajouter un trajet") }}</strong>
+            <small>{{ _("Départ, arrivée, date et mode de transport.") }}</small></span></a>
+        <a class="welcome-step" href="{{ url_for('transfer.index') }}">
+          <span class="welcome-step-icon" aria-hidden="true"><i class="fa-solid fa-file-import"></i></span>
+          <span><strong>{{ _("Importer votre historique") }}</strong>
+            <small>{{ _("Flighty, myFlightradar24, CSV, GeoJSON, GPX ou cartes Apple Wallet.") }}</small></span></a>
+        {% if config.IMPORT_ADDRESS %}
+        <a class="welcome-step" href="{{ url_for('auth.profile') }}#mail-import">
+          <span class="welcome-step-icon" aria-hidden="true"><i class="fa-solid fa-envelope-open-text"></i></span>
+          <span><strong>{{ _("Transférer vos réservations") }}{{ diamond() }}</strong>
+            <small>{{ _("Envoyez vos confirmations de vol ou de train à %(address)s.", address=config.IMPORT_ADDRESS) }}</small></span></a>
+        {% endif %}
+        {% if not current_user.has_home %}
+        <a class="welcome-step" href="{{ url_for('auth.profile') }}#home">
+          <span class="welcome-step-icon" aria-hidden="true"><i class="fa-solid fa-house"></i></span>
+          <span><strong>{{ _("Indiquer votre domicile") }}</strong>
+            <small>{{ _("Pour compter vos jours loin de la maison et vos nuits à l'étranger.") }}</small></span></a>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+  {% endif %}
   <div class="map-loading" id="mapLoading" role="status">
     <div class="spinner-border text-primary" aria-hidden="true"></div>
     <span class="visually-hidden">{{ _("Chargement…") }}</span>
