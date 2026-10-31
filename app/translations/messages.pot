@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-31 10:21+0000\n"
+"POT-Creation-Date: 2026-10-31 11:12+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -208,7 +208,7 @@ msgstr ""
 msgid "Rester connecté"
 msgstr ""
 
-#: app/auth/forms.py:24 app/templates/about.html:103
+#: app/auth/forms.py:24 app/templates/about.html:117
 #: app/templates/auth/register.html:24 app/templates/landing.html:37
 msgid "Se connecter"
 msgstr ""
@@ -445,6 +445,7 @@ msgid "Abonnement agenda désactivé."
 msgstr ""
 
 #: app/auth/routes.py:351 app/templates/auth/profile.html:165
+#: app/templates/transfer/index.html:99
 msgid "L'import par e-mail est réservé aux abonnés Premium."
 msgstr ""
 
@@ -1167,7 +1168,7 @@ msgstr ""
 msgid "Nouveaux pays"
 msgstr ""
 
-#: app/seo.py:106 app/templates/landing.html:28
+#: app/seo.py:107 app/templates/landing.html:28
 msgid "Tous vos voyages, sur une seule carte."
 msgstr ""
 
@@ -1341,11 +1342,27 @@ msgid ""
 "voyage deviennent des chiffres, des badges et des souvenirs."
 msgstr ""
 
-#: app/templates/about.html:14
+#: app/templates/about.html:16
+msgid "Gratuit, avec une option Premium"
+msgstr ""
+
+#: app/templates/about.html:17
+#, python-format
+msgid ""
+"L'essentiel du site est gratuit. Certaines fonctions, marquées d'un "
+"diamant %(gem)s, sont réservées aux membres Premium : photos, import par "
+"e-mail, liens de partage, profil public et support."
+msgstr ""
+
+#: app/templates/about.html:20
+msgid "Comparer les offres"
+msgstr ""
+
+#: app/templates/about.html:28
 msgid "Pourquoi « Voyage Voyage » ?"
 msgstr ""
 
-#: app/templates/about.html:16
+#: app/templates/about.html:30
 msgid ""
 "Le nom est un clin d'œil à « Voyage, voyage », la chanson de Desireless "
 "sortie en 1986, écrite par Jean-Michel Rivat et composée par Dominique "
@@ -1354,50 +1371,50 @@ msgid ""
 "titres français les plus connus à l'étranger."
 msgstr ""
 
-#: app/templates/about.html:17
+#: app/templates/about.html:31
 msgid ""
 "Une chanson qui donne envie de partir loin, encore et encore : c'est "
 "exactement ce que ce site garde en mémoire, un trajet après l'autre."
 msgstr ""
 
-#: app/templates/about.html:18
+#: app/templates/about.html:32
 msgid "Merci à Mallorie pour l'idée !"
 msgstr ""
 
-#: app/templates/about.html:21
+#: app/templates/about.html:35 app/templates/plans.html:112
 msgid "Toutes les fonctionnalités"
 msgstr ""
 
-#: app/templates/about.html:23
+#: app/templates/about.html:37
 msgid "Noter vos trajets"
 msgstr ""
 
-#: app/templates/about.html:24
+#: app/templates/about.html:38
 msgid ""
 "Sept modes de transport : avion, train, voiture, bus, bateau, vélo et à "
 "pied, chacun avec sa couleur."
 msgstr ""
 
-#: app/templates/about.html:25
+#: app/templates/about.html:39
 msgid ""
 "Aller simple ou aller-retour, avec une date de retour ; plusieurs trajets"
 " se regroupent en un voyage (escales, tour d'Europe…)."
 msgstr ""
 
-#: app/templates/about.html:26
+#: app/templates/about.html:40
 msgid ""
 "Lieux saisis avec autocomplétion ; le pays de départ et d'arrivée est "
 "retrouvé automatiquement."
 msgstr ""
 
-#: app/templates/about.html:27
+#: app/templates/about.html:41
 msgid ""
 "Compagnie, numéro de vol et appareil pour l'avion, opérateur pour le "
 "train. Saisir un numéro de vol (« AF1148 ») remplit la compagnie, le "
 "départ et l'arrivée."
 msgstr ""
 
-#: app/templates/about.html:28
+#: app/templates/about.html:42
 msgid ""
 "Étiquettes (vacances, travail…), notes et photos sur chaque trajet et "
 "chaque voyage. Les fichiers des photos sont débarrassés de leurs "
@@ -1405,48 +1422,48 @@ msgid ""
 "vous seul."
 msgstr ""
 
-#: app/templates/about.html:29
+#: app/templates/about.html:43
 msgid ""
 "Distances réalistes : itinéraire routier quand il est disponible, sinon "
 "ligne droite corrigée selon le mode."
 msgstr ""
 
-#: app/templates/about.html:31
+#: app/templates/about.html:45
 msgid "Importer et exporter"
 msgstr ""
 
-#: app/templates/about.html:32
+#: app/templates/about.html:46
 msgid ""
 "Import de votre historique de vols depuis Flighty ou myFlightradar24 : "
 "chaque vol devient un trajet, les allers-retours sont reconnus."
 msgstr ""
 
-#: app/templates/about.html:33
+#: app/templates/about.html:47
 msgid ""
 "Import et export en CSV, GeoJSON et GPX, sans perte : notes et "
 "regroupements en voyages compris."
 msgstr ""
 
-#: app/templates/about.html:34
+#: app/templates/about.html:48
 msgid ""
 "Aperçu avant chaque import : décochez les trajets à laisser de côté ; les"
 " doublons sont repérés."
 msgstr ""
 
-#: app/templates/about.html:35
+#: app/templates/about.html:49
 msgid ""
 "Sauvegarde complète (.zip, photos comprises) à télécharger et à "
 "réimporter à tout moment."
 msgstr ""
 
-#: app/templates/about.html:36
+#: app/templates/about.html:50
 msgid ""
 "Cartes d'embarquement Apple Wallet (.pkpass) : le vol est lu dans le "
 "code-barres, ou le trajet en train, en bus ou en bateau dans les données "
 "de la carte."
 msgstr ""
 
-#: app/templates/about.html:38
+#: app/templates/about.html:52
 #, python-format
 msgid ""
 "Import par e-mail : transférez vos confirmations de vol ou de train (et "
@@ -1454,41 +1471,41 @@ msgid ""
 " en quelques minutes."
 msgstr ""
 
-#: app/templates/about.html:40
+#: app/templates/about.html:54
 msgid "Carte et globe"
 msgstr ""
 
-#: app/templates/about.html:41
+#: app/templates/about.html:55
 msgid ""
 "Carte plein écran : trajets colorés par mode, arcs géodésiques pour "
 "l'avion, retours en pointillés, marqueurs regroupés."
 msgstr ""
 
-#: app/templates/about.html:42
+#: app/templates/about.html:56
 msgid ""
 "Couches « Pays visités » et « Lieux visités » (cercles proportionnels au "
 "nombre de passages)."
 msgstr ""
 
-#: app/templates/about.html:43
+#: app/templates/about.html:57
 msgid ""
 "Filtres par année, période, mode, type de trajet, étiquette et recherche,"
 " conservés dans l'adresse de la page."
 msgstr ""
 
-#: app/templates/about.html:44
+#: app/templates/about.html:58
 msgid ""
 "Globe 3D qui tourne tout seul, à faire pivoter et zoomer, avec les vols "
 "en arc au-dessus de la surface."
 msgstr ""
 
-#: app/templates/about.html:45
+#: app/templates/about.html:59
 msgid ""
 "Rejeu : vos trajets se dessinent dans l'ordre chronologique, avec une "
 "frise pour sauter à n'importe quelle date."
 msgstr ""
 
-#: app/templates/about.html:47 app/templates/base.html:124
+#: app/templates/about.html:61 app/templates/base.html:124
 #: app/templates/base.html:150 app/templates/base.html:152
 #: app/templates/trips/stats.html:4 app/templates/trips/stats.html:8
 #: app/templates/trips/transport_stats.html:62
@@ -1496,128 +1513,128 @@ msgstr ""
 msgid "Statistiques"
 msgstr ""
 
-#: app/templates/about.html:48
+#: app/templates/about.html:62
 msgid ""
 "Chiffres clés et graphiques des trajets et des distances par année et par"
 " mode."
 msgstr ""
 
-#: app/templates/about.html:49
+#: app/templates/about.html:63
 msgid ""
 "Une page par année : comparaison avec l'année précédente, calendrier jour"
 " par jour, départs par mois, pays découverts, temps forts."
 msgstr ""
 
-#: app/templates/about.html:50
+#: app/templates/about.html:64
 msgid ""
 "Pages avion et train : compagnies (avec leur logo), appareils, aéroports "
 "ou gares, lignes les plus fréquentes."
 msgstr ""
 
-#: app/templates/about.html:51
+#: app/templates/about.html:65
 msgid "CO₂ estimé pour chaque mode, d'après les facteurs de l'ADEME."
 msgstr ""
 
-#: app/templates/about.html:52
+#: app/templates/about.html:66
 msgid ""
 "Jours loin de la maison, nuits à l'étranger et plus longue absence, à "
 "partir de votre ville de domicile."
 msgstr ""
 
-#: app/templates/about.html:54
+#: app/templates/about.html:68
 msgid "Le monde, pays par pays"
 msgstr ""
 
-#: app/templates/about.html:55
+#: app/templates/about.html:69
 msgid ""
 "Pays et territoires visités sur 237, et part des terres émergées que vous"
 " avez foulées."
 msgstr ""
 
-#: app/templates/about.html:56
+#: app/templates/about.html:70
 msgid ""
 "Progression par continent, et régions visitées dans 14 grands pays (États"
 " américains, Länder, régions françaises, préfectures japonaises…)."
 msgstr ""
 
-#: app/templates/about.html:57
+#: app/templates/about.html:71
 msgid ""
 "Badges pour l'ensemble de vos voyages et badges propres à chaque année, "
 "datés par le trajet qui les a débloqués."
 msgstr ""
 
-#: app/templates/about.html:59 app/templates/landing.html:67
+#: app/templates/about.html:73 app/templates/landing.html:67
 #: app/templates/trips/review.html:3 app/templates/trips/review.html:9
 #: app/templates/trips/stats.html:11
 msgid "Bilan de l'année"
 msgstr ""
 
-#: app/templates/about.html:60
+#: app/templates/about.html:74
 msgid ""
 "Votre année en chiffres : pays découverts, plus long trajet, destinations"
 " préférées, départs par mois, badges gagnés."
 msgstr ""
 
-#: app/templates/about.html:61
+#: app/templates/about.html:75
 msgid ""
 "Une image prête à partager sur les réseaux sociaux ou à garder en "
 "souvenir."
 msgstr ""
 
-#: app/templates/about.html:63
+#: app/templates/about.html:77
 msgid "Partager et anticiper"
 msgstr ""
 
-#: app/templates/about.html:64
+#: app/templates/about.html:78
 msgid ""
 "Liens de partage en lecture seule, avec date d'expiration : carte, "
 "statistiques, liste des voyages et bilan. Jamais vos notes, vos photos ni"
 " votre domicile."
 msgstr ""
 
-#: app/templates/about.html:65
+#: app/templates/about.html:79
 msgid ""
 "Profil public facultatif (/u/votre-nom) : vos pays, vos distances par "
 "mode et vos badges, sans aucun trajet ni date."
 msgstr ""
 
-#: app/templates/about.html:66
+#: app/templates/about.html:80
 msgid ""
 "Voyages à venir : compte à rebours, carte « Prochain départ », masqués "
 "par défaut sur les liens de partage."
 msgstr ""
 
-#: app/templates/about.html:67
+#: app/templates/about.html:81
 msgid ""
 "Export vers votre agenda (.ics) ou abonnement à une adresse secrète "
 "(Google Agenda, Apple Calendrier, Outlook)."
 msgstr ""
 
-#: app/templates/about.html:69
+#: app/templates/about.html:83
 msgid "Partout, dans votre langue"
 msgstr ""
 
-#: app/templates/about.html:70
+#: app/templates/about.html:84
 msgid ""
 "Interface en français, anglais, espagnol, allemand et italien ; dates, "
 "nombres et distances au format de chaque langue."
 msgstr ""
 
-#: app/templates/about.html:71
+#: app/templates/about.html:85
 msgid "Thème clair ou sombre, sur ordinateur comme sur téléphone."
 msgstr ""
 
-#: app/templates/about.html:72
+#: app/templates/about.html:86
 msgid ""
 "Application installable sur l'écran d'accueil, qui reste consultable hors"
 " ligne."
 msgstr ""
 
-#: app/templates/about.html:74 app/templates/landing.html:69
+#: app/templates/about.html:88 app/templates/landing.html:69
 msgid "Vos données vous appartiennent"
 msgstr ""
 
-#: app/templates/about.html:75
+#: app/templates/about.html:89
 #, python-format
 msgid ""
 "Sans publicité, et open source sous licence MIT. L'essentiel est gratuit "
@@ -1626,42 +1643,44 @@ msgid ""
 "partage, profil public et support."
 msgstr ""
 
-#: app/templates/about.html:75
+#: app/templates/about.html:89
 msgid "Gratuit, sans publicité, et open source sous licence MIT."
 msgstr ""
 
-#: app/templates/about.html:76
+#: app/templates/about.html:90
 msgid ""
 "Vos trajets restent privés ; la mesure d'audience est auto-hébergée et "
 "vous pouvez la refuser."
 msgstr ""
 
-#: app/templates/about.html:77
+#: app/templates/about.html:91
 msgid ""
 "Bibliothèques et polices servies par le site lui-même : aucun CDN ni "
 "Google Fonts ne voit passer vos visites."
 msgstr ""
 
-#: app/templates/about.html:78
+#: app/templates/about.html:92
 msgid ""
 "Export complet à tout moment, et suppression de votre compte depuis vos "
 "préférences."
 msgstr ""
 
-#: app/templates/about.html:93
+#: app/templates/about.html:107
 msgid "Le code source est disponible sur"
 msgstr ""
 
-#: app/templates/about.html:94 app/templates/legal/privacy.html:2
+#: app/templates/about.html:108 app/templates/legal/privacy.html:2
 #: app/templates/legal/privacy.html:6
 msgid "Politique de confidentialité"
 msgstr ""
 
-#: app/templates/about.html:100 app/templates/landing.html:34
+#: app/templates/about.html:114 app/templates/landing.html:34
+#: app/templates/plans.html:100
 msgid "Commencer gratuitement"
 msgstr ""
 
-#: app/templates/about.html:101 app/templates/landing.html:35
+#: app/templates/about.html:115 app/templates/landing.html:35
+#: app/templates/plans.html:102
 msgid "J'ai déjà un compte"
 msgstr ""
 
@@ -2334,7 +2353,7 @@ msgstr ""
 msgid "Activer l'abonnement"
 msgstr ""
 
-#: app/templates/auth/profile.html:164 app/templates/transfer/index.html:82
+#: app/templates/auth/profile.html:164 app/templates/transfer/index.html:83
 msgid "Import par e-mail"
 msgstr ""
 
@@ -2508,8 +2527,8 @@ msgstr ""
 msgid "Partager mes voyages"
 msgstr ""
 
-#: app/templates/base.html:170 app/templates/transfer/index.html:2
-#: app/templates/transfer/index.html:6 app/templates/trips/list.html:9
+#: app/templates/base.html:170 app/templates/transfer/index.html:3
+#: app/templates/transfer/index.html:7 app/templates/trips/list.html:9
 #: app/templates/trips/stats.html:13
 msgid "Importer / exporter"
 msgstr ""
@@ -2517,6 +2536,7 @@ msgstr ""
 #: app/templates/admin/users.html:27 app/templates/base.html:173
 #: app/templates/billing/index.html:2 app/templates/billing/index.html:6
 #: app/templates/billing/index.html:20 app/templates/billing/invoices.html:7
+#: app/templates/plans.html:58
 msgid "Premium"
 msgstr ""
 
@@ -2570,18 +2590,6 @@ msgstr ""
 msgid ""
 "Photos de vos trajets et voyages, avec leurs informations EXIF et leur "
 "position GPS"
-msgstr ""
-
-#: app/templates/billing/index.html:10
-msgid "Liens de partage de votre carte, de vos statistiques et de vos voyages"
-msgstr ""
-
-#: app/templates/billing/index.html:11
-msgid "Profil public à votre nom (/u/votre-nom)"
-msgstr ""
-
-#: app/templates/billing/index.html:12
-msgid "Import par e-mail de vos confirmations de vol ou de train"
 msgstr ""
 
 #: app/templates/billing/index.html:13
@@ -3581,8 +3589,154 @@ msgstr ""
 msgid "Fonction Premium"
 msgstr ""
 
-#: app/templates/partials/premium.html:13
+#: app/templates/partials/premium.html:13 app/templates/transfer/index.html:100
 msgid "Découvrir Premium"
+msgstr ""
+
+#: app/templates/plans.html:2
+msgid "Gratuit ou Premium"
+msgstr ""
+
+#: app/templates/plans.html:3
+msgid ""
+"Ce que comprend l'offre gratuite de Voyage Voyage, et ce que Premium "
+"ajoute : photos, import par e-mail, liens de partage, profil public et "
+"support."
+msgstr ""
+
+#: app/templates/plans.html:8
+msgid "Inclus"
+msgstr ""
+
+#: app/templates/plans.html:11
+msgid "Non inclus"
+msgstr ""
+
+#: app/templates/plans.html:16
+msgid "Gratuit ou Premium ?"
+msgstr ""
+
+#: app/templates/plans.html:17
+msgid ""
+"Tout ce qu'il faut pour noter, cartographier et revivre vos voyages est "
+"gratuit, sans publicité. Premium ajoute quelques fonctions et soutient le"
+" site."
+msgstr ""
+
+#: app/templates/plans.html:21
+msgid "Inclus dans les deux offres"
+msgstr ""
+
+#: app/templates/plans.html:22
+msgid ""
+"Trajets en avion, train, voiture, bus, bateau, vélo et à pied, regroupés "
+"en voyages"
+msgstr ""
+
+#: app/templates/plans.html:23
+msgid "Carte plein écran, globe 3D et rejeu chronologique"
+msgstr ""
+
+#: app/templates/plans.html:24
+msgid "Statistiques, pages par année, compagnies, appareils et CO₂"
+msgstr ""
+
+#: app/templates/plans.html:25
+msgid "Pays, régions et continents visités, badges"
+msgstr ""
+
+#: app/templates/plans.html:26
+msgid "Bilan de l'année, en image à partager"
+msgstr ""
+
+#: app/templates/plans.html:27
+msgid "Import Flighty, myFlightradar24, CSV, GeoJSON, GPX et cartes Apple Wallet"
+msgstr ""
+
+#: app/templates/plans.html:28
+msgid "Export et sauvegarde complète à tout moment"
+msgstr ""
+
+#: app/templates/plans.html:29
+msgid "Voyages à venir et export vers votre agenda"
+msgstr ""
+
+#: app/templates/plans.html:30
+msgid "Application installable, thème sombre, cinq langues"
+msgstr ""
+
+#: app/templates/plans.html:31
+msgid "Sans publicité, données privées, open source"
+msgstr ""
+
+#: app/templates/plans.html:33
+msgid "Réservé à Premium"
+msgstr ""
+
+#: app/templates/plans.html:34
+msgid "Photos sur vos trajets et voyages, avec leurs informations EXIF et GPS"
+msgstr ""
+
+#: app/templates/billing/index.html:12 app/templates/plans.html:36
+msgid "Import par e-mail de vos confirmations de vol ou de train"
+msgstr ""
+
+#: app/templates/billing/index.html:10 app/templates/plans.html:38
+msgid "Liens de partage de votre carte, de vos statistiques et de vos voyages"
+msgstr ""
+
+#: app/templates/billing/index.html:11 app/templates/plans.html:39
+msgid "Profil public à votre nom (/u/votre-nom)"
+msgstr ""
+
+#: app/templates/plans.html:40
+msgid "Accès au support : questions, problèmes, idées"
+msgstr ""
+
+#: app/templates/plans.html:47
+msgid "Comparatif des offres gratuite et Premium"
+msgstr ""
+
+#: app/templates/plans.html:50
+msgid "Fonction"
+msgstr ""
+
+#: app/templates/plans.html:53
+msgid "Gratuit"
+msgstr ""
+
+#: app/templates/plans.html:54
+msgid "pour toujours"
+msgstr ""
+
+#: app/templates/plans.html:59
+#, python-format
+msgid "%(monthly)s / mois"
+msgstr ""
+
+#: app/templates/plans.html:84
+msgid "Prix"
+msgstr ""
+
+#: app/templates/plans.html:87
+msgid "mois"
+msgstr ""
+
+#: app/templates/plans.html:88
+#, python-format
+msgid "ou %(yearly)s par an"
+msgstr ""
+
+#: app/templates/plans.html:104
+msgid "Vous profitez déjà de Premium. Merci !"
+msgstr ""
+
+#: app/templates/plans.html:107
+msgid "Passer à Premium"
+msgstr ""
+
+#: app/templates/plans.html:111
+msgid "Sans engagement, résiliable à tout moment. Paiement sécurisé par Stripe."
 msgstr ""
 
 #: app/templates/pwa/offline.html:7
@@ -3870,67 +4024,67 @@ msgstr ""
 msgid "Problème résolu : fermer la demande"
 msgstr ""
 
-#: app/templates/transfer/index.html:8
+#: app/templates/transfer/index.html:9
 msgid ""
 "Téléchargez vos voyages pour les ouvrir dans un autre outil, ou faites "
 "une sauvegarde complète avec vos photos, puis réimportez-les ici."
 msgstr ""
 
-#: app/templates/transfer/index.html:11
+#: app/templates/transfer/index.html:12
 msgid "Exporter"
 msgstr ""
 
-#: app/templates/transfer/index.html:14
+#: app/templates/transfer/index.html:15
 msgid ""
 "Tableur (Excel, LibreOffice, Numbers). Le format le plus simple pour une "
 "sauvegarde."
 msgstr ""
 
-#: app/templates/transfer/index.html:15
+#: app/templates/transfer/index.html:16
 msgid ""
 "Lignes origine → destination pour les logiciels de cartographie (QGIS, "
 "geojson.io…)."
 msgstr ""
 
-#: app/templates/transfer/index.html:16
+#: app/templates/transfer/index.html:17
 msgid "Itinéraires pour les applications de navigation et de randonnée."
 msgstr ""
 
-#: app/templates/transfer/index.html:26
+#: app/templates/transfer/index.html:27
 msgid "Télécharger"
 msgstr ""
 
-#: app/templates/transfer/index.html:37
+#: app/templates/transfer/index.html:38
 msgid "Sauvegarde complète"
 msgstr ""
 
-#: app/templates/transfer/index.html:38
+#: app/templates/transfer/index.html:39
 msgid ""
 "Tous vos trajets, voyages, notes, étiquettes et photos dans un seul "
 "fichier .zip, à réimporter ici en cas de besoin."
 msgstr ""
 
-#: app/templates/transfer/index.html:41
+#: app/templates/transfer/index.html:42
 msgid "Télécharger la sauvegarde"
 msgstr ""
 
-#: app/templates/transfer/index.html:45 app/templates/transfer/preview.html:42
+#: app/templates/transfer/index.html:46 app/templates/transfer/preview.html:42
 #: app/transfer/routes.py:40
 msgid "Importer"
 msgstr ""
 
-#: app/templates/transfer/index.html:48
+#: app/templates/transfer/index.html:49
 msgid "Aucun trajet n'a été importé. Corrigez le fichier puis réessayez :"
 msgstr ""
 
-#: app/templates/transfer/index.html:51
+#: app/templates/transfer/index.html:52
 #, python-format
 msgid "… et %(num)s autre erreur."
 msgid_plural "… et %(num)s autres erreurs."
 msgstr[0] ""
 msgstr[1] ""
 
-#: app/templates/transfer/index.html:66
+#: app/templates/transfer/index.html:67
 #, python-format
 msgid ""
 "Colonnes attendues : celles d'un export (depart_date au format AAAA-MM-"
@@ -3939,24 +4093,24 @@ msgid ""
 " s'il manque."
 msgstr ""
 
-#: app/templates/transfer/index.html:68
+#: app/templates/transfer/index.html:69
 msgid ""
 "Les historiques de vols exportés en CSV par Flighty ou myFlightradar24 "
 "sont aussi reconnus : chaque vol devient un trajet en avion (les vols "
 "annulés sont ignorés)."
 msgstr ""
 
-#: app/templates/transfer/index.html:69
+#: app/templates/transfer/index.html:70
 msgid ""
 "Une carte d'embarquement Apple Wallet (.pkpass) donne son vol ou son "
 "trajet en train, en bus ou en bateau."
 msgstr ""
 
-#: app/templates/transfer/index.html:72 app/templates/transfer/preview.html:70
+#: app/templates/transfer/index.html:73 app/templates/transfer/preview.html:70
 msgid "Import…"
 msgstr ""
 
-#: app/templates/transfer/index.html:84
+#: app/templates/transfer/index.html:85
 #, python-format
 msgid ""
 "Transférez vos confirmations de vol ou de train à %(address)s depuis "
@@ -3964,7 +4118,7 @@ msgid ""
 "quelques minutes."
 msgstr ""
 
-#: app/templates/transfer/index.html:94
+#: app/templates/transfer/index.html:96
 msgid "Ajouter ou modifier les adresses"
 msgstr ""
 

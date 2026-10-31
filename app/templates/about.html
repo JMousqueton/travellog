@@ -8,6 +8,20 @@
   <h1 class="display-6 fw-bold mb-3">{{ _("À propos de Voyage Voyage") }}</h1>
   <p class="lead text-body-secondary mb-5">{{ _("Un carnet de voyages personnel, gratuit et open source : chaque trajet que vous notez prend place sur une carte du monde, et vos années de voyage deviennent des chiffres, des badges et des souvenirs.") }}</p>
 
+  {% if billing_enabled() %}
+  <aside class="about-premium card shadow-soft p-4 mb-5" aria-labelledby="about-premium-title">
+    <div class="d-flex flex-column flex-md-row align-items-md-center gap-3">
+      <span class="feature-icon feature-icon-premium" aria-hidden="true"><i class="fa-solid fa-gem"></i></span>
+      <div class="flex-grow-1">
+        <h2 id="about-premium-title" class="h5 fw-semibold mb-1">{{ _("Gratuit, avec une option Premium") }}</h2>
+        <p class="mb-0 text-body-secondary">{{ _("L'essentiel du site est gratuit. Certaines fonctions, marquées d'un diamant %(gem)s, sont réservées aux membres Premium : photos, import par e-mail, liens de partage, profil public et support.", gem=diamond("")) }}</p>
+      </div>
+      <a class="btn btn-outline-primary rounded-pill px-4 text-nowrap" href="{{ url_for('main.plans') }}">
+        <i class="fa-solid fa-scale-balanced me-1" aria-hidden="true"></i>{{ _("Comparer les offres") }}</a>
+    </div>
+  </aside>
+  {% endif %}
+
   <section class="about-song card shadow-soft p-4 p-md-5 mb-5" aria-labelledby="why-name">
     <div class="d-flex align-items-center gap-3 mb-3">
       <span class="feature-icon" aria-hidden="true"><i class="fa-solid fa-music"></i></span>

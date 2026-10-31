@@ -88,3 +88,16 @@ def privacy():
 def about():
     """À propos : l'origine du nom et le détail des fonctionnalités."""
     return render_template("about.html", source_url=current_app.config["SOURCE_URL"])
+
+
+@bp.route("/plans")
+def plans():
+    """Comparatif des offres gratuite et Premium (seulement quand l'abonnement est configuré)."""
+    from flask_babel import format_currency
+
+    from ..billing import billing_enabled
+
+    if not billing_enabled():
+        abort(404)
+    free = format_currency(0, current_app.config["PREMIUM_CURRENCY"].upper())
+    return render_template("plans.html", free_price=free)

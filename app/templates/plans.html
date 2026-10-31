@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Gratuit ou Premium") }}{% endblock %}
+{% block meta_description %}{{ _("Ce que comprend l'offre gratuite de Voyage Voyage, et ce que Premium ajoute : photos, import par e-mail, liens de partage, profil public et support.") }}{% endblock %}
+{% block main_class %}landing{% endblock %}
+{% block content %}
+{% set prices = premium_prices() %}
+{% macro yes(label) -%}
+<i class="fa-solid fa-circle-check plan-yes" aria-hidden="true"></i><span class="visually-hidden">{{ label or _("Inclus") }}</span>
+{%- endmacro %}
+{% macro no() -%}
+<i class="fa-solid fa-circle-xmark plan-no" aria-hidden="true"></i><span class="visually-hidden">{{ _("Non inclus") }}</span>
+{%- endmacro %}
+<article class="plans-page container py-5 mx-auto">
+  <header class="text-center mb-5">
+    <span class="feature-icon feature-icon-premium feature-icon-lg mb-3" aria-hidden="true"><i class="fa-solid fa-scale-balanced"></i></span>
+    <h1 class="display-6 fw-bold mb-3">{{ _("Gratuit ou Premium ?") }}</h1>
+    <p class="lead text-body-secondary mb-0">{{ _("Tout ce qu'il faut pour noter, cartographier et revivre vos voyages est gratuit, sans publicité. Premium ajoute quelques fonctions et soutient le site.") }}</p>
+  </header>
+
+  {% set groups = [
+    (_("Inclus dans les deux offres"), [
+      ('fa-pen-to-square', _("Trajets en avion, train, voiture, bus, bateau, vélo et à pied, regroupés en voyages")),
+      ('fa-map-location-dot', _("Carte plein écran, globe 3D et rejeu chronologique")),
+      ('fa-chart-simple', _("Statistiques, pages par année, compagnies, appareils et CO₂")),
+      ('fa-earth-americas', _("Pays, régions et continents visités, badges")),
+      ('fa-calendar-check', _("Bilan de l'année, en image à partager")),
+      ('fa-file-import', _("Import Flighty, myFlightradar24, CSV, GeoJSON, GPX et cartes Apple Wallet")),
+      ('fa-box-archive', _("Export et sauvegarde complète à tout moment")),
+      ('fa-calendar-days', _("Voyages à venir et export vers votre agenda")),
+      ('fa-mobile-screen', _("Application installable, thème sombre, cinq langues")),
+      ('fa-shield-halved', _("Sans publicité, données privées, open source")),
+    ], False),
+    (_("Réservé à Premium"), [
+      ('fa-camera', _("Photos sur vos trajets et voyages, avec leurs informations EXIF et GPS")),
+    ] + ([
+      ('fa-envelope-open-text', _("Import par e-mail de vos confirmations de vol ou de train")),
+    ] if config.IMPORT_ADDRESS else []) + [
+      ('fa-share-nodes', _("Liens de partage de votre carte, de vos statistiques et de vos voyages")),
+      ('fa-id-badge', _("Profil public à votre nom (/u/votre-nom)")),
+      ('fa-life-ring', _("Accès au support : questions, problèmes, idées")),
+    ], True),
+  ] %}
+
+  <div class="card shadow-soft plans-card overflow-hidden">
+      <table class="table plans-table align-middle mb-0">
+        <caption class="visually-hidden">{{ _("Comparatif des offres gratuite et Premium") }}</caption>
+        <thead>
+          <tr>
+            <th scope="col" class="plans-feature-col"><span class="visually-hidden">{{ _("Fonction") }}</span></th>
+            <th scope="col" class="plans-plan-col text-center">
+              <i class="fa-solid fa-paper-plane plans-plan-icon" aria-hidden="true"></i>
+              <span class="d-block fw-bold">{{ _("Gratuit") }}</span>
+              <span class="d-block small text-body-secondary fw-normal">{{ _("pour toujours") }}</span>
+            </th>
+            <th scope="col" class="plans-plan-col plans-premium text-center">
+              <i class="fa-solid fa-gem plans-plan-icon" aria-hidden="true"></i>
+              <span class="d-block fw-bold">{{ _("Premium") }}</span>
+              <span class="d-block small text-body-secondary fw-normal">{{ _("%(monthly)s / mois", monthly=prices.monthly) }}</span>
+            </th>
+          </tr>
+        </thead>
+        {% for heading, rows, premium_only in groups %}
+        <tbody>
+          <tr class="plans-group">
+            <th scope="colgroup" colspan="2">
+              <i class="fa-solid {{ 'fa-gem text-info' if premium_only else 'fa-heart text-danger' }} me-2" aria-hidden="true"></i>{{ heading }}
+            </th>
+            <td class="plans-premium" aria-hidden="true"></td>
+          </tr>
+          {% for icon, label in rows %}
+          <tr>
+            <th scope="row" class="fw-normal">
+              <span class="plans-row"><span class="plans-row-icon" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></span><span>{{ label }}</span></span>
+            </th>
+            <td class="text-center">{% if premium_only %}{{ no() }}{% else %}{{ yes() }}{% endif %}</td>
+            <td class="text-center plans-premium">{{ yes() }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+        {% endfor %}
+        <tfoot>
+          <tr>
+            <th scope="row"><i class="fa-solid fa-tag plans-row-icon-inline me-2" aria-hidden="true"></i>{{ _("Prix") }}</th>
+            <td class="text-center"><span class="fs-4 fw-bold">{{ free_price }}</span></td>
+            <td class="text-center plans-premium">
+              <span class="d-block fs-4 fw-bold">{{ prices.monthly }}<span class="fs-6 fw-normal text-body-secondary"> / {{ _("mois") }}</span></span>
+              <span class="d-block small text-body-secondary">{{ _("ou %(yearly)s par an", yearly=prices.yearly) }}</span>
+            </td>
+          </tr>
+        </tfoot>
+      </table>
+  </div>
+
+  <div class="d-flex flex-wrap justify-content-center gap-2 mt-4">
+    {% if not current_user.is_authenticated %}
+      {% if registration_open() %}
+      <a class="btn btn-primary btn-lg rounded-pill px-4" href="{{ url_for('auth.register') }}">
+        <i class="fa-solid fa-rocket me-1" aria-hidden="true"></i>{{ _("Commencer gratuitement") }}</a>
+      {% endif %}
+      <a class="btn btn-outline-secondary btn-lg rounded-pill px-4" href="{{ url_for('auth.login') }}">{{ _("J'ai déjà un compte") }}</a>
+    {% elif premium_access() %}
+      <p class="mb-0 fw-semibold"><i class="fa-solid fa-circle-check plan-yes me-1" aria-hidden="true"></i>{{ _("Vous profitez déjà de Premium. Merci !") }}</p>
+    {% else %}
+      <a class="btn btn-primary btn-lg rounded-pill px-4" href="{{ url_for('billing.index') }}">
+        <i class="fa-solid fa-gem me-1" aria-hidden="true"></i>{{ _("Passer à Premium") }}</a>
+    {% endif %}
+  </div>
+  <p class="text-center text-body-secondary small mt-3 mb-0">
+    <i class="fa-solid fa-lock me-1" aria-hidden="true"></i>{{ _("Sans engagement, résiliable à tout moment. Paiement sécurisé par Stripe.") }}
+    <a href="{{ url_for('main.about') }}">{{ _("Toutes les fonctionnalités") }}</a>
+  </p>
+</article>
+{% endblock %}

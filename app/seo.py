@@ -12,7 +12,7 @@ from .i18n import LANGUAGES, current_locale
 
 # Pages publiques indexables. La page d'accueil ne l'est que pour les visiteurs non connectés
 # (connecté, la même adresse affiche la carte personnelle).
-INDEXABLE = {"trips.index", "main.about", "auth.register", "main.legal", "main.privacy"}
+INDEXABLE = {"trips.index", "main.about", "main.plans", "auth.register", "main.legal", "main.privacy"}
 SITEMAP = ["trips.index", "main.about", "auth.register", "main.legal", "main.privacy"]
 OG_LOCALES = {"fr": "fr_FR", "en": "en_GB", "es": "es_ES", "de": "de_DE", "it": "it_IT"}
 
@@ -71,6 +71,7 @@ def init_app(app):
             "User-agent: *",
             "Allow: /$",
             "Allow: /about",
+            "Allow: /plans",
             "Allow: /auth/register",
             "Allow: /legal",
             "Allow: /privacy",
