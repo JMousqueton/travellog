@@ -3,7 +3,7 @@
 *Version française : [FEATURES_FR.md](FEATURES_FR.md) · Back to the [README](README.md)*
 
 - Premium subscription (`/billing`, "Premium" in the account menu), paid through Stripe: 2 € a month or 12 € a
-  year by default (prices in `.env`). Photo upload, import by email, share links, the public profile and support
+  year by default (prices in `.env`). Photo upload, the trips calendar view, import by email, share links, the public profile and support
   are Premium features, marked everywhere with a diamond (menu, pages, About and home pages). An email
   sent by an account without Premium is not imported: the sender gets a reply saying why, with a link to
   subscribe. When Premium ends, share
@@ -69,6 +69,9 @@
   disappears.
 - Search in "My trips", ignoring case and accents: places, countries, notes, tags, journey name and notes.
   Year buttons (All, 2026, 2025…), kept along with the search and sort order.
+- Calendar view of "My trips" (`/trips/calendar`, Premium; List / Calendar switch): one month at a time, each trip
+  or journey drawn as a bar from departure to return, colored by mode (journeys in teal), with the month's trips
+  listed underneath.
 - Year in review (`/review`): key figures, countries discovered, longest trip, favourite destinations,
   departures by month, and a 1080 × 1350 PNG image to download or share (system share sheet on mobile).
   People with a share link only see the current year's review (and the past year's in January and February),

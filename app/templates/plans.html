@@ -20,6 +20,7 @@
   {% set groups = [
     (_("Inclus dans les deux offres"), [
       ('fa-pen-to-square', _("Trajets en avion, train, voiture, bus, bateau, vélo et à pied, regroupés en voyages")),
+      ('fa-list', _("Liste de vos voyages, avec recherche, tri et filtre par année")),
       ('fa-map-location-dot', _("Carte plein écran, globe 3D et rejeu chronologique")),
       ('fa-chart-simple', _("Statistiques, pages par année, compagnies, appareils et CO₂")),
       ('fa-earth-americas', _("Pays, régions et continents visités, badges")),
@@ -32,6 +33,7 @@
     ], False),
     (_("Réservé à Premium"), [
       ('fa-camera', _("Photos sur vos trajets et voyages, avec leurs informations EXIF et GPS")),
+      ('fa-calendar', _("Vue calendrier de vos voyages, mois par mois, du départ au retour")),
     ] + ([
       ('fa-envelope-open-text', _("Import par e-mail de vos confirmations de vol ou de train")),
     ] if config.IMPORT_ADDRESS else []) + [

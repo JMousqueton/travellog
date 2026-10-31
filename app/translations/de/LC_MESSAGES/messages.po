@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-31 15:07+0000\n"
+"POT-Creation-Date: 2026-10-31 16:32+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -1479,7 +1479,7 @@ msgstr ""
 msgid "Merci à Mallorie pour l'idée !"
 msgstr "Danke an Mallorie für die Idee!"
 
-#: app/templates/about.html:35 app/templates/plans.html:111
+#: app/templates/about.html:35 app/templates/plans.html:113
 msgid "Toutes les fonctionnalités"
 msgstr "Alle Funktionen"
 
@@ -1850,12 +1850,12 @@ msgid "Politique de confidentialité"
 msgstr "Datenschutzerklärung"
 
 #: app/templates/about.html:114 app/templates/landing.html:34
-#: app/templates/plans.html:99
+#: app/templates/plans.html:101
 msgid "Commencer gratuitement"
 msgstr "Kostenlos starten"
 
 #: app/templates/about.html:115 app/templates/landing.html:35
-#: app/templates/plans.html:101
+#: app/templates/plans.html:103
 msgid "J'ai déjà un compte"
 msgstr "Ich habe bereits ein Konto"
 
@@ -2958,7 +2958,7 @@ msgstr "Import / Export"
 #: app/templates/admin/users.html:27 app/templates/base.html:178
 #: app/templates/billing/index.html:2 app/templates/billing/index.html:6
 #: app/templates/billing/index.html:27 app/templates/billing/invoices.html:7
-#: app/templates/partials/footer.html:10 app/templates/plans.html:58
+#: app/templates/partials/footer.html:10 app/templates/plans.html:60
 msgid "Premium"
 msgstr "Premium"
 
@@ -4280,60 +4280,70 @@ msgstr ""
 "Reisen gruppiert"
 
 #: app/templates/plans.html:23
+msgid "Liste de vos voyages, avec recherche, tri et filtre par année"
+msgstr "Liste Ihrer Reisen, mit Suche, Sortierung und Jahresfilter"
+
+#: app/templates/plans.html:24
 msgid "Carte plein écran, globe 3D et rejeu chronologique"
 msgstr "Vollbildkarte, 3D-Globus und chronologische Wiedergabe"
 
-#: app/templates/plans.html:24
+#: app/templates/plans.html:25
 msgid "Statistiques, pages par année, compagnies, appareils et CO₂"
 msgstr "Statistiken, Jahresseiten, Fluggesellschaften, Flugzeuge und CO₂"
 
-#: app/templates/plans.html:25
+#: app/templates/plans.html:26
 msgid "Pays, régions et continents visités, badges"
 msgstr "Besuchte Länder, Regionen und Kontinente, Abzeichen"
 
-#: app/templates/plans.html:26
+#: app/templates/plans.html:27
 msgid "Bilan de l'année, en image à partager"
 msgstr "Jahresrückblick als Bild zum Teilen"
 
-#: app/templates/plans.html:27
+#: app/templates/plans.html:28
 msgid "Import Flighty, myFlightradar24, CSV, GeoJSON, GPX et cartes Apple Wallet"
 msgstr ""
 "Import aus Flighty, myFlightradar24, CSV, GeoJSON, GPX und Apple-Wallet-"
 "Karten"
 
-#: app/templates/plans.html:28
+#: app/templates/plans.html:29
 msgid "Export et sauvegarde complète à tout moment"
 msgstr "Export und vollständige Sicherung jederzeit"
 
-#: app/templates/plans.html:29
+#: app/templates/plans.html:30
 msgid "Voyages à venir et export vers votre agenda"
 msgstr "Bevorstehende Reisen und Export in deinen Kalender"
 
-#: app/templates/plans.html:30
+#: app/templates/plans.html:31
 msgid "Application installable, thème sombre, cinq langues"
 msgstr "Installierbare App, dunkles Design, fünf Sprachen"
 
-#: app/templates/plans.html:31
+#: app/templates/plans.html:32
 msgid "Sans publicité, données privées, open source"
 msgstr "Werbefrei, private Daten, Open Source"
 
-#: app/templates/plans.html:33
+#: app/templates/plans.html:34
 msgid "Réservé à Premium"
 msgstr "Nur Premium"
 
-#: app/templates/plans.html:34
+#: app/templates/plans.html:35
 msgid "Photos sur vos trajets et voyages, avec leurs informations EXIF et GPS"
 msgstr "Fotos zu deinen Strecken und Reisen, mit EXIF- und GPS-Daten"
 
-#: app/templates/billing/index.html:12 app/templates/plans.html:36
+#: app/templates/plans.html:36
+msgid "Vue calendrier de vos voyages, mois par mois, du départ au retour"
+msgstr ""
+"Kalenderansicht Ihrer Reisen, Monat für Monat, von der Abfahrt bis zur "
+"Rückkehr"
+
+#: app/templates/billing/index.html:12 app/templates/plans.html:38
 msgid "Import par e-mail de vos confirmations de vol ou de train"
 msgstr "Import Ihrer Flug- oder Zugbestätigungen per E-Mail"
 
-#: app/templates/billing/index.html:10 app/templates/plans.html:38
+#: app/templates/billing/index.html:10 app/templates/plans.html:40
 msgid "Liens de partage de votre carte, de vos statistiques et de vos voyages"
 msgstr "Freigabelinks für Ihre Karte, Statistiken und Reisen"
 
-#: app/templates/billing/index.html:11 app/templates/plans.html:39
+#: app/templates/billing/index.html:11 app/templates/plans.html:41
 msgid ""
 "Profil public à votre nom (/u/votre-nom), avec un badge à intégrer sur "
 "votre site"
@@ -4341,59 +4351,59 @@ msgstr ""
 "Öffentliches Profil unter deinem Namen (/u/dein-name), mit einem Badge "
 "für deine Website"
 
-#: app/templates/plans.html:40
+#: app/templates/plans.html:42
 msgid "Accès au support : questions, problèmes, idées"
 msgstr "Zugang zum Support: Fragen, Probleme, Ideen"
 
-#: app/templates/billing/index.html:14 app/templates/plans.html:41
+#: app/templates/billing/index.html:14 app/templates/plans.html:43
 msgid ""
 "Vous aidez à maintenir le site : hébergement, mises à jour et nouvelles "
 "fonctions"
 msgstr "Du hilfst, die Website zu erhalten: Hosting, Updates und neue Funktionen"
 
-#: app/templates/plans.html:47
+#: app/templates/plans.html:49
 msgid "Comparatif des offres gratuite et Premium"
 msgstr "Vergleich des kostenlosen und des Premium-Angebots"
 
-#: app/templates/plans.html:50
+#: app/templates/plans.html:52
 msgid "Fonction"
 msgstr "Funktion"
 
-#: app/templates/plans.html:53
+#: app/templates/plans.html:55
 msgid "Gratuit"
 msgstr "Kostenlos"
 
-#: app/templates/plans.html:54
+#: app/templates/plans.html:56
 msgid "pour toujours"
 msgstr "für immer"
 
-#: app/templates/plans.html:59
+#: app/templates/plans.html:61
 #, python-format
 msgid "%(monthly)s / mois"
 msgstr "%(monthly)s / Monat"
 
-#: app/templates/plans.html:84
+#: app/templates/plans.html:86
 msgid "Prix"
 msgstr "Preis"
 
-#: app/templates/plans.html:87
+#: app/templates/plans.html:89
 msgid "mois"
 msgstr "Monat"
 
-#: app/templates/plans.html:88
+#: app/templates/plans.html:90
 #, python-format
 msgid "ou %(yearly)s par an"
 msgstr "oder %(yearly)s pro Jahr"
 
-#: app/templates/plans.html:103
+#: app/templates/plans.html:105
 msgid "Vous profitez déjà de Premium. Merci !"
 msgstr "Du nutzt bereits Premium. Danke!"
 
-#: app/templates/plans.html:106
+#: app/templates/plans.html:108
 msgid "Passer à Premium"
 msgstr "Zu Premium wechseln"
 
-#: app/templates/plans.html:110
+#: app/templates/plans.html:112
 msgid "Sans engagement, résiliable à tout moment. Paiement sécurisé par Stripe."
 msgstr "Ohne Vertragsbindung, jederzeit kündbar. Sichere Zahlung über Stripe."
 

@@ -56,6 +56,9 @@ def test_plans_compares_free_and_premium(app, client):
     assert "fa-circle-xmark" in html and 'href="/auth/register"' in html
     assert "2,00" in html and "10,00" in html
     assert "Vous aidez à maintenir le site" in html
+    # Liste des voyages dans les deux offres, vue calendrier réservée à Premium.
+    premium = html.index("Réservé à Premium")
+    assert html.index("Liste de vos voyages") < premium < html.index("Vue calendrier de vos voyages")
 
 
 def test_plans_offers_upgrade_to_signed_in_free_user(app, auth_client):

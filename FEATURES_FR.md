@@ -3,7 +3,7 @@
 *English version: [FEATURES.md](FEATURES.md) · Retour au [README](README_FR.md)*
 
 - Abonnement Premium (`/billing`, « Premium » dans le menu du compte), payé avec Stripe : 2 € par mois ou 12 €
-  par an par défaut (prix dans `.env`). L'ajout de photos, l'import par e-mail, les liens de partage, le profil
+  par an par défaut (prix dans `.env`). L'ajout de photos, la vue calendrier des voyages, l'import par e-mail, les liens de partage, le profil
   public et le support sont des fonctions Premium, signalées partout par un diamant (menu, pages, pages
   À propos et d'accueil). Un e-mail envoyé par un compte sans Premium n'est pas importé : l'expéditeur
   reçoit une réponse qui l'explique, avec un lien pour s'abonner.
@@ -75,6 +75,9 @@
   s'appliquent à tous ses trajets ; une étiquette qui n'est plus utilisée disparaît.
 - Recherche dans « Mes voyages », insensible à la casse et aux accents : lieux, pays, notes, étiquettes,
   nom et notes du voyage. Boutons d'année (Tout, 2026, 2025…), conservés avec la recherche et le tri.
+- Vue calendrier de « Mes voyages » (`/trips/calendar`, Premium ; sélecteur Liste / Calendrier) : un mois à la
+  fois, chaque trajet ou voyage en barre du départ au retour, à la couleur de son mode (voyages en bleu-vert),
+  avec la liste des voyages du mois en dessous.
 - Bilan de l'année (`/review`) : chiffres clés, pays découverts, trajet le plus long, destinations favorites,
   départs par mois, et image PNG 1080 × 1350 à télécharger ou partager (feuille de partage du système sur
   mobile). Les détenteurs d'un lien de partage voient le bilan de l'année en cours seulement (et celui de
