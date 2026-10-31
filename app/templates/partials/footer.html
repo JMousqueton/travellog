@@ -5,6 +5,10 @@
     <i class="fa-brands fa-github me-1" aria-hidden="true"></i>{{ _("Open source") }}<span class="visually-hidden"> : github.com/JMousqueton/travellog</span></a>
   <span aria-hidden="true">·</span>
   <a href="{{ url_for('main.about') }}">{{ _("À propos") }}</a>
+  {% if billing_enabled() %}
+  <span aria-hidden="true">·</span>
+  <a href="{{ url_for('main.plans') }}"><i class="fa-solid fa-gem text-info me-1" aria-hidden="true"></i>{{ _("Premium") }}</a>
+  {% endif %}
   <span aria-hidden="true">·</span>
   <a href="{{ url_for('main.legal') }}">{{ _("Mentions légales") }}</a>
   <span aria-hidden="true">·</span>

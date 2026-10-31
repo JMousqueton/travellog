@@ -39,20 +39,26 @@
       </div>
       <a class="d-inline-block mt-3 link-secondary" href="{{ url_for('main.about') }}">
         <i class="fa-solid fa-music me-1" aria-hidden="true"></i>{{ _("Pourquoi « Voyage Voyage » ? Toutes les fonctionnalités en détail") }}</a>
+      {% if billing_enabled() %}
+      <p class="mt-2 mb-0 small text-body-secondary">
+        <i class="fa-solid fa-gem text-info me-1" aria-hidden="true"></i>{{ _("Gratuit, avec une option Premium.") }}
+        <a href="{{ url_for('main.plans') }}">{{ _("Comparer les offres") }}</a></p>
+      {% endif %}
     </div>
     <div class="col-lg-6">
-      <div class="hero-visual card shadow-soft p-4" aria-hidden="true">
-        <div class="d-flex flex-wrap gap-2">
-          {% for key, m in TRANSPORT_MODES.items() %}
-          <span class="mode-chip mode-chip-lg" style="--mode-color: {{ m.color }}; --mode-color-dark: {{ m.color_dark }}">
-            <i class="fa-solid {{ m.icon }}"></i>{{ m.label }}</span>
-          {% endfor %}
-        </div>
-        <svg viewBox="0 0 400 180" class="hero-routes mt-4" role="presentation">
-          <path d="M30 140 Q 200 -20 370 120" fill="none" stroke="var(--brand)" stroke-width="3"/>
-          <path d="M30 140 Q 200 60 370 120" fill="none" stroke="var(--brand)" stroke-width="3" stroke-dasharray="8 8" opacity=".6"/>
-          <circle cx="30" cy="140" r="8" fill="var(--brand)"/><circle cx="370" cy="120" r="8" fill="var(--brand)"/>
-        </svg>
+      <figure class="hero-shot mb-0">
+        <div class="hero-shot-bar" aria-hidden="true"><span></span><span></span><span></span></div>
+        <img class="hero-shot-img hero-shot-light" src="{{ url_for('static', filename='img/hero-map-light.webp') }}"
+             width="1200" height="750" fetchpriority="high"
+             alt="{{ _('La carte de Voyage Voyage : trajets en avion, train et voiture tracés sur une carte du monde, avec le tableau de bord de l\'année.') }}">
+        <img class="hero-shot-img hero-shot-dark" src="{{ url_for('static', filename='img/hero-map-dark.webp') }}"
+             width="1200" height="750" loading="lazy" alt="">
+      </figure>
+      <div class="d-flex flex-wrap gap-2 mt-3 justify-content-center" aria-hidden="true">
+        {% for key, m in TRANSPORT_MODES.items() %}
+        <span class="mode-chip" style="--mode-color: {{ m.color }}; --mode-color-dark: {{ m.color_dark }}">
+          <i class="fa-solid {{ m.icon }}"></i>{{ m.label }}</span>
+        {% endfor %}
       </div>
     </div>
   </div>
