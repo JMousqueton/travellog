@@ -1,3 +1,4 @@
+import re
 from datetime import date
 
 import pytest
@@ -101,6 +102,8 @@ def test_home_setting_and_stats_page(client, db, user, monkeypatch):
     make_trip(user, **PARIS, **LISBON, depart_date=date(2025, 3, 1), is_round_trip=True, return_date=date(2025, 3, 8))
     html = client.get("/stats").text
     assert "jours loin de chez moi" in html and "nuits à l'étranger" in html
+    # Carte de l'année 2025 dans « Années » : ses jours d'absence et leur part de l'année.
+    assert re.search(r"fa-suitcase-rolling me-1[^<]*</i>\s*8 jours loin de chez moi\s*· 2", html)
     assert "8 jours loin de chez moi" in client.get("/review/2025").text
     # Sans suggestion choisie : géocodage côté serveur.
     monkeypatch.setattr(routes, "geocode", lambda q, lang: [{"name": "Lyon", "label": "Lyon", "lat": 45.76,

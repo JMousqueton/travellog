@@ -263,7 +263,7 @@
 
 {# « Depuis le début » (chiffres et graphiques par année) puis une carte par année.
    `linked` : cartes cliquables vers la page de l'année (désactivé sur un lien de partage). #}
-{% macro overall_sections(totals, years, continents, current_year, missing_countries=0, linked=True) %}
+{% macro overall_sections(totals, years, continents, current_year, missing_countries=0, linked=True, away=None) %}
   {# --- Depuis le début : quelques chiffres et les badges --- #}
   <section aria-labelledby="overallTitle" class="mb-5">
     <h2 class="h5 fw-semibold mb-3" id="overallTitle">{{ heading_icon('fa-infinity') }}{{ _("Depuis le début") }}
@@ -325,6 +325,13 @@
           <div class="small text-body-secondary mt-2">{{ ngettext("%(num)s pays", "%(num)s pays", row.countries|length) }}
             {% if row.new_countries %}· {{ _("Nouveaux : %(list)s", list=row.new_countries|map('flag')|join(' ')) }}
             <span class="visually-hidden">{{ row.new_countries|map('country_name')|join(', ') }}</span>{% endif %}</div>
+          {# Jours d'absence : seulement pour le propriétaire (calculés depuis son domicile, jamais partagé). #}
+          {% set away_row = away.by_year.get(row.year) if away else None %}
+          {% if away_row and away_row.days %}
+          <div class="small text-body-secondary mt-1"><i class="fa-solid fa-suitcase-rolling me-1" aria-hidden="true"></i>
+            {{ ngettext("%(num)s jour loin de chez moi", "%(num)s jours loin de chez moi", away_row.days) }}
+            · {{ away_row.share|percent }}</div>
+          {% endif %}
         </div>
       {% if linked %}</a>{% else %}</div>{% endif %}
       {% endfor %}
