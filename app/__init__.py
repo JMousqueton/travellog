@@ -66,6 +66,7 @@ def create_app(config_name=None):
     from .admin import bp as admin_bp
     from .api import bp as api_bp
     from .auth import bp as auth_bp
+    from .billing import bp as billing_bp
     from .main import bp as main_bp
     from .share import bp as share_bp
     from .transfer import bp as transfer_bp
@@ -80,6 +81,7 @@ def create_app(config_name=None):
     app.register_blueprint(share_bp)
     app.register_blueprint(transfer_bp)
     app.register_blueprint(support_bp)
+    app.register_blueprint(billing_bp)
 
     _register_error_handlers(app)
 
@@ -87,9 +89,12 @@ def create_app(config_name=None):
 
     app.jinja_env.globals["carrier_logo"] = logo_url
 
+    from .billing import billing_enabled
+
     @app.context_processor
     def inject_settings():
         return {"registration_open": models.registration_open, "password_reset_enabled": mail_enabled,
+                "billing_enabled": billing_enabled,
                 "copyright_years": copyright_years()}
 
     from .cli import register_cli

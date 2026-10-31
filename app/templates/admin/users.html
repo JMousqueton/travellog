@@ -24,6 +24,8 @@
             {{ user.email }}
             {% if user.is_admin %}<span class="badge text-bg-primary ms-1">{{ _("Admin") }}</span>{% endif %}
             {% if user.is_blocked %}<span class="badge text-bg-danger ms-1">{{ _("Bloqué") }}</span>{% endif %}
+            {% if user.has_subscription %}<span class="badge text-bg-success ms-1" title="{{ _("Abonné jusqu'au %(date)s", date=user.premium_until|day) }}">{{ _("Premium") }}</span>
+            {% elif user.premium_granted %}<span class="badge text-bg-success ms-1">{{ _("Premium offert") }}</span>{% endif %}
           </td>
           <td>
             <span class="d-inline-flex align-items-center gap-1">
@@ -64,6 +66,15 @@
           <td>{{ user.locale }}</td>
           <td class="text-end">{{ trip_count }}</td>
           <td class="text-end">
+            <form method="post" action="{{ url_for('admin.toggle_premium', user_id=user.id) }}" class="d-inline">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              {% set label = _('Retirer le Premium offert à %(email)s', email=user.email) if user.premium_granted
+                             else _('Offrir le Premium à %(email)s', email=user.email) %}
+              <button type="submit" class="btn btn-icon btn-sm {% if user.premium_granted %}text-success{% endif %}"
+                      title="{{ _('Retirer le Premium offert') if user.premium_granted else _('Offrir le Premium') }}"
+                      aria-label="{{ label }}" aria-pressed="{{ 'true' if user.premium_granted else 'false' }}">
+                <i class="fa-solid fa-gem" aria-hidden="true"></i></button>
+            </form>
             {% if user.id != current_user.id %}
             {% if user.is_blocked %}
             <form method="post" action="{{ url_for('admin.toggle_block', user_id=user.id) }}" class="d-inline">

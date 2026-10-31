@@ -1,10 +1,12 @@
 from datetime import timedelta
 
-from flask import abort, flash, redirect, render_template, request, url_for
+import stripe
+from flask import abort, current_app, flash, redirect, render_template, request, url_for
 from flask_babel import gettext as _
 from flask_login import current_user
 
 from ..auth.forms import PublicProfileForm
+from ..billing.stripe_sync import delete_customer
 from ..extensions import db
 from ..mail_import.processing import forget_user
 from ..models import Setting, Ticket, Trip, User, registration_open, utcnow
@@ -35,6 +37,13 @@ def delete_user(user_id):
         flash(_("Vous ne pouvez pas supprimer votre propre compte."), "danger")
         return redirect(url_for("admin.users"))
     email = user.email
+    try:
+        delete_customer(user)
+    except stripe.StripeError:
+        current_app.logger.exception("Stripe : suppression du client %s", user.stripe_customer_id)
+        flash(_("L'abonnement de %(email)s n'a pas pu être résilié : le compte n'a pas été supprimé.", email=email),
+              "danger")
+        return redirect(url_for("admin.users"))
     forget_user(user)
     db.session.delete(user)
     db.session.commit()
@@ -61,6 +70,18 @@ def toggle_block(user_id):
     db.session.commit()
     flash(_("Le compte %(email)s est bloqué.", email=user.email) if user.is_blocked
           else _("Le compte %(email)s est débloqué.", email=user.email), "success")
+    return redirect(url_for("admin.users"))
+
+
+@bp.route("/users/<int:user_id>/premium", methods=["POST"])
+@admin_required
+def toggle_premium(user_id):
+    """Offre ou retire l'accès Premium sans abonnement (un abonnement Stripe en cours n'est pas touché)."""
+    user = _user_or_404(user_id)
+    user.premium_granted = not user.premium_granted
+    db.session.commit()
+    flash(_("Premium offert à %(email)s.", email=user.email) if user.premium_granted
+          else _("Premium offert retiré à %(email)s.", email=user.email), "success")
     return redirect(url_for("admin.users"))
 
 

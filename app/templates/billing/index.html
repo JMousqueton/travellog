@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Premium") }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-10 col-lg-8">
+    <h1 class="h3 fw-bold mb-1"><i class="fa-solid fa-gem me-2" aria-hidden="true"></i>{{ _("Premium") }}</h1>
+    <p class="text-body-secondary mb-4">{{ _("Soutenez %(site)s et profitez des fonctions Premium.", site=config.SITE_NAME) }}</p>
+
+    {% if current_user.has_subscription %}
+    <div class="card shadow-soft">
+      <div class="card-body p-4">
+        <p class="mb-2">
+          <span class="badge text-bg-success me-1">{{ _("Premium") }}</span>
+          {% if current_user.subscription_interval == "year" %}{{ _("Abonnement annuel") }}{% else %}{{ _("Abonnement mensuel") }}{% endif %}
+        </p>
+        {% if current_user.subscription_status == "past_due" %}
+        <div class="alert alert-warning mb-3" role="alert">
+          {{ _("Le dernier paiement a échoué. Mettez à jour votre moyen de paiement pour garder l'accès Premium.") }}
+        </div>
+        {% elif current_user.cancel_at_period_end %}
+        <p class="text-body-secondary">{{ _("Abonnement résilié : l'accès Premium prend fin le %(date)s.", date=current_user.premium_until|day) }}</p>
+        {% else %}
+        <p class="text-body-secondary">{{ _("Prochain renouvellement le %(date)s.", date=current_user.premium_until|day) }}</p>
+        {% endif %}
+        <form method="post" action="{{ url_for('billing.portal') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <button type="submit" class="btn btn-primary rounded-pill px-4">
+            <i class="fa-solid fa-credit-card me-1" aria-hidden="true"></i>{{ _("Gérer mon abonnement") }}</button>
+        </form>
+        <p class="form-text mb-0 mt-2">{{ _("Résiliation, moyen de paiement et factures, sur la page sécurisée de Stripe.") }}</p>
+      </div>
+    </div>
+    {% else %}
+    {% if current_user.premium_granted %}
+    <div class="alert alert-success" role="status">{{ _("L'accès Premium vous est offert : aucun abonnement n'est nécessaire.") }}</div>
+    {% endif %}
+    <div class="row g-4">
+      {% for plan, price, period, note in [
+           ("monthly", monthly, _("par mois"), _("Sans engagement, résiliable à tout moment.")),
+           ("yearly", yearly, _("par an"), _("Économisez %(saving)s par rapport au mois.", saving=saving) if saving else _("Un seul paiement par an.")),
+         ] %}
+      <div class="col-sm-6">
+        <form method="post" action="{{ url_for('billing.checkout') }}" class="card shadow-soft h-100">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="plan" value="{{ plan }}">
+          <div class="card-body p-4 d-flex flex-column">
+            <h2 class="h5 fw-semibold">{% if plan == "yearly" %}{{ _("Annuel") }}{% else %}{{ _("Mensuel") }}{% endif %}</h2>
+            <p class="mb-1"><span class="display-6 fw-bold">{{ price }}</span> <span class="text-body-secondary">{{ period }}</span></p>
+            <p class="text-body-secondary small flex-grow-1">{{ note }}</p>
+            <button type="submit" class="btn {% if plan == 'yearly' %}btn-primary{% else %}btn-outline-primary{% endif %} rounded-pill px-4"
+                    data-loading-text="{{ _('Redirection…') }}">{{ _("S'abonner") }}</button>
+          </div>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+    <p class="form-text mt-3"><i class="fa-solid fa-lock me-1" aria-hidden="true"></i>{{ _("Paiement sécurisé par Stripe. Vos coordonnées bancaires ne transitent pas par %(site)s.", site=config.SITE_NAME) }}</p>
+    {% if current_user.stripe_customer_id %}
+    <form method="post" action="{{ url_for('billing.portal') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+      <button type="submit" class="btn btn-link p-0">{{ _("Mes factures") }}</button>
+    </form>
+    {% endif %}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -47,6 +47,14 @@ class User(UserMixin, db.Model):
     public_name = db.Column(db.String(30), nullable=True)
     # Administrateurs : e-mail à chaque nouveau message d'utilisateur sur un ticket.
     ticket_emails = db.Column(db.Boolean, nullable=False, default=True, server_default="1")
+    # Abonnement Premium (Stripe) : copie de l'abonnement, tenue à jour par le webhook (app/billing).
+    stripe_customer_id = db.Column(db.String(64), nullable=True, unique=True)
+    subscription_status = db.Column(db.String(20), nullable=True)  # active, trialing, past_due, canceled…
+    subscription_interval = db.Column(db.String(10), nullable=True)  # month, year
+    premium_until = db.Column(db.DateTime(timezone=True), nullable=True)  # fin de la période payée
+    cancel_at_period_end = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
+    # Premium offert par un administrateur, sans abonnement.
+    premium_granted = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
 
     trips = db.relationship("Trip", back_populates="user", cascade="all, delete-orphan", lazy="dynamic")
@@ -64,6 +72,19 @@ class User(UserMixin, db.Model):
         CheckConstraint("theme IS NULL OR theme IN ('light', 'dark')", name="theme_valid"),
         db.Index("ix_users_public_name", "public_name", unique=True),
     )
+
+    # past_due : paiement refusé, Stripe réessaie pendant quelques jours ; l'accès est maintenu entre-temps.
+    PREMIUM_STATUSES = ("active", "trialing", "past_due")
+
+    @property
+    def has_subscription(self):
+        """Abonnement Stripe en cours (payé, ou en attente d'un nouvel essai de paiement)."""
+        return (self.subscription_status in self.PREMIUM_STATUSES and self.premium_until is not None
+                and as_utc(self.premium_until) > utcnow())
+
+    @property
+    def is_premium(self):
+        return self.premium_granted or self.has_subscription
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

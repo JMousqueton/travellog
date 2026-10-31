@@ -7,6 +7,9 @@ from flask import g, request
 # app/static/vendor.
 ANALYTICS_ORIGIN = "https://stats.mousqueton.io"
 SCRIPT_SOURCES = (ANALYTICS_ORIGIN,)
+# Pages de paiement et portail client Stripe : form-action s'applique aussi aux redirections qui suivent
+# l'envoi d'un formulaire (POST /billing/checkout → 303 vers Stripe).
+FORM_TARGETS = ("https://checkout.stripe.com", "https://billing.stripe.com")
 
 
 def csp_nonce():
@@ -28,7 +31,7 @@ def content_security_policy(nonce):
         "connect-src": ["'self'", ANALYTICS_ORIGIN],
         "object-src": ["'none'"],
         "base-uri": ["'self'"],
-        "form-action": ["'self'"],
+        "form-action": ["'self'", *FORM_TARGETS],
         "frame-ancestors": ["'none'"],
     }
     return "; ".join(f"{name} {' '.join(values)}" for name, values in directives.items())

@@ -267,6 +267,22 @@ def change_password():
     return _render_profile(password_form=form), 400
 
 
+def _forget_customer(user):
+    """Résilie l'abonnement Stripe avant la suppression du compte ; False (et message) si Stripe ne répond pas."""
+    import stripe
+
+    from ..billing.stripe_sync import delete_customer
+
+    try:
+        delete_customer(user)
+    except stripe.StripeError:
+        current_app.logger.exception("Stripe : suppression du client %s", user.stripe_customer_id)
+        flash(_("Votre abonnement n'a pas pu être résilié : le compte n'a pas été supprimé. Réessayez dans quelques minutes."),
+              "danger")
+        return False
+    return True
+
+
 @bp.route("/delete", methods=["POST"])
 @login_required
 @limiter.limit(_login_limit, deduct_when=lambda response: response.status_code != 302)
@@ -281,6 +297,8 @@ def delete_account():
         ) <= 1:
             flash(_("Vous êtes le seul administrateur : désignez-en un autre avant de supprimer votre compte."),
                   "danger")
+            return redirect(url_for("auth.profile"))
+        elif not _forget_customer(user):
             return redirect(url_for("auth.profile"))
         else:
             logout_user()

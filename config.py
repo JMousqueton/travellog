@@ -87,6 +87,18 @@ class Config:
     # maintenance). Les échecs restent tant que leur e-mail est dans la boîte, sinon il rouvrirait un ticket.
     MAIL_IMPORT_LOG_DAYS = int(os.environ.get("MAIL_IMPORT_LOG_DAYS", "90"))
 
+    # Abonnement Premium (Stripe). Sans STRIPE_SECRET_KEY, la fonction est désactivée et rien n'est réservé.
+    STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+    STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
+    # Prix TTC, en unités de la devise (« 2 », « 2.50 ») : le tarif Stripe correspondant est créé au premier
+    # achat. Un nouveau prix ne s'applique qu'aux nouveaux abonnements, les abonnés gardent le leur.
+    PREMIUM_PRICE_MONTHLY = os.environ.get("PREMIUM_PRICE_MONTHLY", "2")
+    PREMIUM_PRICE_YEARLY = os.environ.get("PREMIUM_PRICE_YEARLY", "10")
+    PREMIUM_CURRENCY = os.environ.get("PREMIUM_CURRENCY", "eur").lower()
+    # Code fiscal du produit (https://docs.stripe.com/tax/tax-codes), exigé par Stripe Managed Payments :
+    # par défaut « logiciel en ligne (SaaS), usage personnel ».
+    STRIPE_TAX_CODE = os.environ.get("STRIPE_TAX_CODE", "txcd_10103000")
+
     # Journalisation et suivi des erreurs (Sentry, facultatif : pip install "sentry-sdk[flask]").
     LOG_LEVEL = os.environ.get("LOG_LEVEL", "INFO").upper()
     SENTRY_DSN = os.environ.get("SENTRY_DSN", "")
@@ -182,6 +194,7 @@ class TestingConfig(Config):
     IMAP_SERVER = IMPORT_ADDRESS = ""
     APP_BASE_URL = ""
     SENTRY_DSN = ""
+    STRIPE_SECRET_KEY = STRIPE_WEBHOOK_SECRET = ""  # pas d'appel à Stripe en test
 
 
 class ProductionConfig(Config):

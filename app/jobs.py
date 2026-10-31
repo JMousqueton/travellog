@@ -61,8 +61,26 @@ def _maintenance():
     history = db.session.execute(
         db.delete(JobRun).where(JobRun.started_at < utcnow() - timedelta(days=JOB_HISTORY_DAYS))).rowcount
     db.session.commit()
-    return (f"{geocode} géocodage(s) expiré(s), {links} lien(s) de partage expiré(s), {mails} e-mail(s) d'import "
-            f"anciens, {history} exécution(s) anciennes")
+    summary = (f"{geocode} géocodage(s) expiré(s), {links} lien(s) de partage expiré(s), {mails} e-mail(s) d'import "
+               f"anciens, {history} exécution(s) anciennes")
+    if current_app.config["STRIPE_SECRET_KEY"]:
+        summary += f", {_resync_expired_subscriptions()} abonnement(s) relu(s)"
+    return summary
+
+
+def _resync_expired_subscriptions():
+    """Filet de sécurité si un webhook s'est perdu : les abonnements « en cours » dont la période est passée
+    sont relus chez Stripe (renouvelés, ou terminés)."""
+    from .billing.stripe_sync import sync_customer
+    from .models import User
+
+    stale = db.session.execute(db.select(User.stripe_customer_id).filter(
+        User.stripe_customer_id.is_not(None), User.subscription_status.in_(User.PREMIUM_STATUSES),
+        User.premium_until < utcnow())).scalars().all()
+    for customer_id in stale:
+        sync_customer(customer_id)
+    db.session.commit()
+    return len(stale)
 
 
 JOBS = {job.name: job for job in (

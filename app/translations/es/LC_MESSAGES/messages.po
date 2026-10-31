@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-31 08:38+0000\n"
+"POT-Creation-Date: 2026-10-31 09:16+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -26,43 +26,43 @@ msgstr "Inicia sesión para acceder a esta página."
 msgid "Authentification requise."
 msgstr "Autenticación requerida."
 
-#: app/__init__.py:114
+#: app/__init__.py:119
 msgid "La requête envoyée n'a pas pu être traitée."
 msgstr "No se ha podido procesar la solicitud."
 
-#: app/__init__.py:114 app/admin/routes.py:79
+#: app/__init__.py:119 app/admin/routes.py:100
 msgid "Requête invalide"
 msgstr "Solicitud no válida"
 
-#: app/__init__.py:115
+#: app/__init__.py:120
 msgid "Accès refusé"
 msgstr "Acceso denegado"
 
-#: app/__init__.py:115
+#: app/__init__.py:120
 msgid "Vous n'avez pas l'autorisation d'accéder à cette page."
 msgstr "No tienes permiso para acceder a esta página."
 
-#: app/__init__.py:116
+#: app/__init__.py:121
 msgid "Page introuvable"
 msgstr "Página no encontrada"
 
-#: app/__init__.py:116
+#: app/__init__.py:121
 msgid "La page demandée n'existe pas ou a été déplacée."
 msgstr "La página solicitada no existe o se ha movido."
 
-#: app/__init__.py:117
+#: app/__init__.py:122
 msgid "Fichier trop volumineux"
 msgstr "Archivo demasiado grande"
 
-#: app/__init__.py:117
+#: app/__init__.py:122
 msgid "Le fichier envoyé dépasse la taille autorisée."
 msgstr "El archivo enviado supera el tamaño permitido."
 
-#: app/__init__.py:118
+#: app/__init__.py:123
 msgid "Trop de tentatives"
 msgstr "Demasiados intentos"
 
-#: app/__init__.py:118
+#: app/__init__.py:123
 msgid ""
 "Vous avez effectué trop de demandes. Patientez quelques minutes puis "
 "réessayez."
@@ -70,11 +70,11 @@ msgstr ""
 "Has hecho demasiadas solicitudes. Espera unos minutos y vuelve a "
 "intentarlo."
 
-#: app/__init__.py:119
+#: app/__init__.py:124
 msgid "Erreur interne"
 msgstr "Error interno"
 
-#: app/__init__.py:119
+#: app/__init__.py:124
 msgid "Une erreur inattendue s'est produite. Réessayez plus tard."
 msgstr "Se ha producido un error inesperado. Inténtalo más tarde."
 
@@ -82,71 +82,90 @@ msgstr "Se ha producido un error inesperado. Inténtalo más tarde."
 msgid "Autoriser les inscriptions"
 msgstr "Permitir registros"
 
-#: app/admin/forms.py:8 app/auth/forms.py:62 app/templates/admin/users.html:57
+#: app/admin/forms.py:8 app/auth/forms.py:62 app/templates/admin/users.html:59
 #: app/trips/forms.py:67 app/trips/forms.py:105
 msgid "Enregistrer"
 msgstr "Guardar"
 
-#: app/admin/routes.py:35
+#: app/admin/routes.py:37
 msgid "Vous ne pouvez pas supprimer votre propre compte."
 msgstr "No puedes eliminar tu propia cuenta."
 
-#: app/admin/routes.py:41
+#: app/admin/routes.py:44
+#, python-format
+msgid ""
+"L'abonnement de %(email)s n'a pas pu être résilié : le compte n'a pas été"
+" supprimé."
+msgstr ""
+"No se pudo cancelar la suscripción de %(email)s: la cuenta no se ha "
+"eliminado."
+
+#: app/admin/routes.py:50
 #, python-format
 msgid "Le compte %(email)s a été supprimé."
 msgstr "La cuenta %(email)s se ha eliminado."
 
-#: app/admin/routes.py:58
+#: app/admin/routes.py:67
 msgid "Vous ne pouvez pas bloquer votre propre compte."
 msgstr "No puede bloquear su propia cuenta."
 
-#: app/admin/routes.py:62
+#: app/admin/routes.py:71
 #, python-format
 msgid "Le compte %(email)s est bloqué."
 msgstr "La cuenta %(email)s está bloqueada."
 
-#: app/admin/routes.py:63
+#: app/admin/routes.py:72
 #, python-format
 msgid "Le compte %(email)s est débloqué."
 msgstr "La cuenta %(email)s está desbloqueada."
 
-#: app/admin/routes.py:76
+#: app/admin/routes.py:83
+#, python-format
+msgid "Premium offert à %(email)s."
+msgstr "Premium regalado a %(email)s."
+
+#: app/admin/routes.py:84
+#, python-format
+msgid "Premium offert retiré à %(email)s."
+msgstr "Premium regalado retirado a %(email)s."
+
+#: app/admin/routes.py:97
 #, python-format
 msgid "Nom du profil public de %(email)s : %(name)s."
 msgstr "Nombre del perfil público de %(email)s: %(name)s."
 
-#: app/admin/routes.py:77
+#: app/admin/routes.py:98
 #, python-format
 msgid "Profil public de %(email)s désactivé."
 msgstr "Perfil público de %(email)s desactivado."
 
-#: app/admin/routes.py:93
+#: app/admin/routes.py:114
 msgid "Paramètres enregistrés."
 msgstr "Ajustes guardados."
 
-#: app/admin/routes.py:166
+#: app/admin/routes.py:187
 #, python-format
 msgid "Réponse envoyée à %(email)s."
 msgstr "Respuesta enviada a %(email)s."
 
-#: app/admin/routes.py:182
+#: app/admin/routes.py:203
 msgid "Ticket fermé."
 msgstr "Ticket cerrado."
 
-#: app/admin/routes.py:182
+#: app/admin/routes.py:203
 msgid "Ticket rouvert."
 msgstr "Ticket reabierto."
 
-#: app/admin/routes.py:192
+#: app/admin/routes.py:213
 msgid "Vous recevrez un e-mail à chaque nouveau message de ticket."
 msgstr "Recibirás un correo electrónico con cada nuevo mensaje de ticket."
 
-#: app/admin/routes.py:193
+#: app/admin/routes.py:214
 msgid "Vous ne recevrez plus d'e-mail pour les tickets."
 msgstr "Ya no recibirás correos electrónicos sobre los tickets."
 
 #: app/api/routes.py:126 app/api/routes.py:138
-#: app/templates/admin/users.html:106 app/templates/share/profile.html:39
+#: app/templates/admin/users.html:117 app/templates/share/profile.html:39
 #: app/templates/share/trips.html:52 app/templates/trips/_stats_parts.html:65
 #: app/templates/trips/_stats_parts.html:195 app/templates/trips/list.html:135
 #: app/templates/trips/stats.html:67 app/templates/trips/stats.html:84
@@ -305,12 +324,12 @@ msgstr "Recibir el enlace de registro"
 msgid "Envoyer le lien de confirmation"
 msgstr "Enviar el enlace de confirmación"
 
-#: app/auth/forms.py:151 app/templates/admin/users.html:45
-#: app/templates/admin/users.html:47
+#: app/auth/forms.py:151 app/templates/admin/users.html:47
+#: app/templates/admin/users.html:49
 msgid "Nom du profil public"
 msgstr "Nombre del perfil público"
 
-#: app/auth/forms.py:155 app/templates/admin/users.html:51
+#: app/auth/forms.py:155 app/templates/admin/users.html:53
 msgid ""
 "De 3 à 30 caractères : lettres sans accents, chiffres, tirets et "
 "soulignés, en commençant par une lettre ou un chiffre."
@@ -406,21 +425,29 @@ msgstr "La contraseña actual es incorrecta."
 msgid "Mot de passe modifié. Vos autres sessions ont été déconnectées."
 msgstr "Contraseña cambiada. Se han cerrado tus otras sesiones."
 
-#: app/auth/routes.py:278
+#: app/auth/routes.py:280
+msgid ""
+"Votre abonnement n'a pas pu être résilié : le compte n'a pas été "
+"supprimé. Réessayez dans quelques minutes."
+msgstr ""
+"No se pudo cancelar su suscripción, por lo que su cuenta no se ha "
+"eliminado. Inténtelo de nuevo en unos minutos."
+
+#: app/auth/routes.py:294
 msgid "Mot de passe incorrect."
 msgstr "Contraseña incorrecta."
 
-#: app/auth/routes.py:282
+#: app/auth/routes.py:298
 msgid ""
 "Vous êtes le seul administrateur : désignez-en un autre avant de "
 "supprimer votre compte."
 msgstr "Eres el único administrador: designa a otro antes de eliminar tu cuenta."
 
-#: app/auth/routes.py:290
+#: app/auth/routes.py:308
 msgid "Votre compte et tous vos voyages ont été supprimés."
 msgstr "Tu cuenta y todos tus viajes se han eliminado."
 
-#: app/auth/routes.py:301
+#: app/auth/routes.py:319
 msgid ""
 "Nouvelle adresse d'abonnement créée. L'ancienne adresse ne fonctionne "
 "plus."
@@ -428,28 +455,28 @@ msgstr ""
 "Se ha creado una nueva dirección de suscripción. La anterior ya no "
 "funciona."
 
-#: app/auth/routes.py:310
+#: app/auth/routes.py:328
 msgid "Abonnement agenda désactivé."
 msgstr "Suscripción al calendario desactivada."
 
-#: app/auth/routes.py:334
+#: app/auth/routes.py:352
 msgid "Cette adresse est déjà autorisée pour votre compte."
 msgstr "Esta dirección ya está autorizada para tu cuenta."
 
-#: app/auth/routes.py:336
+#: app/auth/routes.py:354
 #, python-format
 msgid "Vous avez atteint le nombre maximal d'adresses (%(max)s)."
 msgstr "Has alcanzado el número máximo de direcciones (%(max)s)."
 
-#: app/auth/routes.py:340 app/auth/routes.py:372
+#: app/auth/routes.py:358 app/auth/routes.py:390
 msgid "Cette adresse ne peut pas être ajoutée."
 msgstr "Esta dirección no se puede añadir."
 
-#: app/auth/routes.py:348
+#: app/auth/routes.py:366
 msgid "Confirmez votre adresse d'import pour Voyage Voyage"
 msgstr "Confirma tu dirección de importación para Voyage Voyage"
 
-#: app/auth/routes.py:350
+#: app/auth/routes.py:368
 #, python-format
 msgid ""
 "Un lien de confirmation a été envoyé à %(email)s (valable %(minutes)s "
@@ -458,7 +485,7 @@ msgstr ""
 "Se ha enviado un enlace de confirmación a %(email)s (válido %(minutes)s "
 "minutos)."
 
-#: app/auth/routes.py:363
+#: app/auth/routes.py:381
 msgid ""
 "Ce lien de confirmation est invalide ou a expiré. Demandez-en un nouveau "
 "depuis vos préférences."
@@ -466,12 +493,12 @@ msgstr ""
 "Este enlace de confirmación no es válido o ha caducado. Solicita uno "
 "nuevo desde tus preferencias."
 
-#: app/auth/routes.py:368
+#: app/auth/routes.py:386
 #, python-format
 msgid "Adresse %(email)s déjà confirmée."
 msgstr "Dirección %(email)s ya confirmada."
 
-#: app/auth/routes.py:376
+#: app/auth/routes.py:394
 #, python-format
 msgid ""
 "Adresse %(email)s confirmée : ses confirmations de voyage peuvent être "
@@ -480,16 +507,16 @@ msgstr ""
 "Dirección %(email)s confirmada: sus confirmaciones de viaje pueden "
 "reenviarse a la dirección de importación."
 
-#: app/auth/routes.py:390
+#: app/auth/routes.py:408
 #, python-format
 msgid "Adresse %(email)s retirée."
 msgstr "Dirección %(email)s eliminada."
 
-#: app/auth/routes.py:417
+#: app/auth/routes.py:435
 msgid "Réinitialisation de votre mot de passe"
 msgstr "Restablecimiento de tu contraseña"
 
-#: app/auth/routes.py:420
+#: app/auth/routes.py:438
 msgid ""
 "Si un compte correspond à cette adresse, un e-mail contenant un lien de "
 "réinitialisation vient d'être envoyé."
@@ -497,7 +524,7 @@ msgstr ""
 "Si existe una cuenta con esta dirección, se acaba de enviar un correo con"
 " un enlace de restablecimiento."
 
-#: app/auth/routes.py:430
+#: app/auth/routes.py:448
 msgid ""
 "Ce lien de réinitialisation est invalide ou a expiré. Demandez-en un "
 "nouveau."
@@ -505,9 +532,45 @@ msgstr ""
 "Este enlace de restablecimiento no es válido o ha caducado. Solicita uno "
 "nuevo."
 
-#: app/auth/routes.py:438
+#: app/auth/routes.py:456
 msgid "Mot de passe modifié. Vous pouvez vous connecter."
 msgstr "Contraseña cambiada. Ya puedes iniciar sesión."
+
+#: app/billing/__init__.py:21
+msgid "Fonction réservée aux abonnés Premium."
+msgstr "Función reservada a los suscriptores Premium."
+
+#: app/billing/__init__.py:22
+msgid "Cette fonction est réservée aux abonnés Premium."
+msgstr "Esta función está reservada a los suscriptores Premium."
+
+#: app/billing/routes.py:48
+msgid "Vous êtes déjà abonné."
+msgstr "Ya está suscrito."
+
+#: app/billing/routes.py:57
+msgid ""
+"Le paiement est momentanément indisponible. Réessayez dans quelques "
+"minutes."
+msgstr ""
+"El pago no está disponible en este momento. Inténtelo de nuevo en unos "
+"minutos."
+
+#: app/billing/routes.py:73
+msgid "Merci ! Votre abonnement Premium est actif."
+msgstr "¡Gracias! Su suscripción Premium está activa."
+
+#: app/billing/routes.py:76
+msgid "Merci ! Votre paiement est en cours de confirmation."
+msgstr "¡Gracias! Su pago se está confirmando."
+
+#: app/billing/routes.py:89
+msgid ""
+"La gestion de l'abonnement est momentanément indisponible. Réessayez dans"
+" quelques minutes."
+msgstr ""
+"La gestión de la suscripción no está disponible en este momento. "
+"Inténtelo de nuevo en unos minutos."
 
 #: app/i18n.py:74
 msgid "Aujourd'hui"
@@ -570,12 +633,12 @@ msgstr "Restablecer filtros"
 msgid "Ajouter un voyage"
 msgstr "Añadir un viaje"
 
-#: app/i18n.py:113 app/templates/admin/users.html:37
+#: app/i18n.py:113 app/templates/admin/users.html:39
 #: app/templates/trips/detail.html:31 app/templates/trips/list.html:145
 msgid "Modifier"
 msgstr "Editar"
 
-#: app/i18n.py:114 app/templates/base.html:236
+#: app/i18n.py:114 app/templates/base.html:240
 #: app/templates/trips/detail.html:116 app/templates/trips/form.html:153
 msgid "Supprimer"
 msgstr "Eliminar"
@@ -809,7 +872,7 @@ msgstr "Acercar"
 msgid "Dézoomer"
 msgstr "Alejar"
 
-#: app/i18n.py:168 app/templates/base.html:212 app/templates/map.html:15
+#: app/i18n.py:168 app/templates/base.html:216 app/templates/map.html:15
 msgid "Fermer"
 msgstr "Cerrar"
 
@@ -851,15 +914,15 @@ msgstr ""
 msgid "Compagnie trouvée ; itinéraire inconnu pour ce numéro."
 msgstr "Aerolínea encontrada; ruta desconocida para este número."
 
-#: app/jobs.py:69
+#: app/jobs.py:87
 msgid "Import par e-mail (boîte IMAP)"
 msgstr "Importación por correo (buzón IMAP)"
 
-#: app/jobs.py:70
+#: app/jobs.py:88
 msgid "Sauvegarde complète (base + photos)"
 msgstr "Copia de seguridad completa (base de datos + fotos)"
 
-#: app/jobs.py:72
+#: app/jobs.py:90
 msgid ""
 "Purge du cache de géocodage, des liens de partage expirés, du journal des"
 " imports par e-mail et de l'historique des tâches"
@@ -2018,46 +2081,73 @@ msgstr "Admin"
 msgid "Bloqué"
 msgstr "Bloqueada"
 
-#: app/templates/admin/users.html:31 app/templates/admin/users.html:32
+#: app/templates/admin/users.html:27
+#, python-format
+msgid "Abonné jusqu'au %(date)s"
+msgstr "Suscrito hasta el %(date)s"
+
+#: app/templates/admin/users.html:28
+msgid "Premium offert"
+msgstr "Premium regalado"
+
+#: app/templates/admin/users.html:33 app/templates/admin/users.html:34
 msgid "Profil masqué : compte bloqué"
 msgstr "Perfil oculto: cuenta bloqueada"
 
-#: app/templates/admin/users.html:36
+#: app/templates/admin/users.html:38
 #, python-format
 msgid "Modifier le nom du profil public de %(email)s"
 msgstr "Editar el nombre del perfil público de %(email)s"
 
-#: app/templates/admin/users.html:52
+#: app/templates/admin/users.html:54
 msgid "Laissez vide pour désactiver le profil public."
 msgstr "Déjelo vacío para desactivar el perfil público."
 
 #: app/templates/admin/users.html:71
+#, python-format
+msgid "Retirer le Premium offert à %(email)s"
+msgstr "Retirar el Premium regalado a %(email)s"
+
+#: app/templates/admin/users.html:72
+#, python-format
+msgid "Offrir le Premium à %(email)s"
+msgstr "Regalar Premium a %(email)s"
+
+#: app/templates/admin/users.html:74
+msgid "Retirer le Premium offert"
+msgstr "Retirar el Premium regalado"
+
+#: app/templates/admin/users.html:74
+msgid "Offrir le Premium"
+msgstr "Regalar Premium"
+
+#: app/templates/admin/users.html:82
 msgid "Débloquer"
 msgstr "Desbloquear"
 
-#: app/templates/admin/users.html:72
+#: app/templates/admin/users.html:83
 #, python-format
 msgid "Débloquer le compte %(email)s"
 msgstr "Desbloquear la cuenta %(email)s"
 
-#: app/templates/admin/users.html:77
+#: app/templates/admin/users.html:88
 #, python-format
 msgid "Bloquer le compte %(email)s"
 msgstr "Bloquear la cuenta %(email)s"
 
-#: app/templates/admin/users.html:77 app/templates/admin/users.html:97
+#: app/templates/admin/users.html:88 app/templates/admin/users.html:108
 msgid "Bloquer"
 msgstr "Bloquear"
 
-#: app/templates/admin/users.html:85
+#: app/templates/admin/users.html:96
 msgid "Bloquer ce compte ?"
 msgstr "¿Bloquear esta cuenta?"
 
-#: app/templates/admin/users.html:88
+#: app/templates/admin/users.html:99
 msgid "Les sessions ouvertes sont fermées et la connexion est refusée."
 msgstr "Las sesiones abiertas se cierran y se rechaza el inicio de sesión."
 
-#: app/templates/admin/users.html:89
+#: app/templates/admin/users.html:100
 msgid ""
 "Le profil public, les liens de partage et le calendrier deviennent "
 "inaccessibles."
@@ -2065,11 +2155,11 @@ msgstr ""
 "El perfil público, los enlaces compartidos y el calendario dejan de estar"
 " accesibles."
 
-#: app/templates/admin/users.html:90
+#: app/templates/admin/users.html:101
 msgid "Les e-mails transférés ne sont plus importés."
 msgstr "Los correos reenviados ya no se importan."
 
-#: app/templates/admin/users.html:92
+#: app/templates/admin/users.html:103
 msgid ""
 "Aucune donnée n'est supprimée : le compte peut être débloqué à tout "
 "moment."
@@ -2077,11 +2167,11 @@ msgstr ""
 "No se elimina ningún dato: la cuenta puede desbloquearse en cualquier "
 "momento."
 
-#: app/templates/admin/users.html:105
+#: app/templates/admin/users.html:116
 msgid "Supprimer ce compte ?"
 msgstr "¿Eliminar esta cuenta?"
 
-#: app/templates/admin/users.html:107
+#: app/templates/admin/users.html:118
 #, python-format
 msgid "Supprimer le compte %(email)s"
 msgstr "Eliminar la cuenta %(email)s"
@@ -2553,7 +2643,13 @@ msgstr "Compartir mis viajes"
 msgid "Importer / exporter"
 msgstr "Importar / exportar"
 
-#: app/templates/base.html:171 app/templates/support/_macros.html:19
+#: app/templates/admin/users.html:27 app/templates/base.html:172
+#: app/templates/billing/index.html:2 app/templates/billing/index.html:6
+#: app/templates/billing/index.html:13
+msgid "Premium"
+msgstr "Premium"
+
+#: app/templates/base.html:175 app/templates/support/_macros.html:19
 #: app/templates/support/index.html:4 app/templates/support/index.html:6
 #: app/templates/support/ticket.html:3
 msgid "Support"
@@ -2562,37 +2658,130 @@ msgstr "Soporte"
 #: app/templates/admin/_nav.html:1 app/templates/admin/database.html:2
 #: app/templates/admin/jobs.html:2 app/templates/admin/settings.html:2
 #: app/templates/admin/ticket.html:3 app/templates/admin/tickets.html:3
-#: app/templates/admin/users.html:2 app/templates/base.html:174
+#: app/templates/admin/users.html:2 app/templates/base.html:178
 msgid "Administration"
 msgstr "Administración"
 
-#: app/templates/base.html:181
+#: app/templates/base.html:185
 msgid "Déconnexion"
 msgstr "Cerrar sesión"
 
 #: app/templates/auth/login.html:3 app/templates/auth/login.html:4
-#: app/templates/base.html:189
+#: app/templates/base.html:193
 msgid "Connexion"
 msgstr "Iniciar sesión"
 
 #: app/templates/auth/login.html:25 app/templates/auth/register.html:3
-#: app/templates/auth/register.html:4 app/templates/base.html:191
+#: app/templates/auth/register.html:4 app/templates/base.html:195
 msgid "Créer un compte"
 msgstr "Crear una cuenta"
 
-#: app/templates/base.html:227
+#: app/templates/base.html:231
 msgid "Supprimer ce voyage ?"
 msgstr "¿Eliminar este viaje?"
 
-#: app/templates/base.html:230
+#: app/templates/base.html:234
 msgid "Cette action est définitive."
 msgstr "Esta acción es definitiva."
 
-#: app/templates/admin/users.html:56 app/templates/admin/users.html:95
-#: app/templates/base.html:234 app/templates/transfer/preview.html:73
+#: app/templates/admin/users.html:58 app/templates/admin/users.html:106
+#: app/templates/base.html:238 app/templates/transfer/preview.html:73
 #: app/templates/trips/form.html:157 app/templates/trips/journey.html:29
 msgid "Annuler"
 msgstr "Cancelar"
+
+#: app/templates/billing/index.html:7
+#, python-format
+msgid "Soutenez %(site)s et profitez des fonctions Premium."
+msgstr "Apoye %(site)s y disfrute de las funciones Premium."
+
+#: app/templates/billing/index.html:14
+msgid "Abonnement annuel"
+msgstr "Suscripción anual"
+
+#: app/templates/billing/index.html:14
+msgid "Abonnement mensuel"
+msgstr "Suscripción mensual"
+
+#: app/templates/billing/index.html:18
+msgid ""
+"Le dernier paiement a échoué. Mettez à jour votre moyen de paiement pour "
+"garder l'accès Premium."
+msgstr ""
+"El último pago ha fallado. Actualice su método de pago para mantener el "
+"acceso Premium."
+
+#: app/templates/billing/index.html:21
+#, python-format
+msgid "Abonnement résilié : l'accès Premium prend fin le %(date)s."
+msgstr "Suscripción cancelada: el acceso Premium termina el %(date)s."
+
+#: app/templates/billing/index.html:23
+#, python-format
+msgid "Prochain renouvellement le %(date)s."
+msgstr "Próxima renovación el %(date)s."
+
+#: app/templates/billing/index.html:28
+msgid "Gérer mon abonnement"
+msgstr "Gestionar mi suscripción"
+
+#: app/templates/billing/index.html:30
+msgid ""
+"Résiliation, moyen de paiement et factures, sur la page sécurisée de "
+"Stripe."
+msgstr "Cancelación, método de pago y facturas, en la página segura de Stripe."
+
+#: app/templates/billing/index.html:35
+msgid "L'accès Premium vous est offert : aucun abonnement n'est nécessaire."
+msgstr "Se le ha regalado el acceso Premium: no necesita ninguna suscripción."
+
+#: app/templates/billing/index.html:39
+msgid "par mois"
+msgstr "al mes"
+
+#: app/templates/billing/index.html:39
+msgid "Sans engagement, résiliable à tout moment."
+msgstr "Sin permanencia, cancelable en cualquier momento."
+
+#: app/templates/billing/index.html:40
+msgid "par an"
+msgstr "al año"
+
+#: app/templates/billing/index.html:40
+#, python-format
+msgid "Économisez %(saving)s par rapport au mois."
+msgstr "Ahorre un %(saving)s respecto al plan mensual."
+
+#: app/templates/billing/index.html:40
+msgid "Un seul paiement par an."
+msgstr "Un solo pago al año."
+
+#: app/templates/billing/index.html:47
+msgid "Annuel"
+msgstr "Anual"
+
+#: app/templates/billing/index.html:47
+msgid "Mensuel"
+msgstr "Mensual"
+
+#: app/templates/billing/index.html:51
+msgid "Redirection…"
+msgstr "Redirigiendo…"
+
+#: app/templates/billing/index.html:51
+msgid "S'abonner"
+msgstr "Suscribirse"
+
+#: app/templates/billing/index.html:57
+#, python-format
+msgid ""
+"Paiement sécurisé par Stripe. Vos coordonnées bancaires ne transitent pas"
+" par %(site)s."
+msgstr "Pago seguro con Stripe. Sus datos bancarios no pasan por %(site)s."
+
+#: app/templates/billing/index.html:61
+msgid "Mes factures"
+msgstr "Mis facturas"
 
 #: app/templates/errors/404.html:2 app/templates/errors/404.html:19
 #: app/templates/errors/404.html:25

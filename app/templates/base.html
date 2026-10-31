@@ -167,6 +167,10 @@
                 <i class="fa-solid fa-share-nodes me-2" aria-hidden="true"></i>{{ _("Partager mes voyages") }}</a></li>
               <li><a class="dropdown-item" href="{{ url_for('transfer.index') }}">
                 <i class="fa-solid fa-file-export me-2" aria-hidden="true"></i>{{ _("Importer / exporter") }}</a></li>
+              {% if billing_enabled() %}
+              <li><a class="dropdown-item" href="{{ url_for('billing.index') }}">
+                <i class="fa-solid fa-gem me-2" aria-hidden="true"></i>{{ _("Premium") }}</a></li>
+              {% endif %}
               <li><a class="dropdown-item" href="{{ url_for('support.index') }}">
                 <i class="fa-solid fa-life-ring me-2" aria-hidden="true"></i>{{ _("Support") }}</a></li>
               {% if current_user.is_admin %}
