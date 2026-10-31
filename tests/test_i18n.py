@@ -202,3 +202,17 @@ def test_every_js_string_translated(app, lang):
         same = {"distance", "replay_pause", "view_globe"}
         unchanged = [k for k in strings if strings[k] == french[k] and k not in same]
         assert not unchanged, f"[{lang}] chaînes JS non traduites : {unchanged}"
+
+
+def test_signed_in_user_always_gets_account_language(auth_client, user, db):
+    """Connecté : ?lang et le cookie n'écrasent pas la langue du compte (sinon la page mélange deux langues)."""
+    user.locale = "fr"
+    db.session.commit()
+    assert '<html lang="fr"' in auth_client.get("/stats?lang=en").text
+    auth_client.get("/lang/en?next=/stats")  # le menu des langues change la langue du compte
+    db.session.refresh(user)
+    assert user.locale == "en" and '<html lang="en"' in auth_client.get("/stats?lang=de").text
+
+
+def test_visitor_language_follows_lang_parameter(client):
+    assert '<html lang="en"' in client.get("/about?lang=en").text

@@ -310,7 +310,8 @@ de texte en dur dans le JavaScript. Les tests ne font aucun appel réseau.
 
 ## Internationalisation
 
-- Ordre de détection de la langue : profil de l'utilisateur, puis cookie `lang`, puis en-tête
+- Connecté, l'utilisateur a toujours la langue de son compte (le menu des langues la change). Pour un
+  visiteur : paramètre `?lang=` (une adresse par langue, pour les moteurs), puis cookie `lang`, puis en-tête
   `Accept-Language`, puis français.
 - Les chaînes sources sont en français : `_()` dans les templates, `gettext` / `lazy_gettext` (`_l`)
   en Python.

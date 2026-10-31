@@ -308,8 +308,9 @@ network calls.
 
 ## Internationalisation
 
-- Language detection order: the user's profile, then the `lang` cookie, then the `Accept-Language` header,
-  then French.
+- Signed-in users always get their account's language (the language menu changes it). For visitors: the
+  `?lang=` parameter (one address per language, for search engines), then the `lang` cookie, then the
+  `Accept-Language` header, then French.
 - Source strings are in French: `_()` in templates, `gettext` / `lazy_gettext` (`_l`) in Python.
 - JavaScript texts are injected into `base.html` (`<script type="application/json" id="i18n-data">`) by
   `app/i18n.py:js_strings()`. The JS files contain only keys.
