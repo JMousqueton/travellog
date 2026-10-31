@@ -132,11 +132,26 @@ def public_profile(name):
     trips = happened(user.trips.all())
     badges = [row for row in compute_badges(trips) if row["earned"]]
     return render_template(
-        "share/profile.html", profile=user, totals=compute_stats(trips),
+        "share/profile.html", profile=user, totals=compute_stats(trips), years_chart=_years_chart(trips),
         continents=continent_summary(trips, current_locale()),
         badges=sorted(badges, key=lambda row: row["earned"], reverse=True),
         since=min((t.depart_date.year for t in trips), default=None),
     )
+
+
+def _years_chart(trips):
+    """Graphique empilé des trajets par année et par mode ; les années sans trajet comptent pour zéro."""
+    from ..transport import TRANSPORT_MODES
+
+    if not trips:
+        return None
+    first, last = min(t.depart_date.year for t in trips), max(t.depart_date.year for t in trips)
+    years = list(range(first, last + 1))
+    counts = {mode: [0] * len(years) for mode in TRANSPORT_MODES}
+    for trip in trips:
+        counts[trip.transport_mode][trip.depart_date.year - first] += 1
+    return {"type": "stacked", "labels": years, "unit": None,
+            "series": {mode: values for mode, values in counts.items() if any(values)}}
 
 
 @bp.route("/s/<token>/trips")

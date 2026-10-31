@@ -52,3 +52,19 @@ def test_public_profile_without_trips(client, db):
     db.session.commit()
     response = client.get("/u/carol")
     assert response.status_code == 200 and "Aucun voyage à afficher" in response.text
+
+
+def test_public_profile_trips_per_year_chart(client, user, db):
+    import json
+    import re
+
+    user.public_name = "alice"
+    db.session.commit()
+    make_trip(user, depart_date=date(2022, 5, 1))  # train par défaut
+    make_trip(user, transport_mode="plane", depart_date=date(2024, 4, 1))
+    make_trip(user, depart_date=date(2024, 9, 1))
+    html = client.get("/u/alice").text
+    assert "Trajets par année" in html and 'data-chart="chart-profile-years"' in html and "js/charts.js" in html
+    spec = json.loads(re.search(r'<script type="application/json" id="chart-profile-years">(.*?)</script>', html).group(1))
+    assert spec["labels"] == [2022, 2023, 2024]  # 2023 sans trajet : barre vide
+    assert spec["series"] == {"train": [1, 0, 1], "plane": [0, 0, 1]}

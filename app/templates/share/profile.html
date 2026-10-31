@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "trips/_stats_parts.html" import tiles %}
+{% from "trips/_stats_parts.html" import tiles, chart, chart_scripts %}
 {% from "partials/macros.html" import mode_badge, badge_tile, country_chips with context %}
 {% block title %}{{ _("Profil de %(name)s", name=profile.public_name) }}{% endblock %}
 {% block head %}<meta name="robots" content="noindex, nofollow">{% endblock %}
@@ -43,6 +43,15 @@
     </div></div>
   </section>
 
+  {% if years_chart %}
+  <section aria-labelledby="profileYears" class="mb-5">
+    <h2 class="h5 fw-semibold mb-3" id="profileYears">{{ _("Trajets par année") }}</h2>
+    <div class="card shadow-soft"><div class="card-body p-4">
+      {{ chart('chart-profile-years', years_chart, _("Trajets par année et par mode")) }}
+    </div></div>
+  </section>
+  {% endif %}
+
   <section aria-labelledby="profileCountries" class="mb-5">
     <h2 class="h5 fw-semibold mb-3" id="profileCountries">{{ _("Pays visités") }}
       <span class="text-body-secondary fw-normal small">· {{ totals.countries_fmt }}</span></h2>
@@ -76,3 +85,4 @@
   {% endif %}
 </div>
 {% endblock %}
+{% block scripts %}{% if years_chart %}{{ chart_scripts() }}{% endif %}{% endblock %}
