@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Base de données") }} · {{ _("Administration") }}{% endblock %}
+{% block content %}
+{% include "admin/_nav.html" %}
+<h2 class="visually-hidden">{{ _("Base de données") }}</h2>
+<div class="row g-3 mb-4">
+  <div class="col-md-6 col-xl-4">
+    <div class="card shadow-soft h-100">
+      <div class="card-body">
+        <h3 class="h6 fw-semibold mb-2"><i class="fa-solid fa-server me-1" aria-hidden="true"></i>{{ _("Serveur") }}</h3>
+        <dl class="row small mb-0">
+          <dt class="col-6 fw-normal text-body-secondary">{{ _("Version") }}</dt><dd class="col-6 mb-1">PostgreSQL {{ server.version }}</dd>
+          <dt class="col-6 fw-normal text-body-secondary">{{ _("Démarré") }}</dt><dd class="col-6 mb-1">{{ server.started_at|moment }}</dd>
+          <dt class="col-6 fw-normal text-body-secondary">{{ _("Base") }}</dt><dd class="col-6 mb-1"><code>{{ server.database }}</code> ({{ server.user }})</dd>
+          <dt class="col-6 fw-normal text-body-secondary">{{ _("Connexions") }}</dt><dd class="col-6 mb-0">{{ server.connections|number }} / {{ server.max_connections|number }}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-xl-4">
+    <div class="card shadow-soft h-100">
+      <div class="card-body">
+        <h3 class="h6 fw-semibold mb-2"><i class="fa-solid fa-hard-drive me-1" aria-hidden="true"></i>{{ _("Stockage") }}</h3>
+        <dl class="row small mb-0">
+          <dt class="col-6 fw-normal text-body-secondary">{{ _("Taille de la base") }}</dt><dd class="col-6 mb-1">{{ server.size|filesize }}</dd>
+          <dt class="col-6 fw-normal text-body-secondary">{{ _("Lignes") }}</dt><dd class="col-6 mb-1">{{ tables|sum(attribute="rows")|number }}</dd>
+          <dt class="col-6 fw-normal text-body-secondary">{{ _("Lectures en cache") }}</dt>
+          <dd class="col-6 mb-0">{% if server.cache_hit is not none %}{{ server.cache_hit|percent }}{% else %}—{% endif %}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6 col-xl-4">
+    <div class="card shadow-soft h-100{% if not migration.up_to_date or not backup %} border-danger{% endif %}">
+      <div class="card-body">
+        <h3 class="h6 fw-semibold mb-2"><i class="fa-solid fa-shield-halved me-1" aria-hidden="true"></i>{{ _("Schéma et sauvegarde") }}</h3>
+        <dl class="row small mb-0">
+          <dt class="col-6 fw-normal text-body-secondary">{{ _("Révision") }}</dt>
+          <dd class="col-6 mb-1"><code>{{ migration.current or "—" }}</code>
+            {% if migration.up_to_date %}<span class="badge rounded-pill text-bg-success ms-1">{{ _("À jour") }}</span>
+            {% else %}<span class="badge rounded-pill text-bg-danger ms-1">{{ _("Migrations en attente") }}</span>{% endif %}</dd>
+          <dt class="col-6 fw-normal text-body-secondary">{{ _("Dernière sauvegarde") }}</dt>
+          <dd class="col-6 mb-0">{% if backup %}{{ backup.created_at|moment }}<br>
+            <span class="text-body-secondary">{{ backup.size|filesize }} · {{ ngettext("%(num)d archive conservée", "%(num)d archives conservées", backup.count) }}</span>
+            {% else %}<span class="text-danger">{{ _("Aucune sauvegarde") }}</span>{% endif %}</dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h2 class="h5 fw-semibold mb-2">{{ _("Tables") }}</h2>
+<div class="card shadow-soft">
+  <div class="table-responsive">
+    <table class="table align-middle mb-0">
+      <caption class="visually-hidden">{{ _("Tables de la base de données") }}</caption>
+      <thead>
+        <tr>
+          <th scope="col">{{ _("Table") }}</th>
+          <th scope="col" class="text-end">{{ _("Lignes") }}</th>
+          <th scope="col" class="text-end">{{ _("Taille") }}</th>
+          <th scope="col" class="text-end">{{ _("Dont index") }}</th>
+          <th scope="col" class="text-end">{{ _("Lignes mortes") }}</th>
+          <th scope="col">{{ _("Dernier VACUUM") }}</th>
+          <th scope="col">{{ _("Dernier ANALYZE") }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for table in tables %}
+        <tr>
+          <td><code>{{ table.name }}</code></td>
+          <td class="text-end text-nowrap">{{ table.rows|number }}</td>
+          <td class="text-end text-nowrap">{{ table.total_bytes|filesize }}</td>
+          <td class="text-end text-nowrap">{{ table.index_bytes|filesize }}</td>
+          <td class="text-end text-nowrap">{{ table.dead_rows|number }}</td>
+          <td class="text-nowrap small">{{ table.last_vacuum|moment or "—" }}</td>
+          <td class="text-nowrap small">{{ table.last_analyze|moment or "—" }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

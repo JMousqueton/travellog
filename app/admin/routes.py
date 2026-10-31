@@ -112,6 +112,16 @@ def jobs():
     return render_template("admin/jobs.html", overview=job_overview(), recent=recent, mail_counts=mail_counts)
 
 
+@bp.route("/database")
+@admin_required
+def database():
+    """Serveur PostgreSQL, taille et lignes de chaque table, révision des migrations, dernière sauvegarde."""
+    from .database import latest_backup, migration_info, server_info, tables
+
+    return render_template("admin/database.html", server=server_info(), tables=tables(),
+                           migration=migration_info(), backup=latest_backup())
+
+
 # Onglets de la liste des tickets : « à traiter » d'abord.
 TICKET_FILTERS = ("open", "answered", "closed", "all")
 

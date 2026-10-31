@@ -87,5 +87,5 @@ def test_private_pages_respect_csp(auth_client, user, db):
     auth_client.post("/support", data={"subject": "Question", "body": "Bonjour"})
     user.is_admin = True
     db.session.commit()
-    for path in ("/support/1", "/admin/tickets", "/admin/tickets/1", "/admin/jobs"):
+    for path in ("/support/1", "/admin/tickets", "/admin/tickets/1", "/admin/jobs", "/admin/database"):
         check_page(auth_client, path)

@@ -44,6 +44,15 @@ def format_distance(km):
     return format_unit(km, "length-kilometer", length="short", format="#,##0.#", locale=current_locale())
 
 
+def format_filesize(size):
+    """Ex. 12,3 Mo (fr) / 12.3 MB (en) : unité adaptée à la taille, en multiples de 1024."""
+    for unit, factor in (("gigabyte", 1024 ** 3), ("megabyte", 1024 ** 2), ("kilobyte", 1024)):
+        if size >= factor:
+            return format_unit(size / factor, f"digital-{unit}", length="short", format="#,##0.#",
+                               locale=current_locale())
+    return format_unit(size, "digital-byte", length="short", format="#,##0", locale=current_locale())
+
+
 def format_share(value):
     """Pourcentage à une décimale, avec la mise en forme de la langue (ex. 0,7 % en français)."""
     pattern = Locale.parse(current_locale()).percent_formats[None].pattern.replace("#,##0", "#,##0.#", 1)
@@ -191,6 +200,7 @@ def init_app(app):
     app.jinja_env.filters["day"] = format_day
     app.jinja_env.filters["moment"] = format_moment
     app.jinja_env.filters["number"] = format_number
+    app.jinja_env.filters["filesize"] = format_filesize
     app.jinja_env.filters["percent"] = format_percent
 
     @app.context_processor

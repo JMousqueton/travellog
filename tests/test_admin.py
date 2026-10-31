@@ -198,3 +198,30 @@ def test_admin_rename_rejects_invalid_or_taken_name(client, db, user, other_user
         assert user.public_name is None, name
     response = client.post(f"/admin/users/{user.id}/name", data={"name-public_name": "bob"}, follow_redirects=True)
     assert "Ce nom est déjà pris" in response.text
+
+
+def test_admin_database_page(client, db, user, app, tmp_path):
+    from app.backup import create_backup
+
+    make_trip(user)
+    admin_client(client, db)
+    app.config["BACKUP_DIR"] = str(tmp_path / "backups")
+    html = client.get("/admin/database").text
+    assert "PostgreSQL" in html and "<code>trips</code>" in html and "Aucune sauvegarde" in html
+    assert "Migrations en attente" in html  # base de test créée sans Alembic
+    create_backup()
+    html = client.get("/admin/database").text
+    assert "Aucune sauvegarde" not in html and "1 archive conservée" in html
+
+
+def test_admin_database_page_forbidden_for_regular_user(auth_client):
+    assert auth_client.get("/admin/database").status_code == 403
+
+
+def test_filesize_format(app):
+    from flask_babel import force_locale
+
+    from app.i18n import format_filesize
+
+    with app.test_request_context(), force_locale("en"):
+        assert [format_filesize(n) for n in (512, 2048, 5 * 1024 ** 2 + 1024 ** 2 // 2)] == ["512 byte", "2 kB", "5.5 MB"]
