@@ -17,6 +17,11 @@
 </div>
 {% endmacro %}
 
+{# Icône Font Awesome devant un titre de section (couleur de la marque, ou du mode via --mode-color). #}
+{% macro heading_icon(icon) -%}
+<i class="fa-solid {{ icon }} title-icon me-2" aria-hidden="true"></i>
+{%- endmacro %}
+
 {% macro chart(id, spec, label, height=260) %}
 <div class="chart-box" style="height: {{ height }}px">
   <canvas data-chart="{{ id }}" role="img" aria-label="{{ label }}"></canvas>
@@ -27,7 +32,7 @@
 {% macro badges_section(rows, section_id, title) %}
 {% set earned = rows|selectattr('earned')|list %}
 <section aria-labelledby="{{ section_id }}" class="mb-5">
-  <h2 class="h5 fw-semibold mb-3" id="{{ section_id }}">{{ title }}
+  <h2 class="h5 fw-semibold mb-3" id="{{ section_id }}">{{ heading_icon('fa-medal') }}{{ title }}
     <span class="text-body-secondary fw-normal small">· {{ earned|length }} / {{ rows|length }}</span></h2>
   {% if earned %}
   <ul class="badge-grid list-unstyled mb-2">
@@ -47,7 +52,7 @@
 {% macro services_section(services, section_id, year=None) %}
 {% if services %}
 <section aria-labelledby="{{ section_id }}" class="mb-5">
-  <h2 class="h5 fw-semibold mb-3" id="{{ section_id }}">{{ _("Avion et train") }}</h2>
+  <h2 class="h5 fw-semibold mb-3" id="{{ section_id }}">{{ heading_icon('fa-plane-departure') }}{{ _("Avion et train") }}</h2>
   <div class="row g-4">
     {% for row in services %}
     {% set labels = SERVICE_FIELDS[row.mode] %}
@@ -261,7 +266,7 @@
 {% macro overall_sections(totals, years, continents, current_year, missing_countries=0, linked=True) %}
   {# --- Depuis le début : quelques chiffres et les badges --- #}
   <section aria-labelledby="overallTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="overallTitle">{{ _("Depuis le début") }}
+    <h2 class="h5 fw-semibold mb-3" id="overallTitle">{{ heading_icon('fa-infinity') }}{{ _("Depuis le début") }}
       <span class="text-body-secondary fw-normal small">· {{ years[-1].year }}{% if years|length > 1 %}–{{ years[0].year }}{% endif %}</span></h2>
     {{ tiles([
       ('fa-suitcase', totals.count_fmt, _("Voyages")),
@@ -287,12 +292,12 @@
       {% do km_series.update({key: ascending|map(attribute='mode_km')|map(attribute=key)|map('round')|list}) %}
       {% endfor %}
       <div class="col-lg-6"><div class="card shadow-soft h-100"><div class="card-body p-4">
-        <h3 class="h6 fw-semibold mb-3">{{ _("Trajets par année") }}</h3>
+        <h3 class="h6 fw-semibold mb-3">{{ heading_icon('fa-chart-column') }}{{ _("Trajets par année") }}</h3>
         {{ chart('chart-years-count', {'type': 'stacked', 'labels': ascending|map(attribute='year')|list, 'series': count_series, 'unit': None},
                  _("Trajets par année et par mode")) }}
       </div></div></div>
       <div class="col-lg-6"><div class="card shadow-soft h-100"><div class="card-body p-4">
-        <h3 class="h6 fw-semibold mb-3">{{ _("Distance par année") }}</h3>
+        <h3 class="h6 fw-semibold mb-3">{{ heading_icon('fa-route') }}{{ _("Distance par année") }}</h3>
         {{ chart('chart-years-km', {'type': 'stacked', 'labels': ascending|map(attribute='year')|list, 'series': km_series, 'unit': 'km'},
                  _("Distance par année et par mode")) }}
       </div></div></div>
@@ -303,7 +308,7 @@
   {# --- Une carte par année, vers sa page --- #}
   {% if years %}
   <section aria-labelledby="previousTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="previousTitle">{{ _("Années") }}</h2>
+    <h2 class="h5 fw-semibold mb-3" id="previousTitle">{{ heading_icon('fa-calendar-days') }}{{ _("Années") }}</h2>
     {% set max_km = years|map(attribute='distance_km')|max %}
     <div class="year-cards">
       {% for row in years %}

@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {% from "partials/macros.html" import mode_badge with context %}
-{% from "trips/_stats_parts.html" import tiles, overall_sections, badges_section, services_section, chart_scripts with context %}
+{% from "trips/_stats_parts.html" import tiles, overall_sections, badges_section, services_section, chart_scripts, heading_icon with context %}
 {% block title %}{{ _("Statistiques") }}{% endblock %}
 {% block content %}
 <div class="stats-page">
   <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
-    <h1 class="h3 fw-bold mb-0">{{ _("Statistiques") }}</h1>
+    <h1 class="h3 fw-bold mb-0">{{ heading_icon('fa-chart-pie') }}{{ _("Statistiques") }}</h1>
     <div class="d-flex flex-wrap gap-2">
     <a class="btn btn-primary btn-sm rounded-pill px-3" href="{{ url_for('trips.review_latest') }}">
       <i class="fa-solid fa-calendar-check me-1" aria-hidden="true"></i>{{ _("Bilan de l'année") }}</a>
@@ -16,7 +16,7 @@
 
   {% if upcoming %}
   <section aria-labelledby="upcomingTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="upcomingTitle">{{ _("À venir") }}
+    <h2 class="h5 fw-semibold mb-3" id="upcomingTitle">{{ heading_icon('fa-hourglass-half') }}{{ _("À venir") }}
       <span class="text-body-secondary fw-normal small">· {{ upcoming|length }}</span></h2>
     <div class="card shadow-soft">
       <ul class="list-group list-group-flush">
@@ -57,7 +57,7 @@
 
       <div class="row g-4 mb-5">
         <section class="col-lg-6" aria-labelledby="countriesTitle">
-          <h2 class="h5 fw-semibold mb-3" id="countriesTitle">{{ _("Pays visités") }}
+          <h2 class="h5 fw-semibold mb-3" id="countriesTitle">{{ heading_icon('fa-flag') }}{{ _("Pays visités") }}
             <span class="text-body-secondary fw-normal small">· {{ countries|length }}</span></h2>
           <div class="card shadow-soft"><ul class="list-group list-group-flush">
             {% for c in countries %}
@@ -73,7 +73,7 @@
           </ul></div>
         </section>
         <section class="col-lg-6" aria-labelledby="placesTitle">
-          <h2 class="h5 fw-semibold mb-3" id="placesTitle">{{ _("Lieux visités") }}
+          <h2 class="h5 fw-semibold mb-3" id="placesTitle">{{ heading_icon('fa-location-dot') }}{{ _("Lieux visités") }}
             <span class="text-body-secondary fw-normal small">· {{ places|length }}</span></h2>
           {% if places %}
           <div class="card shadow-soft">
@@ -100,7 +100,7 @@
       </div>
 
       <section aria-labelledby="continentsTitle" class="mb-5">
-        <h2 class="h5 fw-semibold mb-1" id="continentsTitle">{{ _("Continents") }}
+        <h2 class="h5 fw-semibold mb-1" id="continentsTitle">{{ heading_icon('fa-earth-americas') }}{{ _("Continents") }}
           <span class="text-body-secondary fw-normal small">· {{ continents|selectattr('countries')|list|length }} / {{ continents|length }}</span></h2>
         <p class="small text-body-secondary mb-3">{{ _("%(visited)s pays et territoires sur %(total)s (%(share)s), soit %(land)s des terres émergées.",
             visited=countries|length|number, total=country_total|number, share=(countries|length / country_total)|percent,
@@ -124,7 +124,7 @@
 
       {% if regions %}
       <section aria-labelledby="regionsTitle" class="mb-5">
-        <h2 class="h5 fw-semibold mb-1" id="regionsTitle">{{ _("Régions") }}</h2>
+        <h2 class="h5 fw-semibold mb-1" id="regionsTitle">{{ heading_icon('fa-map') }}{{ _("Régions") }}</h2>
         <p class="small text-body-secondary mb-3">{{ _("États, provinces et régions visités dans les grands pays, d'après les lieux de départ et d'arrivée.") }}</p>
         <ul class="region-grid list-unstyled mb-0">
           {% for r in regions %}
@@ -144,7 +144,7 @@
       {% endif %}
 
       <section aria-labelledby="awayTitle" class="mb-5">
-        <h2 class="h5 fw-semibold mb-3" id="awayTitle">{{ _("Jours d'absence") }}</h2>
+        <h2 class="h5 fw-semibold mb-3" id="awayTitle">{{ heading_icon('fa-suitcase-rolling') }}{{ _("Jours d'absence") }}</h2>
         {% if not current_user.has_home %}
         <div class="card shadow-soft"><div class="card-body p-4 d-flex flex-wrap align-items-center gap-3">
           <i class="fa-solid fa-house fs-4 text-primary" aria-hidden="true"></i>
@@ -193,7 +193,7 @@
       </section>
 
       <section aria-labelledby="co2Title" class="mb-2">
-        <h2 class="h5 fw-semibold mb-3" id="co2Title">{{ _("Émissions par mode") }}</h2>
+        <h2 class="h5 fw-semibold mb-3" id="co2Title">{{ heading_icon('fa-smog') }}{{ _("Émissions par mode") }}</h2>
         <div class="card shadow-soft">
           <ul class="list-group list-group-flush">
             {% for item in totals.by_mode|sort(attribute='co2_kg', reverse=True) %}

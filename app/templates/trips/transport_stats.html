@@ -47,13 +47,20 @@
 </div>
 {% endmacro %}
 
+{# Icône Font Awesome d'un titre, à la couleur du mode (claire ou sombre selon le thème). #}
+{% macro title_icon(icon, cls="me-2") -%}
+{%- set m = TRANSPORT_MODES[details.mode] -%}
+<i class="fa-solid {{ icon }} title-icon {{ cls }}" aria-hidden="true"
+   style="--mode-color: {{ m.color }}; --mode-color-dark: {{ m.color_dark }}"></i>
+{%- endmacro %}
+
 {% block content %}
 <div class="stats-page">
   <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
     <div>
       <a class="small text-decoration-none" href="{{ url_for('trips.year_stats', year=year) if year else url_for('trips.stats_view') }}">
         <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>{{ _("Statistiques %(year)s", year=year) if year else _("Statistiques") }}</a>
-      <h1 class="h3 fw-bold mb-0 mt-1">{{ page_title }}</h1>
+      <h1 class="h3 fw-bold mb-0 mt-1">{{ title_icon(TRANSPORT_MODES[details.mode].icon) }}{{ page_title }}</h1>
     </div>
     <div class="d-flex gap-2">
       {% for mode in SERVICE_FIELDS %}
@@ -95,7 +102,7 @@
   </section>
 
   <section aria-labelledby="carriersTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="carriersTitle">{{ labels.carrier[0] }}</h2>
+    <h2 class="h5 fw-semibold mb-3" id="carriersTitle">{{ title_icon('fa-building') }}{{ labels.carrier[0] }}</h2>
     {% if details.carriers %}{{ ranking_table(details.carriers, labels.carrier[0], logos=True) }}
     {% if config.LOGO_DEV_TOKEN %}<p class="small text-body-secondary mt-2 mb-0">
       <a class="link-secondary" href="https://logo.dev" rel="noopener" target="_blank">{{ _("Logos fournis par Logo.dev") }}</a></p>{% endif %}
@@ -104,7 +111,7 @@
 
   {% if plane %}
   <section aria-labelledby="vehiclesTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="vehiclesTitle">{{ labels.vehicle[0] }}</h2>
+    <h2 class="h5 fw-semibold mb-3" id="vehiclesTitle">{{ title_icon('fa-plane-up' if plane else 'fa-train-tram') }}{{ labels.vehicle[0] }}</h2>
     {% if details.vehicles %}{{ ranking_table(details.vehicles, labels.vehicle[0]) }}
     {% else %}<p class="text-body-secondary">{{ _("À renseigner dans la fiche du trajet.") }}</p>{% endif %}
   </section>
@@ -112,18 +119,18 @@
 
   {% if details.manufacturers %}
   <section aria-labelledby="makersTitle" class="mb-5">
-    <h2 class="h5 fw-semibold mb-3" id="makersTitle">{{ _("Constructeurs") }}</h2>
+    <h2 class="h5 fw-semibold mb-3" id="makersTitle">{{ title_icon('fa-industry') }}{{ _("Constructeurs") }}</h2>
     {{ ranking_table(details.manufacturers, _("Constructeur"), dates=False) }}
   </section>
   {% endif %}
 
   <div class="row g-4 mb-5">
     <section class="col-lg-7" aria-labelledby="routesTitle">
-      <h2 class="h5 fw-semibold mb-3" id="routesTitle">{{ _("Lignes les plus fréquentes") }}</h2>
+      <h2 class="h5 fw-semibold mb-3" id="routesTitle">{{ title_icon('fa-arrow-right-arrow-left') }}{{ _("Lignes les plus fréquentes") }}</h2>
       {{ ranking_table(details.routes, _("Ligne"), dates=False) }}
     </section>
     <section class="col-lg-5" aria-labelledby="placesTitle">
-      <h2 class="h5 fw-semibold mb-3" id="placesTitle">{{ _("Aéroports") if plane else _("Gares") }}</h2>
+      <h2 class="h5 fw-semibold mb-3" id="placesTitle">{{ title_icon('fa-plane-departure' if plane else 'fa-signs-post') }}{{ _("Aéroports") if plane else _("Gares") }}</h2>
       <div class="card shadow-soft"><ol class="list-group list-group-flush mb-0">
         {% for name, count in details.places %}
         <li class="list-group-item d-flex justify-content-between gap-2">

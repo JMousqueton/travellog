@@ -459,6 +459,7 @@ body.app-layout { height: 100dvh; display: flex; flex-direction: column; overflo
 /* Toute balise portant --mode-color reçoit la couleur adaptée au thème dans --c. */
 [style*="--mode-color"] { --c: var(--mode-color); }
 [data-bs-theme="dark"] [style*="--mode-color"] { --c: var(--mode-color-dark); }
+.title-icon { color: var(--c, var(--brand)); }
 
 /* ==========================================================================
    Fiches, pays, photos, statistiques
