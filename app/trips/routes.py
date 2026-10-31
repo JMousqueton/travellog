@@ -391,6 +391,35 @@ def _wants_image():
     return dest == "image" if dest else accept.startswith("image/")
 
 
+@bp.route("/photos")
+@premium_required
+def photos_map():
+    """Mes photos : celles qui ont une position GPS, en vignettes sur une carte (Premium)."""
+    from datetime import datetime
+
+    photos = db.session.execute(db.select(Photo).filter_by(user_id=current_user.id).order_by(Photo.id)).scalars()
+    items = []
+    for photo in photos:
+        exif = photo.exif or {}
+        if exif.get("lat") is None or exif.get("lon") is None:
+            continue
+        owner = photo.trip or photo.journey
+        if photo.trip:
+            label, owner_url = f"{owner.origin_name} → {owner.dest_name}", url_for("trips.detail", trip_id=owner.id)
+        else:
+            label, owner_url = owner.display_name, url_for("trips.journey_detail", journey_id=owner.id)
+        taken = exif.get("taken_at")
+        items.append({
+            "id": photo.id, "lat": exif["lat"], "lon": exif["lon"],
+            "thumb": url_for("trips.photo_thumb", photo_id=photo.id),
+            "url": url_for("trips.photo_view", photo_id=photo.id),
+            "taken": format_date(datetime.fromisoformat(taken), "medium") if taken else None,
+            "label": label, "owner_url": owner_url,
+        })
+    return render_template("trips/photos_map.html", photos=items, tiles=map_tiles(),
+                           strings={"open": _("Voir la photo"), "photos": _("photos")})
+
+
 @bp.route("/photos/<int:photo_id>/thumb")
 @login_required
 def photo_thumb(photo_id):

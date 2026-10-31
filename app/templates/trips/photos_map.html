@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Mes photos") }}{% endblock %}
+{% block head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-1.9.4/leaflet.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet.markercluster-1.5.3/MarkerCluster.css') }}">
+{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-baseline gap-2 mb-3">
+  <h1 class="h3 fw-bold mb-0 me-auto"><i class="fa-solid fa-images me-2 text-primary" aria-hidden="true"></i>{{ _("Mes photos") }}</h1>
+  {% if photos %}
+  <span class="text-body-secondary small">
+    <i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i>{{ ngettext("%(num)s photo localisée", "%(num)s photos localisées", photos|length) }}</span>
+  {% endif %}
+</div>
+{% if photos %}
+<p class="text-body-secondary small mb-3">{{ _("Chaque photo est placée à l'endroit où elle a été prise, d'après sa position GPS. Cliquez sur une vignette pour l'agrandir.") }}</p>
+<div class="photos-map card shadow-soft" id="photosMap" data-tiles='{{ tiles|tojson }}'
+     role="region" aria-label="{{ _('Carte de mes photos') }}"></div>
+<script type="application/json" id="photosData">{{ {"photos": photos, "strings": strings}|tojson }}</script>
+{% else %}
+<div class="card shadow-soft">
+  <div class="card-body p-5 text-center">
+    <span class="feature-icon feature-icon-lg mb-3" aria-hidden="true"><i class="fa-solid fa-camera"></i></span>
+    <h2 class="h5 fw-bold">{{ _("Aucune photo localisée pour l'instant") }}</h2>
+    <p class="text-body-secondary mb-4">{{ _("Ajoutez des photos à vos trajets et à vos voyages depuis leur page : celles qui contiennent une position GPS (la plupart des photos prises avec un téléphone) apparaîtront ici, sur la carte.") }}</p>
+    <a class="btn btn-primary rounded-pill px-4" href="{{ url_for('trips.list_view') }}">
+      <i class="fa-solid fa-list me-1" aria-hidden="true"></i>{{ _("Mes voyages") }}</a>
+  </div>
+</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+{% if photos %}
+<script src="{{ url_for('static', filename='vendor/leaflet-1.9.4/leaflet.js') }}"></script>
+<script src="{{ url_for('static', filename='vendor/leaflet.markercluster-1.5.3/leaflet.markercluster.js') }}"></script>
+<script type="module" src="{{ url_for('static', filename='js/photos-map.js') }}"></script>
+{% endif %}
+{% endblock %}
