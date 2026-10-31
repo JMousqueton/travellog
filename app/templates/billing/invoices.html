@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Mes factures") }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-10 col-lg-8">
+    <a href="{{ url_for('billing.index') }}" class="small text-decoration-none">
+      <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>{{ _("Premium") }}</a>
+    <h1 class="h3 fw-bold mt-2 mb-4"><i class="fa-solid fa-file-invoice me-2" aria-hidden="true"></i>{{ _("Mes factures") }}</h1>
+    {% if invoices %}
+    <div class="card shadow-soft">
+      <div class="table-responsive">
+        <table class="table align-middle mb-0">
+          <caption class="visually-hidden">{{ _("Mes factures") }}</caption>
+          <thead>
+            <tr>
+              <th scope="col">{{ _("Date") }}</th>
+              <th scope="col">{{ _("Numéro") }}</th>
+              <th scope="col" class="text-end">{{ _("Montant") }}</th>
+              <th scope="col">{{ _("État") }}</th>
+              <th scope="col"><span class="visually-hidden">{{ _("Actions") }}</span></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for inv in invoices %}
+            <tr>
+              <td class="text-nowrap">{{ inv.date|day }}</td>
+              <td>{{ inv.number or "—" }}</td>
+              <td class="text-end text-nowrap">{{ inv.amount }}</td>
+              <td>
+                {% if inv.status == "paid" %}<span class="badge text-bg-success">{{ _("Payée") }}</span>
+                {% elif inv.status == "open" %}<span class="badge text-bg-warning">{{ _("À payer") }}</span>
+                {% else %}<span class="badge text-bg-secondary">{{ _("Annulée") }}</span>{% endif %}
+              </td>
+              <td class="text-end text-nowrap">
+                {% if inv.url %}
+                <a href="{{ inv.url }}" target="_blank" rel="noopener" class="btn btn-sm {% if inv.status == 'open' %}btn-warning{% else %}btn-light{% endif %} rounded-pill px-3">
+                  {% if inv.status == "open" %}{{ _("Payer") }}{% else %}{{ _("Voir") }}{% endif %}</a>
+                {% endif %}
+                {% if inv.pdf %}
+                <a href="{{ inv.pdf }}" class="btn btn-sm btn-light rounded-pill px-3" aria-label="{{ _('Télécharger la facture %(number)s en PDF', number=inv.number or '') }}">
+                  <i class="fa-solid fa-file-pdf me-1" aria-hidden="true"></i>PDF</a>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {% else %}
+    <p class="text-body-secondary">{{ _("Aucune facture pour le moment.") }}</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -6,9 +6,19 @@ A Flask web application for keeping track of your travels on a map: trips colour
 geodesic arcs for flights, dashed return legs, filters, statistics, light/dark theme, and an interface
 available in French, English, Spanish, German and Italian.
 
+Voyage Voyage was coded with the help of AI.
+
 ## Features
 
-- Support (`/support`, in the account menu): signed-in users open a ticket (subject and message) and follow the
+- Premium subscription (`/billing`, "Premium" in the account menu), paid through Stripe: 2 € a month or 12 € a
+  year by default (prices in `.env`). Photo upload and support are Premium features. Payment happens on
+  Stripe's hosted page (Checkout); subscribers then see their invoices (`/billing/invoices`, with the
+  hosted invoice and its PDF, and a "Pay" button for an unpaid one) and can stop the subscription, which
+  then ends at the close of the paid period with no further charge, or resume it until then. A failed
+  payment keeps access while Stripe retries. Administrators can give Premium for free (gem button in the
+  users tab). Deleting an account deletes its Stripe customer, which cancels the subscription at once.
+  Without `STRIPE_SECRET_KEY`, billing is off and nothing is restricted.
+- Support (Premium; `/support`, in the account menu): signed-in users open a ticket (subject and message) and follow the
   conversation, which can have as many exchanges as needed; they can close it, and replying reopens it.
   Administrators get a "Tickets" tab (`/admin/tickets`: to handle / answered / closed, with a counter of
   tickets waiting), reply, close or reopen. Each user message is emailed to the administrators, each reply to
@@ -42,7 +52,8 @@ available in French, English, Spanish, German and Italian.
   from home, at home, planned), departures per month, distance by mode, countries visited (new ones flagged),
   highlights, the year's badges, plane and train, tags. The calendar's days away come from the home city when
   it is set, otherwise from round trips.
-- Notes and photos on every trip and journey (detail page). Photos are re-encoded as JPEG, without EXIF
+- Notes and photos on every trip and journey (detail page); adding photos is a Premium feature, and photos
+  already added stay visible and can be deleted after the subscription ends. Photos are re-encoded as JPEG, without EXIF
   metadata in the stored file, with a thumbnail. Camera, settings, date taken and GPS position are read at
   upload, kept in the database and shown only to the owner on the photo page (`/photos/<id>`), with a
   small map. They stay private: share links show neither notes
@@ -222,7 +233,7 @@ every run (start, end, result, traceback on failure) in the database:
 |---|---|---|
 | `mail-import` | every 5 minutes | import by email (skipped while `IMAP_SERVER` is empty) |
 | `backup` | every night at 03:15 | full backup (`flask backup create`) |
-| `maintenance` | every night at 04:30 | purges the expired geocoding cache, expired share links, imported or ignored entries of the email import log older than `MAIL_IMPORT_LOG_DAYS` (90 days) and task history older than 14 days |
+| `maintenance` | every night at 04:30 | purges the expired geocoding cache, expired share links, imported or ignored entries of the email import log older than `MAIL_IMPORT_LOG_DAYS` (90 days) and task history older than 14 days; re-reads from Stripe the subscriptions whose paid period has ended (in case a webhook was lost) |
 
 ```bash
 sudo deploy/systemd/install.sh     # installs and starts the timers, removes the cron lines they replace
@@ -252,6 +263,25 @@ differ from the manifest, and applies migrations if the archive is older than th
 
 Import by email: IMAP settings in `.env` (`IMAP_SERVER`, `IMAP_USERNAME`, `IMAP_PASSWORD`…), run by the
 `mail-import` task.
+
+Premium (Stripe):
+
+1. Put the secret key in `.env` (`STRIPE_SECRET_KEY`, `sk_test_…` for testing, `sk_live_…` or a restricted
+   `rk_live_…` in production). A restricted key needs write access to Products, Prices, Customers, Checkout
+   Sessions and Subscriptions, and read access to Invoices. Keep the test key in a development copy's
+   `.env`, never next to the live one.
+2. The product ("Voyage Voyage Premium", tax code `STRIPE_TAX_CODE`) and the prices are created by the
+   application on first use, from `PREMIUM_PRICE_MONTHLY`, `PREMIUM_PRICE_YEARLY` and `PREMIUM_CURRENCY`.
+   A new amount creates a new price for new subscribers; existing subscribers keep theirs (archive the old
+   price in Stripe so it can't be reused).
+3. In Stripe, add a webhook endpoint `https://<domain>/billing/webhook` with the events
+   `checkout.session.completed`, `customer.subscription.created`, `customer.subscription.updated`,
+   `customer.subscription.deleted`, `invoice.paid` and `invoice.payment_failed`, and put its secret in
+   `STRIPE_WEBHOOK_SECRET`. On each event the subscription is re-read from Stripe, so duplicates and events
+   out of order don't matter. Locally: `stripe listen --forward-to localhost:5000/billing/webhook`.
+4. Taxes: with Stripe Managed Payments turned on, Stripe is the seller and charges VAT; turned off
+   (Settings → Managed Payments), the prices are charged as is. Under the French VAT exemption, add
+   "TVA non applicable, art. 293 B du CGI" to the invoice footer (Settings → Billing → Invoices).
 
 Copy `instance/backups` to another machine regularly: a backup on the same disk doesn't protect against that
 disk failing. Each user can also download their own backup (trips + photos, `.zip`) from their preferences and
@@ -323,6 +353,9 @@ the database.
 | `BACKUP_DIR`, `BACKUP_KEEP` | Backup folder (default `instance/backups`) and number of archives kept (14) |
 | `ROUTING_URL`, `ROUTING_PROFILES`, `ROUTING_TIMEOUT` | OSRM server and routed modes (default `car:driving,bus:driving`) |
 | `MAX_PHOTO_MB`, `MAX_UPLOAD_MB`, `MAX_PHOTOS_PER_ITEM` | Photo limits (15 MB per photo, 64 MB per upload, 30 per trip or journey) |
+| `STRIPE_SECRET_KEY`, `STRIPE_WEBHOOK_SECRET` | Stripe secret key and webhook signing secret (`whsec_…`); without the key, Premium is off |
+| `PREMIUM_PRICE_MONTHLY`, `PREMIUM_PRICE_YEARLY`, `PREMIUM_CURRENCY` | Premium prices in currency units (`2`, `12`, `eur` by default; `2.50` accepted) |
+| `STRIPE_TAX_CODE` | Tax code of the Stripe product (`txcd_10103000`, SaaS for personal use), required by Managed Payments |
 
 ### Base map
 
@@ -371,7 +404,7 @@ app/
   mail.py            SMTP email sending
   transport.py       modes of transport (label, icon, colours)
   cli.py             flask seed, flask translate …
-  auth/ trips/ api/ main/ share/ admin/ transfer/ support/   blueprints (transfer: import / export; support: tickets)
+  auth/ trips/ api/ main/ share/ admin/ transfer/ support/ billing/   blueprints (transfer: import / export; support: tickets; billing: Premium subscription with Stripe)
   templates/  static/  translations/
 migrations/          Alembic (Flask-Migrate)
 tests/               pytest

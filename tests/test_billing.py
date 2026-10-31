@@ -240,4 +240,199 @@ def test_maintenance_resyncs_expired_subscriptions(billing, db, user, monkeypatc
 def test_csp_allows_stripe_redirects(client):
     csp = client.get("/").headers["Content-Security-Policy"]
     form_action = next(p for p in csp.split(";") if p.strip().startswith("form-action"))
-    assert "https://checkout.stripe.com" in form_action and "https://billing.stripe.com" in form_action
+    assert "https://checkout.stripe.com" in form_action
+
+
+def subscribe(user, db, **kw):
+    user.stripe_customer_id = "cus_1"
+    stripe_sync.apply_subscription(user, subscription(**kw))
+    db.session.commit()
+
+
+def test_subscriber_sees_invoices_and_stop_not_plans(auth_client, billing, user, db):
+    subscribe(user, db)
+    page = auth_client.get("/billing/").text
+    assert 'name="plan"' not in page and "S&#39;abonner" not in page
+    assert "Mes factures" in page and "Arrêter mon abonnement" in page and 'action="/billing/cancel"' in page
+    assert "Reprendre mon abonnement" not in page
+
+
+def test_cancelled_subscriber_can_resume(auth_client, billing, user, db):
+    subscribe(user, db, cancel=True)
+    page = auth_client.get("/billing/").text
+    assert 'action="/billing/resume"' in page and 'action="/billing/cancel"' not in page
+    assert 'name="plan"' not in page
+
+
+def test_granted_premium_sees_no_plans(auth_client, billing, user, db):
+    user.premium_granted = True
+    db.session.commit()
+    page = auth_client.get("/billing/").text
+    assert 'name="plan"' not in page and "offert" in page
+
+
+def test_non_subscriber_sees_plans(auth_client, billing):
+    page = auth_client.get("/billing/").text
+    assert page.count('name="plan"') == 2 and "Arrêter mon abonnement" not in page
+
+
+@pytest.mark.parametrize("route,cancel", [("cancel", True), ("resume", False)])
+def test_cancel_and_resume(auth_client, billing, user, db, monkeypatch, route, cancel):
+    subscribe(user, db, cancel=not cancel)
+    calls = []
+
+    def modify(sub_id, **kw):
+        calls.append((sub_id, kw))
+        return stripe.StripeObject.construct_from(subscription(cancel=kw["cancel_at_period_end"]), "k")
+    monkeypatch.setattr(stripe_sync, "fetch_subscription", lambda customer: subscription(cancel=not cancel))
+    monkeypatch.setattr(stripe.Subscription, "modify", modify)
+    resp = auth_client.post(f"/billing/{route}", follow_redirects=True)
+    assert calls == [("sub_1", {"cancel_at_period_end": cancel})]
+    refreshed = db.session.get(User, user.id)
+    assert refreshed.cancel_at_period_end is cancel and refreshed.is_premium  # accès gardé jusqu'à la fin
+    assert ("est arrêté" if cancel else "reprend") in resp.text
+
+
+def test_cancel_without_subscription(auth_client, billing, user, db, monkeypatch):
+    user.stripe_customer_id = "cus_1"
+    db.session.commit()
+    monkeypatch.setattr(stripe_sync, "fetch_subscription", lambda customer: None)
+    monkeypatch.setattr(stripe.Subscription, "modify", lambda *a, **kw: pytest.fail("rien à arrêter"))
+    assert "Aucun abonnement en cours" in auth_client.post("/billing/cancel", follow_redirects=True).text
+
+
+def test_cancel_stripe_error(auth_client, billing, user, db, monkeypatch):
+    subscribe(user, db)
+
+    def boom(customer):
+        raise stripe.APIConnectionError("réseau")
+    monkeypatch.setattr(stripe_sync, "fetch_subscription", boom)
+    assert "pas pu être modifié" in auth_client.post("/billing/cancel", follow_redirects=True).text
+
+
+def test_invoices_page(auth_client, billing, user, db, monkeypatch):
+    subscribe(user, db)
+    invs = [stripe.StripeObject.construct_from(i, "k") for i in (
+        {"number": "A-0002", "created": 1793000000, "total": 200, "currency": "eur", "status": "open",
+         "hosted_invoice_url": "https://invoice.stripe.com/i/2", "invoice_pdf": "https://pay.stripe.com/2.pdf"},
+        {"number": "A-0001", "created": 1790000000, "total": 200, "currency": "eur", "status": "paid",
+         "hosted_invoice_url": "https://invoice.stripe.com/i/1", "invoice_pdf": "https://pay.stripe.com/1.pdf"},
+        {"number": None, "created": 1793100000, "total": 200, "currency": "eur", "status": "draft"},
+    )]
+    seen = []
+    monkeypatch.setattr(stripe.Invoice, "list", lambda **kw: seen.append(kw) or SimpleNamespace(data=invs))
+    page = auth_client.get("/billing/invoices").text
+    assert seen[0]["customer"] == "cus_1"
+    assert "A-0002" in page and "A-0001" in page and page.count("2,00") == 2  # brouillon exclu
+    assert "https://pay.stripe.com/1.pdf" in page and "Payer" in page and "Payée" in page
+
+
+def test_invoices_without_customer(auth_client, billing):
+    assert "Aucune facture" in auth_client.get("/billing/invoices").text
+
+
+# --- Photos : fonction Premium -----------------------------------------------------------------
+
+def _jpeg():
+    import io
+
+    from PIL import Image
+
+    out = io.BytesIO()
+    Image.new("RGB", (64, 48), (200, 40, 40)).save(out, "JPEG")
+    return out.getvalue()
+
+
+def _upload_photo(client, url):
+    import io
+    return client.post(url, data={"photos": [(io.BytesIO(_jpeg()), "a.jpg")]}, content_type="multipart/form-data")
+
+
+def test_photo_upload_requires_premium(auth_client, billing, user, db):
+    from app.models import Photo
+
+    from .conftest import make_trip
+
+    trip = make_trip(user)
+    page = auth_client.get(f"/trips/{trip.id}").text
+    assert "réservé aux abonnés Premium" in page and 'enctype="multipart/form-data"' not in page
+    resp = _upload_photo(auth_client, f"/trips/{trip.id}/photos")
+    assert resp.status_code == 302 and resp.location.endswith("/billing/")
+    assert db.session.execute(db.select(Photo)).first() is None
+
+    user.premium_granted = True
+    db.session.commit()
+    assert 'enctype="multipart/form-data"' in auth_client.get(f"/trips/{trip.id}").text
+    _upload_photo(auth_client, f"/trips/{trip.id}/photos")
+    assert db.session.execute(db.select(db.func.count(Photo.id))).scalar() == 1
+
+
+def test_journey_photo_upload_requires_premium(auth_client, billing, user, db):
+    from .conftest import make_trip
+
+    a, b = make_trip(user), make_trip(user)
+    auth_client.post("/journeys", data={"trip_ids": [a.id, b.id]})
+    from app.models import Journey
+    journey = db.session.execute(db.select(Journey)).scalar_one()
+    resp = _upload_photo(auth_client, f"/journeys/{journey.id}/photos")
+    assert resp.status_code == 302 and resp.location.endswith("/billing/")
+
+
+def test_existing_photos_stay_visible_and_deletable(app, client, user, db):
+    from app.models import Photo
+
+    from .conftest import make_trip
+
+    trip = make_trip(user)
+    login(client)
+    _upload_photo(client, f"/trips/{trip.id}/photos")  # sans Stripe : pas de restriction
+    photo = db.session.execute(db.select(Photo)).scalar_one()
+    app.config.update(STRIPE_SECRET_KEY="sk_test_x")  # puis l'abonnement devient nécessaire
+    assert client.get(f"/photos/{photo.id}/thumb").status_code == 200
+    assert f"/photos/{photo.id}/thumb" in client.get(f"/trips/{trip.id}").text
+    client.post(f"/photos/{photo.id}/delete")
+    assert db.session.execute(db.select(Photo)).first() is None
+
+
+def test_archive_restore_skips_photos_without_premium(app, client, user, db):
+    import io
+
+    from .conftest import make_trip
+
+    trip = make_trip(user)
+    login(client)
+    _upload_photo(client, f"/trips/{trip.id}/photos")
+    archive = client.get("/export.zip").data
+    client.post("/auth/logout")
+
+    app.config.update(STRIPE_SECRET_KEY="sk_test_x")
+    make_user("carol@example.com")
+    login(client, "carol@example.com")
+    result = client.post("/import", data={"file": (io.BytesIO(archive), "backup.zip")},
+                         content_type="multipart/form-data", follow_redirects=True)
+    assert "1 photo non restaurée" in result.text
+    carol = db.session.execute(db.select(User).filter_by(email="carol@example.com")).scalar_one()
+    assert carol.trips.count() == 1 and carol.photos.count() == 0
+
+
+# --- Support : fonction Premium ----------------------------------------------------------------
+
+def test_support_requires_premium(auth_client, billing, user, db):
+    from app.models import Ticket
+
+    for method, url in (("get", "/support"), ("post", "/support")):
+        resp = getattr(auth_client, method)(url, data={"subject": "Aide", "body": "Bonjour"})
+        assert resp.status_code == 302 and resp.location.endswith("/billing/")
+    assert db.session.execute(db.select(Ticket)).first() is None
+    assert "Accès au support" in auth_client.get("/billing/").text
+
+    subscribe(user, db)
+    assert auth_client.get("/support").status_code == 200
+    auth_client.post("/support", data={"subject": "Aide", "body": "Bonjour"})
+    ticket = db.session.execute(db.select(Ticket)).scalar_one()
+
+    stripe_sync.apply_subscription(user, subscription("canceled"))  # abonnement terminé
+    db.session.commit()
+    for url in (f"/support/{ticket.id}", f"/support/{ticket.id}/close", f"/support/{ticket.id}/notify"):
+        method = auth_client.get if url.endswith(str(ticket.id)) else auth_client.post
+        assert method(url).location.endswith("/billing/")

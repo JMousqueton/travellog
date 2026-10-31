@@ -5,6 +5,7 @@ from flask_babel import gettext as _
 from flask_login import current_user, login_required
 
 from ..extensions import csrf, db, limiter
+from ..i18n import format_day
 from . import billing_enabled, bp
 from . import stripe_sync
 
@@ -77,19 +78,49 @@ def success():
     return redirect(url_for(".index"))
 
 
-@bp.route("/portal", methods=["POST"])
+@bp.route("/invoices")
 @login_required
-def portal():
-    if not current_user.stripe_customer_id:
-        return redirect(url_for(".index"))
+def invoices():
     try:
-        url = stripe_sync.create_portal_session(current_user, url_for(".index", _external=True))
+        rows = stripe_sync.list_invoices(current_user)
     except stripe.StripeError:
-        current_app.logger.exception("Stripe : ouverture du portail client")
-        flash(_("La gestion de l'abonnement est momentanément indisponible. Réessayez dans quelques minutes."),
-              "danger")
+        current_app.logger.exception("Stripe : liste des factures")
+        flash(_("Les factures sont momentanément indisponibles. Réessayez dans quelques minutes."), "danger")
         return redirect(url_for(".index"))
-    return redirect(url, code=303)
+    for row in rows:
+        row["amount"] = format_currency(row["amount"], row["currency"])
+    return render_template("billing/invoices.html", invoices=rows)
+
+
+def _set_cancel(cancel):
+    try:
+        changed = stripe_sync.set_cancel_at_period_end(current_user, cancel)
+        db.session.commit()
+    except stripe.StripeError:
+        current_app.logger.exception("Stripe : modification de l'abonnement")
+        flash(_("Votre abonnement n'a pas pu être modifié. Réessayez dans quelques minutes."), "danger")
+        return redirect(url_for(".index"))
+    if not changed:
+        flash(_("Aucun abonnement en cours."), "info")
+    elif cancel:
+        flash(_("Votre abonnement est arrêté : l'accès Premium reste actif jusqu'au %(date)s, sans nouveau prélèvement.",
+                date=format_day(current_user.premium_until)), "success")
+    else:
+        flash(_("Votre abonnement reprend : prochain renouvellement le %(date)s.",
+                date=format_day(current_user.premium_until)), "success")
+    return redirect(url_for(".index"))
+
+
+@bp.route("/cancel", methods=["POST"])
+@login_required
+def cancel():
+    return _set_cancel(True)
+
+
+@bp.route("/resume", methods=["POST"])
+@login_required
+def resume():
+    return _set_cancel(False)
 
 
 @bp.route("/webhook", methods=["POST"])

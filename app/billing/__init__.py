@@ -11,12 +11,18 @@ def billing_enabled():
     return bool(current_app.config.get("STRIPE_SECRET_KEY"))
 
 
+def premium_access(user=None):
+    """Le compte a-t-il accès aux fonctions Premium ? Toujours vrai si Stripe n'est pas configuré."""
+    user = current_user if user is None else user
+    return not billing_enabled() or (user.is_authenticated and user.is_premium)
+
+
 def premium_required(view):
     """Réserve une vue aux comptes Premium. Sans Stripe configuré, rien n'est réservé."""
     @wraps(view)
     @login_required
     def wrapper(*args, **kwargs):
-        if billing_enabled() and not current_user.is_premium:
+        if not premium_access():
             if request.path.startswith("/api/"):
                 return jsonify(error=_("Fonction réservée aux abonnés Premium.")), 402
             flash(_("Cette fonction est réservée aux abonnés Premium."), "info")

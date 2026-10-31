@@ -98,8 +98,37 @@ def create_checkout_session(user, plan, success_url, cancel_url):
     return session.url
 
 
-def create_portal_session(user, return_url):
-    return _client().billing_portal.Session.create(customer=user.stripe_customer_id, return_url=return_url).url
+def list_invoices(user, limit=36):
+    """Factures du client, de la plus récente à la plus ancienne (brouillons exclus)."""
+    if not user.stripe_customer_id:
+        return []
+    invoices = _client().Invoice.list(customer=user.stripe_customer_id, limit=limit).data
+    rows = []
+    for inv in invoices:
+        inv = inv.to_dict()
+        if inv.get("status") == "draft":
+            continue
+        rows.append({
+            "number": inv.get("number"),
+            "date": datetime.fromtimestamp(inv["created"], timezone.utc),
+            "amount": Decimal(inv.get("total") or 0) / 100,
+            "currency": (inv.get("currency") or "eur").upper(),
+            "status": inv.get("status"),  # paid, open, void, uncollectible
+            "url": inv.get("hosted_invoice_url"),
+            "pdf": inv.get("invoice_pdf"),
+        })
+    return rows
+
+
+def set_cancel_at_period_end(user, cancel):
+    """Arrête (à la fin de la période payée) ou reprend l'abonnement en cours ; False s'il n'y en a pas."""
+    sub = fetch_subscription(user.stripe_customer_id) if user.stripe_customer_id else None
+    if sub is None or sub["status"] not in User.PREMIUM_STATUSES:
+        apply_subscription(user, sub)
+        return False
+    updated = _client().Subscription.modify(sub["id"], cancel_at_period_end=cancel)
+    apply_subscription(user, updated.to_dict())
+    return True
 
 
 def fetch_subscription(customer_id):

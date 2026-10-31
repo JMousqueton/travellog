@@ -1,7 +1,8 @@
 from flask import abort, flash, redirect, render_template, request, url_for
 from flask_babel import gettext as _
-from flask_login import current_user, login_required
+from flask_login import current_user
 
+from ..billing import premium_required
 from ..extensions import db, limiter
 from ..models import Ticket, utcnow
 from . import bp
@@ -20,7 +21,7 @@ def _own_ticket(ticket_id):
 
 
 @bp.route("/support", methods=["GET", "POST"])
-@login_required
+@premium_required
 @limiter.limit(POST_LIMIT, methods=["POST"])
 def index():
     """Mes demandes, et le formulaire pour en ouvrir une nouvelle."""
@@ -39,7 +40,7 @@ def index():
 
 
 @bp.route("/support/<int:ticket_id>", methods=["GET", "POST"])
-@login_required
+@premium_required
 @limiter.limit(POST_LIMIT, methods=["POST"])
 def ticket(ticket_id):
     ticket = _own_ticket(ticket_id)
@@ -54,7 +55,7 @@ def ticket(ticket_id):
 
 
 @bp.route("/support/<int:ticket_id>/close", methods=["POST"])
-@login_required
+@premium_required
 def close(ticket_id):
     ticket = _own_ticket(ticket_id)
     ticket.status = "closed"
@@ -65,7 +66,7 @@ def close(ticket_id):
 
 
 @bp.route("/support/<int:ticket_id>/notify", methods=["POST"])
-@login_required
+@premium_required
 def notify(ticket_id):
     """Active ou coupe les e-mails de réponse pour ce ticket."""
     ticket = _own_ticket(ticket_id)

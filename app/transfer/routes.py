@@ -19,6 +19,7 @@ from wtforms import HiddenField, SubmitField
 from ..extensions import db
 from ..mail_import.wallet import is_pass
 from ..models import Journey, Trip
+from ..billing import premium_access
 from ..photos import PhotoError, clean_exif, photo_path, save_upload
 from ..tags import MAX_TAGS, parse_tags, resolve
 from ..trips.queries import list_trips
@@ -343,8 +344,10 @@ def _create(records, archive=None):
         journeys += 1
     db.session.flush()
 
-    photos_added = photos_failed = 0
-    if archive is not None:
+    photos_added = photos_failed = photos_premium = 0
+    if archive is not None and not premium_access():
+        photos_premium = sum(len(r["photos"]) + len(r["journey_photos"]) for _t, r in created_records)
+    elif archive is not None:
         for trip, record in created_records:
             for entries, owner in ((record["photos"], {"trip": trip}),
                                    (record["journey_photos"], {"journey": trip.journey} if trip.journey else {"trip": trip})):
@@ -362,4 +365,8 @@ def _create(records, archive=None):
         message += " " + ngettext("%(num)s photo restaurée.", "%(num)s photos restaurées.", photos_added)
     if photos_failed:
         message += " " + ngettext("%(num)s photo illisible ignorée.", "%(num)s photos illisibles ignorées.", photos_failed)
+    if photos_premium:
+        message += " " + ngettext("%(num)s photo non restaurée : l'ajout de photos est réservé aux abonnés Premium.",
+                                  "%(num)s photos non restaurées : l'ajout de photos est réservé aux abonnés Premium.",
+                                  photos_premium)
     flash(message, "success" if created else "info")

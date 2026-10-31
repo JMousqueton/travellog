@@ -119,6 +119,14 @@
       {% endfor %}
     </ul>
     {% endif %}
+    {% if not premium_access() %}
+    <div class="card shadow-soft">
+      <div class="card-body p-4 d-flex flex-wrap align-items-center gap-3">
+        <p class="mb-0 flex-grow-1"><i class="fa-solid fa-gem me-2 text-primary" aria-hidden="true"></i>{{ _("L'ajout de photos est réservé aux abonnés Premium.") }}</p>
+        <a href="{{ url_for('billing.index') }}" class="btn btn-primary rounded-pill px-4">{{ _("Découvrir Premium") }}</a>
+      </div>
+    </div>
+    {% else %}
     <div class="card shadow-soft">
       <div class="card-body p-4">
         <form method="post" action="{{ upload_url }}" enctype="multipart/form-data" class="row g-2 align-items-end">
@@ -137,6 +145,7 @@
         </form>
       </div>
     </div>
+    {% endif %}
   </div>
 </div>
 {% endblock %}

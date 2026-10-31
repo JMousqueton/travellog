@@ -93,7 +93,7 @@ class Config:
     # Prix TTC, en unités de la devise (« 2 », « 2.50 ») : le tarif Stripe correspondant est créé au premier
     # achat. Un nouveau prix ne s'applique qu'aux nouveaux abonnements, les abonnés gardent le leur.
     PREMIUM_PRICE_MONTHLY = os.environ.get("PREMIUM_PRICE_MONTHLY", "2")
-    PREMIUM_PRICE_YEARLY = os.environ.get("PREMIUM_PRICE_YEARLY", "10")
+    PREMIUM_PRICE_YEARLY = os.environ.get("PREMIUM_PRICE_YEARLY", "12")
     PREMIUM_CURRENCY = os.environ.get("PREMIUM_CURRENCY", "eur").lower()
     # Code fiscal du produit (https://docs.stripe.com/tax/tax-codes), exigé par Stripe Managed Payments :
     # par défaut « logiciel en ligne (SaaS), usage personnel ».

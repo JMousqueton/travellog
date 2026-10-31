@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-31 09:16+0000\n"
+"POT-Creation-Date: 2026-10-31 09:58+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: es\n"
@@ -536,19 +536,19 @@ msgstr ""
 msgid "Mot de passe modifié. Vous pouvez vous connecter."
 msgstr "Contraseña cambiada. Ya puedes iniciar sesión."
 
-#: app/billing/__init__.py:21
+#: app/billing/__init__.py:27
 msgid "Fonction réservée aux abonnés Premium."
 msgstr "Función reservada a los suscriptores Premium."
 
-#: app/billing/__init__.py:22
+#: app/billing/__init__.py:28
 msgid "Cette fonction est réservée aux abonnés Premium."
 msgstr "Esta función está reservada a los suscriptores Premium."
 
-#: app/billing/routes.py:48
+#: app/billing/routes.py:49
 msgid "Vous êtes déjà abonné."
 msgstr "Ya está suscrito."
 
-#: app/billing/routes.py:57
+#: app/billing/routes.py:58
 msgid ""
 "Le paiement est momentanément indisponible. Réessayez dans quelques "
 "minutes."
@@ -556,21 +556,43 @@ msgstr ""
 "El pago no está disponible en este momento. Inténtelo de nuevo en unos "
 "minutos."
 
-#: app/billing/routes.py:73
+#: app/billing/routes.py:74
 msgid "Merci ! Votre abonnement Premium est actif."
 msgstr "¡Gracias! Su suscripción Premium está activa."
 
-#: app/billing/routes.py:76
+#: app/billing/routes.py:77
 msgid "Merci ! Votre paiement est en cours de confirmation."
 msgstr "¡Gracias! Su pago se está confirmando."
 
-#: app/billing/routes.py:89
+#: app/billing/routes.py:88
 msgid ""
-"La gestion de l'abonnement est momentanément indisponible. Réessayez dans"
-" quelques minutes."
+"Les factures sont momentanément indisponibles. Réessayez dans quelques "
+"minutes."
 msgstr ""
-"La gestión de la suscripción no está disponible en este momento. "
-"Inténtelo de nuevo en unos minutos."
+"Las facturas no están disponibles en este momento. Inténtelo de nuevo en "
+"unos minutos."
+
+#: app/billing/routes.py:101
+msgid "Votre abonnement n'a pas pu être modifié. Réessayez dans quelques minutes."
+msgstr "No se pudo modificar su suscripción. Inténtelo de nuevo en unos minutos."
+
+#: app/billing/routes.py:104
+msgid "Aucun abonnement en cours."
+msgstr "No hay ninguna suscripción en curso."
+
+#: app/billing/routes.py:106
+#, python-format
+msgid ""
+"Votre abonnement est arrêté : l'accès Premium reste actif jusqu'au "
+"%(date)s, sans nouveau prélèvement."
+msgstr ""
+"Su suscripción se ha detenido: el acceso Premium sigue activo hasta el "
+"%(date)s, sin nuevos cobros."
+
+#: app/billing/routes.py:109
+#, python-format
+msgid "Votre abonnement reprend : prochain renouvellement le %(date)s."
+msgstr "Su suscripción se reanuda: próxima renovación el %(date)s."
 
 #: app/i18n.py:74
 msgid "Aujourd'hui"
@@ -722,7 +744,7 @@ msgstr "colaboradores de OpenStreetMap"
 msgid "Aucun lieu trouvé"
 msgstr "No se ha encontrado ningún lugar"
 
-#: app/api/routes.py:196 app/i18n.py:132 app/trips/routes.py:120
+#: app/api/routes.py:196 app/i18n.py:132 app/trips/routes.py:121
 msgid "La recherche de lieux est momentanément indisponible."
 msgstr "La búsqueda de lugares no está disponible temporalmente."
 
@@ -1300,27 +1322,27 @@ msgstr "[Soporte] Ticket n.º %(id)s: %(subject)s"
 msgid "Réponse du support : %(subject)s"
 msgstr "Respuesta del soporte: %(subject)s"
 
-#: app/support/routes.py:34
+#: app/support/routes.py:35
 msgid "Votre demande a été envoyée. Vous recevrez la réponse par e-mail."
 msgstr "Tu solicitud se ha enviado. Recibirás la respuesta por correo electrónico."
 
-#: app/support/routes.py:35
+#: app/support/routes.py:36
 msgid "Votre demande a été envoyée. La réponse apparaîtra sur cette page."
 msgstr "Tu solicitud se ha enviado. La respuesta aparecerá en esta página."
 
-#: app/support/routes.py:51
+#: app/support/routes.py:52
 msgid "Message envoyé."
 msgstr "Mensaje enviado."
 
-#: app/support/routes.py:63
+#: app/support/routes.py:64
 msgid "Demande fermée. Vous pouvez la rouvrir en y répondant."
 msgstr "Solicitud cerrada. Puedes reabrirla respondiendo."
 
-#: app/support/routes.py:74
+#: app/support/routes.py:75
 msgid "Vous recevrez les réponses à cette demande par e-mail."
 msgstr "Recibirás las respuestas a esta solicitud por correo electrónico."
 
-#: app/support/routes.py:75
+#: app/support/routes.py:76
 msgid "Vous ne recevrez plus d'e-mail pour cette demande."
 msgstr "Ya no recibirás correos electrónicos sobre esta solicitud."
 
@@ -2069,7 +2091,8 @@ msgstr "Perfil público"
 msgid "Inscription"
 msgstr "Registro"
 
-#: app/templates/admin/users.html:17 app/templates/trips/list.html:117
+#: app/templates/admin/users.html:17 app/templates/billing/invoices.html:20
+#: app/templates/trips/list.html:117
 msgid "Actions"
 msgstr "Acciones"
 
@@ -2291,7 +2314,7 @@ msgstr "Indica tu dirección de correo para recibir un enlace de restablecimient
 
 #: app/templates/auth/forgot.html:10 app/templates/auth/register.html:12
 #: app/templates/support/_macros.html:40 app/templates/support/index.html:19
-#: app/templates/trips/detail.html:134
+#: app/templates/trips/detail.html:142
 msgid "Envoi…"
 msgstr "Enviando…"
 
@@ -2388,7 +2411,7 @@ msgstr "Dirección del perfil público"
 msgid "Copier"
 msgstr "Copiar"
 
-#: app/templates/auth/profile.html:83
+#: app/templates/auth/profile.html:83 app/templates/billing/invoices.html:37
 msgid "Voir"
 msgstr "Ver"
 
@@ -2645,7 +2668,7 @@ msgstr "Importar / exportar"
 
 #: app/templates/admin/users.html:27 app/templates/base.html:172
 #: app/templates/billing/index.html:2 app/templates/billing/index.html:6
-#: app/templates/billing/index.html:13
+#: app/templates/billing/index.html:17 app/templates/billing/invoices.html:7
 msgid "Premium"
 msgstr "Premium"
 
@@ -2695,93 +2718,167 @@ msgstr "Cancelar"
 msgid "Soutenez %(site)s et profitez des fonctions Premium."
 msgstr "Apoye %(site)s y disfrute de las funciones Premium."
 
-#: app/templates/billing/index.html:14
+#: app/templates/billing/index.html:9
+msgid ""
+"Photos de vos trajets et voyages, avec leurs informations EXIF et leur "
+"position GPS"
+msgstr "Fotos de sus trayectos y viajes, con su información EXIF y su posición GPS"
+
+#: app/templates/billing/index.html:10
+msgid ""
+"Accès au support : posez vos questions, signalez un problème, proposez "
+"une idée"
+msgstr ""
+"Acceso al soporte: haga sus preguntas, informe de un problema, proponga "
+"una idea"
+
+#: app/templates/billing/index.html:18
 msgid "Abonnement annuel"
 msgstr "Suscripción anual"
 
-#: app/templates/billing/index.html:14
+#: app/templates/billing/index.html:18
 msgid "Abonnement mensuel"
 msgstr "Suscripción mensual"
 
-#: app/templates/billing/index.html:18
+#: app/templates/billing/index.html:22
 msgid ""
-"Le dernier paiement a échoué. Mettez à jour votre moyen de paiement pour "
-"garder l'accès Premium."
+"Le dernier paiement a échoué. Réglez la facture en attente pour garder "
+"l'accès Premium."
 msgstr ""
-"El último pago ha fallado. Actualice su método de pago para mantener el "
+"El último pago ha fallado. Abone la factura pendiente para mantener el "
 "acceso Premium."
 
-#: app/templates/billing/index.html:21
+#: app/templates/billing/index.html:23 app/templates/billing/index.html:32
+#: app/templates/billing/index.html:70 app/templates/billing/index.html:95
+#: app/templates/billing/invoices.html:2 app/templates/billing/invoices.html:8
+#: app/templates/billing/invoices.html:13
+msgid "Mes factures"
+msgstr "Mis facturas"
+
+#: app/templates/billing/index.html:26
 #, python-format
 msgid "Abonnement résilié : l'accès Premium prend fin le %(date)s."
 msgstr "Suscripción cancelada: el acceso Premium termina el %(date)s."
 
-#: app/templates/billing/index.html:23
+#: app/templates/billing/index.html:28
 #, python-format
 msgid "Prochain renouvellement le %(date)s."
 msgstr "Próxima renovación el %(date)s."
 
-#: app/templates/billing/index.html:28
-msgid "Gérer mon abonnement"
-msgstr "Gestionar mi suscripción"
+#: app/templates/billing/index.html:37
+msgid "Reprendre mon abonnement"
+msgstr "Reanudar mi suscripción"
 
-#: app/templates/billing/index.html:30
+#: app/templates/billing/index.html:41 app/templates/billing/index.html:60
+msgid "Arrêter mon abonnement"
+msgstr "Detener mi suscripción"
+
+#: app/templates/billing/index.html:53
+msgid "Arrêter votre abonnement ?"
+msgstr "¿Detener su suscripción?"
+
+#: app/templates/billing/index.html:55
+#, python-format
 msgid ""
-"Résiliation, moyen de paiement et factures, sur la page sécurisée de "
-"Stripe."
-msgstr "Cancelación, método de pago y facturas, en la página segura de Stripe."
+"Aucun nouveau prélèvement ne sera fait. L'accès Premium reste actif "
+"jusqu'au %(date)s, et vous pouvez reprendre l'abonnement d'ici là."
+msgstr ""
+"No se realizará ningún cobro más. El acceso Premium sigue activo hasta el"
+" %(date)s y puede reanudar la suscripción hasta entonces."
 
-#: app/templates/billing/index.html:35
+#: app/templates/billing/index.html:59
+msgid "Garder mon abonnement"
+msgstr "Mantener mi suscripción"
+
+#: app/templates/billing/index.html:67
 msgid "L'accès Premium vous est offert : aucun abonnement n'est nécessaire."
 msgstr "Se le ha regalado el acceso Premium: no necesita ninguna suscripción."
 
-#: app/templates/billing/index.html:39
+#: app/templates/billing/index.html:75
 msgid "par mois"
 msgstr "al mes"
 
-#: app/templates/billing/index.html:39
+#: app/templates/billing/index.html:75
 msgid "Sans engagement, résiliable à tout moment."
 msgstr "Sin permanencia, cancelable en cualquier momento."
 
-#: app/templates/billing/index.html:40
+#: app/templates/billing/index.html:76
 msgid "par an"
 msgstr "al año"
 
-#: app/templates/billing/index.html:40
+#: app/templates/billing/index.html:76
 #, python-format
 msgid "Économisez %(saving)s par rapport au mois."
 msgstr "Ahorre un %(saving)s respecto al plan mensual."
 
-#: app/templates/billing/index.html:40
+#: app/templates/billing/index.html:76
 msgid "Un seul paiement par an."
 msgstr "Un solo pago al año."
 
-#: app/templates/billing/index.html:47
+#: app/templates/billing/index.html:83
 msgid "Annuel"
 msgstr "Anual"
 
-#: app/templates/billing/index.html:47
+#: app/templates/billing/index.html:83
 msgid "Mensuel"
 msgstr "Mensual"
 
-#: app/templates/billing/index.html:51
+#: app/templates/billing/index.html:87
 msgid "Redirection…"
 msgstr "Redirigiendo…"
 
-#: app/templates/billing/index.html:51
+#: app/templates/billing/index.html:87
 msgid "S'abonner"
 msgstr "Suscribirse"
 
-#: app/templates/billing/index.html:57
+#: app/templates/billing/index.html:93
 #, python-format
 msgid ""
 "Paiement sécurisé par Stripe. Vos coordonnées bancaires ne transitent pas"
 " par %(site)s."
 msgstr "Pago seguro con Stripe. Sus datos bancarios no pasan por %(site)s."
 
-#: app/templates/billing/index.html:61
-msgid "Mes factures"
-msgstr "Mis facturas"
+#: app/templates/billing/invoices.html:16 app/templates/share/trips.html:35
+#: app/templates/transfer/preview.html:43 app/templates/trips/list.html:113
+msgid "Date"
+msgstr "Fecha"
+
+#: app/templates/billing/invoices.html:17 app/trips/forms.py:61
+msgid "Numéro"
+msgstr "Número"
+
+#: app/templates/billing/invoices.html:18
+msgid "Montant"
+msgstr "Importe"
+
+#: app/templates/billing/invoices.html:19
+msgid "État"
+msgstr "Estado"
+
+#: app/templates/billing/invoices.html:30
+msgid "Payée"
+msgstr "Pagada"
+
+#: app/templates/billing/invoices.html:31
+msgid "À payer"
+msgstr "Pendiente"
+
+#: app/templates/billing/invoices.html:32
+msgid "Annulée"
+msgstr "Anulada"
+
+#: app/templates/billing/invoices.html:37
+msgid "Payer"
+msgstr "Pagar"
+
+#: app/templates/billing/invoices.html:40
+#, python-format
+msgid "Télécharger la facture %(number)s en PDF"
+msgstr "Descargar la factura %(number)s en PDF"
+
+#: app/templates/billing/invoices.html:51
+msgid "Aucune facture pour le moment."
+msgstr "Todavía no hay facturas."
 
 #: app/templates/errors/404.html:2 app/templates/errors/404.html:19
 #: app/templates/errors/404.html:25
@@ -3952,11 +4049,6 @@ msgstr "Insignias · todos tus viajes"
 msgid "Voyages partagés"
 msgstr "Viajes compartidos"
 
-#: app/templates/share/trips.html:35 app/templates/transfer/preview.html:43
-#: app/templates/trips/list.html:113
-msgid "Date"
-msgstr "Fecha"
-
 #: app/templates/share/trips.html:36 app/templates/transfer/preview.html:44
 msgid "Trajet"
 msgstr "Trayecto"
@@ -4097,7 +4189,7 @@ msgid "Télécharger la sauvegarde"
 msgstr "Descargar la copia"
 
 #: app/templates/transfer/index.html:45 app/templates/transfer/preview.html:42
-#: app/transfer/routes.py:39
+#: app/transfer/routes.py:40
 msgid "Importer"
 msgstr "Importar"
 
@@ -4527,7 +4619,15 @@ msgstr "Foto"
 msgid "Supprimer la photo %(name)s"
 msgstr "Eliminar la foto %(name)s"
 
-#: app/templates/trips/detail.html:131
+#: app/templates/trips/detail.html:125
+msgid "L'ajout de photos est réservé aux abonnés Premium."
+msgstr "Añadir fotos está reservado a los suscriptores Premium."
+
+#: app/templates/trips/detail.html:126
+msgid "Découvrir Premium"
+msgstr "Descubrir Premium"
+
+#: app/templates/trips/detail.html:139
 msgid ""
 "JPEG, PNG, WebP ou GIF. Les métadonnées (appareil, position GPS) sont "
 "retirées du fichier et ne restent visibles que de vous. Photos privées : "
@@ -5162,7 +5262,7 @@ msgstr "coordenadas no válidas para «%(place)s»"
 msgid "champ %(field)s trop long (%(max)s caractères au maximum)"
 msgstr "campo %(field)s demasiado largo (%(max)s caracteres como máximo)"
 
-#: app/transfer/routes.py:38
+#: app/transfer/routes.py:39
 msgid ""
 "Fichier CSV, GeoJSON, GPX, carte d'embarquement Wallet (.pkpass) ou "
 "sauvegarde complète (.zip)"
@@ -5170,11 +5270,11 @@ msgstr ""
 "Archivo CSV, GeoJSON o GPX, tarjeta de embarque Wallet (.pkpass) o copia "
 "de seguridad completa (.zip)"
 
-#: app/transfer/routes.py:38
+#: app/transfer/routes.py:39
 msgid "Choisissez un fichier."
 msgstr "Elige un archivo."
 
-#: app/transfer/routes.py:96
+#: app/transfer/routes.py:97
 msgid ""
 "Sauvegarde complète de votre compte Voyage Voyage. Pour la restaurer, "
 "importez ce fichier .zip depuis la page Importer / exporter."
@@ -5182,25 +5282,25 @@ msgstr ""
 "Copia completa de tu cuenta de Voyage Voyage. Para restaurarla, importa "
 "este archivo .zip desde la página Importar / exportar."
 
-#: app/transfer/routes.py:116
+#: app/transfer/routes.py:117
 msgid "Archive .zip invalide."
 msgstr "Archivo .zip no válido."
 
-#: app/transfer/routes.py:120
+#: app/transfer/routes.py:121
 msgid "Archive trop volumineuse."
 msgstr "Archivo demasiado grande."
 
-#: app/transfer/routes.py:124
+#: app/transfer/routes.py:125
 msgid ""
 "Archive invalide : trips.geojson absent (utilisez une sauvegarde "
 "complète)."
 msgstr "Archivo no válido: falta trips.geojson (usa una copia completa)."
 
-#: app/transfer/routes.py:135
+#: app/transfer/routes.py:136
 msgid "Carte Wallet illisible : ce n'est pas un fichier .pkpass valide."
 msgstr "Tarjeta Wallet ilegible: no es un archivo .pkpass válido."
 
-#: app/transfer/routes.py:137
+#: app/transfer/routes.py:138
 msgid ""
 "Aucun trajet reconnu dans cette carte Wallet (seules les cartes "
 "d'embarquement sont lues)."
@@ -5208,71 +5308,86 @@ msgstr ""
 "No se ha reconocido ningún trayecto en esta tarjeta Wallet (solo se leen "
 "las tarjetas de embarque)."
 
-#: app/transfer/routes.py:169
+#: app/transfer/routes.py:170
 msgid "Importer la sélection"
 msgstr "Importar la selección"
 
-#: app/transfer/routes.py:232
+#: app/transfer/routes.py:233
 #, python-format
 msgid "Fichier trop volumineux (%(max)s Mo au maximum)."
 msgstr "Archivo demasiado grande (%(max)s MB como máximo)."
 
-#: app/transfer/routes.py:247 app/transfer/routes.py:266
+#: app/transfer/routes.py:248 app/transfer/routes.py:267
 msgid "Ce fichier ne contient aucun trajet."
 msgstr "Este archivo no contiene ningún trayecto."
 
-#: app/transfer/routes.py:249
+#: app/transfer/routes.py:250
 #, python-format
 msgid "Trop de trajets dans ce fichier (%(max)s au maximum)."
 msgstr "Demasiados trayectos en este archivo (%(max)s como máximo)."
 
-#: app/transfer/routes.py:260
+#: app/transfer/routes.py:261
 #, python-format
 msgid "Ligne %(line)s : %(error)s"
 msgstr "Línea %(line)s: %(error)s"
 
-#: app/transfer/routes.py:287
+#: app/transfer/routes.py:288
 msgid "Cet aperçu a expiré : importez le fichier à nouveau."
 msgstr "Esta vista previa ha caducado: vuelve a importar el archivo."
 
-#: app/transfer/routes.py:293
+#: app/transfer/routes.py:294
 msgid "Aucun trajet sélectionné : rien n'a été importé."
 msgstr "Ningún trayecto seleccionado: no se ha importado nada."
 
-#: app/transfer/routes.py:356
+#: app/transfer/routes.py:359
 #, python-format
 msgid "%(num)s trajet importé."
 msgid_plural "%(num)s trajets importés."
 msgstr[0] "%(num)s trayecto importado."
 msgstr[1] "%(num)s trayectos importados."
 
-#: app/transfer/routes.py:358
+#: app/transfer/routes.py:361
 #, python-format
 msgid "%(num)s voyage recréé."
 msgid_plural "%(num)s voyages recréés."
 msgstr[0] "%(num)s viaje recreado."
 msgstr[1] "%(num)s viajes recreados."
 
-#: app/transfer/routes.py:360
+#: app/transfer/routes.py:363
 #, python-format
 msgid "%(num)s doublon ignoré."
 msgid_plural "%(num)s doublons ignorés."
 msgstr[0] "%(num)s duplicado ignorado."
 msgstr[1] "%(num)s duplicados ignorados."
 
-#: app/transfer/routes.py:362
+#: app/transfer/routes.py:365
 #, python-format
 msgid "%(num)s photo restaurée."
 msgid_plural "%(num)s photos restaurées."
 msgstr[0] "%(num)s foto restaurada."
 msgstr[1] "%(num)s fotos restauradas."
 
-#: app/transfer/routes.py:364
+#: app/transfer/routes.py:367
 #, python-format
 msgid "%(num)s photo illisible ignorée."
 msgid_plural "%(num)s photos illisibles ignorées."
 msgstr[0] "%(num)s foto ilegible ignorada."
 msgstr[1] "%(num)s fotos ilegibles ignoradas."
+
+#: app/transfer/routes.py:369
+#, python-format
+msgid ""
+"%(num)s photo non restaurée : l'ajout de photos est réservé aux abonnés "
+"Premium."
+msgid_plural ""
+"%(num)s photos non restaurées : l'ajout de photos est réservé aux abonnés"
+" Premium."
+msgstr[0] ""
+"%(num)s foto no restaurada: añadir fotos está reservado a los "
+"suscriptores Premium."
+msgstr[1] ""
+"%(num)s fotos no restauradas: añadir fotos está reservado a los "
+"suscriptores Premium."
 
 #: app/transport.py:6
 msgid "Avion"
@@ -5609,10 +5724,6 @@ msgstr "Fecha de regreso"
 msgid "Compagnie ou opérateur"
 msgstr "Aerolínea u operador"
 
-#: app/trips/forms.py:61
-msgid "Numéro"
-msgstr "Número"
-
 #: app/trips/forms.py:90
 msgid "Indiquez aussi le numéro du vol aller."
 msgstr "Indica también el número del vuelo de ida."
@@ -5660,50 +5771,50 @@ msgstr "Etiquetas no válidas."
 msgid "Période inconnue : %(when)s"
 msgstr "Periodo desconocido: %(when)s"
 
-#: app/trips/routes.py:123
+#: app/trips/routes.py:124
 msgid "Lieu introuvable : choisissez une suggestion de la liste."
 msgstr "Lugar no encontrado: elige una sugerencia de la lista."
 
-#: app/trips/routes.py:204
+#: app/trips/routes.py:205
 msgid "Voyage ajouté."
 msgstr "Viaje añadido."
 
-#: app/trips/routes.py:220
+#: app/trips/routes.py:221
 msgid "Voyage modifié."
 msgstr "Viaje actualizado."
 
-#: app/trips/routes.py:235
+#: app/trips/routes.py:236
 msgid "Voyage supprimé."
 msgstr "Viaje eliminado."
 
-#: app/trips/routes.py:249
+#: app/trips/routes.py:250
 msgid "Sélectionnez au moins deux trajets à regrouper."
 msgstr "Selecciona al menos dos trayectos para agrupar."
 
-#: app/trips/routes.py:263
+#: app/trips/routes.py:264
 msgid "Trajets regroupés en un voyage."
 msgstr "Trayectos agrupados en un viaje."
 
-#: app/trips/routes.py:287
+#: app/trips/routes.py:288
 msgid "Voyage enregistré."
 msgstr "Viaje guardado."
 
-#: app/trips/routes.py:298
+#: app/trips/routes.py:299
 msgid "Voyage dégroupé : ses trajets sont de nouveau indépendants."
 msgstr "Viaje desagrupado: sus trayectos vuelven a ser independientes."
 
-#: app/trips/routes.py:311
+#: app/trips/routes.py:312
 msgid "Trajet retiré du voyage."
 msgstr "Trayecto quitado del viaje."
 
-#: app/trips/routes.py:351
+#: app/trips/routes.py:352
 #, python-format
 msgid "%(num)s photo ajoutée."
 msgid_plural "%(num)s photos ajoutées."
 msgstr[0] "%(num)s foto añadida."
 msgstr[1] "%(num)s fotos añadidas."
 
-#: app/trips/routes.py:443
+#: app/trips/routes.py:444
 msgid "Photo supprimée."
 msgstr "Foto eliminada."
 

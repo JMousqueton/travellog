@@ -7,9 +7,9 @@ from flask import g, request
 # app/static/vendor.
 ANALYTICS_ORIGIN = "https://stats.mousqueton.io"
 SCRIPT_SOURCES = (ANALYTICS_ORIGIN,)
-# Pages de paiement et portail client Stripe : form-action s'applique aussi aux redirections qui suivent
-# l'envoi d'un formulaire (POST /billing/checkout → 303 vers Stripe).
-FORM_TARGETS = ("https://checkout.stripe.com", "https://billing.stripe.com")
+# Page de paiement Stripe : form-action s'applique aussi aux redirections qui suivent l'envoi d'un
+# formulaire (POST /billing/checkout → 303 vers Stripe).
+FORM_TARGETS = ("https://checkout.stripe.com",)
 
 
 def csp_nonce():

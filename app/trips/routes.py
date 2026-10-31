@@ -12,6 +12,7 @@ from ..i18n import current_locale
 from .. import countries as geo_countries
 from .. import ics, review_image
 from ..models import Journey, Photo, Trip, User
+from ..billing import premium_required
 from ..photos import PhotoError, exif_rows, merge_notes, move_photos, photo_path, save_upload
 from ..routing import update_route
 from ..tags import parse_tags, prune_unused, resolve, tags_text
@@ -355,13 +356,13 @@ def _upload(trip=None, journey=None):
 
 
 @bp.route("/trips/<int:trip_id>/photos", methods=["POST"])
-@login_required
+@premium_required
 def upload_trip_photos(trip_id):
     return _upload(trip=get_own_trip_or_404(trip_id))
 
 
 @bp.route("/journeys/<int:journey_id>/photos", methods=["POST"])
-@login_required
+@premium_required
 def upload_journey_photos(journey_id):
     return _upload(journey=get_own_journey_or_404(journey_id))
 
