@@ -5,7 +5,7 @@
   <div class="col-md-10 col-lg-8">
     <h1 class="h3 fw-bold mb-1"><i class="fa-solid fa-gem text-info me-2" aria-hidden="true"></i>{{ _("Premium") }}</h1>
     <p class="text-body-secondary mb-2">{{ _("Soutenez %(site)s et profitez des fonctions Premium.", site=config.SITE_NAME) }}</p>
-    <ul class="list-unstyled mb-4">
+    <ul class="list-unstyled {{ 'mb-4' if current_user.is_premium else 'mb-2' }}">
       <li><i class="fa-solid fa-camera me-2 text-primary" aria-hidden="true"></i>{{ _("Photos de vos trajets et voyages, avec leurs informations EXIF et leur position GPS") }}</li>
       <li><i class="fa-solid fa-share-nodes me-2 text-primary" aria-hidden="true"></i>{{ _("Liens de partage de votre carte, de vos statistiques et de vos voyages") }}</li>
       <li><i class="fa-solid fa-id-badge me-2 text-primary" aria-hidden="true"></i>{{ _("Profil public à votre nom (/u/votre-nom)") }}</li>
@@ -13,6 +13,12 @@
       <li><i class="fa-solid fa-life-ring me-2 text-primary" aria-hidden="true"></i>{{ _("Accès au support : posez vos questions, signalez un problème, proposez une idée") }}</li>
       <li><i class="fa-solid fa-hand-holding-heart me-2 text-primary" aria-hidden="true"></i>{{ _("Vous aidez à maintenir le site : hébergement, mises à jour et nouvelles fonctions") }}</li>
     </ul>
+    {% if not current_user.is_premium %}
+    <p class="mb-4">
+      <a href="{{ url_for('main.plans') }}" class="link-primary fw-semibold text-decoration-none">
+        <i class="fa-solid fa-scale-balanced me-1" aria-hidden="true"></i>{{ _("Comparer les offres gratuite et Premium") }}<i class="fa-solid fa-arrow-right ms-1 small" aria-hidden="true"></i></a>
+    </p>
+    {% endif %}
 
     {% if current_user.has_subscription %}
     <div class="card shadow-soft">

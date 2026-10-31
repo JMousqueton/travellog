@@ -567,3 +567,10 @@ def test_transfer_page_marks_mail_import_premium(auth_client, billing, user, db)
     subscribe(user, db)
     page = auth_client.get("/import-export").text
     assert "fa-gem" in page and "#mail-import" in page and "import par e-mail est réservé" not in page
+
+
+def test_pricing_page_links_to_plan_comparison_unless_premium(auth_client, billing, user, db):
+    assert 'href="/plans"' in auth_client.get("/billing/").text
+    user.premium_granted = True
+    db.session.commit()
+    assert 'href="/plans"' not in auth_client.get("/billing/").text
