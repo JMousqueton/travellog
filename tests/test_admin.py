@@ -225,3 +225,68 @@ def test_filesize_format(app):
 
     with app.test_request_context(), force_locale("en"):
         assert [format_filesize(n) for n in (512, 2048, 5 * 1024 ** 2 + 1024 ** 2 // 2)] == ["512 byte", "2 kB", "5.5 MB"]
+
+
+def _fake_stripe(monkeypatch, subs, invoices):
+    from types import SimpleNamespace
+
+    import stripe
+
+    class Obj(SimpleNamespace):
+        def to_dict(self):
+            return dict(vars(self))
+
+    def lister(items):
+        return lambda **kw: SimpleNamespace(auto_paging_iter=lambda: iter([Obj(**i) for i in items]))
+    monkeypatch.setattr(stripe.Subscription, "list", lister(subs))
+    monkeypatch.setattr(stripe.Invoice, "list", lister(invoices))
+
+
+def _sub(customer, interval, amount, start, status="active", cancel=False):
+    return {"id": f"sub_{customer}", "customer": customer, "status": status, "start_date": start,
+            "created": start, "cancel_at_period_end": cancel,
+            "items": {"data": [{"current_period_end": start + 400 * 86400,
+                                "price": {"unit_amount": amount, "currency": "eur",
+                                          "recurring": {"interval": interval}}}]}}
+
+
+def test_admin_subscriptions_hidden_without_billing(client, db):
+    admin_client(client, db)
+    assert client.get("/admin/subscriptions").status_code == 404
+    assert "/admin/subscriptions" not in client.get("/admin/").text
+
+
+def test_admin_subscriptions_lists_subscribers(app, client, db, user, other_user, monkeypatch):
+    app.config.update(STRIPE_SECRET_KEY="sk_test_x")
+    admin_client(client, db)
+    user.stripe_customer_id, other_user.stripe_customer_id = "cus_a", "cus_b"
+    db.session.commit()
+    t0 = 1_760_000_000
+    _fake_stripe(monkeypatch, [
+        _sub("cus_a", "month", 200, t0),
+        _sub("cus_b", "year", 1000, t0 + 1000, cancel=True),
+        _sub("cus_old", "month", 200, t0, status="canceled"),  # terminé : absent
+    ], [
+        {"customer": "cus_a", "created": t0 + 10, "amount_paid": 200, "currency": "eur"},
+        {"customer": "cus_a", "created": t0 + 30 * 86400, "amount_paid": 200, "currency": "eur"},
+        {"customer": "cus_a", "created": t0 - 86400, "amount_paid": 999, "currency": "eur"},  # avant : exclu
+        {"customer": "cus_b", "created": t0 + 1000, "amount_paid": 1000, "currency": "eur"},
+    ])
+    html = client.get("/admin/subscriptions").text
+    assert "/admin/subscriptions" in html and "Abonnés mensuels" in html and "Abonnés annuels" in html
+    assert "alice@example.com" in html and "bob@example.com" in html and "cus_old" not in html
+    assert "4,00" in html and "10,00" in html and "14,00" in html  # encaissé par client, et total
+    assert "Résilié" in html and "Mensuel" in html and "Annuel" in html
+
+
+def test_admin_subscriptions_survives_stripe_error(app, client, db, monkeypatch):
+    import stripe
+
+    app.config.update(STRIPE_SECRET_KEY="sk_test_x")
+    admin_client(client, db)
+
+    def boom(**kw):
+        raise stripe.APIConnectionError("down")
+    monkeypatch.setattr(stripe.Subscription, "list", boom)
+    response = client.get("/admin/subscriptions")
+    assert response.status_code == 200 and "Stripe ne répond pas" in response.text

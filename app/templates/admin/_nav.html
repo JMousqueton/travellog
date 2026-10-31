@@ -2,9 +2,11 @@
 <ul class="nav nav-pills mb-4">
   {% for endpoint, active, icon, label in [('admin.users', ['admin.users'], 'fa-users', _("Utilisateurs")),
                                           ('admin.tickets', ['admin.tickets', 'admin.ticket'], 'fa-life-ring', _("Tickets")),
+                                          ('admin.subscriptions', ['admin.subscriptions'], 'fa-gem', _("Abonnements")),
                                           ('admin.jobs', ['admin.jobs'], 'fa-clock-rotate-left', _("Tâches")),
                                           ('admin.database', ['admin.database'], 'fa-database', _("Base de données")),
                                           ('admin.settings', ['admin.settings'], 'fa-gear', _("Paramètres"))] %}
+  {% if endpoint != 'admin.subscriptions' or billing_enabled() %}
   <li class="nav-item">
     <a class="nav-link {% if request.endpoint in active %}active{% endif %}" href="{{ url_for(endpoint) }}"
        {% if request.endpoint in active %}aria-current="page"{% endif %}>
@@ -13,5 +15,6 @@
       <span class="badge rounded-pill text-bg-danger ms-1">{{ waiting }}<span class="visually-hidden"> {{ ngettext("ticket en attente", "tickets en attente", waiting) }}</span></span>
       {%- endif %}{% endif %}</a>
   </li>
+  {% endif %}
   {% endfor %}
 </ul>

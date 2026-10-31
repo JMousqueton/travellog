@@ -2,6 +2,7 @@ from datetime import timedelta
 
 import stripe
 from flask import abort, current_app, flash, redirect, render_template, request, url_for
+from flask_babel import format_currency, format_timedelta
 from flask_babel import gettext as _
 from flask_login import current_user
 
@@ -100,6 +101,31 @@ def set_public_name(user_id):
         for error in form.public_name.errors or [_("Requête invalide")]:
             flash(error, "danger")
     return redirect(url_for("admin.users"))
+
+
+@bp.route("/subscriptions")
+@admin_required
+def subscriptions():
+    """Abonnés Premium : date d'abonnement, formule et montant encaissé, d'après Stripe."""
+    from ..billing import billing_enabled
+    from ..billing.stripe_sync import subscription_report
+
+    if not billing_enabled():
+        abort(404)
+    try:
+        rows, error = subscription_report(), False
+    except stripe.StripeError:
+        current_app.logger.exception("Stripe : lecture des abonnements")
+        rows, error = [], True
+    by_interval = {i: [r for r in rows if r["interval"] == i] for i in ("month", "year")}
+    totals = {}
+    for r in rows:
+        totals[r["currency"]] = totals.get(r["currency"], 0) + r["earned"]
+    default_currency = current_app.config["PREMIUM_CURRENCY"].upper()
+    return render_template("admin/subscriptions.html", rows=rows, error=error, totals=totals,
+                           monthly=by_interval["month"], yearly=by_interval["year"],
+                           money=lambda amount, currency=default_currency: format_currency(amount, currency),
+                           age=lambda since: format_timedelta(utcnow() - since, threshold=1.0))
 
 
 @bp.route("/settings", methods=["GET", "POST"])

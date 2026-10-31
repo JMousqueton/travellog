@@ -120,6 +120,40 @@ def list_invoices(user, limit=36):
     return rows
 
 
+def subscription_report():
+    """Abonnements en cours, lus chez Stripe, avec ce que chaque client a payé depuis le début de son
+    abonnement (factures réglées, taxes comprises). Pour la page d'administration."""
+    client = _client()
+    subs = [s.to_dict() for s in client.Subscription.list(status="all", limit=100).auto_paging_iter()
+            if s.status in User.PREMIUM_STATUSES]
+    paid = {}  # client -> [(date, montant en centimes, devise)]
+    for inv in client.Invoice.list(status="paid", limit=100).auto_paging_iter():
+        paid.setdefault(inv.customer, []).append((inv.created, inv.amount_paid or 0, inv.currency))
+    users = {u.stripe_customer_id: u for u in db.session.execute(
+        db.select(User).filter(User.stripe_customer_id.in_([s["customer"] for s in subs]))).scalars()}
+    rows = []
+    for sub in subs:
+        item = sub["items"]["data"][0] if sub.get("items", {}).get("data") else {}
+        price = item.get("price") or {}
+        start = sub.get("start_date") or sub["created"]
+        end = item.get("current_period_end") or sub.get("current_period_end")
+        rows.append({
+            "user": users.get(sub["customer"]),
+            "customer": sub["customer"],
+            "started": datetime.fromtimestamp(start, timezone.utc),
+            "renews": datetime.fromtimestamp(end, timezone.utc) if end else None,
+            "interval": (price.get("recurring") or {}).get("interval"),
+            "price": Decimal(price.get("unit_amount") or 0) / 100,
+            "currency": (price.get("currency") or sub.get("currency") or "eur").upper(),
+            "status": sub["status"],
+            "cancel_at_period_end": bool(sub.get("cancel_at_period_end")),
+            "earned": Decimal(sum(amount for created, amount, _ in paid.get(sub["customer"], [])
+                                  if created >= start)) / 100,
+        })
+    rows.sort(key=lambda r: r["started"], reverse=True)
+    return rows
+
+
 def set_cancel_at_period_end(user, cancel):
     """Arrête (à la fin de la période payée) ou reprend l'abonnement en cours ; False s'il n'y en a pas."""
     sub = fetch_subscription(user.stripe_customer_id) if user.stripe_customer_id else None

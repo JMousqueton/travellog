@@ -769,6 +769,27 @@ details.history > summary { cursor: pointer; list-style-position: outside; }
 .brand-text { line-height: 1.1; }
 .brand-tagline { font-size: .72rem; font-weight: 500; color: var(--text-muted); letter-spacing: .02em; }
 
+/* Administration : abonnements */
+.sub-kpi { position: relative; overflow: hidden; border: 0; }
+.sub-kpi::after { content: ""; position: absolute; right: -40px; top: -40px; width: 140px; height: 140px; border-radius: 50%; background: var(--kpi-soft); }
+.sub-kpi .card-body { position: relative; z-index: 1; }
+.sub-kpi-month { --kpi: var(--brand); --kpi-soft: var(--brand-soft); }
+.sub-kpi-year { --kpi: #0aa2c0; --kpi-soft: rgba(13, 202, 240, .14); }
+[data-bs-theme="dark"] .sub-kpi-year { --kpi: #6edff6; }
+.sub-kpi-icon { display: grid; place-items: center; width: 56px; height: 56px; flex: 0 0 56px; border-radius: 16px; background: var(--kpi-soft); color: var(--kpi); font-size: 1.5rem; position: relative; z-index: 1; }
+.sub-kpi-label { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+.sub-kpi-value { font-size: 2.4rem; font-weight: 800; line-height: 1; color: var(--kpi); font-variant-numeric: tabular-nums; }
+.subs-table > :not(caption) > * > * { padding: .8rem 1rem; }
+.subs-table thead th { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--text-muted); }
+.sub-avatar { display: grid; place-items: center; width: 36px; height: 36px; flex: 0 0 36px; border-radius: 50%; background: var(--brand-soft); color: var(--brand); font-weight: 700; }
+.sub-avatar-year { background: rgba(13, 202, 240, .14); color: #0aa2c0; }
+.sub-badge-month { background: var(--brand-soft); color: var(--brand); font-weight: 600; }
+.sub-badge-year { background: rgba(13, 202, 240, .14); color: #0aa2c0; font-weight: 600; }
+[data-bs-theme="dark"] .sub-badge-year, [data-bs-theme="dark"] .sub-avatar-year { color: #6edff6; }
+.subs-wrap { overflow-y: hidden; }
+.sub-earned { font-variant-numeric: tabular-nums; }
+.subs-table tfoot > tr > * { border-bottom: 0; border-top: 2px solid var(--bs-border-color-translucent); background: var(--surface-muted, transparent); }
+
 /* Support : échange de messages d'un ticket */
 .ticket-page { max-width: 820px; }
 .ticket-thread { display: flex; flex-direction: column; gap: .9rem; }

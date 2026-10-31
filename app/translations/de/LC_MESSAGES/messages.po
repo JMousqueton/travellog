@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-31 11:12+0000\n"
+"POT-Creation-Date: 2026-10-31 11:22+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -30,7 +30,7 @@ msgstr "Anmeldung erforderlich."
 msgid "La requête envoyée n'a pas pu être traitée."
 msgstr "Die Anfrage konnte nicht verarbeitet werden."
 
-#: app/__init__.py:120 app/admin/routes.py:100
+#: app/__init__.py:120 app/admin/routes.py:101
 msgid "Requête invalide"
 msgstr "Ungültige Anfrage"
 
@@ -87,11 +87,11 @@ msgstr "Registrierungen erlauben"
 msgid "Enregistrer"
 msgstr "Speichern"
 
-#: app/admin/routes.py:37
+#: app/admin/routes.py:38
 msgid "Vous ne pouvez pas supprimer votre propre compte."
 msgstr "Du kannst dein eigenes Konto nicht löschen."
 
-#: app/admin/routes.py:44
+#: app/admin/routes.py:45
 #, python-format
 msgid ""
 "L'abonnement de %(email)s n'a pas pu être résilié : le compte n'a pas été"
@@ -100,67 +100,67 @@ msgstr ""
 "Das Abonnement von %(email)s konnte nicht gekündigt werden: Das Konto "
 "wurde nicht gelöscht."
 
-#: app/admin/routes.py:50
+#: app/admin/routes.py:51
 #, python-format
 msgid "Le compte %(email)s a été supprimé."
 msgstr "Das Konto %(email)s wurde gelöscht."
 
-#: app/admin/routes.py:67
+#: app/admin/routes.py:68
 msgid "Vous ne pouvez pas bloquer votre propre compte."
 msgstr "Sie können Ihr eigenes Konto nicht sperren."
 
-#: app/admin/routes.py:71
+#: app/admin/routes.py:72
 #, python-format
 msgid "Le compte %(email)s est bloqué."
 msgstr "Das Konto %(email)s ist gesperrt."
 
-#: app/admin/routes.py:72
+#: app/admin/routes.py:73
 #, python-format
 msgid "Le compte %(email)s est débloqué."
 msgstr "Das Konto %(email)s ist entsperrt."
 
-#: app/admin/routes.py:83
+#: app/admin/routes.py:84
 #, python-format
 msgid "Premium offert à %(email)s."
 msgstr "Premium an %(email)s verschenkt."
 
-#: app/admin/routes.py:84
+#: app/admin/routes.py:85
 #, python-format
 msgid "Premium offert retiré à %(email)s."
 msgstr "Geschenktes Premium von %(email)s entfernt."
 
-#: app/admin/routes.py:97
+#: app/admin/routes.py:98
 #, python-format
 msgid "Nom du profil public de %(email)s : %(name)s."
 msgstr "Name des öffentlichen Profils von %(email)s: %(name)s."
 
-#: app/admin/routes.py:98
+#: app/admin/routes.py:99
 #, python-format
 msgid "Profil public de %(email)s désactivé."
 msgstr "Öffentliches Profil von %(email)s deaktiviert."
 
-#: app/admin/routes.py:114
+#: app/admin/routes.py:140
 msgid "Paramètres enregistrés."
 msgstr "Einstellungen gespeichert."
 
-#: app/admin/routes.py:187
+#: app/admin/routes.py:213
 #, python-format
 msgid "Réponse envoyée à %(email)s."
 msgstr "Antwort an %(email)s gesendet."
 
-#: app/admin/routes.py:203
+#: app/admin/routes.py:229
 msgid "Ticket fermé."
 msgstr "Ticket geschlossen."
 
-#: app/admin/routes.py:203
+#: app/admin/routes.py:229
 msgid "Ticket rouvert."
 msgstr "Ticket wieder geöffnet."
 
-#: app/admin/routes.py:213
+#: app/admin/routes.py:239
 msgid "Vous recevrez un e-mail à chaque nouveau message de ticket."
 msgstr "Du erhältst bei jeder neuen Ticket-Nachricht eine E-Mail."
 
-#: app/admin/routes.py:214
+#: app/admin/routes.py:240
 msgid "Vous ne recevrez plus d'e-mail pour les tickets."
 msgstr "Du erhältst keine E-Mails mehr zu Tickets."
 
@@ -1444,7 +1444,7 @@ msgstr ""
 msgid "Merci à Mallorie pour l'idée !"
 msgstr "Danke an Mallorie für die Idee!"
 
-#: app/templates/about.html:35 app/templates/plans.html:112
+#: app/templates/about.html:35 app/templates/plans.html:110
 msgid "Toutes les fonctionnalités"
 msgstr "Alle Funktionen"
 
@@ -1815,19 +1815,20 @@ msgid "Politique de confidentialité"
 msgstr "Datenschutzerklärung"
 
 #: app/templates/about.html:114 app/templates/landing.html:34
-#: app/templates/plans.html:100
+#: app/templates/plans.html:98
 msgid "Commencer gratuitement"
 msgstr "Kostenlos starten"
 
 #: app/templates/about.html:115 app/templates/landing.html:35
-#: app/templates/plans.html:102
+#: app/templates/plans.html:100
 msgid "J'ai déjà un compte"
 msgstr "Ich habe bereits ein Konto"
 
 #: app/templates/admin/_nav.html:1 app/templates/admin/database.html:2
 #: app/templates/admin/jobs.html:2 app/templates/admin/settings.html:2
-#: app/templates/admin/ticket.html:3 app/templates/admin/tickets.html:3
-#: app/templates/admin/users.html:2 app/templates/base.html:179
+#: app/templates/admin/subscriptions.html:2 app/templates/admin/ticket.html:3
+#: app/templates/admin/tickets.html:3 app/templates/admin/users.html:2
+#: app/templates/base.html:179
 msgid "Administration"
 msgstr "Verwaltung"
 
@@ -1840,21 +1841,25 @@ msgstr "Benutzer"
 msgid "Tickets"
 msgstr "Tickets"
 
-#: app/templates/admin/_nav.html:5 app/templates/admin/jobs.html:2
+#: app/templates/admin/_nav.html:5 app/templates/admin/subscriptions.html:5
+msgid "Abonnements"
+msgstr "Abonnements"
+
+#: app/templates/admin/_nav.html:6 app/templates/admin/jobs.html:2
 #: app/templates/admin/jobs.html:10
 msgid "Tâches"
 msgstr "Aufgaben"
 
-#: app/templates/admin/_nav.html:6 app/templates/admin/database.html:2
+#: app/templates/admin/_nav.html:7 app/templates/admin/database.html:2
 #: app/templates/admin/database.html:5
 msgid "Base de données"
 msgstr "Datenbank"
 
-#: app/templates/admin/_nav.html:7 app/templates/admin/settings.html:2
+#: app/templates/admin/_nav.html:8 app/templates/admin/settings.html:2
 msgid "Paramètres"
 msgstr "Einstellungen"
 
-#: app/templates/admin/_nav.html:13
+#: app/templates/admin/_nav.html:15
 msgid "ticket en attente"
 msgid_plural "tickets en attente"
 msgstr[0] "wartendes Ticket"
@@ -2061,6 +2066,116 @@ msgstr ""
 "erstellen“ sind ausgeblendet. Bestehende Konten können sich weiterhin "
 "anmelden."
 
+#: app/templates/admin/subscriptions.html:9
+msgid ""
+"Stripe ne répond pas : la liste des abonnements n'a pas pu être lue. "
+"Réessayez dans un instant."
+msgstr ""
+"Stripe antwortet nicht: Die Abonnementliste konnte nicht gelesen werden. "
+"Versuche es gleich noch einmal."
+
+#: app/templates/admin/subscriptions.html:15
+msgid "Abonnés mensuels"
+msgstr "Monatliche Abonnenten"
+
+#: app/templates/admin/subscriptions.html:16
+msgid "Abonnés annuels"
+msgstr "Jährliche Abonnenten"
+
+#: app/templates/admin/subscriptions.html:27
+#, python-format
+msgid "%(amount)s par mois"
+msgstr "%(amount)s pro Monat"
+
+#: app/templates/admin/subscriptions.html:27
+#, python-format
+msgid "%(amount)s par an"
+msgstr "%(amount)s pro Jahr"
+
+#: app/templates/admin/subscriptions.html:40
+msgid "Abonnés Premium"
+msgstr "Premium-Abonnenten"
+
+#: app/templates/admin/subscriptions.html:43
+#: app/templates/admin/tickets.html:36
+msgid "Utilisateur"
+msgstr "Benutzer"
+
+#: app/templates/admin/subscriptions.html:44
+msgid "Abonné depuis"
+msgstr "Abonniert seit"
+
+#: app/templates/admin/subscriptions.html:45
+msgid "Formule"
+msgstr "Tarif"
+
+#: app/templates/admin/subscriptions.html:46
+#: app/templates/billing/invoices.html:19
+msgid "État"
+msgstr "Status"
+
+#: app/templates/admin/subscriptions.html:47
+msgid "Montant encaissé"
+msgstr "Eingenommener Betrag"
+
+#: app/templates/admin/subscriptions.html:61
+msgid "Compte supprimé ou inconnu"
+msgstr "Gelöschtes oder unbekanntes Konto"
+
+#: app/templates/admin/subscriptions.html:67
+#, python-format
+msgid "il y a %(age)s"
+msgstr "vor %(age)s"
+
+#: app/templates/admin/subscriptions.html:71
+#: app/templates/billing/index.html:86
+msgid "Annuel"
+msgstr "Jährlich"
+
+#: app/templates/admin/subscriptions.html:73
+#: app/templates/billing/index.html:86
+msgid "Mensuel"
+msgstr "Monatlich"
+
+#: app/templates/admin/subscriptions.html:79
+msgid "Paiement en retard"
+msgstr "Zahlung überfällig"
+
+#: app/templates/admin/subscriptions.html:81
+msgid "Résilié"
+msgstr "Gekündigt"
+
+#: app/templates/admin/subscriptions.html:82
+#, python-format
+msgid "fin le %(date)s"
+msgstr "endet am %(date)s"
+
+#: app/templates/admin/subscriptions.html:84
+msgid "Actif"
+msgstr "Aktiv"
+
+#: app/templates/admin/subscriptions.html:85
+#, python-format
+msgid "renouvelé le %(date)s"
+msgstr "verlängert am %(date)s"
+
+#: app/templates/admin/subscriptions.html:94
+msgid "Total encaissé"
+msgstr "Gesamteinnahmen"
+
+#: app/templates/admin/subscriptions.html:105
+msgid "Aucun abonné pour le moment."
+msgstr "Noch keine Abonnenten."
+
+#: app/templates/admin/subscriptions.html:109
+msgid ""
+"Données lues chez Stripe à l'ouverture de la page. Montants réellement "
+"payés, taxes comprises ; l'accès Premium offert n'apparaît pas ici."
+msgstr ""
+"Daten werden beim Öffnen der Seite von Stripe gelesen. Tatsächlich "
+"gezahlte Beträge inkl. Steuern; geschenkter Premium-Zugang erscheint hier"
+" nicht."
+
 #: app/templates/admin/ticket.html:3
 #, python-format
 msgid "Ticket n° %(id)s"
@@ -2128,10 +2243,6 @@ msgstr "Per E-Mail benachrichtigen"
 msgid "Liste des tickets"
 msgstr "Liste der Tickets"
 
-#: app/templates/admin/tickets.html:36
-msgid "Utilisateur"
-msgstr "Benutzer"
-
 #: app/templates/admin/tickets.html:37
 msgid "Messages"
 msgstr "Nachrichten"
@@ -2186,7 +2297,7 @@ msgstr "Abonniert bis %(date)s"
 #: app/templates/admin/users.html:27 app/templates/base.html:173
 #: app/templates/billing/index.html:2 app/templates/billing/index.html:6
 #: app/templates/billing/index.html:20 app/templates/billing/invoices.html:7
-#: app/templates/plans.html:58
+#: app/templates/plans.html:57
 msgid "Premium"
 msgstr "Premium"
 
@@ -2902,14 +3013,6 @@ msgstr "Sparen Sie %(saving)s gegenüber dem Monatsabo."
 msgid "Un seul paiement par an."
 msgstr "Eine einzige Zahlung pro Jahr."
 
-#: app/templates/billing/index.html:86
-msgid "Annuel"
-msgstr "Jährlich"
-
-#: app/templates/billing/index.html:86
-msgid "Mensuel"
-msgstr "Monatlich"
-
 #: app/templates/billing/index.html:90
 msgid "Redirection…"
 msgstr "Weiterleitung…"
@@ -2937,10 +3040,6 @@ msgstr "Nummer"
 #: app/templates/billing/invoices.html:18
 msgid "Montant"
 msgstr "Betrag"
-
-#: app/templates/billing/invoices.html:19
-msgid "État"
-msgstr "Status"
 
 #: app/templates/billing/invoices.html:30
 msgid "Payée"
@@ -4072,49 +4171,49 @@ msgstr "Fotos zu deinen Strecken und Reisen, mit EXIF- und GPS-Daten"
 msgid "Accès au support : questions, problèmes, idées"
 msgstr "Zugang zum Support: Fragen, Probleme, Ideen"
 
-#: app/templates/plans.html:47
+#: app/templates/plans.html:46
 msgid "Comparatif des offres gratuite et Premium"
 msgstr "Vergleich des kostenlosen und des Premium-Angebots"
 
-#: app/templates/plans.html:50
+#: app/templates/plans.html:49
 msgid "Fonction"
 msgstr "Funktion"
 
-#: app/templates/plans.html:53
+#: app/templates/plans.html:52
 msgid "Gratuit"
 msgstr "Kostenlos"
 
-#: app/templates/plans.html:54
+#: app/templates/plans.html:53
 msgid "pour toujours"
 msgstr "für immer"
 
-#: app/templates/plans.html:59
+#: app/templates/plans.html:58
 #, python-format
 msgid "%(monthly)s / mois"
 msgstr "%(monthly)s / Monat"
 
-#: app/templates/plans.html:84
+#: app/templates/plans.html:83
 msgid "Prix"
 msgstr "Preis"
 
-#: app/templates/plans.html:87
+#: app/templates/plans.html:86
 msgid "mois"
 msgstr "Monat"
 
-#: app/templates/plans.html:88
+#: app/templates/plans.html:87
 #, python-format
 msgid "ou %(yearly)s par an"
 msgstr "oder %(yearly)s pro Jahr"
 
-#: app/templates/plans.html:104
+#: app/templates/plans.html:102
 msgid "Vous profitez déjà de Premium. Merci !"
 msgstr "Du nutzt bereits Premium. Danke!"
 
-#: app/templates/plans.html:107
+#: app/templates/plans.html:105
 msgid "Passer à Premium"
 msgstr "Zu Premium wechseln"
 
-#: app/templates/plans.html:111
+#: app/templates/plans.html:109
 msgid "Sans engagement, résiliable à tout moment. Paiement sécurisé par Stripe."
 msgstr "Ohne Vertragsbindung, jederzeit kündbar. Sichere Zahlung über Stripe."
 

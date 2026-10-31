@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Administration") }}{% endblock %}
+{% block content %}
+{% include "admin/_nav.html" %}
+<h2 class="visually-hidden">{{ _("Abonnements") }}</h2>
+
+{% if error %}
+<div class="alert alert-danger d-flex align-items-center gap-2" role="alert">
+  <i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i>{{ _("Stripe ne répond pas : la liste des abonnements n'a pas pu être lue. Réessayez dans un instant.") }}
+</div>
+{% endif %}
+
+<div class="row g-3 mb-4">
+  {% for subs, cls, icon, title in [
+       (monthly, 'sub-kpi-month', 'fa-calendar-day', _("Abonnés mensuels")),
+       (yearly, 'sub-kpi-year', 'fa-calendar-check', _("Abonnés annuels")),
+     ] %}
+  {% set amount = money(subs|sum(attribute='price')) %}
+  <div class="col-sm-6">
+    <div class="sub-kpi {{ cls }} card shadow-soft h-100">
+      <div class="card-body p-4 d-flex align-items-center gap-3">
+        <span class="sub-kpi-icon" aria-hidden="true"><i class="fa-solid {{ icon }}"></i></span>
+        <div class="flex-grow-1">
+          <p class="sub-kpi-label mb-1">{{ title }}</p>
+          <p class="sub-kpi-value mb-1">{{ subs|length }}</p>
+          <p class="small text-body-secondary mb-0">
+            <i class="fa-solid fa-arrows-rotate me-1" aria-hidden="true"></i>{{ _("%(amount)s par mois", amount=amount) if cls == 'sub-kpi-month' else _("%(amount)s par an", amount=amount) }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+
+<div class="card shadow-soft overflow-hidden">
+  {% if rows %}
+  <div class="table-responsive subs-wrap">
+    <table class="table table-hover align-middle mb-0 subs-table">
+      <caption class="visually-hidden">{{ _("Abonnés Premium") }}</caption>
+      <thead>
+        <tr>
+          <th scope="col">{{ _("Utilisateur") }}</th>
+          <th scope="col">{{ _("Abonné depuis") }}</th>
+          <th scope="col">{{ _("Formule") }}</th>
+          <th scope="col">{{ _("État") }}</th>
+          <th scope="col" class="text-end">{{ _("Montant encaissé") }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+        <tr>
+          <td>
+            <div class="d-flex align-items-center gap-2">
+              {% set email = r.user.email if r.user else r.customer %}
+              <span class="sub-avatar {{ 'sub-avatar-year' if r.interval == 'year' else '' }}" aria-hidden="true">{{ email[:1]|upper }}</span>
+              <div class="text-truncate">
+                {% if r.user %}<span class="fw-semibold">{{ r.user.email }}</span>
+                {% if r.user.public_name %}<span class="d-block small text-body-secondary">/u/{{ r.user.public_name }}</span>{% endif %}
+                {% else %}<span class="text-body-secondary">{{ r.customer }}</span>
+                <span class="d-block small text-body-secondary">{{ _("Compte supprimé ou inconnu") }}</span>{% endif %}
+              </div>
+            </div>
+          </td>
+          <td class="text-nowrap">
+            {{ r.started|day }}
+            <span class="d-block small text-body-secondary">{{ _("il y a %(age)s", age=age(r.started)) }}</span>
+          </td>
+          <td class="text-nowrap">
+            {% if r.interval == 'year' %}
+            <span class="badge rounded-pill sub-badge-year"><i class="fa-solid fa-calendar-check me-1" aria-hidden="true"></i>{{ _("Annuel") }}</span>
+            {% else %}
+            <span class="badge rounded-pill sub-badge-month"><i class="fa-solid fa-calendar-day me-1" aria-hidden="true"></i>{{ _("Mensuel") }}</span>
+            {% endif %}
+            <span class="d-block small text-body-secondary mt-1">{{ money(r.price, r.currency) }}</span>
+          </td>
+          <td class="text-nowrap">
+            {% if r.status == 'past_due' %}
+            <span class="text-warning-emphasis"><i class="fa-solid fa-circle-exclamation me-1" aria-hidden="true"></i>{{ _("Paiement en retard") }}</span>
+            {% elif r.cancel_at_period_end %}
+            <span class="text-body-secondary"><i class="fa-solid fa-hourglass-half me-1" aria-hidden="true"></i>{{ _("Résilié") }}</span>
+            {% if r.renews %}<span class="d-block small text-body-secondary">{{ _("fin le %(date)s", date=r.renews|day) }}</span>{% endif %}
+            {% else %}
+            <span class="text-success"><i class="fa-solid fa-circle-check me-1" aria-hidden="true"></i>{{ _("Actif") }}</span>
+            {% if r.renews %}<span class="d-block small text-body-secondary">{{ _("renouvelé le %(date)s", date=r.renews|day) }}</span>{% endif %}
+            {% endif %}
+          </td>
+          <td class="text-end fw-semibold sub-earned">{{ money(r.earned, r.currency) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr>
+          <th scope="row" colspan="4"><i class="fa-solid fa-sack-dollar me-2 text-success" aria-hidden="true"></i>{{ _("Total encaissé") }}</th>
+          <td class="text-end fw-bold fs-5">
+            {% for currency, total in totals.items() %}<span class="d-block">{{ money(total, currency) }}</span>{% endfor %}
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+  {% elif not error %}
+  <div class="card-body p-5 text-center text-body-secondary">
+    <i class="fa-solid fa-gem fs-1 text-info mb-3 d-block" aria-hidden="true"></i>
+    {{ _("Aucun abonné pour le moment.") }}
+  </div>
+  {% endif %}
+</div>
+<p class="form-text mt-3"><i class="fa-brands fa-stripe me-1" aria-hidden="true"></i>{{ _("Données lues chez Stripe à l'ouverture de la page. Montants réellement payés, taxes comprises ; l'accès Premium offert n'apparaît pas ici.") }}</p>
+{% endblock %}
