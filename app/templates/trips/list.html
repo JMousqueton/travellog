@@ -121,7 +121,7 @@
       {% if row.journey %}
       {% set journey = row.journey %}
       <tbody class="journey-group">
-        <tr class="journey-head">
+        <tr class="journey-head {% if journey.status == 'upcoming' %}trip-upcoming{% endif %}">
           <td class="select-cell"><i class="fa-solid fa-route text-primary" aria-hidden="true"></i></td>
           <td class="text-nowrap">
             {{ journey.start_date|day }}
@@ -153,12 +153,12 @@
           </td>
         </tr>
         {% for trip in journey.legs %}
-        <tr class="journey-leg">{{ trip_cells(trip, in_journey=True) }}</tr>
+        <tr class="journey-leg {% if trip.status == 'upcoming' %}trip-upcoming{% endif %}">{{ trip_cells(trip, in_journey=True) }}</tr>
         {% endfor %}
       </tbody>
       {% else %}
       <tbody>
-        <tr>{{ trip_cells(row.trip) }}</tr>
+        <tr {% if row.trip.status == 'upcoming' %}class="trip-upcoming"{% endif %}>{{ trip_cells(row.trip) }}</tr>
       </tbody>
       {% endif %}
       {% endfor %}

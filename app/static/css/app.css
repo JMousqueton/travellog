@@ -696,8 +696,9 @@ details.history > summary { cursor: pointer; list-style-position: outside; }
 .lost-code { color: var(--stamp); font-weight: 700; text-transform: uppercase; letter-spacing: .12em; font-size: .8rem; margin-bottom: .5rem; }
 @media (prefers-reduced-motion: reduce) { .passport-trail path { animation: none; } }
 
-/* Liste partagée : voyages à venir estompés (comme sur la carte) */
+/* Listes (privée et partagée) : voyages à venir estompés (comme sur la carte) */
 .trips-table tr.trip-upcoming > * { color: var(--text-muted); }
+.trips-table tr.trip-upcoming:not(.journey-head) > * { background: color-mix(in srgb, var(--brand) 4%, transparent); }
 .trips-table tr.trip-upcoming > td:first-child { border-left: 3px dashed var(--brand); }
 
 /* Carte : filtre rapide par année */

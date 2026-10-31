@@ -150,6 +150,12 @@ def test_list_shows_only_own_trips(client, user, other_user):
     assert "Mine" in html and "NotMine" not in html
 
 
+def test_list_dims_upcoming_trips(client, user):
+    make_trip(user, depart_date=date(2099, 5, 1), return_date=None)
+    login(client)
+    assert 'class="trip-upcoming"' in client.get("/trips").text
+
+
 def test_csrf_enforced_when_enabled(app, client, user):
     app.config["WTF_CSRF_ENABLED"] = True
     response = login(client)
