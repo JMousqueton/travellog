@@ -94,6 +94,21 @@
           <a class="btn btn-outline-secondary btn-sm" href="{{ public_url }}">
             <i class="fa-solid fa-arrow-up-right-from-square me-1" aria-hidden="true"></i>{{ _("Voir") }}</a>
         </div>
+        {% set badge_url = url_for('share.public_badge', name=current_user.public_name, _external=True) %}
+        <div class="profile-badge mb-4">
+          <p class="fw-semibold mb-2"><i class="fa-solid fa-id-card me-1 text-primary" aria-hidden="true"></i>{{ _("Badge à intégrer") }}{{ diamond() }}</p>
+          <p class="text-body-secondary small mb-2">{{ _("Affichez vos chiffres sur un blog, un site ou votre profil GitHub. Le badge se met à jour tout seul.") }}</p>
+          <img src="{{ url_for('share.public_badge', name=current_user.public_name) }}" width="400" height="96" class="img-fluid mb-3 d-block" alt="{{ _('Aperçu du badge') }}">
+          {% for label, code in [(_("Markdown"), '[![' ~ config.SITE_NAME ~ '](' ~ badge_url ~ ')](' ~ public_url ~ ')'),
+                                 (_("HTML"), '<a href="' ~ public_url ~ '"><img src="' ~ badge_url ~ '" alt="' ~ config.SITE_NAME ~ '" width="400" height="96"></a>')] %}
+          <div class="input-group input-group-sm mb-2">
+            <span class="input-group-text">{{ label }}</span>
+            <input type="text" class="form-control font-monospace" value="{{ code }}" readonly aria-label="{{ _('Code du badge (%(format)s)', format=label) }}">
+            <button type="button" class="btn btn-outline-primary" data-copy="{{ code }}">
+              <i class="fa-regular fa-copy me-1" aria-hidden="true"></i>{{ _("Copier") }}</button>
+          </div>
+          {% endfor %}
+        </div>
         {% endif %}
         <form method="post" action="{{ url_for('auth.set_public_profile') }}" novalidate>
           {{ public_form.hidden_tag() }}
@@ -105,6 +120,27 @@
       </div>
     </div>
     {% endif %}
+
+    <h2 class="h5 fw-semibold mt-5 mb-3" id="emails">{{ _("E-mails") }}</h2>
+    <div class="card shadow-soft">
+      <div class="card-body p-4 d-flex flex-wrap align-items-center gap-3">
+        <div class="flex-grow-1">
+          <p class="fw-semibold mb-1"><i class="fa-solid fa-calendar-check me-1 text-primary" aria-hidden="true"></i>{{ _("Bilan de l'année") }}</p>
+          <p class="text-body-secondary small mb-0">{{ _("Fin décembre, recevez votre année en voyages par e-mail, avec l'image du bilan en pièce jointe.") }}</p>
+        </div>
+        <form method="post" action="{{ url_for('auth.set_review_emails') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <input type="hidden" name="enabled" value="{{ '0' if current_user.review_emails else '1' }}">
+          {% if current_user.review_emails %}
+          <button type="submit" class="btn btn-outline-secondary rounded-pill px-3">
+            <i class="fa-solid fa-bell-slash me-1" aria-hidden="true"></i>{{ _("Désactiver") }}</button>
+          {% else %}
+          <button type="submit" class="btn btn-primary rounded-pill px-3">
+            <i class="fa-solid fa-bell me-1" aria-hidden="true"></i>{{ _("Activer") }}</button>
+          {% endif %}
+        </form>
+      </div>
+    </div>
 
     <h2 class="h5 fw-semibold mt-5 mb-3">{{ _("Mot de passe") }}</h2>
     <div class="card shadow-soft">

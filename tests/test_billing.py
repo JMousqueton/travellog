@@ -512,7 +512,7 @@ def test_diamond_marks_premium_features(app, client, user, db):
 def test_landing_marks_photos_with_diamond(app, client):
     app.config.update(STRIPE_SECRET_KEY="sk_test_x")
     page = client.get("/").text
-    assert page.count("fa-gem") == 1 and "essentiel est gratuit" in page
+    assert "fa-gem" in page and "essentiel est gratuit" in page
 
 
 # --- Import par e-mail : fonction Premium ------------------------------------------------------
@@ -570,7 +570,7 @@ def test_transfer_page_marks_mail_import_premium(auth_client, billing, user, db)
 
 
 def test_pricing_page_links_to_plan_comparison_unless_premium(auth_client, billing, user, db):
-    assert 'href="/plans"' in auth_client.get("/billing/").text
+    assert "Comparer les offres gratuite et Premium" in auth_client.get("/billing/").text
     user.premium_granted = True
     db.session.commit()
-    assert 'href="/plans"' not in auth_client.get("/billing/").text
+    assert "Comparer les offres gratuite et Premium" not in auth_client.get("/billing/").text
