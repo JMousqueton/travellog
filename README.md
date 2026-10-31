@@ -11,7 +11,10 @@ Voyage Voyage was coded with the help of AI.
 ## Features
 
 - Premium subscription (`/billing`, "Premium" in the account menu), paid through Stripe: 2 € a month or 12 € a
-  year by default (prices in `.env`). Photo upload and support are Premium features. Payment happens on
+  year by default (prices in `.env`). Photo upload, share links, the public profile and support are Premium
+  features, marked everywhere with a crown (menu, pages, About and home pages). When Premium ends, share
+  links and the public profile are no longer served (visitors get a 404) but are kept, and work again with a
+  new subscription; they can still be revoked or removed. Payment happens on
   Stripe's hosted page (Checkout); subscribers then see their invoices (`/billing/invoices`, with the
   hosted invoice and its PDF, and a "Pay" button for an unpaid one) and can stop the subscription, which
   then ends at the close of the paid period with no further charge, or resume it until then. A failed
@@ -34,11 +37,11 @@ Voyage Voyage was coded with the help of AI.
   stays direct, with a password.
   From their preferences, users can change their password (which signs out their other sessions) or delete
   their account. Forgotten password: single-use reset link by email.
-- Read-only share links, with optional expiry and the date they were last viewed. Visitors get their own
+- Read-only share links (Premium), with optional expiry and the date they were last viewed. Visitors get their own
   menu: Map, Statistics (since the beginning, one card per year, badges), Trips (list grouped by journey, if
   the link allows it) and Review. Upcoming trips are hidden by default (they reveal when you're away); an
   option per link shows them, faded and flagged. No notes, photos or home.
-- Public profile (`/u/<name>`): from Preferences, users can choose a name (3 to 30 lowercase letters, digits,
+- Public profile (Premium; `/u/<name>`): from Preferences, users can choose a name (3 to 30 lowercase letters, digits,
   `-` or `_`) to publish a summary of their past trips: key figures (trips, distance, countries, continents,
   share of the world's land), distance by mode, countries visited per continent and the badges earned. No trips,
   dates, notes, photos, home or upcoming trips; the page is not indexed by search engines (`noindex`). Clearing

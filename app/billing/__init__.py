@@ -14,7 +14,23 @@ def billing_enabled():
 def premium_access(user=None):
     """Le compte a-t-il accès aux fonctions Premium ? Toujours vrai si Stripe n'est pas configuré."""
     user = current_user if user is None else user
-    return not billing_enabled() or (user.is_authenticated and user.is_premium)
+    return not billing_enabled() or (user.is_authenticated and user.has_premium_access)
+
+
+def premium_prices():
+    """Prix affichés (« 2,00 € », « 12,00 € »), d'après .env."""
+    from flask_babel import format_currency
+
+    from .stripe_sync import plan_price
+
+    currency = current_app.config["PREMIUM_CURRENCY"].upper()
+    return {plan: format_currency(plan_price(plan), currency) for plan in ("monthly", "yearly")}
+
+
+def init_app(app):
+    # Globals (et non context processor) : utilisables aussi dans les macros importées.
+    app.jinja_env.globals.update(billing_enabled=billing_enabled, premium_access=premium_access,
+                                 premium_prices=premium_prices)
 
 
 def premium_required(view):

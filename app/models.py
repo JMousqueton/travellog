@@ -86,6 +86,11 @@ class User(UserMixin, db.Model):
     def is_premium(self):
         return self.premium_granted or self.has_subscription
 
+    @property
+    def has_premium_access(self):
+        """Fonctions Premium accessibles : toujours quand Stripe n'est pas configuré (rien n'est réservé)."""
+        return not current_app.config.get("STRIPE_SECRET_KEY") or self.is_premium
+
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -448,9 +453,13 @@ class ShareLink(db.Model):
 
     @classmethod
     def active(cls, token):
-        """Lien valide (existant, non expiré, compte non bloqué) correspondant au jeton, sinon None."""
+        """Lien valide (existant, non expiré, compte non bloqué et Premium) correspondant au jeton, sinon None.
+
+        Sans Premium, les liens restent enregistrés mais ne sont plus servis : ils reviennent avec l'abonnement."""
         link = db.session.execute(db.select(cls).filter_by(token=token)).scalar_one_or_none()
-        return None if link is None or link.is_expired or link.user.is_blocked else link
+        if link is None or link.is_expired or link.user.is_blocked or not link.user.has_premium_access:
+            return None
+        return link
 
 
 class Photo(db.Model):

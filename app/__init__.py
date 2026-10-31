@@ -89,12 +89,13 @@ def create_app(config_name=None):
 
     app.jinja_env.globals["carrier_logo"] = logo_url
 
-    from .billing import billing_enabled, premium_access
+    from . import billing
+
+    billing.init_app(app)
 
     @app.context_processor
     def inject_settings():
         return {"registration_open": models.registration_open, "password_reset_enabled": mail_enabled,
-                "billing_enabled": billing_enabled, "premium_access": premium_access,
                 "copyright_years": copyright_years()}
 
     from .cli import register_cli

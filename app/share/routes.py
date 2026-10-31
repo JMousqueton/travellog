@@ -5,6 +5,7 @@ from flask_babel import gettext as _
 from flask_login import current_user, login_required
 
 from .. import utils
+from ..billing import premium_access
 from ..extensions import db
 from ..i18n import current_locale
 from ..models import ShareLink, utcnow
@@ -17,6 +18,9 @@ from .forms import ShareLinkForm
 @login_required
 def links():
     form = ShareLinkForm()
+    if form.is_submitted() and not premium_access():
+        flash(_("Les liens de partage sont réservés aux abonnés Premium."), "info")
+        return redirect(url_for("billing.index"))
     if form.validate_on_submit():
         days = int(form.expires_in.data) if form.expires_in.data else None
         db.session.add(ShareLink(
@@ -127,7 +131,7 @@ def public_profile(name):
     from ..trips.stats import compute_stats, happened
 
     user = db.session.execute(db.select(User).filter_by(public_name=name.lower())).scalar_one_or_none()
-    if user is None or user.is_blocked:
+    if user is None or user.is_blocked or not user.has_premium_access:
         abort(404)
     trips = happened(user.trips.all())
     badges = [row for row in compute_badges(trips) if row["earned"]]

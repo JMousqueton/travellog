@@ -20,7 +20,7 @@ WEBHOOK_SECRET = "whsec_test"
 @pytest.fixture
 def billing(app):
     app.config.update(STRIPE_SECRET_KEY="sk_test_x", STRIPE_WEBHOOK_SECRET=WEBHOOK_SECRET,
-                      PREMIUM_PRICE_MONTHLY="2", PREMIUM_PRICE_YEARLY="10", PREMIUM_CURRENCY="eur")
+                      PREMIUM_PRICE_MONTHLY="2", PREMIUM_PRICE_YEARLY="10", PREMIUM_CURRENCY="eur")  # 10 : teste l'économie
     stripe_sync._price_ids.clear()
     return app
 
@@ -436,3 +436,80 @@ def test_support_requires_premium(auth_client, billing, user, db):
     for url in (f"/support/{ticket.id}", f"/support/{ticket.id}/close", f"/support/{ticket.id}/notify"):
         method = auth_client.get if url.endswith(str(ticket.id)) else auth_client.post
         assert method(url).location.endswith("/billing/")
+
+
+# --- Partage et profil public : fonctions Premium ----------------------------------------------
+
+def test_share_link_creation_requires_premium(auth_client, billing, user, db):
+    from app.models import ShareLink
+
+    page = auth_client.get("/share").text
+    assert "réservés aux abonnés Premium" in page and 'name="label"' not in page
+    resp = auth_client.post("/share", data={"label": "Famille"})
+    assert resp.status_code == 302 and resp.location.endswith("/billing/")
+    assert db.session.execute(db.select(ShareLink)).first() is None
+
+    subscribe(user, db)
+    assert 'name="label"' in auth_client.get("/share").text
+    auth_client.post("/share", data={"label": "Famille"})
+    assert db.session.execute(db.select(ShareLink)).scalar_one().label == "Famille"
+
+
+def test_share_links_suspended_without_premium(app, client, user, db):
+    from app.models import ShareLink
+
+    from .conftest import make_trip
+
+    make_trip(user)
+    link = ShareLink(user_id=user.id)
+    db.session.add(link)
+    db.session.commit()
+    urls = (f"/s/{link.token}", f"/s/{link.token}/stats", f"/api/shared/{link.token}/trips")
+    assert all(client.get(u).status_code == 200 for u in urls)  # sans Stripe : rien n'est réservé
+
+    app.config.update(STRIPE_SECRET_KEY="sk_test_x")
+    assert all(client.get(u).status_code == 404 for u in urls)  # Premium absent : lien suspendu
+    user.premium_granted = True
+    db.session.commit()
+    assert all(client.get(u).status_code == 200 for u in urls)  # de retour avec le Premium
+
+    user.premium_granted = False
+    db.session.commit()
+    login(client)
+    assert "ne sont plus accessibles" in client.get("/share").text
+    client.post(f"/share/{link.id}/revoke")  # révoquer reste possible
+    assert db.session.execute(db.select(ShareLink)).first() is None
+
+
+def test_public_profile_requires_premium(auth_client, billing, user, db):
+    resp = auth_client.post("/auth/public-profile", data={"pub-public_name": "alice"})
+    assert resp.status_code == 302 and resp.location.endswith("/billing/")
+    assert db.session.get(User, user.id).public_name is None
+
+    subscribe(user, db)
+    auth_client.post("/auth/public-profile", data={"pub-public_name": "alice"})
+    assert auth_client.get("/u/alice").status_code == 200
+
+    stripe_sync.apply_subscription(user, subscription("canceled"))
+    db.session.commit()
+    assert auth_client.get("/u/alice").status_code == 404  # suspendu
+    page = auth_client.get("/auth/profile").text
+    assert "/u/alice n&#39;est plus accessible" in page or "/u/alice n'est plus accessible" in page
+    auth_client.post("/auth/public-profile", data={"pub-public_name": ""})  # le retirer reste possible
+    assert db.session.get(User, user.id).public_name is None
+
+
+def test_crown_marks_premium_features(app, client, user, db):
+    login(client)
+    assert "fa-crown" not in client.get("/share").text  # sans Stripe : pas de couronne
+    app.config.update(STRIPE_SECRET_KEY="sk_test_x")
+    menu = client.get("/auth/profile").text
+    assert menu.count("Fonction Premium") >= 3  # partage, support, profil public
+    about = client.get("/about").text
+    assert "fa-crown" in about and "12,00" in about and "Gratuit, sans publicité, et open source" not in about
+
+
+def test_landing_marks_photos_with_crown(app, client):
+    app.config.update(STRIPE_SECRET_KEY="sk_test_x")
+    page = client.get("/").text
+    assert page.count("fa-crown") == 1 and "essentiel est gratuit" in page

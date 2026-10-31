@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "partials/premium.html" import crown %}
 {% block title %}{{ _("À propos") }}{% endblock %}
 {% block meta_description %}{{ _("Pourquoi le site s'appelle Voyage Voyage, et tout ce qu'il sait faire : carte, globe, statistiques, bilan de l'année, import de vos vols, partage.") }}{% endblock %}
 {% block main_class %}landing{% endblock %}
@@ -24,7 +25,7 @@
       _("Aller simple ou aller-retour, avec une date de retour ; plusieurs trajets se regroupent en un voyage (escales, tour d'Europe…)."),
       _("Lieux saisis avec autocomplétion ; le pays de départ et d'arrivée est retrouvé automatiquement."),
       _("Compagnie, numéro de vol et appareil pour l'avion, opérateur pour le train. Saisir un numéro de vol (« AF1148 ») remplit la compagnie, le départ et l'arrivée."),
-      _("Étiquettes (vacances, travail…), notes et photos sur chaque trajet et chaque voyage. Les fichiers des photos sont débarrassés de leurs métadonnées ; leurs informations EXIF et GPS restent consultables par vous seul."),
+      (_("Étiquettes (vacances, travail…), notes et photos sur chaque trajet et chaque voyage. Les fichiers des photos sont débarrassés de leurs métadonnées ; leurs informations EXIF et GPS restent consultables par vous seul."), True),
       _("Distances réalistes : itinéraire routier quand il est disponible, sinon ligne droite corrigée selon le mode."),
     ]),
     ('fa-file-import', _("Importer et exporter"), [
@@ -60,8 +61,8 @@
       _("Une image prête à partager sur les réseaux sociaux ou à garder en souvenir."),
     ]),
     ('fa-share-nodes', _("Partager et anticiper"), [
-      _("Liens de partage en lecture seule, avec date d'expiration : carte, statistiques, liste des voyages et bilan. Jamais vos notes, vos photos ni votre domicile."),
-      _("Profil public facultatif (/u/votre-nom) : vos pays, vos distances par mode et vos badges, sans aucun trajet ni date."),
+      (_("Liens de partage en lecture seule, avec date d'expiration : carte, statistiques, liste des voyages et bilan. Jamais vos notes, vos photos ni votre domicile."), True),
+      (_("Profil public facultatif (/u/votre-nom) : vos pays, vos distances par mode et vos badges, sans aucun trajet ni date."), True),
       _("Voyages à venir : compte à rebours, carte « Prochain départ », masqués par défaut sur les liens de partage."),
       _("Export vers votre agenda (.ics) ou abonnement à une adresse secrète (Google Agenda, Apple Calendrier, Outlook)."),
     ]),
@@ -71,7 +72,7 @@
       _("Application installable sur l'écran d'accueil, qui reste consultable hors ligne."),
     ]),
     ('fa-shield-halved', _("Vos données vous appartiennent"), [
-      _("Gratuit, sans publicité, et open source sous licence MIT."),
+      _("Sans publicité, et open source sous licence MIT. L'essentiel est gratuit ; les fonctions marquées d'une couronne font partie de Premium (%(monthly)s par mois ou %(yearly)s par an) : photos, liens de partage, profil public et support.", **premium_prices()) if billing_enabled() else _("Gratuit, sans publicité, et open source sous licence MIT."),
       _("Vos trajets restent privés ; la mesure d'audience est auto-hébergée et vous pouvez la refuser."),
       _("Bibliothèques et polices servies par le site lui-même : aucun CDN ni Google Fonts ne voit passer vos visites."),
       _("Export complet à tout moment, et suppression de votre compte depuis vos préférences."),
@@ -83,7 +84,7 @@
       <h3 class="h5 fw-semibold mb-0">{{ title }}</h3>
     </div>
     <ul class="mb-0">
-      {% for item in items %}<li>{{ item }}</li>{% endfor %}
+      {% for item in items %}<li>{% if item is string %}{{ item }}{% else %}{{ item[0] }}{{ crown() }}{% endif %}</li>{% endfor %}
     </ul>
   </section>
   {% endfor %}

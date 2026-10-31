@@ -5,6 +5,7 @@ from flask_babel import force_locale
 from flask_babel import gettext as _
 from flask_login import current_user, login_required, login_user, logout_user
 
+from ..billing import premium_access
 from ..extensions import db, limiter
 from ..i18n import LANGUAGES, current_locale
 from ..mail import mail_enabled, send_email
@@ -235,6 +236,9 @@ def clear_home():
 def set_public_profile():
     """Choisit, change ou retire (nom vide) le nom du profil public /u/<nom>."""
     form = PublicProfileForm(prefix="pub", user=current_user)
+    if (form.public_name.data or "").strip() and not premium_access():
+        flash(_("Le profil public est réservé aux abonnés Premium."), "info")
+        return redirect(url_for("billing.index"))
     if form.validate_on_submit():
         current_user.public_name = form.public_name.data or None
         db.session.commit()

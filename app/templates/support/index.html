@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% from "partials/premium.html" import crown, locked %}
 {% from "partials/macros.html" import field %}
 {% from "support/_macros.html" import ticket_status %}
 {% block title %}{{ _("Support") }}{% endblock %}
 {% block content %}
-<h1 class="h3 fw-bold mb-1">{{ _("Support") }}</h1>
+<h1 class="h3 fw-bold mb-1">{{ _("Support") }}{{ crown("ms-2 fs-5") }}</h1>
 <p class="text-body-secondary mb-4">{{ _("Une question, un problème, une idée ? Écrivez-nous : la réponse arrive ici et, si vous le souhaitez, par e-mail.") }}</p>
 <div class="row g-4">
   <div class="col-lg-5 order-lg-2">

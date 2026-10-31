@@ -1,12 +1,19 @@
 {% extends "base.html" %}
+{% from "partials/premium.html" import crown, locked %}
 {% block title %}{{ _("Partager mes voyages") }}{% endblock %}
 {% block content %}
 <div class="row justify-content-center">
   <div class="col-lg-9">
-    <h1 class="h3 fw-bold mb-2">{{ _("Partager mes voyages") }}</h1>
+    <h1 class="h3 fw-bold mb-2">{{ _("Partager mes voyages") }}{{ crown("ms-2 fs-5") }}</h1>
     <p class="text-body-secondary mb-4">
       {{ _("Un lien de partage affiche votre carte, vos statistiques et la liste de vos voyages en lecture seule, sans connexion. Votre adresse e-mail n'est jamais affichée. Révoquez un lien pour couper l'accès.") }}
     </p>
+    {% if not premium_access() %}
+    <div class="mb-4">{{ locked(_("Les liens de partage sont réservés aux abonnés Premium.")) }}</div>
+    {% if links %}
+    <p class="text-body-secondary small">{{ _("Vos liens ne sont plus accessibles tant que vous n'êtes pas abonné ; ils fonctionnent de nouveau dès votre abonnement. Vous pouvez les révoquer à tout moment.") }}</p>
+    {% endif %}
+    {% else %}
     <div class="card shadow-soft mb-4">
       <div class="card-body p-4">
         <form method="post" class="row g-2 align-items-end" novalidate>
@@ -40,6 +47,7 @@
         </form>
       </div>
     </div>
+    {% endif %}
 
     {% if links %}
     <h2 class="h5 fw-semibold mb-3">{{ _("Mes liens") }}</h2>

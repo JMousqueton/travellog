@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "partials/premium.html" import crown, locked %}
 {% from "partials/macros.html" import mode_badge, country_chips, status_badge, tag_chips with context %}
 {% set item = trip or journey %}
 {% set title = (trip.origin_name ~ ' → ' ~ trip.dest_name) if trip else journey.display_name %}
@@ -100,7 +101,7 @@
       </div>
     </div>
 
-    <h2 class="h5 fw-semibold mb-3">{{ _("Photos") }}
+    <h2 class="h5 fw-semibold mb-3">{{ _("Photos") }}{{ crown() }}
       {% if photos %}<span class="text-body-secondary fw-normal small">· {{ photos|length }}</span>{% endif %}</h2>
     {% if photos %}
     <ul class="photo-grid list-unstyled mb-4">
@@ -120,12 +121,7 @@
     </ul>
     {% endif %}
     {% if not premium_access() %}
-    <div class="card shadow-soft">
-      <div class="card-body p-4 d-flex flex-wrap align-items-center gap-3">
-        <p class="mb-0 flex-grow-1"><i class="fa-solid fa-gem me-2 text-primary" aria-hidden="true"></i>{{ _("L'ajout de photos est réservé aux abonnés Premium.") }}</p>
-        <a href="{{ url_for('billing.index') }}" class="btn btn-primary rounded-pill px-4">{{ _("Découvrir Premium") }}</a>
-      </div>
-    </div>
+    {{ locked(_("L'ajout de photos est réservé aux abonnés Premium.")) }}
     {% else %}
     <div class="card shadow-soft">
       <div class="card-body p-4">

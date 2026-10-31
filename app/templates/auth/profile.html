@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% from "partials/premium.html" import crown, locked %}
 {% from "partials/macros.html" import field %}
 {% block title %}{{ _("Préférences") }}{% endblock %}
 {% block content %}
@@ -66,7 +67,18 @@
       </div>
     </div>
 
-    <h2 class="h5 fw-semibold mt-5 mb-3" id="public-profile">{{ _("Profil public") }}</h2>
+    <h2 class="h5 fw-semibold mt-5 mb-3" id="public-profile">{{ _("Profil public") }}{{ crown() }}</h2>
+    {% if not premium_access() %}
+    {{ locked(_("Le profil public est réservé aux abonnés Premium.")) }}
+    {% if current_user.public_name %}
+    <form method="post" action="{{ url_for('auth.set_public_profile') }}" class="mt-2 d-flex flex-wrap align-items-center gap-2">
+      {{ public_form.hidden_tag() }}
+      <input type="hidden" name="pub-public_name" value="">
+      <span class="text-body-secondary small">{{ _("Votre profil /u/%(name)s n'est plus accessible tant que vous n'êtes pas abonné.", name=current_user.public_name) }}</span>
+      <button type="submit" class="btn btn-link btn-sm p-0">{{ _("Retirer le nom") }}</button>
+    </form>
+    {% endif %}
+    {% else %}
     <div class="card shadow-soft">
       <div class="card-body p-4">
         <p class="text-body-secondary">
@@ -92,6 +104,7 @@
         </form>
       </div>
     </div>
+    {% endif %}
 
     <h2 class="h5 fw-semibold mt-5 mb-3">{{ _("Mot de passe") }}</h2>
     <div class="card shadow-soft">

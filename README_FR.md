@@ -11,7 +11,11 @@ Voyage Voyage a été codé avec l'aide de l'IA.
 ## Fonctionnalités
 
 - Abonnement Premium (`/billing`, « Premium » dans le menu du compte), payé avec Stripe : 2 € par mois ou 12 €
-  par an par défaut (prix dans `.env`). L'ajout de photos et le support sont des fonctions Premium. Le
+  par an par défaut (prix dans `.env`). L'ajout de photos, les liens de partage, le profil public et le support
+  sont des fonctions Premium, signalées partout par une couronne (menu, pages, pages À propos et d'accueil).
+  À la fin du Premium, liens de partage et profil public ne sont plus servis (les visiteurs obtiennent une
+  404) mais sont conservés, et fonctionnent de nouveau avec un nouvel abonnement ; on peut toujours les
+  révoquer ou les retirer. Le
   paiement se fait sur la page hébergée de Stripe (Checkout) ; l'abonné voit ensuite ses factures
   (`/billing/invoices`, avec la facture en ligne et son PDF, et un bouton « Payer » pour une facture
   impayée) et peut arrêter l'abonnement, qui prend alors fin à l'échéance de la période payée sans nouveau
@@ -36,12 +40,12 @@ Voyage Voyage a été codé avec l'aide de l'IA.
   l'inscription reste directe avec mot de passe.
   Depuis ses préférences, chacun peut changer son mot de passe (ce qui déconnecte ses autres sessions)
   ou supprimer son compte. Mot de passe oublié : lien de réinitialisation par e-mail, à usage unique.
-- Liens de partage en lecture seule, avec expiration facultative et date de dernière consultation. Le
+- Liens de partage en lecture seule (Premium), avec expiration facultative et date de dernière consultation. Le
   visiteur a son propre menu : Carte, Statistiques (depuis le début, une carte par année, badges), Voyages
   (liste regroupée par voyage, si le lien le prévoit) et Bilan. Les voyages à venir sont masqués par défaut
   (ils révèlent quand vous êtes absent) ; une option par lien les montre, estompés et signalés. Ni notes, ni
   photos, ni domicile.
-- Profil public (`/u/<nom>`) : depuis les préférences, chacun peut choisir un nom (3 à 30 lettres minuscules,
+- Profil public (Premium ; `/u/<nom>`) : depuis les préférences, chacun peut choisir un nom (3 à 30 lettres minuscules,
   chiffres, `-` ou `_`) pour publier un résumé de ses voyages passés : chiffres clés (voyages, distance, pays,
   continents, part des terres émergées), distance par mode, pays visités par continent et badges obtenus. Ni
   trajets, ni dates, ni notes, ni photos, ni domicile, ni voyages à venir ; la page n'est pas indexée par les
