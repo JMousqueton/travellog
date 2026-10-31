@@ -175,3 +175,11 @@ def test_deleting_the_account_removes_its_addresses(app, db, user):
     db.session.delete(user)
     db.session.commit()
     assert _addresses(db) == []
+
+
+def test_import_page_lists_addresses_and_links_to_profile(auth_client, db, user):
+    db.session.add(ImportAddress(user_id=user.id, email="work@example.org"))
+    db.session.commit()
+    page = auth_client.get("/import-export").text
+    assert "alice@example.com" in page and "work@example.org" in page
+    assert '/auth/profile#mail-import"' in page

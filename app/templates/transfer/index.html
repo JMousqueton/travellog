@@ -80,10 +80,18 @@
         <div class="feature-icon" aria-hidden="true"><i class="fa-solid fa-envelope-open-text"></i></div>
         <div class="flex-grow-1">
           <h3 class="h6 fw-semibold mb-1">{{ _("Import par e-mail") }}</h3>
-          <p class="small text-body-secondary mb-0">
-            {{ _("Transférez vos confirmations de vol ou de train à %(address)s depuis %(email)s : les trajets sont ajoutés à votre compte en quelques minutes.",
-                 address=config.IMPORT_ADDRESS, email=current_user.email) }}
+          <p class="small text-body-secondary mb-2">
+            {{ _("Transférez vos confirmations de vol ou de train à %(address)s depuis l'une de ces adresses : les trajets sont ajoutés à votre compte en quelques minutes.",
+                 address=config.IMPORT_ADDRESS) }}
           </p>
+          <ul class="list-unstyled small mb-2">
+            <li><i class="fa-solid fa-user text-body-secondary me-2" aria-hidden="true"></i>{{ current_user.email }}</li>
+            {% for address in current_user.import_addresses %}
+            <li><i class="fa-solid fa-envelope-circle-check text-body-secondary me-2" aria-hidden="true"></i>{{ address.email }}</li>
+            {% endfor %}
+          </ul>
+          <a class="small" href="{{ url_for('auth.profile', _anchor='mail-import') }}">
+            <i class="fa-solid fa-pen me-1" aria-hidden="true"></i>{{ _("Ajouter ou modifier les adresses") }}</a>
         </div>
       </div>
     </div>
