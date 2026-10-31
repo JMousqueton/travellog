@@ -12,8 +12,8 @@ def mail_enabled():
     return bool(cfg["MAIL_SERVER"]) or cfg.get("DEBUG") or cfg.get("TESTING")
 
 
-def send_email(to, subject, body, headers=None):
-    """Envoie un e-mail (avec d'éventuels en-têtes supplémentaires). Sans MAIL_SERVER : conservé en mémoire
+def send_email(to, subject, body, headers=None, attachments=()):
+    """Envoie un e-mail (avec d'éventuels en-têtes supplémentaires et pièces jointes (nom, octets, type MIME)). Sans MAIL_SERVER : conservé en mémoire
     (tests) ou écrit dans les logs (développement). Renvoie False en cas d'échec, sans lever d'exception."""
     cfg = current_app.config
     message = EmailMessage()
@@ -27,6 +27,9 @@ def send_email(to, subject, body, headers=None):
     for name, value in (headers or {}).items():
         message[name] = value
     message.set_content(body)
+    for filename, data, mimetype in attachments:
+        maintype, _, subtype = mimetype.partition("/")
+        message.add_attachment(data, maintype=maintype, subtype=subtype, filename=filename)
 
     if not cfg["MAIL_SERVER"]:
         if cfg.get("TESTING"):

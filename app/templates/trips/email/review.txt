@@ -1,0 +1,22 @@
+{{ _("Bonjour,") }}
+
+{{ _("Voici votre année %(year)s en voyages sur %(site)s :", year=review.year, site=site) }}
+
+  • {{ ngettext("%(num)s voyage", "%(num)s voyages", review.count) }}
+  • {{ _("%(distance)s parcourus, soit %(laps)s fois le tour de la Terre", distance=distance, laps=laps) }}
+  • {{ ngettext("%(num)s pays", "%(num)s pays", review.countries|length) }}{% if review.new_countries %} — {{ _("nouveaux : %(names)s", names=review.new_countries|map(attribute='name')|join(', ')) }}{% endif %}
+  • {{ _("Plus long trajet : %(origin)s → %(dest)s", origin=review.longest.origin_name, dest=review.longest.dest_name) }}
+{%- if review.days_away %}
+  • {{ ngettext("%(num)s jour loin de la maison", "%(num)s jours loin de la maison", review.days_away) }}
+{%- endif %}
+  • {{ _("CO₂ estimé : %(co2)s", co2=co2) }}
+
+{{ _("Votre bilan en image est joint à cet e-mail. Le bilan complet, avec vos badges et vos destinations préférées :") }}
+{{ url }}
+
+{{ _("Bonne année, et bons voyages !") }}
+
+--
+{{ _("Vous recevez cet e-mail une fois par an, fin décembre. Pour ne plus le recevoir :") }}
+{{ unsubscribe }}
+{{ _("Ou depuis vos préférences :") }} {{ settings }}

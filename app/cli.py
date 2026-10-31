@@ -68,6 +68,30 @@ def register_cli(app):
         db.session.commit()
         click.echo(f"{len(DEMO_TRIPS)} voyages créés pour {DEMO_EMAIL} / {DEMO_PASSWORD}")
 
+    @app.cli.group("review-email")
+    def review_email_group():
+        """Bilan de l'année par e-mail (envoyé fin décembre par la tâche maintenance)."""
+
+    @review_email_group.command("send")
+    @click.argument("email")
+    @click.option("--year", type=int, help="Année du bilan (l'année en cours par défaut).")
+    def review_email_send(email, year):
+        """Envoie tout de suite le bilan de l'année à un compte (test), sans changer ses préférences."""
+        from . import utils
+        from .models import User
+        from .review_email import send_review
+
+        user = db.session.execute(db.select(User).filter_by(email=email.strip().lower())).scalar_one_or_none()
+        if user is None:
+            raise click.BadParameter(f"aucun compte {email}", param_hint="EMAIL")
+        year = year or utils.today().year
+        result = send_review(user, year)
+        if result is None:
+            raise click.ClickException(f"{email} n'a aucun voyage en {year}.")
+        if not result:
+            raise click.ClickException("L'envoi a échoué (voir les logs).")
+        click.echo(f"Bilan {year} envoyé à {user.email}.")
+
     @app.cli.command("create-admin")
     @click.argument("email")
     @click.option("--password", help="Mot de passe (demandé de façon interactive si absent).")

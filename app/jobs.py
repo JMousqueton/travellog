@@ -65,6 +65,11 @@ def _maintenance():
                f"anciens, {history} exécution(s) anciennes")
     if current_app.config["STRIPE_SECRET_KEY"]:
         summary += f", {_resync_expired_subscriptions()} abonnement(s) relu(s)"
+    from .review_email import send_year_reviews
+
+    reviews = send_year_reviews()
+    if reviews is not None:
+        summary += f", {reviews} bilan(s) de l'année envoyé(s)"
     return summary
 
 
@@ -87,7 +92,7 @@ JOBS = {job.name: job for job in (
     Job("mail-import", timedelta(minutes=5), _mail_import, _l("Import par e-mail (boîte IMAP)")),
     Job("backup", timedelta(days=1), _backup, _l("Sauvegarde complète (base + photos)")),
     Job("maintenance", timedelta(days=1), _maintenance,
-        _l("Purge du cache de géocodage, des liens de partage expirés, du journal des imports par e-mail et de l'historique des tâches")),
+        _l("Purge du cache de géocodage, des liens de partage expirés, du journal des imports par e-mail et de l'historique des tâches ; bilans de l'année par e-mail fin décembre")),
 )}
 
 

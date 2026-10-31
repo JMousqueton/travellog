@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}{{ _("Bilan de l'année par e-mail") }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-soft text-center">
+      <div class="card-body p-5">
+        <span class="feature-icon mb-3" aria-hidden="true"><i class="fa-solid {{ 'fa-envelope-circle-check' if done else 'fa-envelope' }}"></i></span>
+        {% if done %}
+        <h1 class="h4 fw-bold">{{ _("C'est noté") }}</h1>
+        <p class="text-body-secondary mb-0">{{ _("Vous ne recevrez plus votre bilan de l'année par e-mail. Vous pouvez le réactiver à tout moment dans vos préférences, et votre bilan reste consultable sur le site.") }}</p>
+        {% else %}
+        <h1 class="h4 fw-bold">{{ _("Ne plus recevoir le bilan de l'année ?") }}</h1>
+        <p class="text-body-secondary">{{ _("Chaque fin décembre, nous vous envoyons votre année en voyages. Vous pouvez arrêter cet envoi.") }}</p>
+        <form method="post">
+          <button type="submit" class="btn btn-primary rounded-pill px-4">{{ _("Me désabonner") }}</button>
+        </form>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

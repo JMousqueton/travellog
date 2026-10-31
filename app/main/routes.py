@@ -3,7 +3,7 @@ from datetime import date
 from flask import abort, current_app, jsonify, redirect, render_template, request, url_for
 from flask_login import current_user
 
-from ..extensions import db
+from ..extensions import csrf, db
 from ..countries import country_name
 from ..i18n import LANGUAGES, current_locale
 from ..utils import is_safe_redirect
@@ -101,3 +101,18 @@ def plans():
         abort(404)
     free = format_currency(0, current_app.config["PREMIUM_CURRENCY"].upper())
     return render_template("plans.html", free_price=free)
+
+
+@bp.route("/emails/review/unsubscribe/<token>", methods=["GET", "POST"])
+@csrf.exempt  # désabonnement en un clic (List-Unsubscribe-Post) : le jeton signé tient lieu de protection
+def review_emails_unsubscribe(token):
+    """Lien des e-mails de bilan : GET demande confirmation, POST désabonne (sans connexion)."""
+    from ..review_email import user_from_token
+
+    user = user_from_token(token)
+    if user is None:
+        abort(404)
+    if request.method == "POST":
+        user.review_emails = False
+        db.session.commit()
+    return render_template("unsubscribe.html", token=token, done=not user.review_emails)

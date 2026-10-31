@@ -86,6 +86,8 @@ class Config:
     # Journal des e-mails importés ou ignorés (expéditeur, objet) : purgé après ce nombre de jours (tâche
     # maintenance). Les échecs restent tant que leur e-mail est dans la boîte, sinon il rouvrirait un ticket.
     MAIL_IMPORT_LOG_DAYS = int(os.environ.get("MAIL_IMPORT_LOG_DAYS", "90"))
+    # Bilan de l'année par e-mail : envoyé à partir de ce jour de décembre (tâche maintenance).
+    REVIEW_EMAIL_DAY = int(os.environ.get("REVIEW_EMAIL_DAY", "28"))
 
     # Abonnement Premium (Stripe). Sans STRIPE_SECRET_KEY, la fonction est désactivée et rien n'est réservé.
     STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")

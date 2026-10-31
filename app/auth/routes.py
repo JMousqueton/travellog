@@ -203,6 +203,17 @@ def profile():
     return _render_profile(form=form)
 
 
+@bp.route("/profile/review-emails", methods=["POST"])
+@login_required
+def set_review_emails():
+    """Active ou coupe l'envoi du bilan de l'année par e-mail (fin décembre)."""
+    current_user.review_emails = request.form.get("enabled") == "1"
+    db.session.commit()
+    flash(_("Vous recevrez votre bilan de l'année par e-mail fin décembre.") if current_user.review_emails
+          else _("Vous ne recevrez plus votre bilan de l'année par e-mail."), "success")
+    return redirect(url_for("auth.profile") + "#emails")
+
+
 @bp.route("/home", methods=["POST"])
 @login_required
 def set_home():

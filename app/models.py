@@ -53,6 +53,9 @@ class User(UserMixin, db.Model):
     subscription_interval = db.Column(db.String(10), nullable=True)  # month, year
     premium_until = db.Column(db.DateTime(timezone=True), nullable=True)  # fin de la période payée
     cancel_at_period_end = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
+    # Bilan de l'année envoyé par e-mail fin décembre (désactivable) ; dernière année envoyée.
+    review_emails = db.Column(db.Boolean, nullable=False, default=True, server_default="1")
+    review_email_year = db.Column(db.Integer, nullable=True)
     # Premium offert par un administrateur, sans abonnement.
     premium_granted = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
