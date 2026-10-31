@@ -27,6 +27,7 @@ class Job:
     every: timedelta   # intervalle prévu par le timer : au-delà de deux fois, la tâche est « en retard »
     func: callable
     description: object  # texte traduit à l'affichage (lazy_gettext)
+    icon: str = "fa-gear"  # icône Font Awesome de l'onglet Tâches
 
 
 def _mail_import():
@@ -89,10 +90,12 @@ def _resync_expired_subscriptions():
 
 
 JOBS = {job.name: job for job in (
-    Job("mail-import", timedelta(minutes=5), _mail_import, _l("Import par e-mail (boîte IMAP)")),
-    Job("backup", timedelta(days=1), _backup, _l("Sauvegarde complète (base + photos)")),
+    Job("mail-import", timedelta(minutes=5), _mail_import, _l("Import par e-mail (boîte IMAP)"),
+        "fa-envelope-open-text"),
+    Job("backup", timedelta(days=1), _backup, _l("Sauvegarde complète (base + photos)"), "fa-box-archive"),
     Job("maintenance", timedelta(days=1), _maintenance,
-        _l("Purge du cache de géocodage, des liens de partage expirés, du journal des imports par e-mail et de l'historique des tâches ; bilans de l'année par e-mail fin décembre")),
+        _l("Purge du cache de géocodage, des liens de partage expirés, du journal des imports par e-mail et de l'historique des tâches ; bilans de l'année par e-mail fin décembre"),
+        "fa-broom"),
 )}
 
 

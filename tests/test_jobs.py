@@ -63,6 +63,7 @@ def test_admin_jobs_page(client, db, app):
     login(client, "root@example.com")
     html = client.get("/admin/jobs").text
     assert "disque plein" in html and "Traceback…" in html and "mail-import" in html and "Jamais exécutée" in html
+    assert html.count("fa-box-archive") == 2 and "fa-envelope-open-text" in html and "fa-broom" in html  # icônes
 
 
 def test_admin_jobs_page_forbidden_for_regular_user(auth_client):

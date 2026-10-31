@@ -185,7 +185,7 @@ def settings():
 @admin_required
 def jobs():
     """Tâches périodiques : dernière exécution, retards, échecs, et les dernières exécutions."""
-    from ..jobs import job_overview
+    from ..jobs import JOBS, job_overview
     from ..models import JobRun, MailImport
 
     recent = db.session.execute(
@@ -195,7 +195,8 @@ def jobs():
     mail_counts = dict(db.session.execute(
         db.select(MailImport.status, db.func.count(MailImport.id)).filter(MailImport.created_at >= since)
         .group_by(MailImport.status)).all())
-    return render_template("admin/jobs.html", overview=job_overview(), recent=recent, mail_counts=mail_counts)
+    return render_template("admin/jobs.html", overview=job_overview(), recent=recent, mail_counts=mail_counts,
+                           jobs=JOBS)
 
 
 @bp.route("/database")
