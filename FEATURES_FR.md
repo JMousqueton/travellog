@@ -16,7 +16,10 @@
   prélèvement, ou le reprendre d'ici là. Un paiement refusé laisse l'accès le temps que Stripe réessaie. Les
   administrateurs peuvent offrir le Premium (bouton en forme de diamant dans l'onglet des utilisateurs). La
   suppression d'un compte supprime son client Stripe, ce qui résilie aussitôt l'abonnement. Sans
-  `STRIPE_SECRET_KEY`, la fonction est désactivée et rien n'est réservé.
+  `STRIPE_SECRET_KEY`, la fonction est désactivée et rien n'est réservé. Les administrateurs peuvent aussi rendre
+  toutes les fonctions gratuites (Administration › Paramètres, « Toutes les fonctions gratuites », désactivé par
+  défaut, avec confirmation) : verrous Premium, prix et page des offres disparaissent et plus personne ne peut
+  s'abonner, mais les abonnés actuels gèrent ou arrêtent toujours leur abonnement et Stripe notifie ses changements.
 - Support (Premium ; `/support`, dans le menu du compte) : les utilisateurs connectés ouvrent un ticket (sujet et message)
   et suivent l'échange, qui peut compter autant d'allers-retours que nécessaire ; ils peuvent le fermer, et
   y répondre le rouvre. Les administrateurs ont un onglet « Tickets » (`/admin/tickets` : à traiter / répondus /

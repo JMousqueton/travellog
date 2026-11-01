@@ -6,7 +6,7 @@
                                           ('admin.jobs', ['admin.jobs'], 'fa-clock-rotate-left', _("Tâches")),
                                           ('admin.database', ['admin.database'], 'fa-database', _("Base de données")),
                                           ('admin.settings', ['admin.settings'], 'fa-gear', _("Paramètres"))] %}
-  {% if endpoint != 'admin.subscriptions' or billing_enabled() %}
+  {% if endpoint != 'admin.subscriptions' or stripe_configured() %}
   <li class="nav-item">
     <a class="nav-link {% if request.endpoint in active %}active{% endif %}" href="{{ url_for(endpoint) }}"
        {% if request.endpoint in active %}aria-current="page"{% endif %}>

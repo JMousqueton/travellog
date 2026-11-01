@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 import stripe
-from flask import abort, current_app, flash, redirect, render_template, request, url_for
+from flask import abort, current_app, flash, g, redirect, render_template, request, url_for
 from flask_babel import format_currency, format_date, format_timedelta
 from flask_babel import gettext as _
 from flask_login import current_user
@@ -10,7 +10,7 @@ from ..auth.forms import PublicProfileForm
 from ..billing.stripe_sync import delete_customer
 from ..extensions import db
 from ..mail_import.processing import forget_user
-from ..models import Setting, Ticket, Trip, User, registration_open, utcnow
+from ..models import Setting, Ticket, Trip, User, free_mode, registration_open, utcnow
 from ..support.forms import ReplyForm
 from ..support.notify import notify_user
 from . import admin_required, bp
@@ -104,10 +104,10 @@ def set_public_name(user_id):
 
 
 def _subscription_report():
-    from ..billing import billing_enabled
+    from ..billing import stripe_configured
     from ..billing.stripe_sync import subscription_report
 
-    if not billing_enabled():
+    if not stripe_configured():
         abort(404)
     try:
         return subscription_report(), False
@@ -173,8 +173,11 @@ def settings():
     form = SettingsForm()
     if request.method == "GET":
         form.registration_open.data = registration_open()
+        form.free_mode.data = free_mode()
     if form.validate_on_submit():
         Setting.set("registration_open", "1" if form.registration_open.data else "0")
+        Setting.set("free_mode", "1" if form.free_mode.data else "0")
+        g.pop("free_mode", None)
         db.session.commit()
         flash(_("Paramètres enregistrés."), "success")
         return redirect(url_for("admin.settings"))

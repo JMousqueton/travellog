@@ -6,9 +6,9 @@
   <div class="col-lg-8">
     <div class="card shadow-soft">
       <div class="card-body p-4">
-        <h2 class="h5 fw-semibold mb-3">{{ _("Inscriptions") }}</h2>
-        <form method="post">
+        <form method="post" id="settingsForm">
           {{ form.hidden_tag() }}
+          <h2 class="h5 fw-semibold mb-3">{{ _("Inscriptions") }}</h2>
           <div class="form-check form-switch mb-2">
             {{ form.registration_open(class_='form-check-input', role='switch', **{'aria-describedby': 'registration-help'}) }}
             {{ form.registration_open.label(class_='form-check-label') }}
@@ -16,10 +16,42 @@
           <p class="form-text mb-4" id="registration-help">
             {{ _("Désactivé : la page d'inscription est fermée et les liens « Créer un compte » sont masqués. Les comptes existants peuvent toujours se connecter.") }}
           </p>
+
+          <h2 class="h5 fw-semibold mb-3">{{ _("Premium") }}</h2>
+          <div class="form-check form-switch mb-2">
+            {{ form.free_mode(class_='form-check-input', role='switch', **{'aria-describedby': 'free-mode-help',
+                'data-was-on': '1' if form.free_mode.data else '0'}) }}
+            {{ form.free_mode.label(class_='form-check-label') }}
+          </div>
+          <p class="form-text mb-4" id="free-mode-help">
+            {{ _("Activé : toutes les fonctions Premium sont accessibles à tous, et les prix, l'offre Premium et la page des offres sont masqués. Aucun nouvel abonnement n'est possible ; les abonnés actuels peuvent toujours gérer ou arrêter leur abonnement.") }}
+            {% if not stripe_configured() %}{{ _("Stripe n'étant pas configuré, toutes les fonctions sont déjà gratuites.") }}{% endif %}
+          </p>
           <button type="submit" class="btn btn-primary rounded-pill px-4">{{ form.submit.label.text }}</button>
         </form>
       </div>
     </div>
   </div>
 </div>
+
+<div class="modal fade" id="freeModeModal" tabindex="-1" aria-labelledby="freeModeModalTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-body p-4">
+        <div class="modal-icon modal-icon-warning mb-3" aria-hidden="true"><i class="fa-solid fa-gift"></i></div>
+        <h2 class="h5 mb-3 text-center" id="freeModeModalTitle">{{ _("Rendre toutes les fonctions gratuites ?") }}</h2>
+        <p class="text-body-secondary small mb-0 text-center">
+          {{ _("Tout le monde aura accès aux fonctions Premium, et plus personne ne pourra s'abonner. Les abonnements en cours ne sont ni arrêtés ni remboursés : les abonnés continuent de payer tant qu'ils ne les arrêtent pas.") }}
+        </p>
+      </div>
+      <div class="modal-footer border-0 pt-0 justify-content-center gap-2 pb-4">
+        <button type="button" class="btn btn-light rounded-pill px-4" data-bs-dismiss="modal">{{ _("Annuler") }}</button>
+        <button type="button" class="btn btn-warning rounded-pill px-4" id="freeModeConfirm">{{ _("Tout rendre gratuit") }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="module" src="{{ url_for('static', filename='js/admin-settings.js') }}"></script>
 {% endblock %}

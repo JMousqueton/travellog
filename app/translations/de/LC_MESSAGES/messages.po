@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-01 11:18+0000\n"
+"POT-Creation-Date: 2026-11-01 11:39+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: de\n"
@@ -82,7 +82,11 @@ msgstr "Ein unerwarteter Fehler ist aufgetreten. Bitte versuche es später erneu
 msgid "Autoriser les inscriptions"
 msgstr "Registrierungen erlauben"
 
-#: app/admin/forms.py:8 app/auth/forms.py:62 app/templates/admin/users.html:59
+#: app/admin/forms.py:8
+msgid "Toutes les fonctions gratuites"
+msgstr "Alle Funktionen kostenlos"
+
+#: app/admin/forms.py:9 app/auth/forms.py:62 app/templates/admin/users.html:59
 #: app/trips/forms.py:67 app/trips/forms.py:105 app/trips/forms.py:111
 msgid "Enregistrer"
 msgstr "Speichern"
@@ -147,28 +151,28 @@ msgstr ""
 "Stripe antwortet nicht: Die Abonnementliste konnte nicht gelesen werden. "
 "Versuche es gleich noch einmal."
 
-#: app/admin/routes.py:179
+#: app/admin/routes.py:182
 msgid "Paramètres enregistrés."
 msgstr "Einstellungen gespeichert."
 
-#: app/admin/routes.py:253
+#: app/admin/routes.py:256
 #, python-format
 msgid "Réponse envoyée à %(email)s."
 msgstr "Antwort an %(email)s gesendet."
 
-#: app/admin/routes.py:269
+#: app/admin/routes.py:272
 msgid "Ticket fermé."
 msgstr "Ticket geschlossen."
 
-#: app/admin/routes.py:269
+#: app/admin/routes.py:272
 msgid "Ticket rouvert."
 msgstr "Ticket wieder geöffnet."
 
-#: app/admin/routes.py:279
+#: app/admin/routes.py:282
 msgid "Vous recevrez un e-mail à chaque nouveau message de ticket."
 msgstr "Du erhältst bei jeder neuen Ticket-Nachricht eine E-Mail."
 
-#: app/admin/routes.py:280
+#: app/admin/routes.py:283
 msgid "Vous ne recevrez plus d'e-mail pour les tickets."
 msgstr "Du erhältst keine E-Mails mehr zu Tickets."
 
@@ -563,19 +567,19 @@ msgstr ""
 msgid "Mot de passe modifié. Vous pouvez vous connecter."
 msgstr "Passwort geändert. Du kannst dich jetzt anmelden."
 
-#: app/billing/__init__.py:43
+#: app/billing/__init__.py:51
 msgid "Fonction réservée aux abonnés Premium."
 msgstr "Funktion nur für Premium-Abonnenten."
 
-#: app/billing/__init__.py:44
+#: app/billing/__init__.py:52
 msgid "Cette fonction est réservée aux abonnés Premium."
 msgstr "Diese Funktion ist Premium-Abonnenten vorbehalten."
 
-#: app/billing/routes.py:49
+#: app/billing/routes.py:59
 msgid "Vous êtes déjà abonné."
 msgstr "Sie haben bereits ein Abonnement."
 
-#: app/billing/routes.py:58
+#: app/billing/routes.py:68
 msgid ""
 "Le paiement est momentanément indisponible. Réessayez dans quelques "
 "minutes."
@@ -583,15 +587,15 @@ msgstr ""
 "Die Zahlung ist vorübergehend nicht verfügbar. Versuchen Sie es in "
 "einigen Minuten erneut."
 
-#: app/billing/routes.py:74
+#: app/billing/routes.py:84
 msgid "Merci ! Votre abonnement Premium est actif."
 msgstr "Danke! Ihr Premium-Abonnement ist aktiv."
 
-#: app/billing/routes.py:77
+#: app/billing/routes.py:87
 msgid "Merci ! Votre paiement est en cours de confirmation."
 msgstr "Danke! Ihre Zahlung wird gerade bestätigt."
 
-#: app/billing/routes.py:88
+#: app/billing/routes.py:98
 msgid ""
 "Les factures sont momentanément indisponibles. Réessayez dans quelques "
 "minutes."
@@ -599,17 +603,17 @@ msgstr ""
 "Die Rechnungen sind vorübergehend nicht verfügbar. Versuchen Sie es in "
 "einigen Minuten erneut."
 
-#: app/billing/routes.py:101
+#: app/billing/routes.py:111
 msgid "Votre abonnement n'a pas pu être modifié. Réessayez dans quelques minutes."
 msgstr ""
 "Ihr Abonnement konnte nicht geändert werden. Versuchen Sie es in einigen "
 "Minuten erneut."
 
-#: app/billing/routes.py:104
+#: app/billing/routes.py:114
 msgid "Aucun abonnement en cours."
 msgstr "Kein laufendes Abonnement."
 
-#: app/billing/routes.py:106
+#: app/billing/routes.py:116
 #, python-format
 msgid ""
 "Votre abonnement est arrêté : l'accès Premium reste actif jusqu'au "
@@ -618,7 +622,7 @@ msgstr ""
 "Ihr Abonnement ist beendet: Der Premium-Zugang bleibt bis %(date)s aktiv,"
 " ohne weitere Abbuchung."
 
-#: app/billing/routes.py:109
+#: app/billing/routes.py:119
 #, python-format
 msgid "Votre abonnement reprend : prochain renouvellement le %(date)s."
 msgstr "Ihr Abonnement läuft weiter: nächste Verlängerung am %(date)s."
@@ -2159,7 +2163,7 @@ msgstr "Traceback"
 msgid "Aucune exécution."
 msgstr "Keine Ausführung."
 
-#: app/templates/admin/settings.html:9
+#: app/templates/admin/settings.html:11
 msgid "Inscriptions"
 msgstr "Registrierungen"
 
@@ -2172,6 +2176,41 @@ msgstr ""
 "Aus: Die Registrierungsseite ist geschlossen und die Links „Konto "
 "erstellen“ sind ausgeblendet. Bestehende Konten können sich weiterhin "
 "anmelden."
+
+#: app/templates/admin/settings.html:27
+msgid ""
+"Activé : toutes les fonctions Premium sont accessibles à tous, et les "
+"prix, l'offre Premium et la page des offres sont masqués. Aucun nouvel "
+"abonnement n'est possible ; les abonnés actuels peuvent toujours gérer ou"
+" arrêter leur abonnement."
+msgstr ""
+"Aktiviert: Alle Premium-Funktionen stehen allen zur Verfügung, und "
+"Preise, das Premium-Angebot und die Angebotsseite werden ausgeblendet. "
+"Neue Abonnements sind nicht möglich; bestehende Abonnenten können ihr "
+"Abonnement weiterhin verwalten oder beenden."
+
+#: app/templates/admin/settings.html:28
+msgid "Stripe n'étant pas configuré, toutes les fonctions sont déjà gratuites."
+msgstr "Da Stripe nicht konfiguriert ist, sind bereits alle Funktionen kostenlos."
+
+#: app/templates/admin/settings.html:42
+msgid "Rendre toutes les fonctions gratuites ?"
+msgstr "Alle Funktionen kostenlos machen?"
+
+#: app/templates/admin/settings.html:44
+msgid ""
+"Tout le monde aura accès aux fonctions Premium, et plus personne ne "
+"pourra s'abonner. Les abonnements en cours ne sont ni arrêtés ni "
+"remboursés : les abonnés continuent de payer tant qu'ils ne les arrêtent "
+"pas."
+msgstr ""
+"Alle erhalten Zugang zu den Premium-Funktionen, und niemand kann mehr ein"
+" Abonnement abschließen. Laufende Abonnements werden weder beendet noch "
+"erstattet: Abonnenten zahlen weiter, bis sie sie beenden."
+
+#: app/templates/admin/settings.html:49
+msgid "Tout rendre gratuit"
+msgstr "Alles kostenlos machen"
 
 #: app/templates/admin/subscriptions.html:15
 msgid "Abonnés mensuels"
@@ -2258,12 +2297,12 @@ msgid "il y a %(age)s"
 msgstr "vor %(age)s"
 
 #: app/templates/admin/subscriptions.html:102
-#: app/templates/billing/index.html:93
+#: app/templates/billing/index.html:98
 msgid "Annuel"
 msgstr "Jährlich"
 
 #: app/templates/admin/subscriptions.html:104
-#: app/templates/billing/index.html:93
+#: app/templates/billing/index.html:98
 msgid "Mensuel"
 msgstr "Monatlich"
 
@@ -3036,10 +3075,11 @@ msgstr "Meine Reisen teilen"
 msgid "Importer / exporter"
 msgstr "Import / Export"
 
-#: app/templates/admin/users.html:27 app/templates/base.html:178
-#: app/templates/billing/index.html:2 app/templates/billing/index.html:6
-#: app/templates/billing/index.html:27 app/templates/billing/invoices.html:7
-#: app/templates/partials/footer.html:10 app/templates/plans.html:61
+#: app/templates/admin/settings.html:20 app/templates/admin/users.html:27
+#: app/templates/base.html:178 app/templates/billing/index.html:2
+#: app/templates/billing/index.html:6 app/templates/billing/index.html:32
+#: app/templates/billing/invoices.html:7 app/templates/partials/footer.html:10
+#: app/templates/plans.html:61
 msgid "Premium"
 msgstr "Premium"
 
@@ -3079,9 +3119,10 @@ msgstr "Diese Reise löschen?"
 msgid "Cette action est définitive."
 msgstr "Diese Aktion kann nicht rückgängig gemacht werden."
 
-#: app/templates/admin/users.html:58 app/templates/admin/users.html:106
-#: app/templates/base.html:244 app/templates/transfer/preview.html:73
-#: app/templates/trips/form.html:157 app/templates/trips/journey.html:29
+#: app/templates/admin/settings.html:48 app/templates/admin/users.html:58
+#: app/templates/admin/users.html:106 app/templates/base.html:244
+#: app/templates/transfer/preview.html:73 app/templates/trips/form.html:157
+#: app/templates/trips/journey.html:29
 msgid "Annuler"
 msgstr "Abbrechen"
 
@@ -3108,15 +3149,23 @@ msgstr "Zugang zum Support: Fragen stellen, Probleme melden, Ideen vorschlagen"
 msgid "Comparer les offres gratuite et Premium"
 msgstr "Kostenloses und Premium-Angebot vergleichen"
 
-#: app/templates/billing/index.html:28
+#: app/templates/billing/index.html:25
+msgid ""
+"Toutes les fonctions sont gratuites pour le moment : votre abonnement "
+"n'est plus nécessaire, vous pouvez l'arrêter ci-dessous."
+msgstr ""
+"Alle Funktionen sind derzeit kostenlos: Ihr Abonnement ist nicht mehr "
+"nötig, Sie können es unten beenden."
+
+#: app/templates/billing/index.html:33
 msgid "Abonnement annuel"
 msgstr "Jahresabonnement"
 
-#: app/templates/billing/index.html:28
+#: app/templates/billing/index.html:33
 msgid "Abonnement mensuel"
 msgstr "Monatsabonnement"
 
-#: app/templates/billing/index.html:32
+#: app/templates/billing/index.html:37
 msgid ""
 "Le dernier paiement a échoué. Réglez la facture en attente pour garder "
 "l'accès Premium."
@@ -3124,36 +3173,36 @@ msgstr ""
 "Die letzte Zahlung ist fehlgeschlagen. Begleichen Sie die offene "
 "Rechnung, um den Premium-Zugang zu behalten."
 
-#: app/templates/billing/index.html:33 app/templates/billing/index.html:42
-#: app/templates/billing/index.html:80 app/templates/billing/index.html:105
+#: app/templates/billing/index.html:38 app/templates/billing/index.html:47
+#: app/templates/billing/index.html:85 app/templates/billing/index.html:110
 #: app/templates/billing/invoices.html:2 app/templates/billing/invoices.html:8
 #: app/templates/billing/invoices.html:13
 msgid "Mes factures"
 msgstr "Meine Rechnungen"
 
-#: app/templates/billing/index.html:36
+#: app/templates/billing/index.html:41
 #, python-format
 msgid "Abonnement résilié : l'accès Premium prend fin le %(date)s."
 msgstr "Abonnement gekündigt: Der Premium-Zugang endet am %(date)s."
 
-#: app/templates/billing/index.html:38
+#: app/templates/billing/index.html:43
 #, python-format
 msgid "Prochain renouvellement le %(date)s."
 msgstr "Nächste Verlängerung am %(date)s."
 
-#: app/templates/billing/index.html:47
+#: app/templates/billing/index.html:52
 msgid "Reprendre mon abonnement"
 msgstr "Mein Abonnement fortsetzen"
 
-#: app/templates/billing/index.html:51 app/templates/billing/index.html:70
+#: app/templates/billing/index.html:56 app/templates/billing/index.html:75
 msgid "Arrêter mon abonnement"
 msgstr "Mein Abonnement beenden"
 
-#: app/templates/billing/index.html:63
+#: app/templates/billing/index.html:68
 msgid "Arrêter votre abonnement ?"
 msgstr "Abonnement beenden?"
 
-#: app/templates/billing/index.html:65
+#: app/templates/billing/index.html:70
 #, python-format
 msgid ""
 "Aucun nouveau prélèvement ne sera fait. L'accès Premium reste actif "
@@ -3162,44 +3211,44 @@ msgstr ""
 "Es erfolgt keine weitere Abbuchung. Der Premium-Zugang bleibt bis "
 "%(date)s aktiv, und Sie können das Abonnement bis dahin fortsetzen."
 
-#: app/templates/billing/index.html:69
+#: app/templates/billing/index.html:74
 msgid "Garder mon abonnement"
 msgstr "Abonnement behalten"
 
-#: app/templates/billing/index.html:77
+#: app/templates/billing/index.html:82
 msgid "L'accès Premium vous est offert : aucun abonnement n'est nécessaire."
 msgstr "Ihnen wurde der Premium-Zugang geschenkt: Kein Abonnement erforderlich."
 
-#: app/templates/billing/index.html:85
+#: app/templates/billing/index.html:90
 msgid "par mois"
 msgstr "pro Monat"
 
-#: app/templates/billing/index.html:85
+#: app/templates/billing/index.html:90
 msgid "Sans engagement, résiliable à tout moment."
 msgstr "Ohne Bindung, jederzeit kündbar."
 
-#: app/templates/billing/index.html:86
+#: app/templates/billing/index.html:91
 msgid "par an"
 msgstr "pro Jahr"
 
-#: app/templates/billing/index.html:86
+#: app/templates/billing/index.html:91
 #, python-format
 msgid "Économisez %(saving)s par rapport au mois."
 msgstr "Sparen Sie %(saving)s gegenüber dem Monatsabo."
 
-#: app/templates/billing/index.html:86
+#: app/templates/billing/index.html:91
 msgid "Un seul paiement par an."
 msgstr "Eine einzige Zahlung pro Jahr."
 
-#: app/templates/billing/index.html:97
+#: app/templates/billing/index.html:102
 msgid "Redirection…"
 msgstr "Weiterleitung…"
 
-#: app/templates/billing/index.html:97
+#: app/templates/billing/index.html:102
 msgid "S'abonner"
 msgstr "Abonnieren"
 
-#: app/templates/billing/index.html:103
+#: app/templates/billing/index.html:108
 #, python-format
 msgid ""
 "Paiement sécurisé par Stripe. Vos coordonnées bancaires ne transitent pas"

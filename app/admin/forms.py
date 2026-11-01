@@ -5,4 +5,5 @@ from wtforms import BooleanField, SubmitField
 
 class SettingsForm(FlaskForm):
     registration_open = BooleanField(_l("Autoriser les inscriptions"))
+    free_mode = BooleanField(_l("Toutes les fonctions gratuites"))
     submit = SubmitField(_l("Enregistrer"))

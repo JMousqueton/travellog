@@ -173,7 +173,7 @@
                 <i class="fa-solid fa-share-nodes me-2" aria-hidden="true"></i>{{ _("Partager mes voyages") }}{{ diamond() }}</a></li>
               <li><a class="dropdown-item" href="{{ url_for('transfer.index') }}">
                 <i class="fa-solid fa-file-export me-2" aria-hidden="true"></i>{{ _("Importer / exporter") }}</a></li>
-              {% if billing_enabled() %}
+              {% if billing_enabled() or (stripe_configured() and current_user.has_subscription) %}
               <li><a class="dropdown-item" href="{{ url_for('billing.index') }}">
                 <i class="fa-solid fa-gem text-info me-2" aria-hidden="true"></i>{{ _("Premium") }}</a></li>
               {% endif %}

@@ -91,8 +91,10 @@ class User(UserMixin, db.Model):
 
     @property
     def has_premium_access(self):
-        """Fonctions Premium accessibles : toujours quand Stripe n'est pas configuré (rien n'est réservé)."""
-        return not current_app.config.get("STRIPE_SECRET_KEY") or self.is_premium
+        """Fonctions Premium accessibles : toujours quand Stripe n'est pas configuré ou que tout est gratuit."""
+        from .billing import billing_enabled
+
+        return not billing_enabled() or self.is_premium
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -402,7 +404,7 @@ class Setting(db.Model):
     key = db.Column(db.String(64), primary_key=True)
     value = db.Column(db.String(255), nullable=False)
 
-    DEFAULTS = {"registration_open": "1"}
+    DEFAULTS = {"registration_open": "1", "free_mode": "0"}
 
     @classmethod
     def get(cls, key):
@@ -420,6 +422,20 @@ class Setting(db.Model):
 
 def registration_open():
     return Setting.get("registration_open") == "1"
+
+
+def free_mode():
+    """Toutes les fonctions gratuites (réglage d'administration) : plus rien n'est réservé à Premium.
+
+    Lu une fois par requête (billing_enabled() est appelé de nombreuses fois par page).
+    """
+    from flask import g, has_request_context
+
+    if not has_request_context():
+        return Setting.get("free_mode") == "1"
+    if "free_mode" not in g:
+        g.free_mode = Setting.get("free_mode") == "1"
+    return g.free_mode
 
 
 def _new_token():

@@ -14,7 +14,10 @@
   then ends at the close of the paid period with no further charge, or resume it until then. A failed
   payment keeps access while Stripe retries. Administrators can give Premium for free (gem button in the
   users tab). Deleting an account deletes its Stripe customer, which cancels the subscription at once.
-  Without `STRIPE_SECRET_KEY`, billing is off and nothing is restricted.
+  Without `STRIPE_SECRET_KEY`, billing is off and nothing is restricted. Administrators can also make every
+  feature free (Administration › Settings, "All features free", off by default, asked for confirmation): Premium
+  locks, prices and the plans page disappear and no one can subscribe, while current subscribers can still manage
+  or stop their subscription and Stripe keeps notifying its changes.
 - Support (Premium; `/support`, in the account menu): signed-in users open a ticket (subject and message) and follow the
   conversation, which can have as many exchanges as needed; they can close it, and replying reopens it.
   Administrators get a "Tickets" tab (`/admin/tickets`: to handle / answered / closed, with a counter of

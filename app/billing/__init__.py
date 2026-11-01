@@ -7,8 +7,16 @@ from flask_login import current_user, login_required
 bp = Blueprint("billing", __name__, url_prefix="/billing")
 
 
-def billing_enabled():
+def stripe_configured():
+    """Stripe configuré (.env) : webhooks, gestion des abonnements existants, rapport des abonnés."""
     return bool(current_app.config.get("STRIPE_SECRET_KEY"))
+
+
+def billing_enabled():
+    """Offre Premium en vigueur : Stripe configuré et réglage « Toutes les fonctions gratuites » désactivé."""
+    from ..models import free_mode
+
+    return stripe_configured() and not free_mode()
 
 
 def premium_access(user=None):
@@ -29,12 +37,12 @@ def premium_prices():
 
 def init_app(app):
     # Globals (et non context processor) : utilisables aussi dans les macros importées.
-    app.jinja_env.globals.update(billing_enabled=billing_enabled, premium_access=premium_access,
+    app.jinja_env.globals.update(billing_enabled=billing_enabled, stripe_configured=stripe_configured, premium_access=premium_access,
                                  premium_prices=premium_prices)
 
 
 def premium_required(view):
-    """Réserve une vue aux comptes Premium. Sans Stripe configuré, rien n'est réservé."""
+    """Réserve une vue aux comptes Premium. Sans Stripe configuré, ou tout étant gratuit, rien n'est réservé."""
     @wraps(view)
     @login_required
     def wrapper(*args, **kwargs):

@@ -20,6 +20,11 @@
     </p>
     {% endif %}
 
+    {% if not billing_enabled() %}
+    <div class="alert alert-info" role="status">
+      <i class="fa-solid fa-gift me-2" aria-hidden="true"></i>{{ _("Toutes les fonctions sont gratuites pour le moment : votre abonnement n'est plus nécessaire, vous pouvez l'arrêter ci-dessous.") }}
+    </div>
+    {% endif %}
     {% if current_user.has_subscription %}
     <div class="card shadow-soft">
       <div class="card-body p-4">

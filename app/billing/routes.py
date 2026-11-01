@@ -6,7 +6,7 @@ from flask_login import current_user, login_required
 
 from ..extensions import csrf, db, limiter
 from ..i18n import format_day
-from . import billing_enabled, bp
+from . import billing_enabled, bp, stripe_configured
 from . import stripe_sync
 
 # Événements qui déclenchent une relecture de l'abonnement du client.
@@ -20,10 +20,20 @@ SYNC_EVENTS = {
 }
 
 
+# Toutes les fonctions gratuites (réglage d'administration) : plus de nouvel abonnement, mais les abonnés
+# gardent la main sur leur abonnement en cours, et Stripe continue de notifier ses changements.
+FREE_MODE_ENDPOINTS = {"billing.webhook", "billing.invoices", "billing.cancel", "billing.resume"}
+
+
 @bp.before_request
 def require_billing():
-    if not billing_enabled():
+    if not stripe_configured():
         abort(404)
+    if billing_enabled() or request.endpoint in FREE_MODE_ENDPOINTS:
+        return None
+    if request.endpoint == "billing.index" and current_user.is_authenticated and current_user.has_subscription:
+        return None
+    abort(404)
 
 
 @bp.route("/")

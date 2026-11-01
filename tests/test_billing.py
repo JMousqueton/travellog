@@ -190,6 +190,44 @@ def test_premium_required_open_without_billing(app, client, user):
     assert client.get("/premium-test").text == "ok"
 
 
+def test_free_mode_opens_everything_and_hides_premium(app, client, user, db, billing, monkeypatch):
+    from app.models import Setting
+
+    app.add_url_rule("/premium-test", "premium_test", premium_required(lambda: "ok"))
+    Setting.set("free_mode", "1")
+    db.session.commit()
+    login(client)
+    assert client.get("/premium-test").text == "ok"
+    assert db.session.get(User, user.id).has_premium_access
+    assert client.get("/plans").status_code == 404
+    assert client.get("/billing/").status_code == 404  # pas d'abonné : plus d'offre
+    assert client.post("/billing/checkout", data={"plan": "monthly"}).status_code == 404
+    assert 'href="/billing/"' not in client.get("/about").text
+    # Stripe continue de notifier les changements d'abonnement.
+    monkeypatch.setattr(stripe_sync, "fetch_subscription", lambda customer: subscription())
+    user.stripe_customer_id = "cus_1"
+    db.session.commit()
+    assert signed_post(client, event("customer.subscription.updated")).status_code == 200
+    # Un abonné garde l'accès à la gestion de son abonnement, avec un message.
+    page = client.get("/billing/")
+    assert page.status_code == 200 and "Toutes les fonctions sont gratuites pour le moment" in page.text
+
+
+def test_admin_free_mode_setting(client, db, billing):
+    from app.models import free_mode
+
+    admin = make_user("root@example.com")
+    admin.is_admin = True
+    db.session.commit()
+    login(client, "root@example.com")
+    page = client.get("/admin/settings").text
+    assert 'id="free_mode"' in page and 'data-was-on="0"' in page and 'id="freeModeModal"' in page
+    client.post("/admin/settings", data={"registration_open": "y", "free_mode": "y"})
+    assert free_mode() and 'data-was-on="1"' in client.get("/admin/settings").text
+    client.post("/admin/settings", data={"registration_open": "y"})
+    assert not free_mode()
+
+
 def test_account_deletion_deletes_stripe_customer(auth_client, billing, user, db, monkeypatch):
     user.stripe_customer_id = "cus_1"
     db.session.commit()
