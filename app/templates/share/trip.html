@@ -45,8 +45,14 @@
     </ol>
     {% endif %}
 
-    <h2 class="h5 fw-semibold mb-3">{{ _("Photos") }}
-      {% if photos %}<span class="text-body-secondary fw-normal small">· {{ photos|length }}</span>{% endif %}</h2>
+    <div class="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+      <h2 class="h5 fw-semibold mb-0">{{ _("Photos") }}
+        {% if photos %}<span class="text-body-secondary fw-normal small">· {{ photos|length }}</span>{% endif %}</h2>
+      {% if has_map %}
+      <a class="btn btn-outline-primary btn-sm rounded-pill px-3" href="{{ url_for('share.trip_share_map', token=share.token) }}">
+        <i class="fa-solid fa-map-location-dot me-1" aria-hidden="true"></i>{{ _("Voir les photos sur une carte") }}</a>
+      {% endif %}
+    </div>
     {% if photos %}
     <ul class="photo-grid list-unstyled mb-4">
       {% for photo in photos %}

@@ -155,3 +155,33 @@ def test_cannot_share_or_manage_someone_elses_trip(auth_client, user, db):
     db.session.commit()
     assert auth_client.post(f"/share/voyage/{share.id}/exif").status_code == 404
     assert auth_client.post(f"/share/voyage/{share.id}/revoke").status_code == 404
+
+
+# Carte des photos d'un voyage partagé (seulement si le lien montre les EXIF et GPS)
+
+def test_trip_share_photo_map_with_exif(auth_client, user, db, app):
+    trip, (geotagged, plain) = _trip_with_photos(auth_client, user, db)
+    geotagged.description = "Place Bellecour"
+    db.session.commit()
+    share = _share(auth_client, db, f"/share/trips/{trip.id}", show_exif="y")
+    visitor = app.test_client()
+    assert f'href="/v/{share.token}/map"' in visitor.get(f"/v/{share.token}").text
+    html = visitor.get(f"/v/{share.token}/map").text
+    assert 'id="photosMap"' in html and html.count('"thumb":') == 1  # seule la photo localisée
+    assert f"/v/{share.token}/photos/{geotagged.id}/thumb.jpg" in html and "Place Bellecour" in html
+    assert f'href="/v/{share.token}"' in html  # retour à la fiche partagée
+    assert "/photos/" + str(geotagged.id) + '"' not in html.replace(f"/v/{share.token}/photos/", "")  # pas d'adresse privée
+
+
+def test_trip_share_photo_map_hidden_without_exif_or_gps(auth_client, user, db, app):
+    trip, (geotagged, plain) = _trip_with_photos(auth_client, user, db)
+    share = _share(auth_client, db, f"/share/trips/{trip.id}")
+    visitor = app.test_client()
+    assert f"/v/{share.token}/map" not in visitor.get(f"/v/{share.token}").text
+    assert visitor.get(f"/v/{share.token}/map").status_code == 404
+    # EXIF et GPS montrés, mais aucune photo localisée : pas de carte non plus.
+    share.show_exif = True
+    geotagged.exif = {"make": "PhoneMaker"}
+    db.session.commit()
+    assert f"/v/{share.token}/map" not in visitor.get(f"/v/{share.token}").text
+    assert visitor.get(f"/v/{share.token}/map").status_code == 404

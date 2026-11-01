@@ -1,12 +1,19 @@
 {% extends "base.html" %}
-{% block title %}{{ _("Mes photos") }}{% endblock %}
+{% set heading = _("Photos sur la carte") if share else _("Mes photos") %}
+{% block title %}{{ share_title ~ " · " ~ heading if share else heading }}{% endblock %}
 {% block head %}
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet-1.9.4/leaflet.css') }}">
 <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet.markercluster-1.5.3/MarkerCluster.css') }}">
 {% endblock %}
 {% block content %}
+{% if share %}
+<nav aria-label="{{ _('Fil d’Ariane') }}" class="mb-3">
+  <a class="link-secondary text-decoration-none small" href="{{ url_for('share.trip_share', token=share.token) }}">
+    <i class="fa-solid fa-arrow-left me-1" aria-hidden="true"></i>{{ share_title }}</a>
+</nav>
+{% endif %}
 <div class="d-flex flex-wrap align-items-baseline gap-2 mb-3">
-  <h1 class="h3 fw-bold mb-0 me-auto"><i class="fa-solid fa-images me-2 text-primary" aria-hidden="true"></i>{{ _("Mes photos") }}</h1>
+  <h1 class="h3 fw-bold mb-0 me-auto"><i class="fa-solid fa-images me-2 text-primary" aria-hidden="true"></i>{{ heading }}</h1>
   {% if photos %}
   <span class="text-body-secondary small">
     <i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i>{{ ngettext("%(num)s photo localisée", "%(num)s photos localisées", photos|length) }}</span>
@@ -17,7 +24,7 @@
 <div class="photos-stage card shadow-soft">
   <div class="photos-map" id="photosMap" data-tiles='{{ tiles|tojson }}'
        data-world-url="{{ url_for('static', filename='data/world.json') }}"
-       role="region" aria-label="{{ _('Carte de mes photos') }}"></div>
+       role="region" aria-label="{{ _('Carte des photos du voyage') if share else _('Carte de mes photos') }}"></div>
 </div>
 <script type="application/json" id="photosData">{{ {"photos": photos, "strings": strings}|tojson }}</script>
 {% else %}

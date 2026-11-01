@@ -336,7 +336,41 @@ def trip_share(token):
     share = _active_trip_share_or_404(token)
     share.mark_used()
     return render_template("share/trip.html", share=share, trip=share.trip, journey=share.journey,
-                           photos=sorted(share.photos, key=lambda p: p.id))
+                           photos=sorted(share.photos, key=lambda p: p.id),
+                           has_map=bool(_share_map_items(share)))
+
+
+def _share_title(share):
+    target = share.target
+    return f"{target.origin_name} → {target.dest_name}" if share.trip else target.display_name
+
+
+def _share_map_items(share):
+    """Photos localisées du voyage partagé, si le lien montre les EXIF et GPS (sinon liste vide)."""
+    from ..trips.routes import photo_map_items
+
+    if not share.show_exif:
+        return []
+    title, page = _share_title(share), url_for("share.trip_share", token=share.token)
+    return photo_map_items(
+        sorted(share.photos, key=lambda p: p.id), lambda p: (p.description or title, page),
+        lambda p: url_for("share.trip_share_photo", token=share.token, photo_id=p.id),
+        lambda p: url_for("share.trip_share_thumb", token=share.token, photo_id=p.id))
+
+
+@bp.route("/v/<token>/map")
+def trip_share_map(token):
+    """Les photos du voyage partagé sur une carte, d'après leur position GPS (si le lien montre les EXIF et GPS)."""
+    from ..trips.routes import map_tiles
+
+    share = _active_trip_share_or_404(token)
+    items = _share_map_items(share)
+    if not items:
+        abort(404)
+    share.mark_used()
+    return render_template("trips/photos_map.html", photos=items, tiles=map_tiles(), share=share,
+                           share_title=_share_title(share),
+                           strings={"open": _("Voir la photo"), "photos": _("photos")})
 
 
 @bp.route("/v/<token>/photos/<int:photo_id>")
@@ -347,10 +381,8 @@ def trip_share_photo(token, photo_id):
     photo = _shared_photo_or_404(share, photo_id)
     context = photo_page_context(photo, share.photos,
                                  lambda p: url_for("share.trip_share_photo", token=token, photo_id=p.id))
-    target = share.target
-    title = f"{target.origin_name} → {target.dest_name}" if share.trip else target.display_name
     return render_template(
-        "trips/photo.html", back=url_for("share.trip_share", token=token), back_title=title,
+        "trips/photo.html", back=url_for("share.trip_share", token=token), back_title=_share_title(share),
         show_meta=share.show_exif, description_form=None, trip_share=share,
         image_url=url_for("share.trip_share_image", token=token, photo_id=photo.id), **context)
 

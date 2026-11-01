@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-01 08:52+0000\n"
+"POT-Creation-Date: 2026-11-01 08:56+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -1347,6 +1347,14 @@ msgstr "Questo link non mostra più le informazioni EXIF e GPS delle foto."
 #: app/share/routes.py:315
 msgid "Lien révoqué : il ne donne plus accès à ce voyage."
 msgstr "Link revocato: non dà più accesso a questo viaggio."
+
+#: app/share/routes.py:373 app/trips/routes.py:455
+msgid "Voir la photo"
+msgstr "Vedi la foto"
+
+#: app/share/routes.py:373 app/trips/routes.py:455
+msgid "photos"
+msgstr "foto"
 
 #: app/support/forms.py:12
 msgid "Le message est obligatoire."
@@ -2990,12 +2998,12 @@ msgstr "Bilancio"
 #: app/templates/base.html:145 app/templates/base.html:147
 #: app/templates/errors/404.html:32 app/templates/trips/calendar.html:7
 #: app/templates/trips/detail.html:12 app/templates/trips/list.html:4
-#: app/templates/trips/list.html:7 app/templates/trips/photos_map.html:30
+#: app/templates/trips/list.html:7 app/templates/trips/photos_map.html:37
 msgid "Mes voyages"
 msgstr "I miei viaggi"
 
 #: app/templates/base.html:155 app/templates/base.html:157
-#: app/templates/trips/photos_map.html:2 app/templates/trips/photos_map.html:9
+#: app/templates/trips/photos_map.html:2
 msgid "Mes photos"
 msgstr "Le mie foto"
 
@@ -4718,17 +4726,21 @@ msgstr "Paesi"
 msgid "Étapes"
 msgstr "Tappe"
 
-#: app/templates/share/trip.html:48 app/templates/trips/detail.html:79
+#: app/templates/share/trip.html:49 app/templates/trips/detail.html:79
 #: app/templates/trips/detail.html:104
 msgid "Photos"
 msgstr "Foto"
 
-#: app/templates/share/trip.html:56 app/templates/trips/detail.html:112
+#: app/templates/share/trip.html:53
+msgid "Voir les photos sur une carte"
+msgstr "Vedi le foto su una mappa"
+
+#: app/templates/share/trip.html:62 app/templates/trips/detail.html:112
 #: app/templates/trips/photo.html:2 app/templates/trips/photo.html:38
 msgid "Photo"
 msgstr "Foto"
 
-#: app/templates/share/trip.html:61
+#: app/templates/share/trip.html:67
 msgid "Aucune photo pour ce voyage."
 msgstr "Nessuna foto per questo viaggio."
 
@@ -5265,7 +5277,7 @@ msgid "Aucun voyage ce mois-ci."
 msgstr "Nessun viaggio questo mese."
 
 #: app/templates/trips/detail.html:10 app/templates/trips/form.html:8
-#: app/templates/trips/photo.html:8
+#: app/templates/trips/photo.html:8 app/templates/trips/photos_map.html:10
 msgid "Fil d’Ariane"
 msgstr "Percorso di navigazione"
 
@@ -5625,14 +5637,18 @@ msgstr ""
 "EXIF e GPS visibili solo a te, e ai link di condivisione di questo "
 "viaggio che li mostrano: il file della foto non contiene metadati."
 
-#: app/templates/trips/photos_map.html:12
+#: app/templates/trips/photos_map.html:2
+msgid "Photos sur la carte"
+msgstr "Foto sulla mappa"
+
+#: app/templates/trips/photos_map.html:19
 #, python-format
 msgid "%(num)s photo localisée"
 msgid_plural "%(num)s photos localisées"
 msgstr[0] "%(num)s foto geolocalizzata"
 msgstr[1] "%(num)s foto geolocalizzate"
 
-#: app/templates/trips/photos_map.html:16
+#: app/templates/trips/photos_map.html:23
 msgid ""
 "Chaque photo est placée à l'endroit où elle a été prise, d'après sa "
 "position GPS. Cliquez sur une vignette pour l'agrandir."
@@ -5640,15 +5656,19 @@ msgstr ""
 "Ogni foto è collocata dove è stata scattata, secondo la sua posizione "
 "GPS. Clicca su una miniatura per ingrandirla."
 
-#: app/templates/trips/photos_map.html:20
+#: app/templates/trips/photos_map.html:27
+msgid "Carte des photos du voyage"
+msgstr "Mappa delle foto del viaggio"
+
+#: app/templates/trips/photos_map.html:27
 msgid "Carte de mes photos"
 msgstr "Mappa delle mie foto"
 
-#: app/templates/trips/photos_map.html:27
+#: app/templates/trips/photos_map.html:34
 msgid "Aucune photo localisée pour l'instant"
 msgstr "Ancora nessuna foto geolocalizzata"
 
-#: app/templates/trips/photos_map.html:28
+#: app/templates/trips/photos_map.html:35
 msgid ""
 "Ajoutez des photos à vos trajets et à vos voyages depuis leur page : "
 "celles qui contiennent une position GPS (la plupart des photos prises "
@@ -6687,23 +6707,15 @@ msgid_plural "%(num)s photos ajoutées."
 msgstr[0] "%(num)s foto aggiunta."
 msgstr[1] "%(num)s foto aggiunte."
 
-#: app/trips/routes.py:447
-msgid "Voir la photo"
-msgstr "Vedi la foto"
-
-#: app/trips/routes.py:447
-msgid "photos"
-msgstr "foto"
-
-#: app/trips/routes.py:518
+#: app/trips/routes.py:526
 msgid "Légende enregistrée."
 msgstr "Didascalia salvata."
 
-#: app/trips/routes.py:518
+#: app/trips/routes.py:526
 msgid "Légende supprimée."
 msgstr "Didascalia rimossa."
 
-#: app/trips/routes.py:533
+#: app/trips/routes.py:541
 msgid "Photo supprimée."
 msgstr "Foto eliminata."
 
