@@ -65,7 +65,8 @@
   `/share`) : un lien secret en lecture seule (`/v/<jeton>`) vers cette seule fiche, avec dates, lieux, modes,
   distance, pays, étapes du voyage et ses photos (celles du voyage et de ses trajets) avec leur légende ; ni
   notes, ni autres voyages. Expiration au choix. Informations EXIF et position GPS des photos masquées par
-  défaut ; une option par lien les montre (avec la petite carte). Les liens se révoquent, et ne fonctionnent
+  défaut ; une option par lien les montre (avec la petite carte),
+  ainsi qu'une carte des photos localisées du voyage (`/v/<jeton>/map`, carte ou globe). Les liens se révoquent, et ne fonctionnent
   plus si le voyage est supprimé ou à la fin du Premium.
 - Voyages à venir : badge « Dans 12 jours », « Demain » ou « En cours », trajets estompés sur la carte,
   filtre passés / à venir, carte « Prochain départ » dans le tableau de bord. Les statistiques ne comptent que

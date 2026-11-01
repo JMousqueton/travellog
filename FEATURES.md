@@ -59,7 +59,7 @@
   a secret read-only link (`/v/<token>`) to that page only, with dates, places, modes, distance, countries,
   the journey's legs and its photos (a journey's own and its legs') with their captions; no notes, no other trips.
   Optional expiry. EXIF and GPS position of the photos are hidden by default; an option per link shows them
-  (with the small map). Links can be revoked, and stop working when the trip is deleted or Premium ends.
+  (with the small map), plus a map of the trip's geotagged photos (`/v/<token>/map`, map or globe). Links can be revoked, and stop working when the trip is deleted or Premium ends.
 - Upcoming trips: "In 12 days", "Tomorrow" or "Ongoing" badge, faded routes on the map, past / upcoming
   filter, "Next departure" card on the dashboard. Statistics only count trips that have already started.
 - Calendar: `.ics` export of a trip or journey, and a subscription (Google Calendar, Apple Calendar,
