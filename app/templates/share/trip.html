@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+{% from "partials/macros.html" import mode_badge, country_chips, status_badge with context %}
+{% set item = trip or journey %}
+{% set title = (trip.origin_name ~ ' → ' ~ trip.dest_name) if trip else journey.display_name %}
+{% set start = trip.depart_date if trip else journey.start_date %}
+{% set end = trip.end_date if trip else journey.end_date %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-9 col-xl-8">
+    <p class="small text-body-secondary mb-2"><i class="fa-solid fa-link me-1" aria-hidden="true"></i>{{ _("Voyage partagé") }}</p>
+    <div class="mb-4">
+      <h1 class="h3 fw-bold mb-1">{{ title }}</h1>
+      {% if item.status != 'past' %}<div class="mb-1">{{ status_badge(item.status, start, end) }}</div>{% endif %}
+      {% if journey and journey.name %}<div class="text-body-secondary">{{ journey.route_label }}</div>{% endif %}
+    </div>
+
+    <div class="card shadow-soft mb-4">
+      <div class="card-body p-4">
+        <dl class="detail-facts mb-0">
+          {% if trip %}
+          <div><dt>{{ _("Mode") }}</dt><dd>{{ mode_badge(trip.transport_mode) }}</dd></div>
+          <div><dt>{{ _("Départ") }}</dt><dd>{{ trip.depart_date|day }}</dd></div>
+          {% if trip.is_round_trip %}<div><dt>{{ _("Retour") }}</dt><dd>{{ trip.return_date|day }}</dd></div>{% endif %}
+          {% else %}
+          <div><dt>{{ _("Dates") }}</dt><dd>{{ start|day }}{% if end != start %} – {{ end|day }}{% endif %}</dd></div>
+          <div><dt>{{ _("Trajets") }}</dt><dd>{{ journey.legs|length }}</dd></div>
+          {% endif %}
+          <div><dt>{{ _("Distance") }}</dt><dd>{{ item.total_distance_km|distance }}</dd></div>
+          <div class="detail-wide"><dt>{{ _("Pays") }}</dt><dd>{{ country_chips(item.countries) }}</dd></div>
+        </dl>
+      </div>
+    </div>
+
+    {% if journey %}
+    <h2 class="h5 fw-semibold mb-3">{{ _("Étapes") }}</h2>
+    <ol class="list-group list-group-numbered shadow-soft mb-4">
+      {% for leg in journey.legs %}
+      <li class="list-group-item d-flex flex-wrap align-items-center gap-2">
+        <span class="fw-medium me-auto">{{ leg.origin_name }} → {{ leg.dest_name }}</span>
+        <span class="small text-body-secondary">{{ leg.depart_date|day }}</span>
+        {{ mode_badge(leg.transport_mode) }}
+      </li>
+      {% endfor %}
+    </ol>
+    {% endif %}
+
+    <h2 class="h5 fw-semibold mb-3">{{ _("Photos") }}
+      {% if photos %}<span class="text-body-secondary fw-normal small">· {{ photos|length }}</span>{% endif %}</h2>
+    {% if photos %}
+    <ul class="photo-grid list-unstyled mb-4">
+      {% for photo in photos %}
+      <li class="photo-tile">
+        <a href="{{ url_for('share.trip_share_photo', token=share.token, photo_id=photo.id) }}">
+          <img src="{{ url_for('share.trip_share_thumb', token=share.token, photo_id=photo.id) }}" loading="lazy"
+               width="240" height="240" alt="{{ photo.description or _('Photo') }}"></a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p class="text-body-secondary">{{ _("Aucune photo pour ce voyage.") }}</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

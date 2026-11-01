@@ -109,7 +109,7 @@
       <li class="photo-tile">
         <a href="{{ url_for('trips.photo_view', photo_id=photo.id) }}">
           <img src="{{ url_for('trips.photo_thumb', photo_id=photo.id) }}" loading="lazy" width="240" height="240"
-               alt="{{ photo.original_name or _('Photo') }}"></a>
+               alt="{{ photo.description or photo.original_name or _('Photo') }}"></a>
         <form method="post" action="{{ url_for('trips.delete_photo', photo_id=photo.id) }}">
           <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
           <button type="submit" class="btn btn-sm photo-delete"
@@ -132,11 +132,79 @@
             {{ upload_form.photos(class_='form-control', multiple=True, accept='image/jpeg,image/png,image/webp,image/gif',
                                   **{'aria-describedby': 'photos-help'}) }}
             <div class="form-text" id="photos-help">
-              {{ _("JPEG, PNG, WebP ou GIF. Les métadonnées (appareil, position GPS) sont retirées du fichier et ne restent visibles que de vous. Photos privées : elles n'apparaissent pas sur les liens de partage.") }}</div>
+              {{ _("JPEG, PNG, WebP ou GIF. Les métadonnées (appareil, position GPS) sont retirées du fichier et ne restent visibles que de vous. Photos privées : seuls les liens vers ce voyage les montrent (ci-dessous).") }}</div>
           </div>
           <div class="col-sm-auto">
             <button type="submit" class="btn btn-primary rounded-pill px-4" data-loading-text="{{ _('Envoi…') }}">
               <i class="fa-solid fa-upload me-1" aria-hidden="true"></i>{{ upload_form.submit.label.text }}</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    {% endif %}
+    <h2 class="h5 fw-semibold mt-5 mb-3" id="share">{{ _("Partager ce voyage") }}{{ diamond() }}</h2>
+    <p class="text-body-secondary small">{{ _("Un lien secret vers cette seule fiche, en lecture seule et sans connexion : dates, lieux, modes, distance et photos avec leur légende. Ni vos notes, ni vos autres voyages.") }}</p>
+    {% if not premium_access() %}
+    {{ locked(_("Le partage d'un voyage est réservé aux abonnés Premium.")) }}
+    {% else %}
+    {% if item.shares %}
+    <ul class="list-unstyled d-grid gap-2 mb-3">
+      {% for share in item.shares %}
+      {% set url = url_for('share.trip_share', token=share.token, _external=True) %}
+      <li class="card shadow-soft">
+        <div class="card-body p-3">
+          <div class="small text-body-secondary mb-2">
+            {{ _("Créé le %(date)s", date=share.created_at|day) }} ·
+            {% if share.expires_at and share.is_expired %}<span class="badge text-bg-secondary">{{ _("Expiré") }}</span>
+            {% elif share.expires_at %}{{ _("expire le %(date)s", date=share.expires_at|day) }}
+            {% else %}{{ _("sans expiration") }}{% endif %} ·
+            {% if share.last_used_at %}{{ _("dernière consultation le %(date)s", date=share.last_used_at|day) }}
+            {% else %}{{ _("jamais consulté") }}{% endif %} ·
+            {% if share.show_exif %}<span class="text-warning-emphasis"><i class="fa-solid fa-location-dot me-1" aria-hidden="true"></i>{{ _("EXIF et GPS visibles") }}</span>
+            {% else %}{{ _("EXIF et GPS masqués") }}{% endif %}
+          </div>
+          <div class="d-flex flex-wrap gap-1 align-items-center">
+            <input type="text" class="form-control form-control-sm font-monospace flex-grow-1" style="min-width: 14rem; width: auto"
+                   value="{{ url }}" readonly aria-label="{{ _('Adresse du lien') }}">
+            <button type="button" class="btn btn-outline-primary btn-sm rounded-pill px-3" data-copy="{{ url }}">
+              <i class="fa-regular fa-copy me-1" aria-hidden="true"></i>{{ _("Copier") }}</button>
+            <a class="btn btn-outline-secondary btn-sm rounded-pill px-3" href="{{ url }}" target="_blank" rel="noopener">
+              <i class="fa-solid fa-arrow-up-right-from-square me-1" aria-hidden="true"></i>{{ _("Ouvrir") }}</a>
+            <form method="post" action="{{ url_for('share.toggle_trip_share_exif', share_id=share.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-outline-secondary btn-sm rounded-pill px-3">
+                <i class="fa-regular {{ 'fa-eye-slash' if share.show_exif else 'fa-eye' }} me-1" aria-hidden="true"></i>
+                {{ _("Masquer EXIF et GPS") if share.show_exif else _("Montrer EXIF et GPS") }}</button>
+            </form>
+            <form method="post" action="{{ url_for('share.revoke_trip_share', share_id=share.id) }}">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+              <button type="submit" class="btn btn-outline-danger btn-sm rounded-pill px-3">
+                <i class="fa-solid fa-ban me-1" aria-hidden="true"></i>{{ _("Révoquer") }}</button>
+            </form>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <div class="card shadow-soft">
+      <div class="card-body p-4">
+        <form method="post" action="{{ share_url }}" class="row g-2 align-items-end" novalidate>
+          {{ share_form.hidden_tag() }}
+          <div class="col-sm-auto">
+            {{ share_form.expires_in.label(class_='form-label') }}
+            {{ share_form.expires_in(class_='form-select') }}
+          </div>
+          <div class="col-sm">
+            <div class="form-check mb-0">
+              {{ share_form.show_exif(class_='form-check-input', **{'aria-describedby': 'exifShareHelp'}) }}
+              {{ share_form.show_exif.label(class_='form-check-label') }}
+              <div class="form-text mt-0" id="exifShareHelp">{{ _("Désactivé par défaut : appareil, réglages, date de prise de vue et lieu exact de chaque photo. Modifiable ensuite.") }}</div>
+            </div>
+          </div>
+          <div class="col-12 col-md-auto">
+            <button type="submit" class="btn btn-primary rounded-pill px-4">
+              <i class="fa-solid fa-link me-1" aria-hidden="true"></i>{{ share_form.submit.label.text }}</button>
           </div>
         </form>
       </div>

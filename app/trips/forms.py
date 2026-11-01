@@ -105,6 +105,12 @@ class JourneyForm(FlaskForm):
     submit = SubmitField(_l("Enregistrer"))
 
 
+class PhotoDescriptionForm(FlaskForm):
+    description = StringField(_l("Légende de la photo"), validators=[
+        Optional(), Length(max=200, message=_l("La légende ne doit pas dépasser 200 caractères."))])
+    submit = SubmitField(_l("Enregistrer"))
+
+
 class PhotoUploadForm(FlaskForm):
     photos = MultipleFileField(_l("Ajouter des photos"), validators=[
         FileRequired(message=_l("Choisissez au moins une photo.")),

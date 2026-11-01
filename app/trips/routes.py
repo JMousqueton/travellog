@@ -21,7 +21,7 @@ from ..transport import CO2_KG_PER_KM, DETOUR_FACTORS, PLANE_CO2_BANDS, SERVICE_
 from .. import utils
 from ..utils import is_safe_redirect
 from . import bp
-from .forms import JourneyForm, PhotoUploadForm, TripForm
+from .forms import JourneyForm, PhotoDescriptionForm, PhotoUploadForm, TripForm
 from .queries import list_trips
 from .absences import absence_summary
 from .activity import year_calendar
@@ -339,8 +339,15 @@ def detach(trip_id):
 def detail(trip_id):
     trip = get_own_trip_or_404(trip_id)
     return render_template("trips/detail.html", trip=trip, journey=None, photos=trip.photos,
-                           upload_form=PhotoUploadForm(),
+                           upload_form=PhotoUploadForm(), share_form=_trip_share_form(),
+                           share_url=url_for("share.create_trip_share", trip_id=trip.id),
                            upload_url=url_for("trips.upload_trip_photos", trip_id=trip.id))
+
+
+def _trip_share_form():
+    from ..share.forms import TripShareForm
+
+    return TripShareForm()
 
 
 @bp.route("/journeys/<int:journey_id>")
@@ -348,7 +355,8 @@ def detail(trip_id):
 def journey_detail(journey_id):
     journey = get_own_journey_or_404(journey_id)
     return render_template("trips/detail.html", trip=None, journey=journey, photos=journey.photos,
-                           upload_form=PhotoUploadForm(),
+                           upload_form=PhotoUploadForm(), share_form=_trip_share_form(),
+                           share_url=url_for("share.create_journey_share", journey_id=journey.id),
                            upload_url=url_for("trips.upload_journey_photos", journey_id=journey.id))
 
 
@@ -465,20 +473,53 @@ def photo_view(photo_id):
         response.vary.update(("Sec-Fetch-Dest", "Accept"))
         return response
     owner = photo.trip or photo.journey
-    siblings = sorted(owner.photos, key=lambda p: p.id)
-    index = siblings.index(photo)
-    camera, gps = exif_rows(photo.exif)
     back = (url_for("trips.detail", trip_id=photo.trip_id) if photo.trip_id
             else url_for("trips.journey_detail", journey_id=photo.journey_id))
+    context = photo_page_context(photo, owner.photos, lambda p: url_for("trips.photo_view", photo_id=p.id))
     return render_template(
-        "trips/photo.html", photo=photo, camera=camera, gps=gps, back=back, tiles=map_tiles(),
-        owner_title=(f"{photo.trip.origin_name} → {photo.trip.dest_name}" if photo.trip
-                     else photo.journey.display_name),
+        "trips/photo.html", back=back, back_title=context["owner_title"], show_meta=True,
+        image_url=url_for("trips.photo_view", photo_id=photo.id),
+        description_form=PhotoDescriptionForm(description=photo.description), **context,
+    ), {"Vary": "Sec-Fetch-Dest, Accept"}
+
+
+def photo_owner_title(photo):
+    return f"{photo.trip.origin_name} → {photo.trip.dest_name}" if photo.trip else photo.journey.display_name
+
+
+def photo_page_context(photo, photos, photo_url):
+    """Ce que montre la page d'une photo (propriétaire ou lien de partage d'un voyage) : légende, EXIF, GPS,
+    position parmi `photos` et adresses des photos précédente et suivante (`photo_url(photo)`)."""
+    siblings = sorted(photos, key=lambda p: p.id)
+    index = siblings.index(photo)
+    camera, gps = exif_rows(photo.exif)
+    owner_title = photo_owner_title(photo)
+    previous = siblings[index - 1] if index > 0 else None
+    following = siblings[index + 1] if index + 1 < len(siblings) else None
+    return dict(
+        photo=photo, camera=camera, gps=gps, tiles=map_tiles(), owner_title=owner_title,
+        caption=photo.description or owner_title,
         taken_on=format_date(date.fromisoformat(photo.exif["taken_at"][:10]), "long")
         if photo.exif and photo.exif.get("taken_at") else None,
         position=index + 1, total=len(siblings),
-        previous=siblings[index - 1] if index > 0 else None,
-        next=siblings[index + 1] if index + 1 < len(siblings) else None), {"Vary": "Sec-Fetch-Dest, Accept"}
+        previous_url=photo_url(previous) if previous else None, next_url=photo_url(following) if following else None,
+    )
+
+
+@bp.route("/photos/<int:photo_id>/description", methods=["POST"])
+@login_required
+def photo_description(photo_id):
+    """Légende de la photo, affichée sous l'image à la place du nom du trajet."""
+    photo = _own_photo_or_404(photo_id)
+    form = PhotoDescriptionForm()
+    if form.validate_on_submit():
+        photo.description = " ".join((form.description.data or "").split()) or None
+        db.session.commit()
+        flash(_("Légende enregistrée.") if photo.description else _("Légende supprimée."), "success")
+    else:
+        for error in form.description.errors:
+            flash(error, "danger")
+    return redirect(url_for("trips.photo_view", photo_id=photo.id))
 
 
 @bp.route("/photos/<int:photo_id>/delete", methods=["POST"])

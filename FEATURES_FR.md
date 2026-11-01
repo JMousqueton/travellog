@@ -3,7 +3,7 @@
 *English version: [FEATURES.md](FEATURES.md) · Retour au [README](README_FR.md)*
 
 - Abonnement Premium (`/billing`, « Premium » dans le menu du compte), payé avec Stripe : 2 € par mois ou 12 €
-  par an par défaut (prix dans `.env`). L'ajout de photos, la vue calendrier des voyages, l'import par e-mail, les liens de partage, le profil
+  par an par défaut (prix dans `.env`). L'ajout de photos, la vue calendrier des voyages, l'import par e-mail, les liens de partage (y compris vers un seul voyage), le profil
   public et le support sont des fonctions Premium, signalées partout par un diamant (menu, pages, pages
   À propos et d'accueil). Un e-mail envoyé par un compte sans Premium n'est pas importé : l'expéditeur
   reçoit une réponse qui l'explique, avec un lien pour s'abonner.
@@ -58,8 +58,15 @@
   Premium, et les photos déjà ajoutées restent visibles et supprimables après la fin de l'abonnement. Les photos sont ré-encodées en JPEG,
   sans métadonnées EXIF dans le fichier conservé, avec une miniature. Appareil, réglages, date de prise de vue
   et position GPS sont relevés à l'envoi, gardés en base et affichés au seul propriétaire sur la page de la
-  photo (`/photos/<id>`), avec une petite carte. Elles restent privées : les liens de
-  partage n'affichent ni notes ni photos.
+  photo (`/photos/<id>`), avec une petite carte. Chaque photo peut recevoir une légende (200 caractères au
+  plus), affichée sous l'image à la place du nom du trajet. Les photos restent privées : les liens de partage
+  de tous les voyages n'affichent ni notes ni photos.
+- Partage d'un seul trajet ou voyage (Premium ; « Partager ce voyage » sur sa fiche, tous les liens listés sur
+  `/share`) : un lien secret en lecture seule (`/v/<jeton>`) vers cette seule fiche, avec dates, lieux, modes,
+  distance, pays, étapes du voyage et ses photos (celles du voyage et de ses trajets) avec leur légende ; ni
+  notes, ni autres voyages. Expiration au choix. Informations EXIF et position GPS des photos masquées par
+  défaut ; une option par lien les montre (avec la petite carte). Les liens se révoquent, et ne fonctionnent
+  plus si le voyage est supprimé ou à la fin du Premium.
 - Voyages à venir : badge « Dans 12 jours », « Demain » ou « En cours », trajets estompés sur la carte,
   filtre passés / à venir, carte « Prochain départ » dans le tableau de bord. Les statistiques ne comptent que
   les voyages déjà commencés.

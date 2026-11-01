@@ -1,17 +1,17 @@
 from datetime import timedelta
 
-from flask import abort, current_app, flash, redirect, render_template, url_for
+from flask import abort, current_app, flash, redirect, render_template, request, send_file, url_for
 from flask_babel import gettext as _
 from flask_login import current_user, login_required
 
 from .. import utils
-from ..billing import premium_access
+from ..billing import premium_access, premium_required
 from ..extensions import db
 from ..i18n import current_locale
-from ..models import ShareLink, utcnow
+from ..models import Journey, Photo, ShareLink, Trip, TripShare, utcnow
 from ..trips.routes import map_tiles, render_review, review_png_response
 from . import bp
-from .forms import ShareLinkForm
+from .forms import ShareLinkForm, TripShareForm
 
 
 @bp.route("/share", methods=["GET", "POST"])
@@ -33,7 +33,9 @@ def links():
         db.session.commit()
         flash(_("Lien de partage créé. Toute personne qui le possède peut voir vos voyages."), "success")
         return redirect(url_for("share.links"))
-    return render_template("share/links.html", form=form, links=current_user.share_links)
+    trip_shares = db.session.execute(db.select(TripShare).filter_by(user_id=current_user.id)
+                                     .order_by(TripShare.created_at.desc())).scalars().all()
+    return render_template("share/links.html", form=form, links=current_user.share_links, trip_shares=trip_shares)
 
 
 @bp.route("/share/<int:link_id>/revoke", methods=["POST"])
@@ -243,3 +245,136 @@ def review(token, year):
 @bp.route("/s/<token>/review/<int:year>.png")
 def review_image(token, year):
     return review_png_response(_active_link_or_404(token).user, year, shared=True)
+
+
+# --- Lien vers un seul trajet ou voyage, avec ses photos ------------------------------------------------------
+
+def _target_url(share):
+    return (url_for("trips.detail", trip_id=share.trip_id) if share.trip_id
+            else url_for("trips.journey_detail", journey_id=share.journey_id))
+
+
+def _back_to(share):
+    """Retour vers la page d'où vient la demande (fiche du voyage ou page Partager)."""
+    return redirect(url_for("share.links") if request.form.get("back") == "links" else _target_url(share))
+
+
+def _create_trip_share(trip=None, journey=None):
+    target = trip or journey
+    if target is None or target.user_id != current_user.id:
+        abort(404)
+    form = TripShareForm()
+    if form.validate_on_submit():
+        days = int(form.expires_in.data) if form.expires_in.data else None
+        db.session.add(TripShare(user_id=current_user.id, trip=trip, journey=journey,
+                                 show_exif=bool(form.show_exif.data),
+                                 expires_at=utcnow() + timedelta(days=days) if days else None))
+        db.session.commit()
+        flash(_("Lien créé : toute personne qui le possède peut voir ce voyage et ses photos."), "success")
+    return redirect(url_for("trips.detail", trip_id=trip.id) if trip
+                    else url_for("trips.journey_detail", journey_id=journey.id))
+
+
+@bp.route("/share/trips/<int:trip_id>", methods=["POST"])
+@premium_required
+def create_trip_share(trip_id):
+    return _create_trip_share(trip=db.session.get(Trip, trip_id))
+
+
+@bp.route("/share/journeys/<int:journey_id>", methods=["POST"])
+@premium_required
+def create_journey_share(journey_id):
+    return _create_trip_share(journey=db.session.get(Journey, journey_id))
+
+
+def _own_trip_share_or_404(share_id):
+    share = db.session.get(TripShare, share_id)
+    if share is None or share.user_id != current_user.id:
+        abort(404)
+    return share
+
+
+@bp.route("/share/voyage/<int:share_id>/exif", methods=["POST"])
+@login_required
+def toggle_trip_share_exif(share_id):
+    share = _own_trip_share_or_404(share_id)
+    share.show_exif = not share.show_exif
+    db.session.commit()
+    flash(_("Ce lien montre désormais les informations EXIF et GPS des photos.") if share.show_exif
+          else _("Ce lien ne montre plus les informations EXIF et GPS des photos."), "success")
+    return _back_to(share)
+
+
+@bp.route("/share/voyage/<int:share_id>/revoke", methods=["POST"])
+@login_required
+def revoke_trip_share(share_id):
+    share = _own_trip_share_or_404(share_id)
+    response = _back_to(share)
+    db.session.delete(share)
+    db.session.commit()
+    flash(_("Lien révoqué : il ne donne plus accès à ce voyage."), "success")
+    return response
+
+
+def _active_trip_share_or_404(token):
+    share = TripShare.active(token)
+    if share is None:
+        abort(404)
+    return share
+
+
+def _shared_photo_or_404(share, photo_id):
+    photo = next((p for p in share.photos if p.id == photo_id), None)
+    if photo is None:
+        abort(404)
+    return photo
+
+
+@bp.route("/v/<token>")
+def trip_share(token):
+    """Un trajet ou un voyage partagé : dates, lieux, modes, distance et photos (ni notes, ni domicile)."""
+    share = _active_trip_share_or_404(token)
+    share.mark_used()
+    return render_template("share/trip.html", share=share, trip=share.trip, journey=share.journey,
+                           photos=sorted(share.photos, key=lambda p: p.id))
+
+
+@bp.route("/v/<token>/photos/<int:photo_id>")
+def trip_share_photo(token, photo_id):
+    from ..trips.routes import photo_page_context
+
+    share = _active_trip_share_or_404(token)
+    photo = _shared_photo_or_404(share, photo_id)
+    context = photo_page_context(photo, share.photos,
+                                 lambda p: url_for("share.trip_share_photo", token=token, photo_id=p.id))
+    target = share.target
+    title = f"{target.origin_name} → {target.dest_name}" if share.trip else target.display_name
+    return render_template(
+        "trips/photo.html", back=url_for("share.trip_share", token=token), back_title=title,
+        show_meta=share.show_exif, description_form=None, trip_share=share,
+        image_url=url_for("share.trip_share_image", token=token, photo_id=photo.id), **context)
+
+
+def _shared_photo_file(token, photo_id, thumb):
+    from ..photos import photo_path
+
+    share = _active_trip_share_or_404(token)
+    photo = _shared_photo_or_404(share, photo_id)
+    try:
+        response = send_file(photo_path(photo, thumb=thumb), mimetype="image/jpeg", max_age=3600,
+                             download_name=f"photo-{photo.id}.jpg", conditional=True)
+    except FileNotFoundError:
+        abort(404)
+    response.cache_control.private = True
+    response.cache_control.public = False
+    return response
+
+
+@bp.route("/v/<token>/photos/<int:photo_id>.jpg")
+def trip_share_image(token, photo_id):
+    return _shared_photo_file(token, photo_id, thumb=False)
+
+
+@bp.route("/v/<token>/photos/<int:photo_id>/thumb.jpg")
+def trip_share_thumb(token, photo_id):
+    return _shared_photo_file(token, photo_id, thumb=True)

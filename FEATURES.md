@@ -3,7 +3,7 @@
 *Version française : [FEATURES_FR.md](FEATURES_FR.md) · Back to the [README](README.md)*
 
 - Premium subscription (`/billing`, "Premium" in the account menu), paid through Stripe: 2 € a month or 12 € a
-  year by default (prices in `.env`). Photo upload, the trips calendar view, import by email, share links, the public profile and support
+  year by default (prices in `.env`). Photo upload, the trips calendar view, import by email, share links (including links to a single trip), the public profile and support
   are Premium features, marked everywhere with a diamond (menu, pages, About and home pages). An email
   sent by an account without Premium is not imported: the sender gets a reply saying why, with a link to
   subscribe. When Premium ends, share
@@ -53,8 +53,13 @@
   already added stay visible and can be deleted after the subscription ends. Photos are re-encoded as JPEG, without EXIF
   metadata in the stored file, with a thumbnail. Camera, settings, date taken and GPS position are read at
   upload, kept in the database and shown only to the owner on the photo page (`/photos/<id>`), with a
-  small map. They stay private: share links show neither notes
-  nor photos.
+  small map. Each photo can get a caption (up to 200 characters), shown under it instead of the trip name.
+  Photos stay private: account-wide share links show neither notes nor photos.
+- Share a single trip or journey (Premium; "Share this trip" on its detail page, all links listed on `/share`):
+  a secret read-only link (`/v/<token>`) to that page only, with dates, places, modes, distance, countries,
+  the journey's legs and its photos (a journey's own and its legs') with their captions; no notes, no other trips.
+  Optional expiry. EXIF and GPS position of the photos are hidden by default; an option per link shows them
+  (with the small map). Links can be revoked, and stop working when the trip is deleted or Premium ends.
 - Upcoming trips: "In 12 days", "Tomorrow" or "Ongoing" badge, faded routes on the map, past / upcoming
   filter, "Next departure" card on the dashboard. Statistics only count trips that have already started.
 - Calendar: `.ics` export of a trip or journey, and a subscription (Google Calendar, Apple Calendar,

@@ -24,3 +24,10 @@ class ShareLinkForm(FlaskForm):
     include_upcoming = BooleanField(_l("Montrer aussi les voyages à venir"), default=False)
     show_trips = BooleanField(_l("Montrer la liste des voyages"), default=False)
     submit = SubmitField(_l("Générer un lien"))
+
+
+class TripShareForm(FlaskForm):
+    """Lien vers un seul trajet ou voyage, avec ses photos."""
+    expires_in = SelectField(_l("Expiration"), choices=select_choices(EXPIRY_CHOICES), default="")
+    show_exif = BooleanField(_l("Montrer les informations EXIF et la position GPS des photos"), default=False)
+    submit = SubmitField(_l("Créer un lien vers ce voyage"))

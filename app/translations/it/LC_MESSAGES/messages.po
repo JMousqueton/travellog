@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-10-31 16:32+0000\n"
+"POT-Creation-Date: 2026-11-01 08:09+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -81,7 +81,7 @@ msgid "Autoriser les inscriptions"
 msgstr "Consenti le registrazioni"
 
 #: app/admin/forms.py:8 app/auth/forms.py:62 app/templates/admin/users.html:59
-#: app/trips/forms.py:67 app/trips/forms.py:105
+#: app/trips/forms.py:67 app/trips/forms.py:105 app/trips/forms.py:111
 msgid "Enregistrer"
 msgstr "Salva"
 
@@ -149,24 +149,24 @@ msgstr ""
 msgid "Paramètres enregistrés."
 msgstr "Impostazioni salvate."
 
-#: app/admin/routes.py:252
+#: app/admin/routes.py:253
 #, python-format
 msgid "Réponse envoyée à %(email)s."
 msgstr "Risposta inviata a %(email)s."
 
-#: app/admin/routes.py:268
+#: app/admin/routes.py:269
 msgid "Ticket fermé."
 msgstr "Ticket chiuso."
 
-#: app/admin/routes.py:268
+#: app/admin/routes.py:269
 msgid "Ticket rouvert."
 msgstr "Ticket riaperto."
 
-#: app/admin/routes.py:278
+#: app/admin/routes.py:279
 msgid "Vous recevrez un e-mail à chaque nouveau message de ticket."
 msgstr "Riceverai un'e-mail a ogni nuovo messaggio di ticket."
 
-#: app/admin/routes.py:279
+#: app/admin/routes.py:280
 msgid "Vous ne recevrez plus d'e-mail pour les tickets."
 msgstr "Non riceverai più e-mail per i ticket."
 
@@ -711,19 +711,19 @@ msgstr "Modifica il viaggio %(route)s"
 msgid "Supprimer le voyage %(route)s"
 msgstr "Elimina il viaggio %(route)s"
 
-#: app/i18n.py:119 app/templates/trips/detail.html:41
-#: app/templates/trips/stats.html:28
+#: app/i18n.py:119 app/templates/share/trip.html:23
+#: app/templates/trips/detail.html:41 app/templates/trips/stats.html:28
 msgid "Départ"
 msgstr "Partenza"
 
-#: app/i18n.py:120 app/templates/trips/detail.html:42
-#: app/templates/trips/stats.html:30
+#: app/i18n.py:120 app/templates/share/trip.html:24
+#: app/templates/trips/detail.html:42 app/templates/trips/stats.html:30
 msgid "Retour"
 msgstr "Ritorno"
 
-#: app/i18n.py:121 app/templates/share/trips.html:38
-#: app/templates/trips/_stats_parts.html:244 app/templates/trips/detail.html:56
-#: app/templates/trips/list.html:118
+#: app/i18n.py:121 app/templates/share/trip.html:29
+#: app/templates/share/trips.html:38 app/templates/trips/_stats_parts.html:244
+#: app/templates/trips/detail.html:56 app/templates/trips/list.html:118
 #: app/templates/trips/transport_stats.html:16
 msgid "Distance"
 msgstr "Distanza"
@@ -965,15 +965,15 @@ msgstr "Compagnia completata; partenza e arrivo già inseriti, mantenuti."
 msgid "Compagnie trouvée ; itinéraire inconnu pour ce numéro."
 msgstr "Compagnia trovata; rotta sconosciuta per questo numero."
 
-#: app/jobs.py:92
+#: app/jobs.py:93
 msgid "Import par e-mail (boîte IMAP)"
 msgstr "Importazione via e-mail (casella IMAP)"
 
-#: app/jobs.py:93
+#: app/jobs.py:95
 msgid "Sauvegarde complète (base + photos)"
 msgstr "Backup completo (database + foto)"
 
-#: app/jobs.py:95
+#: app/jobs.py:97
 msgid ""
 "Purge du cache de géocodage, des liens de partage expirés, du journal des"
 " imports par e-mail et de l'historique des tâches ; bilans de l'année par"
@@ -1013,7 +1013,7 @@ msgstr "Numero massimo di foto raggiunto (%(max)s)."
 msgid "Photo trop volumineuse (%(max)s Mo au maximum)."
 msgstr "Foto troppo grande (massimo %(max)s MB)."
 
-#: app/photos.py:66 app/trips/forms.py:112
+#: app/photos.py:66 app/trips/forms.py:118
 msgid "Format non pris en charge : utilisez JPEG, PNG, WebP ou GIF."
 msgstr "Formato non supportato: usa JPEG, PNG, WebP o GIF."
 
@@ -1195,19 +1195,19 @@ msgstr "Il tuo %(year)s in viaggio"
 msgid "Mon année en voyages"
 msgstr "Il mio anno di viaggi"
 
-#: app/review_image.py:61 app/share/routes.py:162
+#: app/review_image.py:61 app/share/routes.py:164
 #: app/templates/trips/review.html:35
 msgid "voyage"
 msgid_plural "voyages"
 msgstr[0] "viaggio"
 msgstr[1] "viaggi"
 
-#: app/review_image.py:62 app/share/routes.py:161
+#: app/review_image.py:62 app/share/routes.py:163
 #: app/templates/trips/review.html:36
 msgid "parcourus"
 msgstr "percorsi"
 
-#: app/review_image.py:63 app/share/routes.py:160
+#: app/review_image.py:63 app/share/routes.py:162
 #: app/templates/trips/review.html:37
 msgid "pays"
 msgid_plural "pays"
@@ -1271,7 +1271,7 @@ msgstr "Etichetta (facoltativa)"
 msgid "Ce nom est trop long."
 msgstr "Questo nome è troppo lungo."
 
-#: app/share/forms.py:23
+#: app/share/forms.py:23 app/share/forms.py:31
 msgid "Expiration"
 msgstr "Scadenza"
 
@@ -1287,6 +1287,14 @@ msgstr "Mostra l'elenco dei viaggi"
 msgid "Générer un lien"
 msgstr "Genera un link"
 
+#: app/share/forms.py:32
+msgid "Montrer les informations EXIF et la position GPS des photos"
+msgstr "Mostra le informazioni EXIF e la posizione GPS delle foto"
+
+#: app/share/forms.py:33
+msgid "Créer un lien vers ce voyage"
+msgstr "Crea un link a questo viaggio"
+
 #: app/share/routes.py:22 app/templates/share/links.html:12
 msgid "Les liens de partage sont réservés aux abonnés Premium."
 msgstr "I link di condivisione sono riservati agli abbonati Premium."
@@ -1297,30 +1305,48 @@ msgstr ""
 "Link di condivisione creato. Chiunque lo possieda può vedere i tuoi "
 "viaggi."
 
-#: app/share/routes.py:47
+#: app/share/routes.py:49
 msgid "Lien révoqué : il ne donne plus accès à vos voyages."
 msgstr "Link revocato: non dà più accesso ai tuoi viaggi."
 
-#: app/share/routes.py:59
+#: app/share/routes.py:61
 msgid "Ce lien montre désormais vos voyages à venir."
 msgstr "Questo link ora mostra i tuoi viaggi in arrivo."
 
-#: app/share/routes.py:60
+#: app/share/routes.py:62
 msgid "Ce lien ne montre plus vos voyages à venir."
 msgstr "Questo link non mostra più i tuoi viaggi in arrivo."
 
-#: app/share/routes.py:72
+#: app/share/routes.py:74
 msgid "Ce lien montre désormais la liste de vos trajets."
 msgstr "Questo link ora mostra l'elenco dei tuoi tragitti."
 
-#: app/share/routes.py:73
+#: app/share/routes.py:75
 msgid "Ce lien ne montre plus la liste de vos trajets."
 msgstr "Questo link non mostra più l'elenco dei tuoi tragitti."
 
-#: app/share/routes.py:164
+#: app/share/routes.py:166
 #, python-format
 msgid "%(site)s : %(countries)s pays, %(km)s km, %(trips)s voyages"
 msgstr "%(site)s: %(countries)s paesi, %(km)s km, %(trips)s viaggi"
+
+#: app/share/routes.py:273
+msgid ""
+"Lien créé : toute personne qui le possède peut voir ce voyage et ses "
+"photos."
+msgstr "Link creato: chiunque lo possieda può vedere questo viaggio e le sue foto."
+
+#: app/share/routes.py:303
+msgid "Ce lien montre désormais les informations EXIF et GPS des photos."
+msgstr "Questo link ora mostra le informazioni EXIF e GPS delle foto."
+
+#: app/share/routes.py:304
+msgid "Ce lien ne montre plus les informations EXIF et GPS des photos."
+msgstr "Questo link non mostra più le informazioni EXIF e GPS delle foto."
+
+#: app/share/routes.py:315
+msgid "Lien révoqué : il ne donne plus accès à ce voyage."
+msgstr "Link revocato: non dà più accesso a questo viaggio."
 
 #: app/support/forms.py:12
 msgid "Le message est obligatoire."
@@ -1360,7 +1386,7 @@ msgstr "Invia la richiesta"
 msgid "Réponse"
 msgstr "Risposta"
 
-#: app/support/forms.py:29 app/trips/forms.py:114
+#: app/support/forms.py:29 app/trips/forms.py:120
 msgid "Envoyer"
 msgstr "Carica"
 
@@ -1475,7 +1501,7 @@ msgstr ""
 msgid "Merci à Mallorie pour l'idée !"
 msgstr "Grazie a Mallorie per l'idea!"
 
-#: app/templates/about.html:35 app/templates/plans.html:113
+#: app/templates/about.html:35 app/templates/plans.html:114
 msgid "Toutes les fonctionnalités"
 msgstr "Tutte le funzionalità"
 
@@ -1841,12 +1867,12 @@ msgid "Politique de confidentialité"
 msgstr "Informativa sulla privacy"
 
 #: app/templates/about.html:114 app/templates/landing.html:34
-#: app/templates/plans.html:101
+#: app/templates/plans.html:102
 msgid "Commencer gratuitement"
 msgstr "Inizia gratis"
 
 #: app/templates/about.html:115 app/templates/landing.html:35
-#: app/templates/plans.html:103
+#: app/templates/plans.html:104
 msgid "J'ai déjà un compte"
 msgstr "Ho già un account"
 
@@ -2633,6 +2659,7 @@ msgstr "Indirizzo del profilo pubblico"
 
 #: app/templates/auth/profile.html:93 app/templates/auth/profile.html:108
 #: app/templates/auth/profile.html:173 app/templates/share/links.html:85
+#: app/templates/share/links.html:134 app/templates/trips/detail.html:170
 msgid "Copier"
 msgstr "Copia"
 
@@ -2945,7 +2972,7 @@ msgstr "Importa / esporta"
 #: app/templates/admin/users.html:27 app/templates/base.html:178
 #: app/templates/billing/index.html:2 app/templates/billing/index.html:6
 #: app/templates/billing/index.html:27 app/templates/billing/invoices.html:7
-#: app/templates/partials/footer.html:10 app/templates/plans.html:60
+#: app/templates/partials/footer.html:10 app/templates/plans.html:61
 msgid "Premium"
 msgstr "Premium"
 
@@ -4314,7 +4341,11 @@ msgstr "Importazione via e-mail delle conferme di volo o di treno"
 msgid "Liens de partage de votre carte, de vos statistiques et de vos voyages"
 msgstr "Link di condivisione della mappa, delle statistiche e dei viaggi"
 
-#: app/templates/billing/index.html:11 app/templates/plans.html:41
+#: app/templates/plans.html:41
+msgid "Lien vers un voyage précis avec ses photos, EXIF et GPS en option"
+msgstr "Link a un viaggio specifico con le sue foto, EXIF e GPS facoltativi"
+
+#: app/templates/billing/index.html:11 app/templates/plans.html:42
 msgid ""
 "Profil public à votre nom (/u/votre-nom), avec un badge à intégrer sur "
 "votre site"
@@ -4322,59 +4353,59 @@ msgstr ""
 "Profilo pubblico a tuo nome (/u/tuo-nome), con un badge da incorporare "
 "nel tuo sito"
 
-#: app/templates/plans.html:42
+#: app/templates/plans.html:43
 msgid "Accès au support : questions, problèmes, idées"
 msgstr "Accesso all'assistenza: domande, problemi, idee"
 
-#: app/templates/billing/index.html:14 app/templates/plans.html:43
+#: app/templates/billing/index.html:14 app/templates/plans.html:44
 msgid ""
 "Vous aidez à maintenir le site : hébergement, mises à jour et nouvelles "
 "fonctions"
 msgstr "Aiuti a mantenere il sito: hosting, aggiornamenti e nuove funzioni"
 
-#: app/templates/plans.html:49
+#: app/templates/plans.html:50
 msgid "Comparatif des offres gratuite et Premium"
 msgstr "Confronto tra i piani gratuito e Premium"
 
-#: app/templates/plans.html:52
+#: app/templates/plans.html:53
 msgid "Fonction"
 msgstr "Funzione"
 
-#: app/templates/plans.html:55
+#: app/templates/plans.html:56
 msgid "Gratuit"
 msgstr "Gratuito"
 
-#: app/templates/plans.html:56
+#: app/templates/plans.html:57
 msgid "pour toujours"
 msgstr "per sempre"
 
-#: app/templates/plans.html:61
+#: app/templates/plans.html:62
 #, python-format
 msgid "%(monthly)s / mois"
 msgstr "%(monthly)s / mese"
 
-#: app/templates/plans.html:86
+#: app/templates/plans.html:87
 msgid "Prix"
 msgstr "Prezzo"
 
-#: app/templates/plans.html:89
+#: app/templates/plans.html:90
 msgid "mois"
 msgstr "mese"
 
-#: app/templates/plans.html:90
+#: app/templates/plans.html:91
 #, python-format
 msgid "ou %(yearly)s par an"
 msgstr "oppure %(yearly)s all'anno"
 
-#: app/templates/plans.html:105
+#: app/templates/plans.html:106
 msgid "Vous profitez déjà de Premium. Merci !"
 msgstr "Usufruisci già di Premium. Grazie!"
 
-#: app/templates/plans.html:108
+#: app/templates/plans.html:109
 msgid "Passer à Premium"
 msgstr "Passa a Premium"
 
-#: app/templates/plans.html:112
+#: app/templates/plans.html:113
 msgid "Sans engagement, résiliable à tout moment. Paiement sécurisé par Stripe."
 msgstr "Senza vincoli, disdici quando vuoi. Pagamento sicuro con Stripe."
 
@@ -4441,11 +4472,13 @@ msgstr "I miei link"
 msgid "Lien sans libellé"
 msgstr "Link senza etichetta"
 
-#: app/templates/share/links.html:62
+#: app/templates/share/links.html:62 app/templates/share/links.html:125
+#: app/templates/trips/detail.html:158
 msgid "Expiré"
 msgstr "Scaduto"
 
-#: app/templates/share/links.html:65
+#: app/templates/share/links.html:65 app/templates/share/links.html:127
+#: app/templates/trips/detail.html:157
 #, python-format
 msgid "Créé le %(date)s"
 msgstr "Creato il %(date)s"
@@ -4455,21 +4488,23 @@ msgstr "Creato il %(date)s"
 msgid "expiré le %(date)s"
 msgstr "scaduto il %(date)s"
 
-#: app/templates/share/links.html:68
+#: app/templates/share/links.html:68 app/templates/trips/detail.html:159
 #, python-format
 msgid "expire le %(date)s"
 msgstr "scade il %(date)s"
 
-#: app/templates/share/links.html:69
+#: app/templates/share/links.html:69 app/templates/trips/detail.html:160
 msgid "sans expiration"
 msgstr "senza scadenza"
 
-#: app/templates/share/links.html:71
+#: app/templates/share/links.html:71 app/templates/share/links.html:128
+#: app/templates/trips/detail.html:161
 #, python-format
 msgid "dernière consultation le %(date)s"
 msgstr "ultima visualizzazione il %(date)s"
 
-#: app/templates/share/links.html:72
+#: app/templates/share/links.html:72 app/templates/share/links.html:128
+#: app/templates/trips/detail.html:162
 msgid "jamais consulté"
 msgstr "mai visualizzato"
 
@@ -4494,7 +4529,7 @@ msgstr "elenco dei tragitti nascosto"
 msgid "Adresse du lien %(label)s"
 msgstr "Indirizzo del link %(label)s"
 
-#: app/templates/share/links.html:87
+#: app/templates/share/links.html:87 app/templates/trips/detail.html:172
 msgid "Ouvrir"
 msgstr "Apri"
 
@@ -4514,13 +4549,38 @@ msgstr "Nascondi l'elenco dei tragitti"
 msgid "Montrer la liste des trajets"
 msgstr "Mostra l'elenco dei tragitti"
 
-#: app/templates/share/links.html:103
+#: app/templates/share/links.html:103 app/templates/share/links.html:139
+#: app/templates/trips/detail.html:182
 msgid "Révoquer"
 msgstr "Revoca"
 
 #: app/templates/share/links.html:111
 msgid "Aucun lien de partage pour l'instant."
 msgstr "Ancora nessun link di condivisione."
+
+#: app/templates/share/links.html:113
+msgid "Liens vers un voyage"
+msgstr "Link a un viaggio"
+
+#: app/templates/share/links.html:114
+msgid ""
+"Créez-les depuis la fiche d'un trajet ou d'un voyage : ils ne montrent "
+"que ce voyage, avec ses photos."
+msgstr ""
+"Creali dalla scheda di un tragitto o di un viaggio: mostrano solo quel "
+"viaggio, con le sue foto."
+
+#: app/templates/share/links.html:129 app/templates/trips/detail.html:163
+msgid "EXIF et GPS visibles"
+msgstr "EXIF e GPS visibili"
+
+#: app/templates/share/links.html:129 app/templates/trips/detail.html:164
+msgid "EXIF et GPS masqués"
+msgstr "EXIF e GPS nascosti"
+
+#: app/templates/share/links.html:147
+msgid "Aucun lien vers un voyage pour l'instant."
+msgstr "Ancora nessun link a un viaggio."
 
 #: app/templates/share/profile.html:4
 #, python-format
@@ -4583,6 +4643,49 @@ msgstr "Statistiche condivise"
 msgid "Badges · tous vos voyages"
 msgstr "Badge · tutti i tuoi viaggi"
 
+#: app/templates/share/trip.html:11
+msgid "Voyage partagé"
+msgstr "Viaggio condiviso"
+
+#: app/templates/share/trip.html:22 app/templates/share/trips.html:37
+#: app/templates/transfer/preview.html:45 app/templates/trips/detail.html:40
+#: app/templates/trips/list.html:117
+msgid "Mode"
+msgstr "Mezzo"
+
+#: app/templates/share/trip.html:26 app/templates/trips/detail.html:53
+#: app/templates/trips/form.html:107
+msgid "Dates"
+msgstr "Date"
+
+#: app/templates/share/trip.html:27 app/templates/trips/detail.html:54
+#: app/templates/trips/transport_stats.html:15
+#: app/templates/trips/transport_stats.html:83
+msgid "Trajets"
+msgstr "Tragitti"
+
+#: app/templates/share/trip.html:30 app/templates/trips/detail.html:63
+msgid "Pays"
+msgstr "Paesi"
+
+#: app/templates/share/trip.html:36 app/templates/trips/detail.html:71
+msgid "Étapes"
+msgstr "Tappe"
+
+#: app/templates/share/trip.html:48 app/templates/trips/detail.html:79
+#: app/templates/trips/detail.html:104
+msgid "Photos"
+msgstr "Foto"
+
+#: app/templates/share/trip.html:56 app/templates/trips/detail.html:112
+#: app/templates/trips/photo.html:2 app/templates/trips/photo.html:38
+msgid "Photo"
+msgstr "Foto"
+
+#: app/templates/share/trip.html:61
+msgid "Aucune photo pour ce voyage."
+msgstr "Nessuna foto per questo viaggio."
+
 #: app/templates/share/trips.html:3 app/templates/share/trips.html:28
 msgid "Voyages partagés"
 msgstr "Viaggi condivisi"
@@ -4590,11 +4693,6 @@ msgstr "Viaggi condivisi"
 #: app/templates/share/trips.html:36 app/templates/transfer/preview.html:44
 msgid "Trajet"
 msgstr "Tragitto"
-
-#: app/templates/share/trips.html:37 app/templates/transfer/preview.html:45
-#: app/templates/trips/detail.html:40 app/templates/trips/list.html:117
-msgid "Mode"
-msgstr "Mezzo"
 
 #: app/templates/support/_macros.html:3
 msgid "En attente du support"
@@ -5137,16 +5235,6 @@ msgstr "Aggiungi al calendario"
 msgid "Numéro du vol retour"
 msgstr "Numero del volo di ritorno"
 
-#: app/templates/trips/detail.html:53 app/templates/trips/form.html:107
-msgid "Dates"
-msgstr "Date"
-
-#: app/templates/trips/detail.html:54
-#: app/templates/trips/transport_stats.html:15
-#: app/templates/trips/transport_stats.html:83
-msgid "Trajets"
-msgstr "Tragitti"
-
 #: app/templates/trips/detail.html:58
 msgid "par la route"
 msgstr "su strada"
@@ -5159,18 +5247,6 @@ msgstr "stimata (%(km)s in linea d'aria)"
 #: app/templates/trips/detail.html:60
 msgid "à vol d'oiseau"
 msgstr "in linea d'aria"
-
-#: app/templates/trips/detail.html:63
-msgid "Pays"
-msgstr "Paesi"
-
-#: app/templates/trips/detail.html:71
-msgid "Étapes"
-msgstr "Tappe"
-
-#: app/templates/trips/detail.html:79 app/templates/trips/detail.html:104
-msgid "Photos"
-msgstr "Foto"
 
 #: app/templates/trips/detail.html:87
 msgid "Fait partie du voyage"
@@ -5189,10 +5265,6 @@ msgstr "Nessuna nota."
 msgid "Ajouter une note"
 msgstr "Aggiungi una nota"
 
-#: app/templates/trips/detail.html:112 app/templates/trips/photo.html:2
-msgid "Photo"
-msgstr "Foto"
-
 #: app/templates/trips/detail.html:116
 #, python-format
 msgid "Supprimer la photo %(name)s"
@@ -5206,11 +5278,49 @@ msgstr "L'aggiunta di foto è riservata agli abbonati Premium."
 msgid ""
 "JPEG, PNG, WebP ou GIF. Les métadonnées (appareil, position GPS) sont "
 "retirées du fichier et ne restent visibles que de vous. Photos privées : "
-"elles n'apparaissent pas sur les liens de partage."
+"seuls les liens vers ce voyage les montrent (ci-dessous)."
 msgstr ""
 "JPEG, PNG, WebP o GIF. I metadati (fotocamera, posizione GPS) vengono "
-"rimossi dal file e restano visibili solo a te. Foto private: non "
-"compaiono nei link di condivisione."
+"rimossi dal file e restano visibili solo a te. Foto private: solo i link "
+"a questo viaggio le mostrano (sotto)."
+
+#: app/templates/trips/detail.html:145
+msgid "Partager ce voyage"
+msgstr "Condividi questo viaggio"
+
+#: app/templates/trips/detail.html:146
+msgid ""
+"Un lien secret vers cette seule fiche, en lecture seule et sans connexion"
+" : dates, lieux, modes, distance et photos avec leur légende. Ni vos "
+"notes, ni vos autres voyages."
+msgstr ""
+"Un link segreto solo a questa scheda, in sola lettura e senza accesso: "
+"date, luoghi, mezzi, distanza e foto con la loro didascalia. Né le tue "
+"note né gli altri tuoi viaggi."
+
+#: app/templates/trips/detail.html:148
+msgid "Le partage d'un voyage est réservé aux abonnés Premium."
+msgstr "La condivisione di un viaggio è riservata agli abbonati Premium."
+
+#: app/templates/trips/detail.html:168
+msgid "Adresse du lien"
+msgstr "Indirizzo del link"
+
+#: app/templates/trips/detail.html:177
+msgid "Masquer EXIF et GPS"
+msgstr "Nascondi EXIF e GPS"
+
+#: app/templates/trips/detail.html:177
+msgid "Montrer EXIF et GPS"
+msgstr "Mostra EXIF e GPS"
+
+#: app/templates/trips/detail.html:202
+msgid ""
+"Désactivé par défaut : appareil, réglages, date de prise de vue et lieu "
+"exact de chaque photo. Modifiable ensuite."
+msgstr ""
+"Disattivato per impostazione predefinita: fotocamera, impostazioni, data "
+"dello scatto e luogo esatto di ogni foto. Modificabile in seguito."
 
 #: app/templates/trips/email/review.txt:3
 #, python-format
@@ -5402,62 +5512,72 @@ msgstr "Nessun risultato"
 msgid "Essayez un autre mot, ou une partie du nom d'un lieu."
 msgstr "Prova un'altra parola o una parte del nome di un luogo."
 
-#: app/templates/trips/photo.html:26
+#: app/templates/trips/photo.html:25
 msgid "Précédente"
 msgstr "Precedente"
 
-#: app/templates/trips/photo.html:28
+#: app/templates/trips/photo.html:27
 #, python-format
 msgid "%(num)s sur %(total)s"
 msgstr "%(num)s di %(total)s"
 
-#: app/templates/trips/photo.html:32
+#: app/templates/trips/photo.html:30
 msgid "Suivante"
 msgstr "Successiva"
 
-#: app/templates/trips/photo.html:42
+#: app/templates/trips/photo.html:40
 #, python-format
 msgid "%(size)s Ko"
 msgstr "%(size)s KB"
 
-#: app/templates/trips/photo.html:43
+#: app/templates/trips/photo.html:41
 #, python-format
 msgid "ajoutée le %(date)s"
 msgstr "aggiunta il %(date)s"
 
-#: app/templates/trips/photo.html:45
+#: app/templates/trips/photo.html:52
+msgid ""
+"Affichée sous la photo, à la place du nom du trajet. Laissez vide pour "
+"revenir au nom du trajet."
+msgstr ""
+"Mostrata sotto la foto, al posto del nome del tragitto. Lascia vuoto per "
+"tornare al nome del tragitto."
+
+#: app/templates/trips/photo.html:57
 msgid "EXIF"
 msgstr "EXIF"
 
-#: app/templates/trips/photo.html:51
+#: app/templates/trips/photo.html:63
 msgid "Aucune information EXIF pour cette photo."
 msgstr "Nessuna informazione EXIF per questa foto."
 
-#: app/templates/trips/photo.html:52
+#: app/templates/trips/photo.html:64
 msgid "Les photos envoyées avant leur prise en charge n'en ont pas gardé."
 msgstr "Le foto caricate prima di questa funzione non le hanno conservate."
 
-#: app/templates/trips/photo.html:55
+#: app/templates/trips/photo.html:67
 msgid "Position GPS"
 msgstr "Posizione GPS"
 
-#: app/templates/trips/photo.html:61
+#: app/templates/trips/photo.html:73
 msgid "Carte : lieu de prise de vue"
 msgstr "Mappa: luogo dello scatto"
 
-#: app/templates/trips/photo.html:64
+#: app/templates/trips/photo.html:76
 msgid "Ouvrir dans OpenStreetMap"
 msgstr "Apri in OpenStreetMap"
 
-#: app/templates/trips/photo.html:66
+#: app/templates/trips/photo.html:78
 msgid "Pas de position GPS."
 msgstr "Nessuna posizione GPS."
 
-#: app/templates/trips/photo.html:70
+#: app/templates/trips/photo.html:84
 msgid ""
-"Visible de vous seul : le fichier de la photo ne contient aucune "
-"métadonnée."
-msgstr "Visibile solo a te: il file della foto non contiene metadati."
+"EXIF et GPS visibles de vous seul, et des liens de partage de ce voyage "
+"qui les montrent : le fichier de la photo ne contient aucune métadonnée."
+msgstr ""
+"EXIF e GPS visibili solo a te, e ai link di condivisione di questo "
+"viaggio che li mostrano: il file della foto non contiene metadati."
 
 #: app/templates/trips/photos_map.html:12
 #, python-format
@@ -6436,10 +6556,18 @@ msgid "Nom du voyage"
 msgstr "Nome del viaggio"
 
 #: app/trips/forms.py:109
+msgid "Légende de la photo"
+msgstr "Didascalia della foto"
+
+#: app/trips/forms.py:110
+msgid "La légende ne doit pas dépasser 200 caractères."
+msgstr "La didascalia non deve superare i 200 caratteri."
+
+#: app/trips/forms.py:115
 msgid "Ajouter des photos"
 msgstr "Aggiungi foto"
 
-#: app/trips/forms.py:110
+#: app/trips/forms.py:116
 msgid "Choisissez au moins une photo."
 msgstr "Scegli almeno una foto."
 
@@ -6506,22 +6634,30 @@ msgstr "Viaggio separato: le sue tratte sono di nuovo indipendenti."
 msgid "Trajet retiré du voyage."
 msgstr "Tratta rimossa dal viaggio."
 
-#: app/trips/routes.py:371
+#: app/trips/routes.py:379
 #, python-format
 msgid "%(num)s photo ajoutée."
 msgid_plural "%(num)s photos ajoutées."
 msgstr[0] "%(num)s foto aggiunta."
 msgstr[1] "%(num)s foto aggiunte."
 
-#: app/trips/routes.py:439
+#: app/trips/routes.py:447
 msgid "Voir la photo"
 msgstr "Vedi la foto"
 
-#: app/trips/routes.py:439
+#: app/trips/routes.py:447
 msgid "photos"
 msgstr "foto"
 
-#: app/trips/routes.py:492
+#: app/trips/routes.py:518
+msgid "Légende enregistrée."
+msgstr "Didascalia salvata."
+
+#: app/trips/routes.py:518
+msgid "Légende supprimée."
+msgstr "Didascalia rimossa."
+
+#: app/trips/routes.py:533
 msgid "Photo supprimée."
 msgstr "Foto eliminata."
 

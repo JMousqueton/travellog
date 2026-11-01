@@ -185,6 +185,8 @@ class Journey(db.Model):
     legs = db.relationship("Trip", back_populates="journey", order_by=lambda: [Trip.depart_date, Trip.id])
     # Pas de delete-orphan : une photo change de parent (trajet ↔ voyage) lors des regroupements.
     photos = db.relationship("Photo", back_populates="journey", cascade="all", order_by="Photo.created_at")
+    shares = db.relationship("TripShare", back_populates="journey", cascade="all, delete-orphan", passive_deletes=True,
+                             order_by="TripShare.created_at")
 
     @property
     def route_label(self):
@@ -286,6 +288,8 @@ class Trip(db.Model):
     user = db.relationship("User", back_populates="trips")
     journey = db.relationship("Journey", back_populates="legs")
     photos = db.relationship("Photo", back_populates="trip", cascade="all", order_by="Photo.created_at")
+    shares = db.relationship("TripShare", back_populates="trip", cascade="all, delete-orphan", passive_deletes=True,
+                             order_by="TripShare.created_at")
     tags = db.relationship("Tag", secondary=trip_tags, back_populates="trips", order_by="Tag.name")
 
     __table_args__ = (
@@ -465,6 +469,56 @@ class ShareLink(db.Model):
         return link
 
 
+class TripShare(db.Model):
+    """Lien secret vers un seul trajet ou voyage, avec ses photos (et, si le lien le prévoit, leurs EXIF et GPS).
+
+    Distinct de ShareLink, qui ouvre tous les voyages : ce lien ne donne accès qu'à cette fiche."""
+
+    __tablename__ = "trip_shares"
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id", ondelete="CASCADE"), nullable=False, index=True)
+    trip_id = db.Column(db.Integer, db.ForeignKey("trips.id", ondelete="CASCADE"), nullable=True, index=True)
+    journey_id = db.Column(db.Integer, db.ForeignKey("journeys.id", ondelete="CASCADE"), nullable=True, index=True)
+    token = db.Column(db.String(64), nullable=False, unique=True, index=True, default=_new_token)
+    # Informations EXIF (appareil, réglages, date) et position GPS des photos : masquées par défaut.
+    show_exif = db.Column(db.Boolean, nullable=False, default=False, server_default="0")
+    created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
+    expires_at = db.Column(db.DateTime(timezone=True), nullable=True)
+    last_used_at = db.Column(db.DateTime(timezone=True), nullable=True)
+
+    user = db.relationship("User")
+    trip = db.relationship("Trip", back_populates="shares")
+    journey = db.relationship("Journey", back_populates="shares")
+
+    __table_args__ = (
+        CheckConstraint("(trip_id IS NULL) <> (journey_id IS NULL)", name="trip_share_single_target"),
+    )
+
+    is_expired = ShareLink.is_expired
+    mark_used = ShareLink.mark_used
+    USAGE_RESOLUTION = ShareLink.USAGE_RESOLUTION
+
+    @property
+    def target(self):
+        return self.trip or self.journey
+
+    @property
+    def photos(self):
+        """Photos du trajet, ou du voyage et de chacun de ses trajets."""
+        if self.trip:
+            return list(self.trip.photos)
+        return list(self.journey.photos) + [p for leg in self.journey.legs for p in leg.photos]
+
+    @classmethod
+    def active(cls, token):
+        """Lien valide (non expiré, compte non bloqué et Premium) correspondant au jeton, sinon None."""
+        share = db.session.execute(db.select(cls).filter_by(token=token)).scalar_one_or_none()
+        if share is None or share.is_expired or share.user.is_blocked or not share.user.has_premium_access:
+            return None
+        return share
+
+
 class Photo(db.Model):
     """Photo rattachée à un trajet ou à un voyage. Les fichiers sont dans UPLOAD_FOLDER (voir photos.py)."""
 
@@ -483,6 +537,8 @@ class Photo(db.Model):
     # Métadonnées relevées à l'envoi (appareil, réglages, date, GPS) : visibles du seul propriétaire,
     # jamais écrites dans le fichier servi. Voir photos.read_exif.
     exif = db.Column(db.JSON, nullable=True)
+    # Légende choisie par le propriétaire (sous la photo, à la place du nom du trajet).
+    description = db.Column(db.String(200), nullable=True)
     created_at = db.Column(db.DateTime(timezone=True), nullable=False, default=utcnow)
 
     user = db.relationship("User", overlaps="photos")
