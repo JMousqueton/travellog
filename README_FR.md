@@ -31,14 +31,15 @@ des statistiques, des badges et un bilan de l'année. En français, anglais, esp
 - **Bilan de l'année** : votre année en chiffres, et une image à partager.
 - **Import et export** : historiques Flighty et myFlightradar24, CSV, GeoJSON et GPX sans perte, cartes
   d'embarquement Apple Wallet, recherche par numéro de vol, sauvegarde complète avec les photos.
-- **Notes, photos et étiquettes** sur chaque trajet et chaque voyage ; voyages à venir et export vers
-  l'agenda (`.ics`).
-- **Partage** : liens en lecture seule avec date d'expiration, et profil public facultatif.
+- **Notes, photos légendées et étiquettes** sur chaque trajet et chaque voyage ; vos voyages en liste ou
+  en calendrier mois par mois ; voyages à venir et export vers l'agenda (`.ics`).
+- **Partage** : liens en lecture seule avec date d'expiration, liens vers un seul voyage avec ses photos
+  (EXIF et GPS en option), et profil public facultatif.
 - **Partout** : application installable qui fonctionne hors ligne, thèmes clair et sombre.
 - **Respect de la vie privée** : sans publicité, toutes les bibliothèques servies par le site (aucun CDN),
   mesure d'audience auto-hébergée et refusable, export et suppression du compte à tout moment.
-- **Premium** (Stripe, 2 € par mois ou 12 € par an par défaut) : photos, import par e-mail, liens de
-  partage, profil public et support. Sans clé Stripe, tout est gratuit.
+- **Premium** (Stripe, 2 € par mois ou 12 € par an par défaut) : photos, calendrier des voyages, import par
+  e-mail, liens de partage (y compris vers un seul voyage), profil public et support. Sans clé Stripe, tout est gratuit.
 
 Toutes les fonctionnalités en détail : [FEATURES_FR.md](FEATURES_FR.md).
 

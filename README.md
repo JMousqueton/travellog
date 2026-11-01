@@ -30,13 +30,15 @@ in review. In French, English, Spanish, German and Italian.
 - **Year in review**: your year in figures, and an image to share.
 - **Import and export**: Flighty and myFlightradar24 histories, CSV, GeoJSON and GPX without loss,
   Apple Wallet boarding passes, flight number lookup, full backup with photos.
-- **Notes, photos and tags** on every trip and journey; upcoming trips and calendar export (`.ics`).
-- **Sharing**: read-only links with expiry and an optional public profile.
+- **Notes, captioned photos and tags** on every trip and journey; your trips as a list or a month-by-month
+  calendar; upcoming trips and calendar export (`.ics`).
+- **Sharing**: read-only links with expiry, links to a single trip with its photos (EXIF and GPS optional),
+  and an optional public profile.
 - **Everywhere**: installable app that works offline, light and dark themes.
 - **Private by design**: no ads, every library bundled (no CDN), self-hosted analytics you can refuse,
   export and account deletion at any time.
-- **Premium** (Stripe, 2 € a month or 12 € a year by default): photos, import by email, share links,
-  public profile and support. Without a Stripe key, everything is free.
+- **Premium** (Stripe, 2 € a month or 12 € a year by default): photos, the trips calendar, import by email,
+  share links (including links to a single trip), public profile and support. Without a Stripe key, everything is free.
 
 Every feature in detail: [FEATURES.md](FEATURES.md).
 
