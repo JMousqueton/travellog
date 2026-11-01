@@ -134,6 +134,16 @@ def test_dashboard_stats_for_current_year(auth_client, user):
     assert auth_client.get("/api/stats?year=2024").get_json()["next_trip"] is not None  # prochain départ global
     html = auth_client.get("/").text
     assert 'data-year="2025"' in html and 'Tableau de bord <span id="dashboardYear">2025</span>' in html
+    assert '<span id="dashboardAllTitle" hidden>' in html
+
+
+def test_dashboard_all_years_title(auth_client, user):
+    make_trip(user, depart_date=date(2024, 3, 1))
+    html = auth_client.get("/?period=all").text
+    assert '<span id="dashboardYearTitle" hidden>' in html
+    assert '<span id="dashboardAllTitle">Tableau de bord, toutes années</span>' in html
+    # Des dates choisies l'emportent sur ?period=all : retour au tableau de bord de l'année.
+    assert '<span id="dashboardAllTitle" hidden>' in auth_client.get("/?period=all&from=2024-01-01").text
 
 
 # --- Lieux visités --------------------------------------------------------------------------

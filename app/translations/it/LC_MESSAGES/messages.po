@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-01 08:56+0000\n"
+"POT-Creation-Date: 2026-11-01 11:18+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -644,7 +644,7 @@ msgid_plural "Dans %(num)s jours"
 msgstr[0] "Tra %(num)s giorno"
 msgstr[1] "Tra %(num)s giorni"
 
-#: app/i18n.py:105 app/templates/map.html:214
+#: app/i18n.py:105 app/templates/map.html:219
 msgid "Chargement…"
 msgstr "Caricamento…"
 
@@ -680,7 +680,7 @@ msgid "Réinitialiser les filtres"
 msgstr "Reimposta filtri"
 
 #: app/i18n.py:113 app/templates/base.html:162 app/templates/base.html:163
-#: app/templates/map.html:223 app/templates/trips/calendar.html:11
+#: app/templates/map.html:228 app/templates/trips/calendar.html:11
 #: app/templates/trips/calendar.html:72 app/templates/trips/list.html:13
 #: app/templates/trips/list.html:182
 msgid "Ajouter un voyage"
@@ -728,13 +728,13 @@ msgstr "Ritorno"
 msgid "Distance"
 msgstr "Distanza"
 
-#: app/i18n.py:122 app/templates/map.html:130 app/templates/share/trips.html:17
+#: app/i18n.py:122 app/templates/map.html:135 app/templates/share/trips.html:17
 #: app/templates/transfer/preview.html:59 app/templates/trips/list.html:61
 #: app/trips/forms.py:58
 msgid "Aller-retour"
 msgstr "Andata e ritorno"
 
-#: app/i18n.py:123 app/templates/map.html:130 app/templates/share/trips.html:17
+#: app/i18n.py:123 app/templates/map.html:135 app/templates/share/trips.html:17
 #: app/templates/trips/list.html:61 app/templates/trips/stats.html:31
 msgid "Aller simple"
 msgstr "Solo andata"
@@ -763,7 +763,7 @@ msgstr "Ritorno (tratteggiato)"
 msgid "Voyages passant par ce lieu"
 msgstr "Viaggi da questo luogo"
 
-#: app/i18n.py:130 app/templates/map.html:172
+#: app/i18n.py:130 app/templates/map.html:177
 msgid "Carte des voyages"
 msgstr "Mappa dei viaggi"
 
@@ -861,7 +861,7 @@ msgstr "Scheda"
 msgid "Fiche du trajet %(route)s"
 msgstr "Scheda del tragitto %(route)s"
 
-#: app/i18n.py:153 app/templates/map.html:121
+#: app/i18n.py:153 app/templates/map.html:126
 #: app/templates/trips/calendar.html:58 app/templates/trips/stats.html:19
 msgid "À venir"
 msgstr "In arrivo"
@@ -927,7 +927,7 @@ msgid "Dézoomer"
 msgstr "Riduci"
 
 #: app/i18n.py:169 app/templates/base.html:222 app/templates/map.html:16
-#: app/templates/map.html:181
+#: app/templates/map.html:186
 msgid "Fermer"
 msgstr "Chiudi"
 
@@ -2983,7 +2983,7 @@ msgid "Ouvrir le menu"
 msgstr "Apri menu"
 
 #: app/templates/admin/users.html:16 app/templates/base.html:125
-#: app/templates/map.html:46 app/templates/map.html:141
+#: app/templates/map.html:51 app/templates/map.html:146
 #: app/templates/share/profile.html:21
 #: app/templates/trips/_stats_parts.html:139
 #: app/templates/trips/_stats_parts.html:243
@@ -4074,7 +4074,7 @@ msgstr "I tuoi viaggi:"
 msgid "Carte partagée"
 msgstr "Mappa condivisa"
 
-#: app/templates/map.html:15 app/templates/map.html:218
+#: app/templates/map.html:15 app/templates/map.html:223
 msgid "Voyages et filtres"
 msgstr "Viaggi e filtri"
 
@@ -4092,153 +4092,157 @@ msgstr "Anno"
 msgid "Tout"
 msgstr "Tutto"
 
-#: app/templates/map.html:40
+#: app/templates/map.html:43
 #, python-format
 msgid "Tableau de bord %(year)s"
 msgstr "Riepilogo %(year)s"
 
-#: app/templates/map.html:51 app/templates/share/profile.html:22
+#: app/templates/map.html:45
+msgid "Tableau de bord, toutes années"
+msgstr "Riepilogo, tutti gli anni"
+
+#: app/templates/map.html:56 app/templates/share/profile.html:22
 #: app/templates/trips/_stats_parts.html:140
 #: app/templates/trips/_stats_parts.html:273
 #: app/templates/trips/transport_stats.html:84
 msgid "Distance estimée"
 msgstr "Distanza stimata"
 
-#: app/templates/map.html:56 app/templates/share/profile.html:23
+#: app/templates/map.html:61 app/templates/share/profile.html:23
 #: app/templates/trips/_stats_parts.html:143
 #: app/templates/trips/_stats_parts.html:274
 msgid "Pays et territoires"
 msgstr "Paesi e territori"
 
-#: app/templates/map.html:61 app/templates/trips/_stats_parts.html:145
+#: app/templates/map.html:66 app/templates/trips/_stats_parts.html:145
 #: app/templates/trips/_stats_parts.html:245
 #: app/templates/trips/_stats_parts.html:277 app/templates/trips/detail.html:62
 msgid "CO₂ estimé"
 msgstr "CO₂ stimata"
 
-#: app/templates/map.html:66 app/trips/stats.py:104
+#: app/templates/map.html:71 app/trips/stats.py:104
 msgid "Prochain départ"
 msgstr "Prossima partenza"
 
-#: app/templates/map.html:70
+#: app/templates/map.html:75
 msgid "Répartition par mode de transport"
 msgstr "Ripartizione per mezzo di trasporto"
 
-#: app/templates/map.html:75
+#: app/templates/map.html:80
 msgid "Filtres"
 msgstr "Filtri"
 
-#: app/templates/map.html:78
+#: app/templates/map.html:83
 msgid "Réinitialiser"
 msgstr "Reimposta"
 
-#: app/templates/map.html:82
+#: app/templates/map.html:87
 msgid "Période de départ"
 msgstr "Periodo di partenza"
 
-#: app/templates/map.html:85
+#: app/templates/map.html:90
 msgid "Du"
 msgstr "Dal"
 
-#: app/templates/map.html:89
+#: app/templates/map.html:94
 msgid "Au"
 msgstr "Al"
 
-#: app/templates/map.html:96
+#: app/templates/map.html:101
 msgid "Modes de transport"
 msgstr "Mezzi di trasporto"
 
-#: app/templates/map.html:109 app/templates/trips/detail.html:65
+#: app/templates/map.html:114 app/templates/trips/detail.html:65
 #: app/trips/forms.py:30
 msgid "Étiquettes"
 msgstr "Etichette"
 
-#: app/templates/map.html:119
+#: app/templates/map.html:124
 msgid "Voyages passés ou à venir"
 msgstr "Viaggi passati o in arrivo"
 
-#: app/templates/map.html:121
+#: app/templates/map.html:126
 msgid "Passés"
 msgstr "Passati"
 
-#: app/templates/admin/tickets.html:10 app/templates/map.html:121
-#: app/templates/map.html:130
+#: app/templates/admin/tickets.html:10 app/templates/map.html:126
+#: app/templates/map.html:135
 msgid "Tous"
 msgstr "Tutti"
 
-#: app/templates/map.html:128
+#: app/templates/map.html:133
 msgid "Type de voyage"
 msgstr "Tipo di viaggio"
 
-#: app/templates/map.html:144
+#: app/templates/map.html:149
 msgid "Trier par"
 msgstr "Ordina per"
 
-#: app/templates/map.html:147
+#: app/templates/map.html:152
 msgid "Plus récents"
 msgstr "Più recenti"
 
-#: app/templates/map.html:148
+#: app/templates/map.html:153
 msgid "Plus anciens"
 msgstr "Meno recenti"
 
-#: app/templates/map.html:149
+#: app/templates/map.html:154
 msgid "Plus longs"
 msgstr "Più lunghi"
 
-#: app/templates/map.html:150
+#: app/templates/map.html:155
 msgid "Plus courts"
 msgstr "Più brevi"
 
-#: app/templates/map.html:151
+#: app/templates/map.html:156
 msgid "Origine (A → Z)"
 msgstr "Origine (A → Z)"
 
-#: app/templates/map.html:152
+#: app/templates/map.html:157
 msgid "Destination (A → Z)"
 msgstr "Destinazione (A → Z)"
 
-#: app/templates/map.html:184
+#: app/templates/map.html:189
 #, python-format
 msgid "Bienvenue sur %(site)s !"
 msgstr "Benvenuto su %(site)s!"
 
-#: app/templates/map.html:186
+#: app/templates/map.html:191
 msgid ""
 "Votre carte est encore vide. Pour la remplir, choisissez par où commencer"
 " :"
 msgstr "La tua mappa è ancora vuota. Per riempirla, scegli da dove cominciare:"
 
-#: app/templates/map.html:190
+#: app/templates/map.html:195
 msgid "Ajouter un trajet"
 msgstr "Aggiungi un tragitto"
 
-#: app/templates/map.html:191
+#: app/templates/map.html:196
 msgid "Départ, arrivée, date et mode de transport."
 msgstr "Partenza, arrivo, data e mezzo di trasporto."
 
-#: app/templates/map.html:194
+#: app/templates/map.html:199
 msgid "Importer votre historique"
 msgstr "Importa la tua cronologia"
 
-#: app/templates/map.html:195
+#: app/templates/map.html:200
 msgid "Flighty, myFlightradar24, CSV, GeoJSON, GPX ou cartes Apple Wallet."
 msgstr "Flighty, myFlightradar24, CSV, GeoJSON, GPX o carte Apple Wallet."
 
-#: app/templates/map.html:199
+#: app/templates/map.html:204
 msgid "Transférer vos réservations"
 msgstr "Inoltra le tue prenotazioni"
 
-#: app/templates/map.html:200
+#: app/templates/map.html:205
 #, python-format
 msgid "Envoyez vos confirmations de vol ou de train à %(address)s."
 msgstr "Invia le conferme di volo o di treno a %(address)s."
 
-#: app/templates/map.html:205
+#: app/templates/map.html:210
 msgid "Indiquer votre domicile"
 msgstr "Indica la tua casa"
 
-#: app/templates/map.html:206
+#: app/templates/map.html:211
 msgid "Pour compter vos jours loin de la maison et vos nuits à l'étranger."
 msgstr "Per contare i giorni lontano da casa e le notti all'estero."
 

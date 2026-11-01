@@ -241,14 +241,18 @@ async function load() {
   setLoading(true);
   try {
     const query = params.toString();
-    // Tableau de bord : année en cours, quelle que soit la période filtrée (les autres filtres s'appliquent).
+    // Tableau de bord : année choisie avec les boutons d'année, toutes les années avec « Tout » (?period=all),
+    // sinon l'année en cours, quelle que soit la période filtrée (les autres filtres s'appliquent).
     const yearQuery = new URLSearchParams(params);
     yearQuery.delete("from");
     yearQuery.delete("to");
-    // Année choisie avec les boutons d'année, sinon l'année en cours.
+    yearQuery.delete("period");
+    const dashboardAll = params.get("period") === "all";
     const dashboardYear = selectedYear() || mapEl.dataset.year;
-    yearQuery.set("year", dashboardYear);
+    if (!dashboardAll) yearQuery.set("year", dashboardYear);
     if ($("dashboardYear")) $("dashboardYear").textContent = dashboardYear;
+    if ($("dashboardYearTitle")) $("dashboardYearTitle").hidden = dashboardAll;
+    if ($("dashboardAllTitle")) $("dashboardAllTitle").hidden = !dashboardAll;
     const optional = (url) => fetchJson(url, controller.signal).catch((error) => {
       if (error.name === "AbortError") throw error;
       return null; // couches facultatives

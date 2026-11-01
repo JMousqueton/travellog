@@ -37,8 +37,13 @@
     {% endif %}
 
     <section class="mb-4" aria-labelledby="statsTitle">
-      <h2 class="section-title" id="statsTitle">{{ _("Tableau de bord %(year)s",
-          year='<span id="dashboardYear">%s</span>'|format(current_year)|safe) }}</h2>
+      {# Toutes les années (?period=all, sans dates) : le tableau de bord porte sur l'ensemble des voyages. #}
+      {% set all_years = request.args.get("period") == "all" and not request.args.get("from") and not request.args.get("to") %}
+      <h2 class="section-title" id="statsTitle">
+        <span id="dashboardYearTitle"{% if all_years %} hidden{% endif %}>{{ _("Tableau de bord %(year)s",
+          year='<span id="dashboardYear">%s</span>'|format(current_year)|safe) }}</span>
+        <span id="dashboardAllTitle"{% if not all_years %} hidden{% endif %}>{{ _("Tableau de bord, toutes années") }}</span>
+      </h2>
       <div class="stats-grid" id="stats" aria-live="polite" aria-busy="true">
         <div class="stat-card">
           <span class="stat-icon" aria-hidden="true"><i class="fa-solid fa-suitcase"></i></span>
