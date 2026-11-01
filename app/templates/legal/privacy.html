@@ -35,6 +35,11 @@
               <td>{{ _("Ajouter les trajets de vos réservations à votre compte, ne traiter chaque e-mail qu'une fois, et transmettre à l'équipe ceux qui n'ont pas pu être lus") }}</td>
               <td>{{ _("Exécution du service que vous demandez") }}</td></tr>
           {% endif %}
+          {% if stripe_configured() %}
+          <tr><td>{{ _("Abonnement Premium : identifiant client Stripe, formule, statut et date de fin de l'abonnement") }}</td>
+              <td>{{ _("Gérer votre abonnement, vos accès Premium et vos factures") }}</td>
+              <td>{{ _("Exécution du contrat ; obligation légale de conserver les factures") }}</td></tr>
+          {% endif %}
           <tr><td>{{ _("Journaux du serveur web : adresse IP, date, page demandée, navigateur") }}</td>
               <td>{{ _("Sécurité du service, détection des abus et des pannes") }}</td>
               <td>{{ _("Intérêt légitime (sécurité)") }}</td></tr>
@@ -61,6 +66,7 @@
       <li>{{ _("Mesure d'audience : votre navigateur envoie les pages consultées à l'outil Matomo de l'éditeur (stats.mousqueton.io), qui reçoit donc votre adresse IP et la tronque avant de l'enregistrer. Les jetons secrets des liens de partage, d'inscription et de réinitialisation sont masqués avant l'envoi. Ces statistiques ne sont ni croisées avec votre compte, ni partagées avec qui que ce soit.") }}</li>
       {% if config.LOGO_DEV_TOKEN %}<li>{{ _("Logos des compagnies et opérateurs : sur les pages de statistiques des vols et des trains, votre navigateur télécharge ces logos depuis Logo.dev (img.logo.dev), qui reçoit donc votre adresse IP et le nom des compagnies affichées.") }}</li>{% endif %}
       {% if routing %}<li>{{ _("Distances routières : les coordonnées de départ et d'arrivée des trajets en voiture ou en bus sont envoyées par notre serveur à un service de calcul d'itinéraire (OSRM).") }}</li>{% endif %}
+      {% if stripe_configured() %}<li>{{ _("Paiement : si vous souscrivez Premium, le paiement se fait sur la page de Stripe (Stripe Payments Europe, Irlande), qui reçoit votre adresse e-mail et vos coordonnées bancaires ; notre serveur ne voit jamais ces dernières. Stripe traite ces données selon sa propre politique de confidentialité (stripe.com/privacy).") }}</li>{% endif %}
       <li>{{ _("Agenda : si vous activez l'abonnement, votre service d'agenda récupère vos dates et lieux de voyage (sans les notes) à l'adresse secrète que vous lui donnez.") }}</li>
       <li>{{ _("Liens de partage : toute personne qui possède un de vos liens voit les voyages qu'il montre. Vous pouvez révoquer un lien à tout moment.") }}</li>
       <li>{{ _("Profil public : si vous choisissez un nom de profil, toute personne qui connaît son adresse voit le résumé de vos voyages passés. Il n'est pas indexé par les moteurs de recherche, et vider le nom le désactive aussitôt.") }}</li>
@@ -75,6 +81,7 @@
       <li>{{ _("Compte et contenus : tant que votre compte existe. Supprimer votre compte efface immédiatement vos données et vos photos du site.") }}</li>
       <li>{{ _("Sauvegardes : des copies de sécurité sont faites chaque nuit et conservées %(days)s jours au plus ; vos données y disparaissent donc au plus tard %(days)s jours après leur suppression.", days=backup_days) }}</li>
       {% if config.IMPORT_ADDRESS %}<li>{{ _("Import par e-mail : un e-mail importé est supprimé de la boîte aussitôt ; le journal des e-mails importés ou ignorés (expéditeur, objet) est conservé %(days)s jours. Un e-mail qui n'a pas pu être lu est conservé, avec son ticket, jusqu'à son traitement. Supprimer votre compte efface aussi ces journaux et ces tickets.", days=config.MAIL_IMPORT_LOG_DAYS) }}</li>{% endif %}
+      {% if stripe_configured() %}<li>{{ _("Abonnement : tant que votre compte existe. Supprimer votre compte supprime aussi votre client Stripe ; les factures sont toutefois conservées 10 ans, comme la loi l'impose.") }}</li>{% endif %}
       <li>{{ _("Journaux du serveur web : %(days)s jours.", days=log_days) }}</li>
       <li>{{ _("Mesure d'audience : 25 mois au plus.") }}</li>
       <li>{{ _("Cache des recherches de lieux (sans lien avec votre compte) : %(days)s jours.", days=geocode_days) }}</li>

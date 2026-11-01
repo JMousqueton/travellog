@@ -7,7 +7,11 @@
 
   <section>
     <h2 class="h5">{{ _("Éditeur du site") }}</h2>
+    {% if stripe_configured() %}
+    <p>{{ _("Ce site est édité par %(name)s, qui en est le directeur de la publication. L'essentiel est gratuit ; l'abonnement Premium est vendu par l'éditeur, le paiement étant assuré par Stripe.", name=publisher or "—") }}</p>
+    {% else %}
     <p>{{ _("Ce site est édité à titre personnel et non commercial par %(name)s, qui en est le directeur de la publication.", name=publisher or "—") }}</p>
+    {% endif %}
     <p>{{ _("Contact :") }} {% include "legal/_contact.html" %}</p>
   </section>
 

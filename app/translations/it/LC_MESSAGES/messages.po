@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-01 11:39+0000\n"
+"POT-Creation-Date: 2026-11-01 12:31+0000\n"
 "PO-Revision-Date: 2026-10-24 19:57+0000\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language: it\n"
@@ -3450,7 +3450,18 @@ msgstr "Note legali di Voyage Voyage: editore, hosting, licenze e crediti."
 msgid "Éditeur du site"
 msgstr "Editore del sito"
 
-#: app/templates/legal/notice.html:10
+#: app/templates/legal/notice.html:11
+#, python-format
+msgid ""
+"Ce site est édité par %(name)s, qui en est le directeur de la "
+"publication. L'essentiel est gratuit ; l'abonnement Premium est vendu par"
+" l'éditeur, le paiement étant assuré par Stripe."
+msgstr ""
+"Questo sito è pubblicato da %(name)s, che ne è il direttore responsabile."
+" L'essenziale è gratuito; l'abbonamento Premium è venduto dall'editore, e"
+" il pagamento è gestito da Stripe."
+
+#: app/templates/legal/notice.html:13
 #, python-format
 msgid ""
 "Ce site est édité à titre personnel et non commercial par %(name)s, qui "
@@ -3459,29 +3470,29 @@ msgstr ""
 "Questo sito è pubblicato a titolo personale e non commerciale da "
 "%(name)s, che ne è il direttore responsabile."
 
-#: app/templates/legal/notice.html:11 app/templates/legal/privacy.html:12
+#: app/templates/legal/notice.html:15 app/templates/legal/privacy.html:12
 msgid "Contact :"
 msgstr "Contatto:"
 
-#: app/templates/legal/notice.html:15
+#: app/templates/legal/notice.html:19
 msgid "Hébergement"
 msgstr "Hosting"
 
-#: app/templates/legal/notice.html:16
+#: app/templates/legal/notice.html:20
 #, python-format
 msgid "Téléphone : %(phone)s"
 msgstr "Telefono: %(phone)s"
 
-#: app/templates/legal/notice.html:17 app/templates/legal/privacy.html:69
+#: app/templates/legal/notice.html:21 app/templates/legal/privacy.html:75
 #, python-format
 msgid "Le site et ses données sont hébergés à %(location)s."
 msgstr "Il sito e i suoi dati sono ospitati a %(location)s."
 
-#: app/templates/legal/notice.html:21
+#: app/templates/legal/notice.html:25
 msgid "Données personnelles"
 msgstr "Dati personali"
 
-#: app/templates/legal/notice.html:22
+#: app/templates/legal/notice.html:26
 msgid ""
 "Les données que vous enregistrez restent privées, ne sont ni vendues ni "
 "utilisées à des fins publicitaires. Le détail des traitements et de vos "
@@ -3491,31 +3502,31 @@ msgstr ""
 "fini pubblicitari. I dettagli dei trattamenti e dei tuoi diritti sono "
 "riportati nella"
 
-#: app/templates/legal/notice.html:23
+#: app/templates/legal/notice.html:27
 msgid "politique de confidentialité"
 msgstr "informativa sulla privacy"
 
-#: app/templates/legal/notice.html:27
+#: app/templates/legal/notice.html:31
 msgid "Propriété intellectuelle et licences"
 msgstr "Proprietà intellettuale e licenze"
 
-#: app/templates/legal/notice.html:28
+#: app/templates/legal/notice.html:32
 msgid "Le code source de l'application est libre, publié sous licence MIT :"
 msgstr "Il codice sorgente dell'applicazione è libero, pubblicato con licenza MIT:"
 
-#: app/templates/legal/notice.html:30
+#: app/templates/legal/notice.html:34
 msgid "Les trajets, notes et photos appartiennent aux personnes qui les publient."
 msgstr "Tragitti, note e foto appartengono alle persone che li pubblicano."
 
-#: app/templates/legal/notice.html:32
+#: app/templates/legal/notice.html:36
 msgid "Fonds de carte : © contributeurs OpenStreetMap, données sous licence ODbL."
 msgstr "Mappe di base: © collaboratori di OpenStreetMap, dati con licenza ODbL."
 
-#: app/templates/legal/notice.html:34
+#: app/templates/legal/notice.html:38
 msgid "Contours des pays : Natural Earth (domaine public)."
 msgstr "Confini dei paesi: Natural Earth (pubblico dominio)."
 
-#: app/templates/legal/notice.html:35
+#: app/templates/legal/notice.html:39
 msgid ""
 "Carte interactive : Leaflet (licence BSD) ; interface : Bootstrap "
 "(licence MIT) ; icônes : Font Awesome Free (licences CC BY 4.0, SIL OFL "
@@ -3525,11 +3536,11 @@ msgstr ""
 " MIT); icone: Font Awesome Free (licenze CC BY 4.0, SIL OFL e MIT); "
 "carattere: Inter (SIL Open Font License)."
 
-#: app/templates/legal/notice.html:40
+#: app/templates/legal/notice.html:44
 msgid "Responsabilité"
 msgstr "Responsabilità"
 
-#: app/templates/legal/notice.html:41
+#: app/templates/legal/notice.html:45
 msgid ""
 "Les distances et les émissions de CO₂ affichées sont des estimations, "
 "données à titre indicatif. L'éditeur s'efforce d'assurer la disponibilité"
@@ -3540,7 +3551,7 @@ msgstr ""
 "indicativo. L'editore si impegna a garantire la disponibilità del "
 "servizio senza poterla assicurare; scarica regolarmente il tuo backup."
 
-#: app/templates/legal/notice.html:44 app/templates/legal/privacy.html:120
+#: app/templates/legal/notice.html:48 app/templates/legal/privacy.html:127
 #, python-format
 msgid "Dernière mise à jour : %(date)s"
 msgstr "Ultimo aggiornamento: %(date)s"
@@ -3672,19 +3683,35 @@ msgstr ""
 "ogni e-mail una sola volta e trasmettere al team quelle che non è stato "
 "possibile leggere"
 
-#: app/templates/legal/privacy.html:38
+#: app/templates/legal/privacy.html:39
+msgid ""
+"Abonnement Premium : identifiant client Stripe, formule, statut et date "
+"de fin de l'abonnement"
+msgstr ""
+"Abbonamento Premium: identificativo cliente Stripe, piano, stato e data "
+"di fine dell'abbonamento"
+
+#: app/templates/legal/privacy.html:40
+msgid "Gérer votre abonnement, vos accès Premium et vos factures"
+msgstr "Gestire il tuo abbonamento, il tuo accesso Premium e le tue fatture"
+
+#: app/templates/legal/privacy.html:41
+msgid "Exécution du contrat ; obligation légale de conserver les factures"
+msgstr "Esecuzione del contratto; obbligo legale di conservare le fatture"
+
+#: app/templates/legal/privacy.html:43
 msgid "Journaux du serveur web : adresse IP, date, page demandée, navigateur"
 msgstr "Log del server web: indirizzo IP, data, pagina richiesta, browser"
 
-#: app/templates/legal/privacy.html:39
+#: app/templates/legal/privacy.html:44
 msgid "Sécurité du service, détection des abus et des pannes"
 msgstr "Sicurezza del servizio, rilevamento di abusi e guasti"
 
-#: app/templates/legal/privacy.html:40
+#: app/templates/legal/privacy.html:45
 msgid "Intérêt légitime (sécurité)"
 msgstr "Legittimo interesse (sicurezza)"
 
-#: app/templates/legal/privacy.html:41
+#: app/templates/legal/privacy.html:46
 msgid ""
 "Mesure d'audience (Matomo) : pages vues, page d'origine, navigateur, "
 "système, taille d'écran, adresse IP tronquée, pays approximatif"
@@ -3693,17 +3720,17 @@ msgstr ""
 "browser, sistema, dimensioni dello schermo, indirizzo IP troncato, paese "
 "approssimativo"
 
-#: app/templates/legal/privacy.html:42
+#: app/templates/legal/privacy.html:47
 msgid ""
 "Compter les visites et savoir quelles pages sont utiles, pour améliorer "
 "le site"
 msgstr "Contare le visite e capire quali pagine sono utili, per migliorare il sito"
 
-#: app/templates/legal/privacy.html:43
+#: app/templates/legal/privacy.html:48
 msgid "Intérêt légitime (statistiques anonymes, dispensées de consentement)"
 msgstr "Interesse legittimo (statistiche anonime, esenti da consenso)"
 
-#: app/templates/legal/privacy.html:47
+#: app/templates/legal/privacy.html:52
 msgid ""
 "Les photos sont ré-enregistrées à l'envoi : le fichier conservé ne "
 "contient plus aucune métadonnée. L'appareil, les réglages, la date et la "
@@ -3718,7 +3745,7 @@ msgstr ""
 "foto, casa e indirizzo e-mail non compaiono mai nei link di condivisione;"
 " i viaggi futuri vi compaiono solo se l'hai scelto per quel link."
 
-#: app/templates/legal/privacy.html:48
+#: app/templates/legal/privacy.html:53
 msgid ""
 "Le profil public ne montre que des totaux (voyages, distances par mode, "
 "pays, continents, badges) : ni trajets, ni dates, ni notes, ni photos, ni"
@@ -3728,7 +3755,7 @@ msgstr ""
 "paesi, continenti, badge): niente tratte, date, note, foto, domicilio, "
 "viaggi futuri né indirizzo e-mail."
 
-#: app/templates/legal/privacy.html:50
+#: app/templates/legal/privacy.html:55
 msgid ""
 "Import par e-mail : un e-mail n'est accepté que s'il vient de l'adresse "
 "de votre compte ou d'une adresse d'import confirmée, avec une signature "
@@ -3744,11 +3771,11 @@ msgstr ""
 "nella casella e il suo contenuto completo viene trasmesso al team in un "
 "ticket di supporto, per un'importazione manuale."
 
-#: app/templates/legal/privacy.html:55
+#: app/templates/legal/privacy.html:60
 msgid "Qui a accès à vos données"
 msgstr "Chi ha accesso ai tuoi dati"
 
-#: app/templates/legal/privacy.html:56
+#: app/templates/legal/privacy.html:61
 msgid ""
 "Seul l'éditeur, en tant qu'administrateur technique du serveur, peut y "
 "accéder. Elles ne sont ni vendues, ni louées, ni cédées. Certains "
@@ -3758,7 +3785,7 @@ msgstr ""
 "accedervi. Non vengono venduti, affittati né ceduti. Alcuni servizi di "
 "terze parti intervengono tuttavia nel funzionamento del sito:"
 
-#: app/templates/legal/privacy.html:58
+#: app/templates/legal/privacy.html:63
 msgid ""
 "Recherche de lieux : le texte que vous tapez est transmis par notre "
 "serveur au service Nominatim de la fondation OpenStreetMap. Votre adresse"
@@ -3768,7 +3795,7 @@ msgstr ""
 " servizio Nominatim della fondazione OpenStreetMap. Il tuo indirizzo IP "
 "non gli viene trasmesso."
 
-#: app/templates/legal/privacy.html:59
+#: app/templates/legal/privacy.html:64
 msgid ""
 "Numéro de vol : quand vous saisissez un numéro de vol, notre serveur "
 "demande son itinéraire habituel au service adsbdb (adsbdb.com) pour "
@@ -3780,7 +3807,7 @@ msgstr ""
 "precompilare la compagnia e i luoghi. Viene trasmesso solo il numero di "
 "volo, senza il tuo indirizzo IP né il tuo account."
 
-#: app/templates/legal/privacy.html:60
+#: app/templates/legal/privacy.html:65
 #, python-format
 msgid ""
 "Fonds de carte : votre navigateur télécharge les tuiles de la carte "
@@ -3789,7 +3816,7 @@ msgstr ""
 "Mappe di base: il tuo browser scarica le tessere della mappa da %(host)s,"
 " che riceve quindi il tuo indirizzo IP."
 
-#: app/templates/legal/privacy.html:61
+#: app/templates/legal/privacy.html:66
 msgid ""
 "Mesure d'audience : votre navigateur envoie les pages consultées à "
 "l'outil Matomo de l'éditeur (stats.mousqueton.io), qui reçoit donc votre "
@@ -3805,7 +3832,7 @@ msgstr ""
 "mascherati prima dell'invio. Queste statistiche non vengono mai "
 "incrociate con il tuo account né condivise con nessuno."
 
-#: app/templates/legal/privacy.html:62
+#: app/templates/legal/privacy.html:67
 msgid ""
 "Logos des compagnies et opérateurs : sur les pages de statistiques des "
 "vols et des trains, votre navigateur télécharge ces logos depuis Logo.dev"
@@ -3816,7 +3843,7 @@ msgstr ""
 "treni, il tuo browser scarica questi loghi da Logo.dev (img.logo.dev), "
 "che riceve quindi il tuo indirizzo IP e il nome delle compagnie mostrate."
 
-#: app/templates/legal/privacy.html:63
+#: app/templates/legal/privacy.html:68
 msgid ""
 "Distances routières : les coordonnées de départ et d'arrivée des trajets "
 "en voiture ou en bus sont envoyées par notre serveur à un service de "
@@ -3826,7 +3853,21 @@ msgstr ""
 "auto o autobus vengono inviate dal nostro server a un servizio di calcolo"
 " dei percorsi (OSRM)."
 
-#: app/templates/legal/privacy.html:64
+#: app/templates/legal/privacy.html:69
+msgid ""
+"Paiement : si vous souscrivez Premium, le paiement se fait sur la page de"
+" Stripe (Stripe Payments Europe, Irlande), qui reçoit votre adresse "
+"e-mail et vos coordonnées bancaires ; notre serveur ne voit jamais ces "
+"dernières. Stripe traite ces données selon sa propre politique de "
+"confidentialité (stripe.com/privacy)."
+msgstr ""
+"Pagamento: se ti abboni a Premium, il pagamento avviene sulla pagina di "
+"Stripe (Stripe Payments Europe, Irlanda), che riceve il tuo indirizzo "
+"e-mail e i tuoi dati bancari; il nostro server non vede mai questi "
+"ultimi. Stripe tratta questi dati secondo la propria informativa sulla "
+"privacy (stripe.com/privacy)."
+
+#: app/templates/legal/privacy.html:70
 msgid ""
 "Agenda : si vous activez l'abonnement, votre service d'agenda récupère "
 "vos dates et lieux de voyage (sans les notes) à l'adresse secrète que "
@@ -3836,7 +3877,7 @@ msgstr ""
 "recupera date e luoghi dei viaggi (senza le note) dall'indirizzo segreto "
 "che gli fornisci."
 
-#: app/templates/legal/privacy.html:65
+#: app/templates/legal/privacy.html:71
 msgid ""
 "Liens de partage : toute personne qui possède un de vos liens voit les "
 "voyages qu'il montre. Vous pouvez révoquer un lien à tout moment."
@@ -3844,7 +3885,7 @@ msgstr ""
 "Link di condivisione: chiunque abbia uno dei tuoi link vede i viaggi che "
 "mostra. Puoi revocare un link in qualsiasi momento."
 
-#: app/templates/legal/privacy.html:66
+#: app/templates/legal/privacy.html:72
 msgid ""
 "Profil public : si vous choisissez un nom de profil, toute personne qui "
 "connaît son adresse voit le résumé de vos voyages passés. Il n'est pas "
@@ -3855,7 +3896,7 @@ msgstr ""
 "l'indirizzo vede il riepilogo dei tuoi viaggi passati. Non è indicizzato "
 "dai motori di ricerca, e svuotare il nome lo disattiva subito."
 
-#: app/templates/legal/privacy.html:68
+#: app/templates/legal/privacy.html:74
 msgid ""
 "Les bibliothèques et polices de caractères du site sont servies par notre"
 " serveur : aucun CDN ni Google Fonts ne reçoit votre adresse IP."
@@ -3863,15 +3904,15 @@ msgstr ""
 "Le librerie e i caratteri del sito sono serviti dal nostro server: nessun"
 " CDN né Google Fonts riceve il tuo indirizzo IP."
 
-#: app/templates/legal/privacy.html:69
+#: app/templates/legal/privacy.html:75
 msgid "Les e-mails sont envoyés directement par notre serveur."
 msgstr "Le e-mail vengono inviate direttamente dal nostro server."
 
-#: app/templates/legal/privacy.html:73
+#: app/templates/legal/privacy.html:79
 msgid "Durées de conservation"
 msgstr "Tempi di conservazione"
 
-#: app/templates/legal/privacy.html:75
+#: app/templates/legal/privacy.html:81
 msgid ""
 "Compte et contenus : tant que votre compte existe. Supprimer votre compte"
 " efface immédiatement vos données et vos photos du site."
@@ -3879,7 +3920,7 @@ msgstr ""
 "Account e contenuti: finché il tuo account esiste. Eliminare l'account "
 "cancella immediatamente i tuoi dati e le tue foto dal sito."
 
-#: app/templates/legal/privacy.html:76
+#: app/templates/legal/privacy.html:82
 #, python-format
 msgid ""
 "Sauvegardes : des copies de sécurité sont faites chaque nuit et "
@@ -3890,7 +3931,7 @@ msgstr ""
 "massimo %(days)s giorni; i tuoi dati ne scompaiono quindi al più tardi "
 "%(days)s giorni dopo la cancellazione."
 
-#: app/templates/legal/privacy.html:77
+#: app/templates/legal/privacy.html:83
 #, python-format
 msgid ""
 "Import par e-mail : un e-mail importé est supprimé de la boîte aussitôt ;"
@@ -3906,16 +3947,26 @@ msgstr ""
 "gestione. Eliminando il tuo account vengono cancellati anche questi "
 "registri e ticket."
 
-#: app/templates/legal/privacy.html:78
+#: app/templates/legal/privacy.html:84
+msgid ""
+"Abonnement : tant que votre compte existe. Supprimer votre compte "
+"supprime aussi votre client Stripe ; les factures sont toutefois "
+"conservées 10 ans, comme la loi l'impose."
+msgstr ""
+"Abbonamento: finché esiste il tuo account. Eliminando l'account elimini "
+"anche il tuo cliente Stripe; le fatture sono comunque conservate 10 anni,"
+" come richiesto dalla legge."
+
+#: app/templates/legal/privacy.html:85
 #, python-format
 msgid "Journaux du serveur web : %(days)s jours."
 msgstr "Log del server web: %(days)s giorni."
 
-#: app/templates/legal/privacy.html:79
+#: app/templates/legal/privacy.html:86
 msgid "Mesure d'audience : 25 mois au plus."
 msgstr "Misurazione dell'audience: al massimo 25 mesi."
 
-#: app/templates/legal/privacy.html:80
+#: app/templates/legal/privacy.html:87
 #, python-format
 msgid ""
 "Cache des recherches de lieux (sans lien avec votre compte) : %(days)s "
@@ -3924,7 +3975,7 @@ msgstr ""
 "Cache delle ricerche di luoghi (non collegata al tuo account): %(days)s "
 "giorni."
 
-#: app/templates/legal/privacy.html:81
+#: app/templates/legal/privacy.html:88
 #, python-format
 msgid ""
 "Liens envoyés par e-mail : %(signup)s minutes pour l'inscription, "
@@ -3933,11 +3984,11 @@ msgstr ""
 "Link inviati per e-mail: %(signup)s minuti per l'iscrizione, %(reset)s "
 "minuti per la reimpostazione della password."
 
-#: app/templates/legal/privacy.html:86
+#: app/templates/legal/privacy.html:93
 msgid "Cookies et stockage local"
 msgstr "Cookie e archiviazione locale"
 
-#: app/templates/legal/privacy.html:87
+#: app/templates/legal/privacy.html:94
 msgid ""
 "Le site n'utilise aucun cookie publicitaire. Les éléments déposés sont "
 "nécessaires à son fonctionnement, mémorisent vos choix ou servent à une "
@@ -3949,11 +4000,11 @@ msgstr ""
 " una misurazione anonima dell'audience limitata al sito, conforme alle "
 "condizioni di esenzione della CNIL; non richiedono quindi il consenso:"
 
-#: app/templates/legal/privacy.html:89
+#: app/templates/legal/privacy.html:96
 msgid "maintient votre connexion et protège les formulaires (cookie de session)."
 msgstr "mantiene l'accesso e protegge i moduli (cookie di sessione)."
 
-#: app/templates/legal/privacy.html:90
+#: app/templates/legal/privacy.html:97
 msgid ""
 "uniquement si vous cochez « Rester connecté » : vous reconnecte "
 "automatiquement (365 jours)."
@@ -3961,11 +4012,11 @@ msgstr ""
 "solo se selezioni «Resta connesso»: ti riconnette automaticamente (365 "
 "giorni)."
 
-#: app/templates/legal/privacy.html:91
+#: app/templates/legal/privacy.html:98
 msgid "mémorise la langue choisie (1 an)."
 msgstr "ricorda la lingua scelta (1 anno)."
 
-#: app/templates/legal/privacy.html:92
+#: app/templates/legal/privacy.html:99
 msgid ""
 "mesure d'audience Matomo : distinguent les visites sans vous identifier "
 "(13 mois et 30 minutes)."
@@ -3973,7 +4024,7 @@ msgstr ""
 "misurazione dell'audience Matomo: distinguono le visite senza "
 "identificarti (13 mesi e 30 minuti)."
 
-#: app/templates/legal/privacy.html:93
+#: app/templates/legal/privacy.html:100
 msgid ""
 "Stockage local du navigateur : thème clair ou sombre, couches de carte "
 "affichées, brouillon d'un trajet en cours de saisie. Ces données ne "
@@ -3983,7 +4034,7 @@ msgstr ""
 "mappa mostrati, bozza di un tragitto in corso di inserimento. Questi dati"
 " non lasciano il tuo dispositivo."
 
-#: app/templates/legal/privacy.html:95
+#: app/templates/legal/privacy.html:102
 msgid ""
 "Vous pouvez refuser la mesure d'audience : le site cessera alors de vous "
 "compter sur ce navigateur (un cookie mémorise ce choix)."
@@ -3991,27 +4042,27 @@ msgstr ""
 "Puoi rifiutare la misurazione dell'audience: il sito smetterà di contarti"
 " su questo browser (un cookie ricorda questa scelta)."
 
-#: app/templates/legal/privacy.html:97
+#: app/templates/legal/privacy.html:104
 msgid "Accepter à nouveau d'être compté"
 msgstr "Contami di nuovo"
 
-#: app/templates/legal/privacy.html:97 app/templates/legal/privacy.html:99
+#: app/templates/legal/privacy.html:104 app/templates/legal/privacy.html:106
 msgid "Ne plus être compté"
 msgstr "Non contarmi più"
 
-#: app/templates/legal/privacy.html:98
+#: app/templates/legal/privacy.html:105
 msgid "Vous n'êtes plus compté dans les statistiques."
 msgstr "Non sei più conteggiato nelle statistiche."
 
-#: app/templates/legal/privacy.html:98
+#: app/templates/legal/privacy.html:105
 msgid "Vous êtes compté dans les statistiques anonymes."
 msgstr "Sei conteggiato nelle statistiche anonime."
 
-#: app/templates/legal/privacy.html:104
+#: app/templates/legal/privacy.html:111
 msgid "Sécurité"
 msgstr "Sicurezza"
 
-#: app/templates/legal/privacy.html:105
+#: app/templates/legal/privacy.html:112
 msgid ""
 "Connexion chiffrée (HTTPS), mots de passe hachés, limitation des "
 "tentatives de connexion, déconnexion des autres sessions au changement de"
@@ -4021,11 +4072,11 @@ msgstr ""
 "accesso, disconnessione delle altre sessioni al cambio di password, "
 "backup giornalieri."
 
-#: app/templates/legal/privacy.html:109
+#: app/templates/legal/privacy.html:116
 msgid "Vos droits"
 msgstr "I tuoi diritti"
 
-#: app/templates/legal/privacy.html:110
+#: app/templates/legal/privacy.html:117
 msgid ""
 "Vous disposez des droits d'accès, de rectification, d'effacement, de "
 "limitation, d'opposition et de portabilité de vos données. La plupart "
@@ -4035,7 +4086,7 @@ msgstr ""
 "opposizione e portabilità dei tuoi dati. La maggior parte si esercita "
 "direttamente nell'applicazione:"
 
-#: app/templates/legal/privacy.html:112
+#: app/templates/legal/privacy.html:119
 msgid ""
 "Accès et portabilité : page Importer / exporter (CSV, GeoJSON, GPX) ou "
 "sauvegarde complète avec vos photos (.zip)."
@@ -4043,17 +4094,17 @@ msgstr ""
 "Accesso e portabilità: pagina Importa / esporta (CSV, GeoJSON, GPX) o "
 "backup completo con le tue foto (.zip)."
 
-#: app/templates/legal/privacy.html:113
+#: app/templates/legal/privacy.html:120
 msgid ""
 "Rectification : modifiez vos trajets, voyages et préférences à tout "
 "moment."
 msgstr "Rettifica: modifica tragitti, viaggi e preferenze in qualsiasi momento."
 
-#: app/templates/legal/privacy.html:114
+#: app/templates/legal/privacy.html:121
 msgid "Effacement : Préférences, puis « Supprimer mon compte »."
 msgstr "Cancellazione: Preferenze, poi «Elimina il mio account»."
 
-#: app/templates/legal/privacy.html:116
+#: app/templates/legal/privacy.html:123
 msgid ""
 "Pour toute autre demande, écrivez à l'adresse de contact ci-dessus. Vous "
 "pouvez aussi adresser une réclamation à la CNIL :"

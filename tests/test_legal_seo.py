@@ -145,3 +145,14 @@ def test_privacy_and_about_mention_new_features(client, app):
     about = client.get("/about").text
     for text in ("Apple Wallet", "addto@example.org", "/u/votre-nom", "aucun CDN"):
         assert text in about, text
+
+
+def test_legal_pages_mention_stripe_only_with_billing(client, legal):
+    assert "Stripe" not in client.get("/privacy").text
+    assert "non commercial" in client.get("/legal").text
+    legal.config.update(STRIPE_SECRET_KEY="sk_test_x")
+    privacy = client.get("/privacy").text
+    for text in ("identifiant client Stripe", "Stripe Payments Europe", "factures sont toutefois conservées 10 ans"):
+        assert text in privacy, text
+    notice = client.get("/legal").text
+    assert "non commercial" not in notice and "le paiement étant assuré par Stripe" in notice
