@@ -36,7 +36,7 @@ def test_site_name_and_tagline(client):
 
 def test_about_has_no_premium_notice_without_billing(client):
     html = client.get("/about").text
-    assert 'href="/plans"' not in html
+    assert 'href="/plans"' not in html and "Pourquoi un compte Premium" not in html
     assert client.get("/plans").status_code == 404
 
 
@@ -44,6 +44,7 @@ def test_about_announces_premium_and_links_to_plans(app, client):
     app.config.update(STRIPE_SECRET_KEY="sk_test_x", PREMIUM_PRICE_MONTHLY="2", PREMIUM_PRICE_YEARLY="10")
     html = client.get("/about").text
     assert "Gratuit, avec une option Premium" in html and 'href="/plans"' in html
+    assert "Pourquoi un compte Premium ?" in html and "nom de domaine" in html and "nouvelles fonctions" in html
     assert 'class="fa-solid fa-gem' in html and "&lt;i" not in html  # diamant rendu, pas échappé
 
 
