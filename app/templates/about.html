@@ -14,7 +14,7 @@
       <span class="feature-icon feature-icon-premium" aria-hidden="true"><i class="fa-solid fa-gem"></i></span>
       <div class="flex-grow-1">
         <h2 id="about-premium-title" class="h5 fw-semibold mb-1">{{ _("Gratuit, avec une option Premium") }}</h2>
-        <p class="mb-0 text-body-secondary">{{ _("L'essentiel du site est gratuit. Certaines fonctions, marquées d'un diamant %(gem)s, sont réservées aux membres Premium : photos, import par e-mail, liens de partage, profil public et support.", gem=diamond("")) }}</p>
+        <p class="mb-0 text-body-secondary">{{ _("L'essentiel du site est gratuit. Certaines fonctions, marquées d'un diamant %(gem)s, sont réservées aux membres Premium : photos, calendrier des voyages, import par e-mail, liens de partage (y compris vers un seul voyage), profil public et support.", gem=diamond("")) }}</p>
       </div>
       <a class="btn btn-outline-primary rounded-pill px-4 text-nowrap" href="{{ url_for('main.plans') }}">
         <i class="fa-solid fa-scale-balanced me-1" aria-hidden="true"></i>{{ _("Comparer les offres") }}</a>
@@ -100,7 +100,7 @@
       _("Application installable sur l'écran d'accueil, qui reste consultable hors ligne."),
     ]),
     ('fa-shield-halved', _("Vos données vous appartiennent"), [
-      _("Sans publicité, et open source sous licence MIT. L'essentiel est gratuit ; les fonctions marquées d'un diamant font partie de Premium (%(monthly)s par mois ou %(yearly)s par an) : photos, import par e-mail, liens de partage, profil public et support.", **premium_prices()) if billing_enabled() else _("Gratuit, sans publicité, et open source sous licence MIT."),
+      _("Sans publicité, et open source sous licence MIT. L'essentiel est gratuit ; les fonctions marquées d'un diamant font partie de Premium (%(monthly)s par mois ou %(yearly)s par an) : photos, calendrier des voyages, import par e-mail, liens de partage (y compris vers un seul voyage), profil public et support.", **premium_prices()) if billing_enabled() else _("Gratuit, sans publicité, et open source sous licence MIT."),
       _("Vos trajets restent privés ; la mesure d'audience est auto-hébergée et vous pouvez la refuser."),
       _("Bibliothèques et polices servies par le site lui-même : aucun CDN ni Google Fonts ne voit passer vos visites."),
       _("Export complet à tout moment, et suppression de votre compte depuis vos préférences."),

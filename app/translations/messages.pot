@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: travel VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-11-01 08:50+0000\n"
+"POT-Creation-Date: 2026-11-01 08:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1408,8 +1408,9 @@ msgstr ""
 #, python-format
 msgid ""
 "L'essentiel du site est gratuit. Certaines fonctions, marquées d'un "
-"diamant %(gem)s, sont réservées aux membres Premium : photos, import par "
-"e-mail, liens de partage, profil public et support."
+"diamant %(gem)s, sont réservées aux membres Premium : photos, calendrier "
+"des voyages, import par e-mail, liens de partage (y compris vers un seul "
+"voyage), profil public et support."
 msgstr ""
 
 #: app/templates/about.html:20 app/templates/landing.html:45
@@ -1731,8 +1732,9 @@ msgstr ""
 msgid ""
 "Sans publicité, et open source sous licence MIT. L'essentiel est gratuit "
 "; les fonctions marquées d'un diamant font partie de Premium (%(monthly)s"
-" par mois ou %(yearly)s par an) : photos, import par e-mail, liens de "
-"partage, profil public et support."
+" par mois ou %(yearly)s par an) : photos, calendrier des voyages, import "
+"par e-mail, liens de partage (y compris vers un seul voyage), profil "
+"public et support."
 msgstr ""
 
 #: app/templates/about.html:103
@@ -3918,8 +3920,8 @@ msgstr ""
 #: app/templates/plans.html:3
 msgid ""
 "Ce que comprend l'offre gratuite de Voyage Voyage, et ce que Premium "
-"ajoute : photos, import par e-mail, liens de partage, profil public et "
-"support."
+"ajoute : photos, calendrier des voyages, import par e-mail, liens de "
+"partage (y compris vers un seul voyage), profil public et support."
 msgstr ""
 
 #: app/templates/plans.html:8
